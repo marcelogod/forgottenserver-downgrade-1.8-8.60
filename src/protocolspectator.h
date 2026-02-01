@@ -91,10 +91,14 @@ class ProtocolSpectator final : public ProtocolGame
 		void parseExecuteCommand(const std::string& text);
 		void parseSay(NetworkMessage& msg);
 		void parseCloseChannel(NetworkMessage& msg);
+		void parseLookAt(NetworkMessage& msg);
+		void parseSwitchCast(uint8_t direction); // 0 = previous, 1 = next
 
 		//Send functions
 		void sendChannelMessage(const std::string& author, const std::string& text, SpeakClasses type, uint16_t channel);
 		void sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers);
+		void sendWelcomeMessage();
+		void sendTextMessage(MessageClasses mclass, const std::string& message);
 
 		void sendFeatures();
 		void sendFloorDescription(const Position& pos, int floor);

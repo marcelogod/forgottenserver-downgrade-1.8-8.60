@@ -192,6 +192,9 @@ void ProtocolSpectator::connect(uint32_t playerId, OperatingSystem_t operatingSy
 	ss << player->getName() << " has joined the cast.";
 	caster->sendChannelMessage("", ss.str(), TALKTYPE_CHANNEL_O, CHANNEL_CAST);
 	syncOpenContainers();
+	
+	// Send welcome message with MOTD
+	sendWelcomeMessage();
 }
 
 void ProtocolSpectator::logout(bool, bool)
@@ -491,6 +494,13 @@ void ProtocolSpectator::parsePacket(NetworkMessage& msg)
 		case 0x6D:
 			sendCancelWalk();
 			break;
+		case 0x70: // Turn East - used for Next Cast (CTRL + RIGHT)
+			g_dispatcher.addTask(createTask(std::bind(&ProtocolSpectator::parseSwitchCast, getThis(), uint8_t(1))));
+			break;
+		case 0x72: // Turn West - used for Prev Cast (CTRL + LEFT)
+			g_dispatcher.addTask(createTask(std::bind(&ProtocolSpectator::parseSwitchCast, getThis(), uint8_t(0))));
+			break;
+		case 0x8C: parseLookAt(msg); break; // Look at tile/item
 		case 0x96: parseSay(msg); break;
 		case 0x99: parseCloseChannel(msg); break;
 		case 0xAC: msg.getString(); break;
@@ -1278,4 +1288,110 @@ void ProtocolSpectator::AddCreatureLight(NetworkMessage& msg, const Creature* cr
 	msg.add<uint32_t>(creature->getID());
 	msg.addByte(lightInfo.level);
 	msg.addByte(lightInfo.color);
+}
+
+void ProtocolSpectator::parseLookAt(NetworkMessage& msg)
+{
+	Position pos = msg.getPosition();
+	msg.skipBytes(2);
+	uint8_t stackpos = msg.getByte();
+
+	if (!caster) {
+		return;
+	}
+
+	if (pos.x != 0xFFFF && !canSee(pos)) {
+		return;
+	}
+
+	g_dispatcher.addTask(DISPATCHER_TASK_EXPIRATION,
+	                     [=, casterID = caster->getID()]() { g_game.playerLookAt(casterID, pos, stackpos); });
+}
+
+void ProtocolSpectator::parseSwitchCast(uint8_t direction)
+{
+	if (!caster || !player) {
+		return;
+	}
+
+	std::vector<Player*> casters = g_game.getLiveCasters("");
+
+	if (casters.empty()) {
+		sendTextMessage(MESSAGE_STATUS_SMALL, "No live casts available.");
+		return;
+	}
+
+	auto it = std::find(casters.begin(), casters.end(), caster);
+	if (it == casters.end()) {
+		if (!casters.empty()) {
+			Player* newCaster = casters[0];
+			if (newCaster && newCaster != caster) {
+				caster->removeSpectator(this);
+				caster->sendChannelMessage("", player->getName() + " has left the cast.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+
+				knownCreatureSet.clear();
+				caster = newCaster;
+				caster->addSpectator(this);
+				sendAddCreature(caster, caster->getPosition(), 0, false);
+				syncOpenContainers();
+				caster->sendChannelMessage("", player->getName() + " has joined the cast.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+				sendMagicEffect(caster->getPosition(), CONST_ME_TELEPORT);
+			}
+		}
+		return;
+	}
+
+	size_t currentIndex = std::distance(casters.begin(), it);
+	size_t newIndex;
+
+	if (direction == 1) {
+		newIndex = (currentIndex + 1) % casters.size();
+	} else {
+		newIndex = (currentIndex == 0) ? casters.size() - 1 : currentIndex - 1;
+	}
+
+	if (newIndex == currentIndex) {
+		sendTextMessage(MESSAGE_STATUS_SMALL, "No other casts available.");
+		return;
+	}
+
+	Player* newCaster = casters[newIndex];
+	if (!newCaster || newCaster == caster) {
+		return;
+	}
+
+	caster->removeSpectator(this);
+	caster->sendChannelMessage("", player->getName() + " has left the cast.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+
+	knownCreatureSet.clear();
+	caster = newCaster;
+	caster->addSpectator(this);
+	sendAddCreature(caster, caster->getPosition(), 0, false);
+	syncOpenContainers();
+	caster->sendChannelMessage("", player->getName() + " has joined the cast.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+	sendMagicEffect(caster->getPosition(), CONST_ME_TELEPORT);
+
+	std::stringstream ss;
+	ss << "Switched to cast: " << caster->getName();
+	sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, ss.str());
+}
+
+void ProtocolSpectator::sendWelcomeMessage()
+{
+	std::string message = 
+		"Welcome to the Live Cast System!\n\n"
+		"Do you know you can use CTRL + ARROWS to switch casts?\n\n"
+		"Voce sabia que pode usar CTRL + SETAS para alternar casts?\n\n"
+		"Type /commands in the cast channel to see available commands.";
+	
+	sendTextMessage(MESSAGE_EVENT_ADVANCE, message);
+}
+
+void ProtocolSpectator::sendTextMessage(MessageClasses mclass, const std::string& message)
+{
+	NetworkMessage msg;
+	msg.addByte(0xB4);
+	msg.addByte(mclass);
+	msg.addString(message);
+	writeToOutputBuffer(msg);
 }
