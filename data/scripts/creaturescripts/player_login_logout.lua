@@ -41,6 +41,13 @@ function loginMessage.onLogin(player)
         local reductionMultiplier = player:getResetExpReduction()
         player:setExperienceRate(ExperienceRateType.STAMINA, reductionMultiplier)
     end
+
+    if player:isTokenProtected() then
+        player:setTokenLocked(true)
+        player:popupFYI("=== TOKEN PROTECTION ===\n\nYour account is protected by TOKEN.\n\nYou cannot move or drop items until you unlock.\n\nType: !token <your_password>\n\nto unlock your character.")
+        player:sendTextMessage(MESSAGE_STATUS_CONSOLE_RED, "[Token] You are LOCKED! Type !token <password> to unlock.")
+    end
+
     return true
 end
 loginMessage:register()

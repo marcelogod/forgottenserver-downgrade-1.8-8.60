@@ -1180,6 +1180,9 @@ std::string_view getReturnMessage(ReturnValue value)
 
 		case RETURNVALUE_CANNOTADDMOREITEMSONTILE:
 			return "You cannot add more items on this tile.";
+
+		case RETURNVALUE_ITEMSTOKENPROTECTED:
+			return "Your items are token protected. Use !token off to disable protection.";
 		
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";

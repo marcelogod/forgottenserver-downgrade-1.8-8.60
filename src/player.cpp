@@ -166,6 +166,50 @@ bool Player::setVocation(uint16_t vocId)
 	return true;
 }
 
+bool Player::canMoveOwnItems(const Item* item) const
+{
+	if (isTokenLocked()) {
+		return false;
+	}
+
+	if (!isTokenProtected()) {
+		return true;
+	}
+
+	if (!item) {
+		return true;
+	}
+
+	uint16_t itemId = item->getID();
+	const auto& exceptions = ConfigManager::getTokenProtectionExceptions();
+	
+	if (std::find(exceptions.begin(), exceptions.end(), itemId) != exceptions.end()) {
+		return true;
+	}
+
+	return false;
+}
+
+bool Player::unlockWithToken(const std::string& token)
+{
+	if (!tokenLocked) {
+		return true;
+	}
+
+	uint32_t hash = 0;
+	for (char c : token) {
+		hash = ((hash * 31) + static_cast<uint8_t>(c)) % 4294967296;
+	}
+	char hashStr[9];
+	snprintf(hashStr, sizeof(hashStr), "%08x", hash);
+	
+	if (tokenHash == hashStr) {
+		tokenLocked = false;
+		return true;
+	}
+	return false;
+}
+
 bool Player::isPushable() const
 {
 	if (isAccountManager()) {

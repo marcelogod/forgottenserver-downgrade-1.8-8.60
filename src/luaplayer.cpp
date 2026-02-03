@@ -2626,6 +2626,98 @@ int luaPlayerGetResetExpReduction(lua_State* L)
 	return 1;
 }
 
+// Token Protection System
+int luaPlayerIsTokenProtected(lua_State* L)
+{
+	// player:isTokenProtected()
+	const Player* player = getUserdata<const Player>(L, 1);
+	if (player) {
+		pushBoolean(L, player->isTokenProtected());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaPlayerSetTokenProtected(lua_State* L)
+{
+	// player:setTokenProtected(protected)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		bool protected_ = getBoolean(L, 2);
+		player->setTokenProtected(protected_);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaPlayerGetTokenHash(lua_State* L)
+{
+	// player:getTokenHash()
+	const Player* player = getUserdata<const Player>(L, 1);
+	if (player) {
+		pushString(L, player->getTokenHash());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaPlayerSetTokenHash(lua_State* L)
+{
+	// player:setTokenHash(hash)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		const std::string& hash = getString(L, 2);
+		player->setTokenHash(hash);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaPlayerIsTokenLocked(lua_State* L)
+{
+	// player:isTokenLocked()
+	const Player* player = getUserdata<const Player>(L, 1);
+	if (player) {
+		pushBoolean(L, player->isTokenLocked());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaPlayerSetTokenLocked(lua_State* L)
+{
+	// player:setTokenLocked(locked)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		bool locked = getBoolean(L, 2);
+		player->setTokenLocked(locked);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaPlayerUnlockWithToken(lua_State* L)
+{
+	// player:unlockWithToken(token)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		const std::string& token = getString(L, 2);
+		pushBoolean(L, player->unlockWithToken(token));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 } // namespace
 
 int LuaScriptInterface::luaPlayerSendAutoLootWindow(lua_State* L)
@@ -2933,6 +3025,15 @@ void LuaScriptInterface::registerPlayer()
 	registerMethod("Player", "setAutoLootEnabled", LuaScriptInterface::luaPlayerSetAutoLootEnabled);
 	registerMethod("Player", "isAutoLootEnabled", LuaScriptInterface::luaPlayerIsAutoLootEnabled);
 	registerMethod("Player", "clearAutoLoot", LuaScriptInterface::luaPlayerClearAutoLoot);
+
+	// Token Protection System
+	registerMethod("Player", "isTokenProtected", luaPlayerIsTokenProtected);
+	registerMethod("Player", "setTokenProtected", luaPlayerSetTokenProtected);
+	registerMethod("Player", "getTokenHash", luaPlayerGetTokenHash);
+	registerMethod("Player", "setTokenHash", luaPlayerSetTokenHash);
+	registerMethod("Player", "isTokenLocked", luaPlayerIsTokenLocked);
+	registerMethod("Player", "setTokenLocked", luaPlayerSetTokenLocked);
+	registerMethod("Player", "unlockWithToken", luaPlayerUnlockWithToken);
 
 
 	// OfflinePlayer

@@ -829,6 +829,10 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 	const Position& currentPos = creature->getPosition();
 	Position destPos = getNextPosition(direction, currentPos);
 	Player* player = creature->getPlayer();
+	if (player && player->isTokenLocked()) {
+		player->sendCancelMessage("You are locked by Token Protection.");
+		return RETURNVALUE_NOTPOSSIBLE;
+	}
 
 	bool diagonalMovement = (direction & DIRECTION_DIAGONAL_MASK) != 0;
 	if (player && !diagonalMovement) {
@@ -1056,6 +1060,26 @@ void Game::playerMoveItem(Player* player, const Position& fromPos, uint16_t spri
 		return false;
 	};
 
+	if (player->isTokenProtected()) {
+		bool fromPlayer = false;
+		Cylinder* current = fromCylinder;
+		while (current) {
+			if (current == player) {
+				fromPlayer = true;
+				break;
+			}
+			current = current->getParent();
+		}
+
+		if (fromPlayer) {
+			if (!player->canMoveOwnItems(item)) {
+				player->sendTextMessage(MESSAGE_EVENT_ADVANCE, "[TOKEN]: To move your items out, disable token security!");
+				player->sendCancelMessage(RETURNVALUE_ITEMSTOKENPROTECTED);
+				return;
+			}
+		}
+	}
+
 	if (player->hasFlag(PlayerFlag_CanThrowFar)) {
 		const Tile* toCylinderTile = toCylinder->getTile();
 		if (playerMoveHangableItem(player->getPosition(), fromCylinder->getTile()->getPosition(), toCylinderTile,
@@ -1190,6 +1214,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 					}
 				}
 			}
+
 		}
 	}
 

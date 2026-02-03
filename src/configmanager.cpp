@@ -32,8 +32,10 @@ ExperienceStages expStages;
 
 using FastPotionIds = std::vector<uint16_t>;
 using BlockedTeleportIds = std::vector<uint16_t>;
+using TokenProtectionExceptions = std::vector<uint16_t>;
 FastPotionIds fastPotionIds;
 BlockedTeleportIds blockedTeleportIds;
+TokenProtectionExceptions tokenProtectionExceptions;
 
 bool loaded = false;
 
@@ -191,6 +193,25 @@ BlockedTeleportIds loadLuaBlockedTeleportIds(lua_State* L)
 	BlockedTeleportIds ids;
 
 	lua_getglobal(L, "blockedTeleportIds");
+	if (!lua_istable(L, -1)) {
+		return {};
+	}
+
+	lua_pushnil(L);
+	while (lua_next(L, -2) != 0) {
+		const auto id = static_cast<uint16_t>(lua_tointeger(L, -1));
+		ids.push_back(id);
+		lua_pop(L, 1);
+	}
+	lua_pop(L, 1);
+	return ids;
+}
+
+TokenProtectionExceptions loadLuaTokenProtectionExceptions(lua_State* L)
+{
+	TokenProtectionExceptions ids;
+
+	lua_getglobal(L, "tokenProtectionExceptions");
 	if (!lua_istable(L, -1)) {
 		return {};
 	}
@@ -445,6 +466,7 @@ bool ConfigManager::load()
 
 	fastPotionIds = loadLuaFastPotionIds(L);
 	blockedTeleportIds = loadLuaBlockedTeleportIds(L);
+	tokenProtectionExceptions = loadLuaTokenProtectionExceptions(L);
 
 	// AutoLoot Config
 	booleans[Boolean::AUTOLOOT_ENABLED] = getGlobalBoolean(L, "Autoloot_enabled", true);
@@ -560,3 +582,5 @@ bool ConfigManager::setFloat(float_config_t what, float value)
 const FastPotionIds& ConfigManager::getFastPotionIds() { return fastPotionIds; }
 
 const BlockedTeleportIds& ConfigManager::getBlockedTeleportIds() { return blockedTeleportIds; }
+
+const TokenProtectionExceptions& ConfigManager::getTokenProtectionExceptions() { return tokenProtectionExceptions; }

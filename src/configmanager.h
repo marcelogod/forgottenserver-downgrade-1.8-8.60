@@ -235,6 +235,7 @@ float getFloat(float_config_t what);
 float getExperienceStage(uint32_t level);
 const std::vector<uint16_t>& getFastPotionIds();
 const std::vector<uint16_t>& getBlockedTeleportIds();
+const std::vector<uint16_t>& getTokenProtectionExceptions();
 
 bool setBoolean(Boolean what, bool value);
 bool setString(String what, std::string_view value);

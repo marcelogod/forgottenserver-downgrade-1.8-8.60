@@ -300,6 +300,16 @@ public:
 	bool isPremium() const;
 	void setPremiumTime(time_t premiumEndsAt);
 
+	// Token Protection System
+	bool isTokenProtected() const { return tokenProtected; }
+	void setTokenProtected(bool protected_) { tokenProtected = protected_; }
+	std::string_view getTokenHash() const { return tokenHash; }
+	void setTokenHash(std::string_view hash) { tokenHash = hash; }
+	bool canMoveOwnItems(const Item* item) const;
+	bool isTokenLocked() const { return tokenLocked; }
+	void setTokenLocked(bool locked) { tokenLocked = locked; }
+	bool unlockWithToken(const std::string& token);
+
 	bool setVocation(uint16_t vocId);
 	uint16_t getVocationId() const { return vocation->getId(); }
 	bool isSorcerer() const { return vocation->getId() == 1 || vocation->getFromVocation() == 1; }
@@ -1295,6 +1305,9 @@ private:
 	bool isSpectator = false;
 	bool liveCasting = false;
 	bool liveChatDisabled = false;
+	bool tokenProtected = false;
+	std::string tokenHash;
+	bool tokenLocked = false;
 	bool castExpBonusActive = false;
 
 	AccountManagerMode accountManager{ACCOUNT_MANAGER_NONE};
