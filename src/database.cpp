@@ -42,7 +42,11 @@ retry:
 		mysql_options(handle.get(), MYSQL_OPT_SSL_MODE, &ssl_mode);
 	}
 #endif
-	
+
+	{
+		bool reconnect = true;
+		mysql_options(handle.get(), MYSQL_OPT_RECONNECT, &reconnect);
+	}
 	// connects to database
 	if (!mysql_real_connect(handle.get(), getString(ConfigManager::MYSQL_HOST).data(),
 	                        getString(ConfigManager::MYSQL_USER).data(), getString(ConfigManager::MYSQL_PASS).data(),

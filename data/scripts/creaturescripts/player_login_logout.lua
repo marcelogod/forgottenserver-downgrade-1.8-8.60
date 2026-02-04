@@ -69,7 +69,7 @@ loginMessage:register()
 
 local logoutMessage = CreatureEvent("logoutMessage")
 function logoutMessage.onLogout(player)
-     local prevColor = logger.colors.green
+     local prevColor = logger.colors.red
     local resetColor = logger.colors.reset
     local ipStr = convertIp(player:getIp())
     local vocation = player:getVocation():getName()
