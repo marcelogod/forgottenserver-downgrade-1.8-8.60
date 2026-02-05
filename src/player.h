@@ -1101,6 +1101,11 @@ public:
 
 	void setStaminaMinutes(uint16_t newStamina) { staminaMinutes = std::min<uint16_t>(2520, newStamina); }
 
+	void updateStaminaRegen(int64_t timePassed);
+	void stopStaminaPzRegen() { staminaPzActive = false; }
+	void stopStaminaTrainerRegen() { staminaTrainerActive = false; }
+	bool isTrainerTarget(Creature* creature) const;
+
 	void incrementWindowTextId() { windowTextId++; }
 	void setRawWriteItem(Item* item) { writeItem = item; }
 	void setMaxWriteLen(uint16_t len) { maxWriteLen = len; }
@@ -1281,6 +1286,13 @@ private:
 	uint16_t maxWriteLen = 0;
 	int16_t lastDepotId = -1;
 
+	int64_t staminaPzTicks = 0;
+	int64_t staminaTrainerTicks = 0;
+
+	uint32_t staminaPzOrangeDelayMs = 0;
+	uint32_t staminaPzGreenDelayMs = 0;
+	uint32_t staminaTrainerDelayMs = 0;
+
 	uint8_t soul = 0;
 	std::bitset<PLAYER_MAX_BLESSINGS + 1> blessings;
 	uint8_t levelPercent = 0;
@@ -1309,6 +1321,8 @@ private:
 	std::string tokenHash;
 	bool tokenLocked = false;
 	bool castExpBonusActive = false;
+	bool staminaPzActive = false;
+	bool staminaTrainerActive = false;
 
 	AccountManagerMode accountManager{ACCOUNT_MANAGER_NONE};
 	std::array<bool, 15> managerTalkState{};

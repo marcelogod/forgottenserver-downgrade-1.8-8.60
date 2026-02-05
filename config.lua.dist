@@ -295,7 +295,10 @@ staminaGreenDelay = 5
 staminaPzGain = 1
 
 -- Stamina in Trainers
+-- Trainer Names = Place a list of trainer names, so you can train;
+when you attack a certain target, you will start to regenerate.
 staminaTrainer = true
+staminaTrainerNames = "Trainer;Training Dummy"
 staminaTrainerDelay = 5
 staminaTrainerGain = 1
 
