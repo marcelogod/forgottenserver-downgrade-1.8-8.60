@@ -16,7 +16,8 @@ enum class LogLevel
 	INFO,
 	WARNING,
 	ERRORR,
-	CRITICAL
+	CRITICAL,
+	MIGRATION
 };
 
 class Logger
@@ -74,6 +75,13 @@ public:
 		}
 	}
 
+	void migration(std::string_view msg)
+	{
+		if (isEnabled(LogLevel::MIGRATION)) {
+			log(LogLevel::MIGRATION, msg);
+		}
+	}
+
 	virtual void stats(std::string_view msg) = 0;
 	virtual void statsWarning(std::string_view msg) = 0;
 
@@ -126,6 +134,14 @@ public:
 	{
 		if (isEnabled(LogLevel::CRITICAL)) {
 			log(LogLevel::CRITICAL, fmt::format(fmt, std::forward<Args>(args)...));
+		}
+	}
+
+	template <typename... Args>
+	void migration(fmt::format_string<Args...> fmt, Args&&... args)
+	{
+		if (isEnabled(LogLevel::MIGRATION)) {
+			log(LogLevel::MIGRATION, fmt::format(fmt, std::forward<Args>(args)...));
 		}
 	}
 
@@ -202,6 +218,10 @@ void loggerSignalHandler(int signal);
 #define LOG_CRITICAL(...) \
 	do { \
 		if (isLoggerInitialized()) g_logger().critical(__VA_ARGS__); \
+	} while (0)
+#define LOG_MIGRATION(...) \
+	do { \
+		if (isLoggerInitialized()) g_logger().migration(__VA_ARGS__); \
 	} while (0)
 #define LOG_STATS(...) \
 	do { \

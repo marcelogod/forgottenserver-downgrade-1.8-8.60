@@ -1200,6 +1200,9 @@ void LuaScriptInterface::registerFunctions()
 	// logInfo(text)
 	lua_register(luaState, "logInfo", LuaScriptInterface::luaLogInfo);
 
+	// logMigration(text)
+	lua_register(luaState, "logMigration", LuaScriptInterface::luaLogMigration);
+
 	// logWarning(text)
 	lua_register(luaState, "logWarning", LuaScriptInterface::luaLogWarning);
 
@@ -2651,6 +2654,12 @@ int LuaScriptInterface::luaDebugPrint(lua_State* L)
 int LuaScriptInterface::luaLogInfo(lua_State* L)
 {
 	g_logger().info(Lua::getString(L, 1));
+	return 0;
+}
+
+int LuaScriptInterface::luaLogMigration(lua_State* L)
+{
+	g_logger().migration(Lua::getString(L, 1));
 	return 0;
 }
 

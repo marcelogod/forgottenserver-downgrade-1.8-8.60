@@ -1,5 +1,5 @@
 function onUpdateDatabase()
-	print("> Updating database to version 14 (account_bans, ip_bans and player_bans)")
+	logMigration("> Updating database to version 14 (account_bans, ip_bans and player_bans)")
 
 	db.query("CREATE TABLE IF NOT EXISTS `account_bans` (`account_id` int NOT NULL, `reason` varchar(255) NOT NULL, `banned_at` bigint NOT NULL, `expires_at` bigint NOT NULL, `banned_by` int NOT NULL, PRIMARY KEY (`account_id`), KEY `banned_by` (`banned_by`), FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (`banned_by`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE=InnoDB")
 	db.query("CREATE TABLE IF NOT EXISTS `account_ban_history` (`account_id` int NOT NULL, `reason` varchar(255) NOT NULL, `banned_at` bigint NOT NULL, `expired_at` bigint NOT NULL, `banned_by` int NOT NULL, PRIMARY KEY (`account_id`), KEY `banned_by` (`banned_by`), FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (`banned_by`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE=InnoDB")
@@ -27,11 +27,12 @@ function onUpdateDatabase()
 
 	db.query("DROP TABLE `bans`")
 
-	print("Run this query in your database to create the ondelete_players trigger:")
-	print("DELIMITER //")
-	print("CREATE TRIGGER `ondelete_players` BEFORE DELETE ON `players`")
-	print(" FOR EACH ROW BEGIN")
-	print("  UPDATE `houses` SET `owner` = 0 WHERE `owner` = OLD.`id`;")
-	print("END //")
+	logMigration("Run this query in your database to create the ondelete_players trigger:")
+	logMigration("DELIMITER //")
+	logMigration("CREATE TRIGGER `ondelete_players` BEFORE DELETE ON `players`")
+	logMigration(" FOR EACH ROW BEGIN")
+	logMigration("  UPDATE `houses` SET `owner` = 0 WHERE `owner` = OLD.`id`;")
+	logMigration("END //")
 	return true
 end
+

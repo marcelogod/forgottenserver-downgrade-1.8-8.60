@@ -1,5 +1,5 @@
 function onUpdateDatabase()
-	print("> Updating database to version 29 (account storages)")
+	logMigration("> Updating database to version 29 (account storages)")
 	db.query([[
 		CREATE TABLE IF NOT EXISTS `account_storage` (
 		  `account_id` int NOT NULL,
@@ -11,3 +11,4 @@ function onUpdateDatabase()
 	]])
 	return true
 end
+

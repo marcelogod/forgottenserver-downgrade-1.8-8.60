@@ -1,5 +1,5 @@
 function onUpdateDatabase()
-	print("> Updating database to version 25 (Store inbox changes)")
+	logMigration("> Updating database to version 25 (Store inbox changes)")
 	db.query([[
 		CREATE TABLE IF NOT EXISTS `player_storeinboxitems` (
 		  `player_id` int(11) NOT NULL,
@@ -14,3 +14,4 @@ function onUpdateDatabase()
 	]])
 	return true
 end
+

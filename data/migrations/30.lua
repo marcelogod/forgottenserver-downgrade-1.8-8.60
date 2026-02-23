@@ -1,5 +1,5 @@
 function onUpdateDatabase()
-print("> Updating database to version 30 (reward boss system)")
+logMigration("> Updating database to version 30 (reward boss system)")
 	db.query([[
 		CREATE TABLE IF NOT EXISTS `player_rewarditems` (
 		  `player_id` int NOT NULL,
@@ -14,3 +14,4 @@ print("> Updating database to version 30 (reward boss system)")
 	]])
 	return true
 end
+
