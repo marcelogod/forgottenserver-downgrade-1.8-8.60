@@ -10,12 +10,12 @@ end
 local loginMessage = CreatureEvent("loginMessage")
 
 function loginMessage.onLogin(player)
-   local prevColor = logger.colors.green
+    local prevColor = logger.colors.green
     local resetColor = logger.colors.reset
     local ipStr = convertIp(player:getIp())
     local vocation = player:getVocation():getName()
     local level = player:getLevel()
-    
+
     logger.info("%s%s has logged in.%s [Lvl: %d] [Voc: %s] [IP: %s]", prevColor, player:getName(), resetColor, level, vocation, ipStr)
 
     local rewardChest = player:getRewardChest()
@@ -50,6 +50,9 @@ function loginMessage.onLogin(player)
         player:setVocation(vocation:getDemotion())
     end
 
+    -- Update Experience Rate Stamina
+    player:updateStamina()
+
     player:registerEvent("logoutMessage")
 
     if configManager.getBoolean(RESET_SYSTEM_ENABLED) then
@@ -69,13 +72,13 @@ loginMessage:register()
 
 local logoutMessage = CreatureEvent("logoutMessage")
 function logoutMessage.onLogout(player)
-     local prevColor = logger.colors.red
+    local prevColor = logger.colors.red
     local resetColor = logger.colors.reset
     local ipStr = convertIp(player:getIp())
     local vocation = player:getVocation():getName()
     local level = player:getLevel()
 
-	logger.info("%s%s has logged out.%s [Lvl: %d] [Voc: %s] [IP: %s]", prevColor, player:getName(), resetColor, level, vocation, ipStr)
+    logger.info("%s%s has logged out.%s [Lvl: %d] [Voc: %s] [IP: %s]", prevColor, player:getName(), resetColor, level, vocation, ipStr)
     local playerId = player:getId()
     nextUseStaminaTime[playerId] = nil
     return true
