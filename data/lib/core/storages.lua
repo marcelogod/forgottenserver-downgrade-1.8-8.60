@@ -18,6 +18,7 @@ PlayerStorageKeys = {
     achievementsBase = 300000,
     achievementsCounter = 20000,
     ExerciseDummyExhaust = 30029,
+    firstItems = 30025,
 }
 
 

@@ -1,14 +1,143 @@
-local firstItems = {2050, 2382}
+local config = {
+	[VOCATION.ID.NONE] = {
+		container = {
+			{ 3003, 1 }, -- rope
+			{ 3457, 1 }, -- shovel
+		},
+	},
 
-local login = CreatureEvent("FirstItems")
-function login.onLogin(player)
-    if player:getLastLoginSaved() == 0 then
-        for i = 1, #firstItems do
-            player:addItem(firstItems[i], 1)
-        end
-        player:addItem(player:getSex() == PLAYERSEX_FEMALE and 2651 or 2650, 1)
-        player:addItem(ITEM_BAG, 1):addItem(2674, 1)
-    end
-    return true
+	[VOCATION.ID.SORCERER] = {
+		items = {
+			{ 3059, 1 }, -- spellbook
+			{ 3074, 1 }, -- wand of vortex
+			{ 7991, 1 }, -- magician's robe
+			{ 7992, 1 }, -- mage hat
+			{ 3362, 1 }, -- studded legs
+			{ 3552, 1 }, -- leather boots
+			{ 3572, 1 }, -- scarf
+		},
+
+		container = {
+			{ 3003, 1 }, -- rope
+			{ 5710, 1 }, -- light shovel
+			{ 268, 10 }, -- mana potion
+		},
+	},
+
+	[VOCATION.ID.DRUID] = {
+		items = {
+			{ 3059, 1 }, -- spellbook
+			{ 3066, 1 }, -- snakebite rod
+			{ 7991, 1 }, -- magician's robe
+			{ 7992, 1 }, -- mage hat
+			{ 3362, 1 }, -- studded legs
+			{ 3552, 1 }, -- leather boots
+			{ 3572, 1 }, -- scarf
+		},
+
+		container = {
+			{ 3003, 1 }, -- rope
+			{ 5710, 1 }, -- light shovel
+			{ 268, 10 }, -- mana potion
+		},
+	},
+
+	[VOCATION.ID.PALADIN] = {
+		items = {
+			{ 3425, 1 }, -- dwarven shield
+			{ 3277, 1 }, -- spear
+			{ 3571, 1 }, -- ranger's cloak
+			{ 8095, 1 }, -- ranger legs
+			{ 3552, 1 }, -- leather boots
+			{ 3572, 1 }, -- scarf
+			{ 3374, 1 }, -- legion helmet
+		},
+
+		container = {
+			{ 3003, 1 }, -- rope
+			{ 5710, 1 }, -- light shovel
+			{ 266, 10 }, -- health potion
+			{ 3350, 1 }, -- bow
+			{ 3447, 50 }, -- 50 arrows
+		},
+	},
+
+	[VOCATION.ID.KNIGHT] = {
+		items = {
+			{ 3425, 1 }, -- dwarven shield
+			{ 7773, 1 }, -- steel axe
+			{ 3359, 1 }, -- brass armor
+			{ 3354, 1 }, -- brass helmet
+			{ 3372, 1 }, -- brass legs
+			{ 3552, 1 }, -- leather boots
+			{ 3572, 1 }, -- scarf
+		},
+
+		container = {
+			{ 7774, 1 }, -- jagged sword
+			{ 3327, 1 }, -- daramanian mace
+			{ 3003, 1 }, -- rope
+			{ 5710, 1 }, -- light shovel
+			{ 266, 10 }, -- health potion
+		},
+	},
+
+	[VOCATION.ID.MONK] = {
+		items = {
+			{ 50171, 1 }, -- jo staff
+			{ 3359, 1 }, -- brass armor
+			{ 3354, 1 }, -- brass helmet
+			{ 3372, 1 }, -- brass legs
+			{ 3552, 1 }, -- leather boots
+			{ 3572, 1 }, -- scarf
+		},
+
+		container = {
+			{ 3425, 1 }, -- dwarven shield
+			{ 3003, 1 }, -- rope
+			{ 5710, 1 }, -- light shovel
+			{ 266, 10 }, -- health potion
+		},
+	},
+}
+
+local firstItems = CreatureEvent("FirstItems")
+function firstItems.onLogin(player)
+	local vocationId = player:getVocation():getId()
+	local lastLogin = player:getLastLoginSaved()
+	
+	if player:getStorageValue(PlayerStorageKeys.firstItems) == 1 then
+		return true
+	end
+
+	if lastLogin > 0 then
+		player:setStorageValue(PlayerStorageKeys.firstItems, 1)
+		return true
+	end
+
+	local targetVocation = config[vocationId]
+	if not targetVocation then
+		return true
+	end
+
+	player:setStorageValue(PlayerStorageKeys.firstItems, 1)
+
+	if targetVocation.items then
+		for i = 1, #targetVocation.items do
+			player:addItem(targetVocation.items[i][1], targetVocation.items[i][2])
+		end
+	end
+
+	local backpack = player:addItem(2854) or player:addItem(1987)
+	if not backpack then
+		return true
+	end
+
+	if targetVocation.container then
+		for i = 1, #targetVocation.container do
+			backpack:addItem(targetVocation.container[i][1], targetVocation.container[i][2])
+		end
+	end
+	return true
 end
-login:register()
+firstItems:register()
