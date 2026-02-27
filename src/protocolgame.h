@@ -264,6 +264,11 @@ private:
 
 	// OTCv8
 	void sendFeatures();
+	void sendFloorDescription(const Position& pos, int floor);
+	void sendFloorDescription(const Position& pos, int floor, bool broadcast);
+	void parseChangeAwareRange(NetworkMessage& msg);
+	void updateAwareRange(int width, int height);
+	void sendAwareRange();
 	void sendNewPing(uint32_t pingId);
 	void parseNewPing(NetworkMessage& msg);
 

@@ -163,10 +163,17 @@ private:
 class Map
 {
 public:
-	static constexpr int32_t maxViewportX = 11; // min value: maxClientViewportX + 1
-	static constexpr int32_t maxViewportY = 11; // min value: maxClientViewportY + 1
+	// Standard 8.60 client viewport
 	static constexpr int32_t maxClientViewportX = 8;
 	static constexpr int32_t maxClientViewportY = 6;
+
+	// Extended viewport for OTCv8
+	static constexpr int32_t maxClientViewportX_OTCv8 = 14;
+	static constexpr int32_t maxClientViewportY_OTCv8 = 10;
+
+	// Server spectator range (must cover the largest possible viewport)
+	static constexpr int32_t maxViewportX = maxClientViewportX_OTCv8 + 2; // 16
+	static constexpr int32_t maxViewportY = maxClientViewportY_OTCv8 + 2; // 12
 
 	uint32_t clean() const;
 
