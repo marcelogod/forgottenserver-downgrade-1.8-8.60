@@ -1047,140 +1047,128 @@ void ProtocolSpectator::sendAddTileCreature(const Creature* creature, const Posi
 }
 
 void ProtocolSpectator::sendMoveCreature(const Creature* creature, const Position& newPos, int32_t newStackPos,
-                                    const Position& oldPos, int32_t oldStackPos, bool teleport)
+                                         const Position& oldPos, int32_t oldStackPos, bool teleport)
 {
-	if (canSee(oldPos) && canSee(creature->getPosition())) {
-		if (teleport || (oldPos.z == 7 && newPos.z >= 8) || oldStackPos >= MAX_STACKPOS_THINGS) {
-			sendRemoveTileThing(oldPos, oldStackPos);
-			sendAddCreature(creature, newPos, newStackPos, 0);
-		} else {
-			NetworkMessage msg;
-			msg.addByte(0x6D);
-			msg.addPosition(oldPos);
-			msg.addByte(static_cast<uint8_t>(oldStackPos));
-			msg.addPosition(newPos);
+	if (!caster || !player) return;
 
-			if (newPos.z > oldPos.z) {
-				MoveDownCreature(msg, newPos, oldPos);
-			} else if (newPos.z < oldPos.z) {
-				MoveUpCreature(msg, newPos, oldPos);
+	if (creature != caster) {
+		int32_t specOldStackPos = oldStackPos;
+		int32_t specNewStackPos = newStackPos;
+
+		// The creature has ALREADY moved in Map, so getClientIndexOfCreature fails (returns 255).
+		// Fortunately, oldStackPos < 10 maps 1:1 perfectly with the Old Client's stackpos!
+		if (canSee(oldPos) && canSee(newPos)) {
+			if (teleport || (oldPos.z == 7 && newPos.z >= 8) || specOldStackPos < 0 ||
+			    specOldStackPos >= MAX_STACKPOS_THINGS) {
+				if (specOldStackPos >= 0 && specOldStackPos < MAX_STACKPOS_THINGS) {
+					NetworkMessage msg;
+					msg.addByte(0x6C);
+					msg.addPosition(oldPos);
+					msg.addByte(static_cast<uint8_t>(specOldStackPos));
+					writeToOutputBuffer(msg);
+				}
+				sendAddTileCreature(creature, newPos, specNewStackPos);
+			} else {
+				NetworkMessage msg;
+				msg.addByte(0x6D);
+				msg.addPosition(oldPos);
+				msg.addByte(static_cast<uint8_t>(specOldStackPos));
+				msg.addPosition(newPos);
+				writeToOutputBuffer(msg);
 			}
-
-			if (oldPos.y > newPos.y) {
-				msg.addByte(0x65);
-				GetMapDescription(oldPos.x - Map::maxClientViewportX, newPos.y - Map::maxClientViewportY, newPos.z,
-				                  (Map::maxClientViewportX * 2) + 2, 1, msg);
-			} else if (oldPos.y < newPos.y) {
-				msg.addByte(0x67);
-				GetMapDescription(oldPos.x - Map::maxClientViewportX, newPos.y + (Map::maxClientViewportY + 1),
-				                  newPos.z, (Map::maxClientViewportX * 2) + 2, 1, msg);
+		} else if (canSee(oldPos)) {
+			if (specOldStackPos >= 0 && specOldStackPos < MAX_STACKPOS_THINGS) {
+				NetworkMessage msg;
+				msg.addByte(0x6C);
+				msg.addPosition(oldPos);
+				msg.addByte(static_cast<uint8_t>(specOldStackPos));
+				writeToOutputBuffer(msg);
 			}
+		} else if (canSee(newPos)) {
+			sendAddTileCreature(creature, newPos, specNewStackPos);
+		}
+		return;
+	}
 
-			if (oldPos.x < newPos.x) {
-				msg.addByte(0x66);
-				GetMapDescription(newPos.x + (Map::maxClientViewportX + 1), newPos.y - Map::maxClientViewportY,
-				                  newPos.z, 1, (Map::maxClientViewportY * 2) + 2, msg);
-			} else if (oldPos.x > newPos.x) {
-				msg.addByte(0x68);
-				GetMapDescription(newPos.x - Map::maxClientViewportX, newPos.y - Map::maxClientViewportY, newPos.z,
-				                  1, (Map::maxClientViewportY * 2) + 2, msg);
+	if (!isOTCv8) {
+		int32_t specOldStackPos = oldStackPos;
+
+		if (teleport || oldPos.z != newPos.z || specOldStackPos >= MAX_STACKPOS_THINGS) {
+			if (specOldStackPos >= 0 && specOldStackPos < MAX_STACKPOS_THINGS) {
+				NetworkMessage msg;
+				msg.addByte(0x6C);
+				msg.addPosition(oldPos);
+				msg.addByte(static_cast<uint8_t>(specOldStackPos));
+				writeToOutputBuffer(msg);
 			}
-			writeToOutputBuffer(msg);
+			sendMapDescription(newPos);
+			return;
 		}
-	} else if (canSee(oldPos)) {
-		sendRemoveTileThing(oldPos, oldStackPos);
-	} else if (canSee(creature->getPosition())) {
-		sendAddCreature(creature, newPos, newStackPos, 0);
-	}
-}
 
-void ProtocolSpectator::MoveDownCreature(NetworkMessage& msg, const Position& newPos,
-                                    const Position& oldPos)
-{
-	// floor change down
-	msg.addByte(0xBF);
+		NetworkMessage msg;
+		msg.addByte(0x6D);
+		msg.addPosition(oldPos);
+		msg.addByte(static_cast<uint8_t>(specOldStackPos));
+		msg.addPosition(newPos);
 
-	// going from surface to underground
-	if (newPos.z == 8) {
-		int32_t skip = -1;
-
-		for (int i = 0; i < 3; ++i) {
-			GetFloorDescription(msg, oldPos.x - Map::maxClientViewportX, oldPos.y - Map::maxClientViewportY,
-			                    newPos.z + i, (Map::maxClientViewportX * 2) + 2, (Map::maxClientViewportY * 2) + 2,
-			                    -i - 1, skip);
+		if (oldPos.y > newPos.y) {
+			msg.addByte(0x65);
+			GetMapDescription(oldPos.x - awareRange.left(), newPos.y - awareRange.top(), newPos.z,
+			                  awareRange.horizontal(), 1, msg);
+		} else if (oldPos.y < newPos.y) {
+			msg.addByte(0x67);
+			GetMapDescription(oldPos.x - awareRange.left(), newPos.y + awareRange.bottom(), newPos.z,
+			                  awareRange.horizontal(), 1, msg);
 		}
-		if (skip >= 0) {
-			msg.addByte(static_cast<uint8_t>(skip));
-			msg.addByte(0xFF);
+		if (oldPos.x < newPos.x) {
+			msg.addByte(0x66);
+			GetMapDescription(newPos.x + awareRange.right(), newPos.y - awareRange.top(), newPos.z, 1,
+			                  awareRange.vertical(), msg);
+		} else if (oldPos.x > newPos.x) {
+			msg.addByte(0x68);
+			GetMapDescription(newPos.x - awareRange.left(), newPos.y - awareRange.top(), newPos.z, 1,
+			                  awareRange.vertical(), msg);
 		}
-	}
-	// going further down
-	else if (newPos.z > oldPos.z && newPos.z > 8 && newPos.z < 14) {
-		int32_t skip = -1;
-		GetFloorDescription(msg, oldPos.x - Map::maxClientViewportX, oldPos.y - Map::maxClientViewportY, newPos.z + 2,
-		                    (Map::maxClientViewportX * 2) + 2, (Map::maxClientViewportY * 2) + 2, -3, skip);
-
-		if (skip >= 0) {
-			msg.addByte(static_cast<uint8_t>(skip));
-			msg.addByte(0xFF);
-		}
+		writeToOutputBuffer(msg);
+		return;
 	}
 
-	// moving down a floor makes us out of sync
-	// east
-	msg.addByte(0x66);
-	GetMapDescription(oldPos.x + (Map::maxClientViewportX + 1), oldPos.y - (Map::maxClientViewportY + 1), newPos.z, 1,
-	                  (Map::maxClientViewportY * 2) + 2, msg);
-
-	// south
-	msg.addByte(0x67);
-	GetMapDescription(oldPos.x - Map::maxClientViewportX, oldPos.y + (Map::maxClientViewportY + 1), newPos.z,
-	                  (Map::maxClientViewportX * 2) + 2, 1, msg);
-}
-
-void ProtocolSpectator::MoveUpCreature(NetworkMessage& msg, const Position& newPos,
-                                  const Position& oldPos)
-{
-	// floor change up
-	msg.addByte(0xBE);
-
-	// going to surface
-	if (newPos.z == 7) {
-		int32_t skip = -1;
-
-		// floor 7 and 6 already set
-		for (int i = 5; i >= 0; --i) {
-			GetFloorDescription(msg, oldPos.x - Map::maxClientViewportX, oldPos.y - Map::maxClientViewportY, i,
-			                    (Map::maxClientViewportX * 2) + 2, (Map::maxClientViewportY * 2) + 2, 8 - i, skip);
-		}
-		if (skip >= 0) {
-			msg.addByte(static_cast<uint8_t>(skip));
-			msg.addByte(0xFF);
-		}
-	}
-	// underground, going one floor up (still underground)
-	else if (newPos.z > 7) {
-		int32_t skip = -1;
-		GetFloorDescription(msg, oldPos.x - Map::maxClientViewportX, oldPos.y - Map::maxClientViewportY,
-		                    oldPos.getZ() - 3, (Map::maxClientViewportX * 2) + 2, (Map::maxClientViewportY * 2) + 2, 3,
-		                    skip);
-
-		if (skip >= 0) {
-			msg.addByte(static_cast<uint8_t>(skip));
-			msg.addByte(0xFF);
-		}
+	// OTCv8
+	if (teleport || oldPos.z != newPos.z || oldStackPos >= MAX_STACKPOS_THINGS) {
+		NetworkMessage msg;
+		msg.addByte(0x6C);
+		msg.addPosition(oldPos);
+		msg.addByte(static_cast<uint8_t>(oldStackPos));
+		writeToOutputBuffer(msg);
+		sendMapDescription(newPos);
+		return;
 	}
 
-	// moving up a floor up makes us out of sync
-	// west
-	msg.addByte(0x68);
-	GetMapDescription(oldPos.x - Map::maxClientViewportX, oldPos.y - (Map::maxClientViewportY - 1), newPos.z, 1,
-	                  (Map::maxClientViewportY * 2) + 2, msg);
+	NetworkMessage msg;
+	msg.addByte(0x6D);
+	msg.addPosition(oldPos);
+	msg.addByte(static_cast<uint8_t>(oldStackPos));
+	msg.addPosition(newPos);
 
-	// north
-	msg.addByte(0x65);
-	GetMapDescription(oldPos.x - Map::maxClientViewportX, oldPos.y - Map::maxClientViewportY, newPos.z,
-	                  (Map::maxClientViewportX * 2) + 2, 1, msg);
+	if (oldPos.y > newPos.y) {
+		msg.addByte(0x65);
+		GetMapDescription(oldPos.x - awareRange.left(), newPos.y - awareRange.top(), newPos.z, awareRange.horizontal(),
+		                  1, msg);
+	} else if (oldPos.y < newPos.y) {
+		msg.addByte(0x67);
+		GetMapDescription(oldPos.x - awareRange.left(), newPos.y + awareRange.bottom(), newPos.z,
+		                  awareRange.horizontal(), 1, msg);
+	}
+	if (oldPos.x < newPos.x) {
+		msg.addByte(0x66);
+		GetMapDescription(newPos.x + awareRange.right(), newPos.y - awareRange.top(), newPos.z, 1,
+		                  awareRange.vertical(), msg);
+	} else if (oldPos.x > newPos.x) {
+		msg.addByte(0x68);
+		GetMapDescription(newPos.x - awareRange.left(), newPos.y - awareRange.top(), newPos.z, 1, awareRange.vertical(),
+		                  msg);
+	}
+	writeToOutputBuffer(msg);
 }
 
 void ProtocolSpectator::sendInventoryItem(slots_t slot, const Item* item)
