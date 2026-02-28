@@ -1046,72 +1046,36 @@ void ProtocolSpectator::sendAddTileCreature(const Creature* creature, const Posi
 	}
 }
 
-void ProtocolSpectator::sendMoveCreature(const Creature*, const Position& newPos, int32_t, const Position& oldPos,
-                                         int32_t oldStackPos, bool)
+void ProtocolSpectator::sendMoveCreature(const Creature* creature, const Position& newPos, int32_t newStackPos,
+                                    const Position& oldPos, int32_t oldStackPos, bool teleport)
 {
-	NetworkMessage msg;
+	if (canSee(oldPos) && canSee(creature->getPosition())) {
+		if (teleport || (oldPos.z == 7 && newPos.z >= 8) || oldStackPos >= MAX_STACKPOS_THINGS) {
+			sendRemoveTileThing(oldPos, oldStackPos);
+			sendAddCreature(creature, newPos, newStackPos, 0);
+		} else {
+			NetworkMessage msg;
+			msg.addByte(0x6D);
+			msg.addPosition(oldPos);
+			msg.addByte(static_cast<uint8_t>(oldStackPos));
+			msg.addPosition(newPos);
 
-	msg.addByte(0x6D);
-	msg.addPosition(oldPos);
-	msg.addByte(oldStackPos);
-	msg.addPosition(newPos);
-
-		if (oldPos.y > newPos.y) {
-			msg.addByte(0x65);
-			GetMapDescription(oldPos.x - awareRange.left(), newPos.y - awareRange.top(), newPos.z,
-			                  awareRange.horizontal(), 1, msg);
-		} else if (oldPos.y < newPos.y) {
-			msg.addByte(0x67);
-			GetMapDescription(oldPos.x - awareRange.left(), newPos.y + awareRange.bottom(), newPos.z,
-			                  awareRange.horizontal(), 1, msg);
-		}
-		if (oldPos.x < newPos.x) {
-			msg.addByte(0x66);
-			GetMapDescription(newPos.x + awareRange.right(), newPos.y - awareRange.top(), newPos.z, 1,
-			                  awareRange.vertical(), msg);
-		} else if (oldPos.x > newPos.x) {
-			msg.addByte(0x68);
-			GetMapDescription(newPos.x - awareRange.left(), newPos.y - awareRange.top(), newPos.z, 1,
-			                  awareRange.vertical(), msg);
-		}
-		writeToOutputBuffer(msg);
-		return;
+	if (newPos.z > oldPos.z) {
+		MoveDownCreature(msg, newPos, oldPos);
+	} else if (newPos.z < oldPos.z) {
+		MoveUpCreature(msg, newPos, oldPos);
 	}
 
-	// OTCv8
-	if (teleport || oldPos.z != newPos.z || oldStackPos >= MAX_STACKPOS_THINGS) {
-		NetworkMessage msg;
-		msg.addByte(0x6C);
-		msg.addPosition(oldPos);
-		msg.addByte(static_cast<uint8_t>(oldStackPos));
-		writeToOutputBuffer(msg);
-		sendMapDescription(newPos);
-		return;
-	}
-
-	NetworkMessage msg;
-	msg.addByte(0x6D);
-	msg.addPosition(oldPos);
-	msg.addByte(static_cast<uint8_t>(oldStackPos));
-	msg.addPosition(newPos);
-
-	if (oldPos.y > newPos.y) {
+	if (oldPos.y > newPos.y) { // north, for old x
 		msg.addByte(0x65);
-		GetMapDescription(oldPos.x - awareRange.left(), newPos.y - awareRange.top(), newPos.z, awareRange.horizontal(),
-		                  1, msg);
-	} else if (oldPos.y < newPos.y) {
+	} else if (oldPos.y < newPos.y) { // south, for old x
 		msg.addByte(0x67);
-		GetMapDescription(oldPos.x - awareRange.left(), newPos.y + awareRange.bottom(), newPos.z,
-		                  awareRange.horizontal(), 1, msg);
 	}
-	if (oldPos.x < newPos.x) {
+
+	if (oldPos.x < newPos.x) { // east, [with new y]
 		msg.addByte(0x66);
-		GetMapDescription(newPos.x + awareRange.right(), newPos.y - awareRange.top(), newPos.z, 1,
-		                  awareRange.vertical(), msg);
-	} else if (oldPos.x > newPos.x) {
+	} else if (oldPos.x > newPos.x) { // west, [with new y]
 		msg.addByte(0x68);
-		GetMapDescription(newPos.x - awareRange.left(), newPos.y - awareRange.top(), newPos.z, 1, awareRange.vertical(),
-		                  msg);
 	}
 	writeToOutputBuffer(msg);
 }
