@@ -1,5 +1,5 @@
 local condition = Condition(CONDITION_OUTFIT)
-condition:setOutfit({ lookType = 1593 }) -- Avatar of Steel lookType
+condition:setOutfit({ lookType = AVATAR_LOOKTYPE_STEEL }) -- Avatar of Steel lookType
 
 local spell = Spell("instant")
 
@@ -41,8 +41,8 @@ spell:mana(800)
 spell:isPremium(true)
 spell:cooldown(2 * 60 * 60 * 1000) -- Default cooldown = 2 hours
 spell:groupCooldown(2 * 1000)
-spell:vocation("knight;true", "elite knight;true")
+spell:vocation("knight", "elite knight")
 spell:hasParams(true)
 spell:isAggressive(false)
-spell:needLearn(true)
+spell:needLearn(false)
 spell:register()

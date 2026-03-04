@@ -1603,6 +1603,13 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONST_ME_CACAO);
 	registerEnum(CONST_ME_CANDY_FLOSS);
 
+	// Avatars
+	registerEnum(AVATAR_LOOKTYPE_STEEL);
+	registerEnum(AVATAR_LOOKTYPE_LIGHT);
+	registerEnum(AVATAR_LOOKTYPE_STORM);
+	registerEnum(AVATAR_LOOKTYPE_NATURE);
+	registerEnum(AVATAR_LOOKTYPE_BALANCE);
+
 	// 15.00 effects
 	registerEnum(CONST_ME_GREEN_HITAREA);
 	registerEnum(CONST_ME_RED_HITAREA);

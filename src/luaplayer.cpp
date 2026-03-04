@@ -2757,6 +2757,62 @@ int luaPlayerUnlockWithToken(lua_State* L)
 	return 1;
 }
 
+int luaPlayerRevelationStageWOD(lua_State* L)
+{
+	// player:revelationStageWOD([name[, set]])
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	if (lua_gettop(L) >= 2) {
+		if (lua_gettop(L) == 2) {
+			lua_pushnumber(L, 1);
+		} else {
+			pushBoolean(L, true);
+		}
+	} else {
+		pushBoolean(L, true);
+	}
+	return 1;
+}
+
+int luaPlayerReloadData(lua_State* L)
+{
+	// player:reloadData()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	player->sendSkills();
+	player->sendStats();
+	pushBoolean(L, true);
+	return 1;
+}
+
+int luaPlayerAvatarTimer(lua_State* L)
+{
+	// player:avatarTimer([value])
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	if (lua_gettop(L) == 1) {
+		auto value = player->getStorageValue(AVATAR_TIMER_STORAGE);
+		lua_pushnumber(L, static_cast<lua_Number>(value.value_or(0)));
+	} else {
+		int64_t timerValue = getNumber<int64_t>(L, 2);
+		player->setStorageValue(AVATAR_TIMER_STORAGE, timerValue);
+		pushBoolean(L, true);
+	}
+	return 1;
+}
+
 } // namespace
 
 int LuaScriptInterface::luaPlayerSendAutoLootWindow(lua_State* L)
@@ -3230,6 +3286,11 @@ void LuaScriptInterface::registerPlayer()
 	registerMethod("Player", "getSpectators", LuaScriptInterface::luaPlayerGetSpectators);
 	registerMethod("Player", "setSpectators", LuaScriptInterface::luaPlayerSetSpectators);
 	registerMethod("Player", "sendCastChannelMessage", LuaScriptInterface::luaPlayerSendCastChannelMessage);
+
+	// Avatar / Wheel of Destiny adapted functions
+	registerMethod("Player", "revelationStageWOD", luaPlayerRevelationStageWOD);
+	registerMethod("Player", "reloadData", luaPlayerReloadData);
+	registerMethod("Player", "avatarTimer", luaPlayerAvatarTimer);
 
 	// OfflinePlayer
 	registerClass("OfflinePlayer", "Player", luaOfflinePlayerCreate);

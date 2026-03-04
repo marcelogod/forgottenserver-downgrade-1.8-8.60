@@ -569,6 +569,15 @@ enum item_t : uint16_t
 	ITEM_RECEIPT_FAIL = 21933,
 };
 
+enum AvatarLookType_t : uint16_t
+{
+	AVATAR_LOOKTYPE_STEEL = 1593,    // Knight - Avatar of Steel
+	AVATAR_LOOKTYPE_LIGHT = 1594,    // Paladin - Avatar of Light
+	AVATAR_LOOKTYPE_STORM = 1595,    // Sorcerer - Avatar of Storm
+	AVATAR_LOOKTYPE_NATURE = 1596,   // Druid - Avatar of Nature
+	AVATAR_LOOKTYPE_BALANCE = 1823,  // Monk - Avatar of Balance
+};
+
 enum PlayerFlags : uint64_t
 {
 	PlayerFlag_CannotUseCombat = 1 << 0,

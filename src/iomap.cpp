@@ -102,7 +102,7 @@ bool IOMap::loadMap(Map* map, const std::filesystem::path& fileName) {
             g_logger().warn("This map needs an updated items.otb.");
         }
 
-        g_logger().info(">> Map size: {}x{}.", root_header.width, root_header.height);
+        g_logger().info(">> Map size: \033[1;33m{}x{}\033[0m.", root_header.width, root_header.height);
         map->width = root_header.width;
         map->height = root_header.height;
 
@@ -144,7 +144,7 @@ bool IOMap::loadMap(Map* map, const std::filesystem::path& fileName) {
 
     // Flush map cache after loading (logs deduplication stats)
     MapCache::flush();
-    g_logger().info(">> Map loading time: {} seconds.", (OTSYS_TIME() - start) / (1000.));
+    g_logger().info(">> Map loading time: \033[1;33m{}\033[0m seconds.", (OTSYS_TIME() - start) / (1000.));
     return true;
 }
 

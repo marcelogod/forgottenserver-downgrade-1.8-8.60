@@ -1,5 +1,5 @@
 local condition = Condition(CONDITION_OUTFIT)
-condition:setOutfit({ lookType = 1594 }) -- Avatar of Light lookType
+condition:setOutfit({ lookType = AVATAR_LOOKTYPE_LIGHT }) -- Avatar of Light lookType
 
 local spell = Spell("instant")
 
@@ -41,8 +41,8 @@ spell:mana(1500)
 spell:isPremium(true)
 spell:cooldown(2 * 60 * 60 * 1000) -- Default cooldown = 2 hours
 spell:groupCooldown(2 * 1000)
-spell:vocation("paladin;true", "royal paladin;true")
+spell:vocation("paladin", "royal paladin")
 spell:hasParams(true)
 spell:isAggressive(false)
-spell:needLearn(true)
+spell:needLearn(false)
 spell:register()

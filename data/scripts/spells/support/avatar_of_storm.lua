@@ -1,5 +1,5 @@
 local condition = Condition(CONDITION_OUTFIT)
-condition:setOutfit({ lookType = 1595 }) -- Avatar of Storm lookType
+condition:setOutfit({ lookType = AVATAR_LOOKTYPE_STORM }) -- Avatar of Storm lookType
 
 local spell = Spell("instant")
 
@@ -41,8 +41,8 @@ spell:mana(2200)
 spell:isPremium(true)
 spell:cooldown(2 * 60 * 60 * 1000) -- Default cooldown = 2 hours
 spell:groupCooldown(2 * 1000)
-spell:vocation("sorcerer;true", "master sorcerer;true")
+spell:vocation("sorcerer", "master sorcerer")
 spell:hasParams(true)
 spell:isAggressive(false)
-spell:needLearn(true)
+spell:needLearn(false)
 spell:register()

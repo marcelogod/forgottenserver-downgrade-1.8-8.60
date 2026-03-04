@@ -1,5 +1,5 @@
 local condition = Condition(CONDITION_OUTFIT)
-condition:setOutfit({ lookType = 1596 }) -- Avatar of Nature lookType
+condition:setOutfit({ lookType = AVATAR_LOOKTYPE_NATURE }) -- Avatar of Nature lookType
 
 local spell = Spell("instant")
 
@@ -41,8 +41,8 @@ spell:mana(2200)
 spell:isPremium(true)
 spell:cooldown(2 * 60 * 60 * 1000) -- Default cooldown = 2 hours
 spell:groupCooldown(2 * 1000)
-spell:vocation("druid;true", "elder druid;true")
+spell:vocation("druid", "elder druid")
 spell:hasParams(true)
 spell:isAggressive(false)
-spell:needLearn(true)
+spell:needLearn(false)
 spell:register()

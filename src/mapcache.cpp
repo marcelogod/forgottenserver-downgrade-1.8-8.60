@@ -108,9 +108,9 @@ void MapCache::flush() {
     itemCache.clear();
     tileCache.clear();
     
-    LOG_INFO(fmt::format(">> Map cache flushed: {} unique items, {} unique tiles deduplicated", 
+    LOG_INFO(fmt::format("\033[1;32m[Cache Map System]\033[0m Map cache flushed: \033[1;36m{}\033[0m unique items, \033[1;36m{}\033[0m unique tiles deduplicated", 
                          itemCount, tileCount));
-    LOG_INFO(fmt::format(">> Cache hit rates: Items {:.2f}% ({}/{}), Tiles {:.2f}% ({}/{})",
+    LOG_INFO(fmt::format("\033[1;32m[Cache Map System]\033[0m Cache hit rates: Items \033[1;33m{:.2f}%\033[0m (\033[1;36m{}\033[0m/\033[1;36m{}\033[0m), Tiles \033[1;33m{:.2f}%\033[0m (\033[1;36m{}\033[0m/\033[1;36m{}\033[0m)",
                          itemHitRate, itemCacheHits.load(), totalItemRequests,
                          tileHitRate, tileCacheHits.load(), totalTileRequests));
     

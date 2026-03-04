@@ -95,6 +95,8 @@ using MuteCountMap = std::map<uint32_t, uint32_t>;
 inline constexpr int32_t PLAYER_MIN_SPEED = 10;
 inline constexpr int32_t PLAYER_MAX_BLESSINGS = 5;
 
+inline constexpr int32_t AVATAR_TIMER_STORAGE = 50099;
+
 class Player final : public Creature, public Cylinder
 {
 public:

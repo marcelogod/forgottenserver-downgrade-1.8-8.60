@@ -1,5 +1,5 @@
 local condition = Condition(CONDITION_OUTFIT)
-condition:setOutfit({ lookType = 1823 }) -- Avatar of Balance lookType
+condition:setOutfit({ lookType = AVATAR_LOOKTYPE_BALANCE }) -- Avatar of Balance lookType
 
 local spell = Spell("instant")
 
@@ -24,9 +24,12 @@ function spell.onCastSpell(creature, variant)
 	creature:avatarTimer((os.time() * 1000) + duration)
 	creature:reloadData()
 
-	local playerGuid = creature:getGuid()
-	stopEvent(playerCacheEvent[playerGuid])
-	playerCacheEvent[playerGuid] = addEvent(ReloadDataEvent, duration, playerGuid)
+	addEvent(function(cid)
+		local c = Creature(cid)
+		if c then
+			c:reloadData()
+		end
+	end, duration, creature:getId())
 	return true
 end
 

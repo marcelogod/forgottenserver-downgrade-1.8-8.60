@@ -149,7 +149,6 @@ void mainLoader(ServiceManager* services)
 	}
 
 	// load vocations
-	LOG_INFO(">> Loading vocations");
 	if (!g_vocations.loadFromXml()) {
 		startupErrorMessage("Unable to load vocations!");
 		return;
@@ -175,12 +174,6 @@ void mainLoader(ServiceManager* services)
 		return;
 	}
 
-		LOG_INFO(">> Loading spells");
-	if (!g_scripts->loadScripts("scripts/spells", false, false)) {
-		startupErrorMessage("Failed to load spell scripts");
-		return;
-	}
-
 	LOG_INFO(">> Loading spells");
 	if (!g_scripts->loadScripts("scripts/spells", false, false)) {
 		startupErrorMessage("Failed to load spell scripts");
@@ -193,7 +186,7 @@ void mainLoader(ServiceManager* services)
 		return;
 	}
 
-	LOG_INFO(fmt::format(">> Loading monsters... count: {}", g_monsters.monsters.size()));
+	LOG_INFO(fmt::format(">> Loading monsters... count: \033[1;33m{}\033[0m", g_monsters.monsters.size()));
 	
 	LOG_INFO(">> Loading outfits");
 	if (!Outfits::getInstance().loadFromXml()) {

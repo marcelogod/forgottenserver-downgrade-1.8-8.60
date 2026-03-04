@@ -64,7 +64,7 @@ void IOMapSerialize::loadHouseItems(Map* map)
         } while (result->next());
     }
     
-    LOG_INFO(fmt::format(">> Loaded house items in: {:.3f} s ({} tiles, {} items)", 
+    LOG_INFO(fmt::format(">> Loaded house items in: \033[1;33m{:.3f}\033[0m s (\033[1;33m{}\033[0m tiles, \033[1;33m{}\033[0m items)", 
                          (OTSYS_TIME() - start) / 1000., tileCount, itemCount));
 }
 
@@ -119,7 +119,7 @@ bool IOMapSerialize::saveHouseItems()
 
 	// End the transaction
 	bool success = transaction.commit();
-	LOG_INFO(fmt::format(">> Saved house items in: {:.3f} s", (OTSYS_TIME() - start) / 1000.));
+	LOG_INFO(fmt::format(">> Saved house items in: \033[1;33m{:.3f}\033[0m s", (OTSYS_TIME() - start) / 1000.));
 	return success;
 }
 
