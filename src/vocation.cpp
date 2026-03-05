@@ -115,7 +115,7 @@ bool Vocations::loadFromXml()
 	}
 	
 	size_t vocationCount = vocationsMap.size();
-	LOG_INFO(fmt::format("\033[1;32m[Vocations]\033[0m \033[1;36m{}\033[0m \033[1;32m[OK]\033[0m", vocationCount));
+	LOG_INFO(fmt::format(">> Loading Vocations [\033[1;32m{}\033[0m \033[1;32mOK\033[0m]...", vocationCount));
 	
 	return true;
 }
