@@ -5688,7 +5688,7 @@
 	</item>
 	<item id="3043" article="a" name="crystal coin">
 		<attribute key="weight" value="10" />
-		<attribute key="worth" value="1" />
+		<attribute key="worth" value="10000" />
 	</item>
 	<item id="3044" article="a" name="tusk">
 		<attribute key="weight" value="1000" />
