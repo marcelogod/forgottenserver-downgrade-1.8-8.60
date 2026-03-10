@@ -38,6 +38,8 @@ public:
 
 	size_t size() const { return vec.size(); }
 	bool empty() const { return vec.empty(); }
+	Creature* operator[](size_t index) { return vec[index]; }
+	const Creature* operator[](size_t index) const { return vec[index]; }
 	Iterator begin() { return vec.begin(); }
 	ConstIterator begin() const { return vec.begin(); }
 	Iterator end() { return vec.end(); }

@@ -793,6 +793,7 @@ void Tile::addThing(int32_t, Thing* thing)
 {
 	Creature* creature = thing->getCreature();
 	if (creature) {
+		g_game.map.clearChunkSpectatorCache();
 		g_game.map.clearSpectatorCache();
 		if (creature->getPlayer()) {
 			g_game.map.clearPlayersSpectatorCache();
@@ -1004,6 +1005,7 @@ void Tile::removeThing(Thing* thing, uint32_t count)
 		if (creatures) {
 			auto it = std::find(creatures->begin(), creatures->end(), thing);
 			if (it != creatures->end()) {
+				g_game.map.clearChunkSpectatorCache();
 				g_game.map.clearSpectatorCache();
 				if (creature->getPlayer()) {
 					g_game.map.clearPlayersSpectatorCache();
@@ -1375,6 +1377,7 @@ void Tile::internalAddThing(uint32_t, Thing* thing)
 
 	Creature* creature = thing->getCreature();
 	if (creature) {
+		g_game.map.clearChunkSpectatorCache();
 		g_game.map.clearSpectatorCache();
 		if (creature->getPlayer()) {
 			g_game.map.clearPlayersSpectatorCache();

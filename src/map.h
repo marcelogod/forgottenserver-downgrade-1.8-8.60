@@ -12,7 +12,52 @@
 #include "spawn.h"
 #include "town.h"
 
+#include <cstring>
+#include <unordered_map>
+
 class Creature;
+
+struct alignas(16) ChunkKey {
+	int32_t minRangeX, maxRangeX, minRangeY, maxRangeY;
+	uint16_t x, y;
+	uint8_t z;
+	bool multifloor, onlyPlayers;
+	uint8_t padding[5] = {}; // ensure deterministic padding for memcmp
+
+	bool operator==(const ChunkKey& other) const noexcept {
+		return std::memcmp(this, &other, sizeof(ChunkKey)) == 0;
+	}
+};
+
+struct ChunkKeyHash {
+	std::size_t operator()(const ChunkKey& key) const noexcept {
+		std::size_t hash = 0;
+		hash_combine(hash, key.minRangeX);
+		hash_combine(hash, key.maxRangeX);
+		hash_combine(hash, key.minRangeY);
+		hash_combine(hash, key.maxRangeY);
+		hash_combine(hash, key.x);
+		hash_combine(hash, key.y);
+		hash_combine(hash, key.z);
+		hash_combine(hash, key.multifloor);
+		hash_combine(hash, key.onlyPlayers);
+		return hash;
+	}
+
+private:
+	template <typename T>
+	static void hash_combine(std::size_t& seed, const T& v) {
+		seed ^= std::hash<T>{}(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+	}
+};
+
+struct ChunkKeyEqual {
+	bool operator()(const ChunkKey& lhs, const ChunkKey& rhs) const noexcept {
+		return std::memcmp(&lhs, &rhs, sizeof(ChunkKey)) == 0;
+	}
+};
+
+using ChunkCache = std::unordered_map<ChunkKey, SpectatorVec, ChunkKeyHash, ChunkKeyEqual>;
 
 inline constexpr int32_t MAP_MAX_LAYERS = 16;
 
@@ -231,6 +276,7 @@ public:
 
 	void clearSpectatorCache();
 	void clearPlayersSpectatorCache();
+	void clearChunkSpectatorCache();
 
 	/**
 	 * Checks if you can throw an object to that position
@@ -287,6 +333,7 @@ public:
 private:
 	SpectatorCache spectatorCache;
 	SpectatorCache playersSpectatorCache;
+	ChunkCache chunksSpectatorCache;
 
 	QTreeNode root;
 

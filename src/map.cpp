@@ -428,8 +428,32 @@ void Map::getSpectators(SpectatorVec& spectators, const Position& centerPos, boo
 	minRangeY = (minRangeY == 0 ? -maxViewportY : -minRangeY);
 	maxRangeY = (maxRangeY == 0 ? maxViewportY : maxRangeY);
 
-	if (minRangeX == -maxViewportX && maxRangeX == maxViewportX && minRangeY == -maxViewportY &&
-	    maxRangeY == maxViewportY && multifloor) {
+	// ChunkCache lookup — check by full query parameters first
+	ChunkKey chunkKey{};
+	chunkKey.minRangeX = minRangeX;
+	chunkKey.maxRangeX = maxRangeX;
+	chunkKey.minRangeY = minRangeY;
+	chunkKey.maxRangeY = maxRangeY;
+	chunkKey.x = centerPos.x;
+	chunkKey.y = centerPos.y;
+	chunkKey.z = centerPos.z;
+	chunkKey.multifloor = multifloor;
+	chunkKey.onlyPlayers = onlyPlayers;
+
+	if (auto it = chunksSpectatorCache.find(chunkKey); it != chunksSpectatorCache.end()) {
+		if (!spectators.empty()) {
+			spectators.addSpectators(it->second);
+		} else {
+			spectators = it->second;
+		}
+		foundCache = true;
+	} else {
+		cacheResult = true;
+	}
+
+	// Fallback to position-based cache for default-range multifloor queries
+	if (!foundCache && minRangeX == -maxViewportX && maxRangeX == maxViewportX &&
+	    minRangeY == -maxViewportY && maxRangeY == maxViewportY && multifloor) {
 		if (onlyPlayers) {
 			if (playersSpectatorCache.contains(centerPos)) {
 				if (!spectators.empty()) {
@@ -437,7 +461,6 @@ void Map::getSpectators(SpectatorVec& spectators, const Position& centerPos, boo
 				} else {
 					spectators = playersSpectatorCache[centerPos];
 				}
-
 				foundCache = true;
 			}
 		}
@@ -446,23 +469,18 @@ void Map::getSpectators(SpectatorVec& spectators, const Position& centerPos, boo
 			if (spectatorCache.contains(centerPos)) {
 				if (!onlyPlayers) {
 					if (!spectators.empty()) {
-						const SpectatorVec& cachedSpectators = spectatorCache[centerPos];
-						spectators.addSpectators(cachedSpectators);
+						spectators.addSpectators(spectatorCache[centerPos]);
 					} else {
 						spectators = spectatorCache[centerPos];
 					}
 				} else {
-					const SpectatorVec& cachedSpectators = spectatorCache[centerPos];
-					for (Creature* spectator : cachedSpectators) {
+					for (Creature* spectator : spectatorCache[centerPos]) {
 						if (spectator->getPlayer()) {
 							spectators.emplace_back(spectator);
 						}
 					}
 				}
-
 				foundCache = true;
-			} else {
-				cacheResult = true;
 			}
 		}
 	}
@@ -473,18 +491,13 @@ void Map::getSpectators(SpectatorVec& spectators, const Position& centerPos, boo
 
 		if (multifloor) {
 			if (centerPos.z > 7) {
-				// underground (8->15)
+				// underground (8->15) — ±2 floors
 				minRangeZ = std::max(centerPos.getZ() - 2, 0);
 				maxRangeZ = std::min(centerPos.getZ() + 2, MAP_MAX_LAYERS - 1);
-			} else if (centerPos.z == 6) {
-				minRangeZ = 0;
-				maxRangeZ = 8;
-			} else if (centerPos.z == 7) {
-				minRangeZ = 0;
-				maxRangeZ = 9;
 			} else {
-				minRangeZ = 0;
-				maxRangeZ = 7;
+				// above ground — limit to ±2 floors
+				minRangeZ = std::max(centerPos.getZ() - 2, 0);
+				maxRangeZ = std::min(centerPos.getZ() + 2, 7);
 			}
 		} else {
 			minRangeZ = centerPos.z;
@@ -495,6 +508,12 @@ void Map::getSpectators(SpectatorVec& spectators, const Position& centerPos, boo
 		                      onlyPlayers);
 
 		if (cacheResult) {
+			chunksSpectatorCache.emplace(chunkKey, spectators);
+		}
+
+		// Also update position-based caches for default-range multifloor queries
+		if (minRangeX == -maxViewportX && maxRangeX == maxViewportX &&
+		    minRangeY == -maxViewportY && maxRangeY == maxViewportY && multifloor) {
 			if (onlyPlayers) {
 				playersSpectatorCache[centerPos] = spectators;
 			} else {
@@ -507,6 +526,12 @@ void Map::getSpectators(SpectatorVec& spectators, const Position& centerPos, boo
 void Map::clearSpectatorCache() { spectatorCache.clear(); }
 
 void Map::clearPlayersSpectatorCache() { playersSpectatorCache.clear(); }
+
+void Map::clearChunkSpectatorCache()
+{
+	playersSpectatorCache.clear();
+	chunksSpectatorCache.clear();
+}
 
 bool Map::canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight /*= true*/,
                            bool sameFloor /*= false*/, int32_t rangex /*= Map::maxClientViewportX*/,
