@@ -30,6 +30,8 @@ std::array<float, ConfigManager::LAST_FLOAT_CONFIG> floats = {};
 
 using ExperienceStages = std::vector<std::tuple<uint32_t, uint32_t, float>>;
 ExperienceStages expStages;
+ExperienceStages skillStages;
+ExperienceStages magicLevelStages;
 
 using FastPotionIds = std::vector<uint16_t>;
 using BlockedTeleportIds = std::vector<uint16_t>;
@@ -121,6 +123,56 @@ ExperienceStages loadLuaStages(lua_State* L)
 	while (lua_next(L, -2) != 0) {
 		const auto tableIndex = lua_gettop(L);
 		auto minLevel = Lua::getField<uint32_t>(L, tableIndex, "minlevel", 1);
+		auto maxLevel = Lua::getField<uint32_t>(L, tableIndex, "maxlevel", std::numeric_limits<uint32_t>::max());
+		auto multiplier = Lua::getField<float>(L, tableIndex, "multiplier", 1);
+		stages.emplace_back(minLevel, maxLevel, multiplier);
+		lua_pop(L, 4);
+	}
+	lua_pop(L, 1);
+
+	std::sort(stages.begin(), stages.end());
+	return stages;
+}
+
+ExperienceStages loadLuaSkillStages(lua_State* L)
+{
+	ExperienceStages stages;
+
+	lua_getglobal(L, "skillStages");
+	if (!lua_istable(L, -1)) {
+		lua_pop(L, 1);
+		return {};
+	}
+
+	lua_pushnil(L);
+	while (lua_next(L, -2) != 0) {
+		const auto tableIndex = lua_gettop(L);
+		auto minLevel = Lua::getField<uint32_t>(L, tableIndex, "minlevel", 1);
+		auto maxLevel = Lua::getField<uint32_t>(L, tableIndex, "maxlevel", std::numeric_limits<uint32_t>::max());
+		auto multiplier = Lua::getField<float>(L, tableIndex, "multiplier", 1);
+		stages.emplace_back(minLevel, maxLevel, multiplier);
+		lua_pop(L, 4);
+	}
+	lua_pop(L, 1);
+
+	std::sort(stages.begin(), stages.end());
+	return stages;
+}
+
+ExperienceStages loadLuaMagicLevelStages(lua_State* L)
+{
+	ExperienceStages stages;
+
+	lua_getglobal(L, "magicLevelStages");
+	if (!lua_istable(L, -1)) {
+		lua_pop(L, 1);
+		return {};
+	}
+
+	lua_pushnil(L);
+	while (lua_next(L, -2) != 0) {
+		const auto tableIndex = lua_gettop(L);
+		auto minLevel = Lua::getField<uint32_t>(L, tableIndex, "minlevel", 0);
 		auto maxLevel = Lua::getField<uint32_t>(L, tableIndex, "maxlevel", std::numeric_limits<uint32_t>::max());
 		auto multiplier = Lua::getField<float>(L, tableIndex, "multiplier", 1);
 		stages.emplace_back(minLevel, maxLevel, multiplier);
@@ -420,6 +472,12 @@ bool ConfigManager::load()
 	expStages = loadLuaStages(L);
 	expStages.shrink_to_fit();
 
+	skillStages = loadLuaSkillStages(L);
+	skillStages.shrink_to_fit();
+
+	magicLevelStages = loadLuaMagicLevelStages(L);
+	magicLevelStages.shrink_to_fit();
+
 	fastPotionIds = loadLuaFastPotionIds(L);
 	blockedTeleportIds = loadLuaBlockedTeleportIds(L);
 	tokenProtectionExceptions = loadLuaTokenProtectionExceptions(L);
@@ -481,6 +539,34 @@ float ConfigManager::getExperienceStage(uint32_t level)
 
 	if (it == expStages.end()) {
 		return getInteger(Integer::RATE_EXPERIENCE);
+	}
+
+	return std::get<2>(*it);
+}
+
+float ConfigManager::getSkillStage(uint32_t level)
+{
+	auto it = std::find_if(skillStages.begin(), skillStages.end(), [level](auto&& stage) {
+		auto&& [minLevel, maxLevel, _] = stage;
+		return level >= minLevel && level <= maxLevel;
+	});
+
+	if (it == skillStages.end()) {
+		return getInteger(Integer::RATE_SKILL);
+	}
+
+	return std::get<2>(*it);
+}
+
+float ConfigManager::getMagicLevelStage(uint32_t level)
+{
+	auto it = std::find_if(magicLevelStages.begin(), magicLevelStages.end(), [level](auto&& stage) {
+		auto&& [minLevel, maxLevel, _] = stage;
+		return level >= minLevel && level <= maxLevel;
+	});
+
+	if (it == magicLevelStages.end()) {
+		return getInteger(Integer::RATE_MAGIC);
 	}
 
 	return std::get<2>(*it);

@@ -496,7 +496,9 @@ void Map::getSpectators(SpectatorVec& spectators, const Position& centerPos, boo
 	                      onlyPlayers, onlyMonsters, onlyNpcs);
 
 	if (cacheResult) {
-		auto& entry = spectatorsCache[centerPos];
+		auto [iter, inserted] = spectatorsCache.try_emplace(centerPos);
+		auto& entry = iter->second;
+		
 		entry.minRangeX = minRangeX;
 		entry.maxRangeX = maxRangeX;
 		entry.minRangeY = minRangeY;

@@ -39,7 +39,11 @@ struct SpectatorsCache {
 
 struct PositionHasher {
 	std::size_t operator()(const Position& pos) const {
-		return std::hash<uint32_t>()(static_cast<uint32_t>(pos.x) | (static_cast<uint32_t>(pos.y) << 16)) ^ (std::hash<uint8_t>()(pos.z) << 1);
+		std::size_t h = 0;
+		hash_combine(h, pos.x);
+		hash_combine(h, pos.y);
+		hash_combine(h, pos.z);
+		return h;
 	}
 };
 
@@ -81,7 +85,7 @@ private:
 	int_fast32_t closedNodes;
 };
 
-using SpectatorCache = std::unordered_map<Position, SpectatorsCache, PositionHasher>;
+using SpectatorCache = absl::flat_hash_map<Position, SpectatorsCache, PositionHasher>;
 
 inline constexpr int32_t FLOOR_BITS = 3;
 inline constexpr int32_t FLOOR_SIZE = (1 << FLOOR_BITS);

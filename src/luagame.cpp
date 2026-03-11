@@ -124,6 +124,22 @@ int luaGameGetExperienceStage(lua_State* L)
 	return 1;
 }
 
+int luaGameGetSkillStage(lua_State* L)
+{
+	// Game.getSkillStage(level)
+	uint32_t level = getInteger<uint32_t>(L, 1);
+	lua_pushnumber(L, ConfigManager::getSkillStage(level));
+	return 1;
+}
+
+int luaGameGetMagicLevelStage(lua_State* L)
+{
+	// Game.getMagicLevelStage(level)
+	uint32_t level = getInteger<uint32_t>(L, 1);
+	lua_pushnumber(L, ConfigManager::getMagicLevelStage(level));
+	return 1;
+}
+
 int luaGameGetExperienceForLevel(lua_State* L)
 {
 	// Game.getExperienceForLevel(level)
@@ -790,6 +806,8 @@ void LuaScriptInterface::registerGame()
 	registerMethod("Game", "loadMap", luaGameLoadMap);
 
 	registerMethod("Game", "getExperienceStage", luaGameGetExperienceStage);
+	registerMethod("Game", "getSkillStage", luaGameGetSkillStage);
+	registerMethod("Game", "getMagicLevelStage", luaGameGetMagicLevelStage);
 	registerMethod("Game", "getExperienceForLevel", luaGameGetExperienceForLevel);
 	registerMethod("Game", "getMonsterCount", luaGameGetMonsterCount);
 	registerMethod("Game", "getPlayerCount", luaGameGetPlayerCount);

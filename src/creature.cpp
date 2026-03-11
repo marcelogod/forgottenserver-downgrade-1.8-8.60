@@ -699,9 +699,6 @@ bool Creature::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreatur
 		if (corpse) {
 			if (Container* corpseContainer = corpse->getContainer()) {
 				dropLoot(corpseContainer, lastHitCreature);
-			} else {
-				LOG_WARN("Monster '%s' dropped a corpse that is not a container (Item ID: %d).", getName().c_str(),
-				         corpse->getID());
 			}
 		}
 	}

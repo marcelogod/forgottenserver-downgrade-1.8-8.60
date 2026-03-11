@@ -231,6 +231,8 @@ std::string_view getString(String what);
 int64_t getInteger(Integer what);
 float getFloat(float_config_t what);
 float getExperienceStage(uint32_t level);
+float getSkillStage(uint32_t level);
+float getMagicLevelStage(uint32_t level);
 const std::vector<uint16_t>& getFastPotionIds();
 const std::vector<uint16_t>& getBlockedTeleportIds();
 const std::vector<uint16_t>& getTokenProtectionExceptions();

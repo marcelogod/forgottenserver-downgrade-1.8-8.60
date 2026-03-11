@@ -95,11 +95,11 @@ function Player:onGainSkillTries(skill, tries, artificial)
 	end
 
 	if skill == SKILL_MAGLEVEL then
-		tries = tries * configManager.getNumber(configKeys.RATE_MAGIC)
+		tries = tries * Game.getMagicLevelStage(self:getMagicLevel())
 		return hasEvent.onGainSkillTries and math.floor(Event.onGainSkillTries(self, skill, tries, artificial)) or
 			tries
 	end
-	tries = math.floor(tries * configManager.getNumber(configKeys.RATE_SKILL))
+	tries = math.floor(tries * Game.getSkillStage(self:getSkillLevel(skill)))
 	return hasEvent.onGainSkillTries and math.floor(Event.onGainSkillTries(self, skill, tries, artificial)) or
 		tries
 end
