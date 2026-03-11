@@ -1346,6 +1346,10 @@ std::string getVocationShortName(uint8_t vocationId)
 		case 8:
 			ss << "EK";
 			break;
+		case 9:
+		case 10:
+			ss << "MK";
+			break;
 		default:
 			ss << "-";
 			break;

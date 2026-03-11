@@ -324,6 +324,7 @@ public:
 	bool isDruid() const { return vocation->getId() == 2 || vocation->getFromVocation() == 2; }
 	bool isPaladin() const { return vocation->getId() == 3 || vocation->getFromVocation() == 3; }
 	bool isKnight() const { return vocation->getId() == 4 || vocation->getFromVocation() == 4; }
+	bool isMonk() const { return vocation->getId() == 9 || vocation->getFromVocation() == 9; }
 
 	PlayerSex_t getSex() const { return sex; }
 	void setSex(PlayerSex_t);

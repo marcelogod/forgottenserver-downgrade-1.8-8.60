@@ -5842,6 +5842,12 @@ void Player::applyOfflineTraining(uint32_t trainingTime)
 
 			addOfflineTrainingTries(bestMelee, static_cast<uint64_t>(tries * knightMelee));
 			addOfflineTrainingTries(SKILL_SHIELD, static_cast<uint64_t>(tries * knightShield));
+		} else if (isMonk()) {
+			float monkMelee = ConfigManager::getFloat(ConfigManager::OFFLINE_TRAINING_MONK_MELEE);
+			float monkShield = ConfigManager::getFloat(ConfigManager::OFFLINE_TRAINING_MONK_SHIELD);
+
+			addOfflineTrainingTries(SKILL_FIST, static_cast<uint64_t>(tries * monkMelee));
+			addOfflineTrainingTries(SKILL_SHIELD, static_cast<uint64_t>(tries * monkShield));
 		}
 	} else {
 		// Manual mode

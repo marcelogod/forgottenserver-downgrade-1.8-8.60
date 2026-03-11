@@ -396,6 +396,8 @@ bool ConfigManager::load()
 	floats[OFFLINE_TRAINING_PALADIN_SHIELD] = getGlobalFloat(L, "offlineTrainingPaladinShield", 0.25f);
 	floats[OFFLINE_TRAINING_KNIGHT_MELEE] = getGlobalFloat(L, "offlineTrainingKnightMelee", 0.5f);
 	floats[OFFLINE_TRAINING_KNIGHT_SHIELD] = getGlobalFloat(L, "offlineTrainingKnightShield", 0.5f);
+	floats[OFFLINE_TRAINING_MONK_MELEE] = getGlobalFloat(L, "offlineTrainingMonkMelee", 0.5f);
+	floats[OFFLINE_TRAINING_MONK_SHIELD] = getGlobalFloat(L, "offlineTrainingMonkShield", 0.5f);
 
 	integers[Integer::NEW_PLAYER_SPAWN_POS_X] = getGlobalInteger(L, "newPlayerSpawnPosX", 0);
 	integers[Integer::NEW_PLAYER_SPAWN_POS_Y] = getGlobalInteger(L, "newPlayerSpawnPosY", 0);

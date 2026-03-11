@@ -261,6 +261,8 @@ offlineTrainingPaladinML = 0.25
 offlineTrainingPaladinShield = 0.25
 offlineTrainingKnightMelee = 0.5
 offlineTrainingKnightShield = 0.5
+offlineTrainingMonkMelee = 0.5
+offlineTrainingMonkShield = 0.5
 
 -- Monster Despawn Config
 -- despawnRange is the amount of floors a monster can be from its spawn position
