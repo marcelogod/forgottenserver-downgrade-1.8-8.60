@@ -64,7 +64,7 @@ void IOMapSerialize::loadHouseItems(Map* map)
         } while (result->next());
     }
     
-    LOG_INFO(fmt::format(">> Loaded house items in: \033[1;33m{:.3f}\033[0m s (\033[1;33m{}\033[0m tiles, \033[1;33m{}\033[0m items)", 
+    LOG_INFO(fmt::format(">> Loaded house items in: [\033[1;33m{:.3f}\033[0m] s ([\033[1;33m{}\033[0m] tiles, [\033[1;33m{}\033[0m] items)", 
                          (OTSYS_TIME() - start) / 1000., tileCount, itemCount));
 }
 

@@ -84,6 +84,7 @@ public:
 
 	virtual void stats(std::string_view msg) = 0;
 	virtual void statsWarning(std::string_view msg) = 0;
+	virtual void mapCache(std::string_view msg) = 0;
 
 	template <typename... Args>
 	void trace(fmt::format_string<Args...> fmt, Args&&... args)
@@ -155,6 +156,12 @@ public:
 	void statsWarning(fmt::format_string<Args...> fmt, Args&&... args)
 	{
 		statsWarning(fmt::format(fmt, std::forward<Args>(args)...));
+	}
+
+	template <typename... Args>
+	void mapCache(fmt::format_string<Args...> fmt, Args&&... args)
+	{
+		mapCache(fmt::format(fmt, std::forward<Args>(args)...));
 	}
 
 	template <typename F>
@@ -230,6 +237,10 @@ void loggerSignalHandler(int signal);
 #define LOG_STATS_WARNING(...) \
 	do { \
 		if (isLoggerInitialized()) g_logger().statsWarning(__VA_ARGS__); \
+	} while (0)
+#define LOG_MAPCACHE(...) \
+	do { \
+		if (isLoggerInitialized()) g_logger().mapCache(__VA_ARGS__); \
 	} while (0)
 
 template <typename T>

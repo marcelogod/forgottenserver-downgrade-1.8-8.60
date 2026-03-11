@@ -34,13 +34,13 @@ bool Map::loadMap(const std::string& identifier, bool loadHouses)
 		IOMapSerialize::loadHouseInfo();
 		IOMapSerialize::loadHouseItems(this);
 		
-		LOG_INFO(fmt::format(">> Loaded \033[1;33m{}\033[0m towns with \033[1;33m{}\033[0m houses in total", towns.getTowns().size(), houses.getHouses().size()));
+		LOG_INFO(fmt::format(">> Loaded [\033[1;33m{}\033[0m] towns with [\033[1;33m{}\033[0m] houses in total", towns.getTowns().size(), houses.getHouses().size()));
 	}
 
 	if (!IOMap::loadSpawns(this)) {
 		LOG_WARN("[Warning - Map::loadMap] Failed to load spawn data.");
 	} else {
-		LOG_INFO(fmt::format(">> Loaded \033[1;33m{}\033[0m npcs and spawned \033[1;33m{}\033[0m monsters", spawns.getNpcCount(), spawns.getMonsterCount()));
+		LOG_INFO(fmt::format(">> Loaded [\033[1;33m{}\033[0m] npcs and spawned [\033[1;33m{}\033[0m] monsters", spawns.getNpcCount(), spawns.getMonsterCount()));
 	}
 	return true;
 }

@@ -142,6 +142,12 @@ public:
 			statsWarningLogger_ = std::make_shared<spdlog::logger>("tfs_stats_warning", console_sink_stats_warning);
 			statsWarningLogger_->set_level(spdlog::level::info);
 
+			auto console_sink_mapcache = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+			console_sink_mapcache->set_pattern("[%Y-%m-%d %H:%M:%S.%e] %v");
+
+			mapCacheLogger_ = std::make_shared<spdlog::logger>("tfs_mapcache", console_sink_mapcache);
+			mapCacheLogger_->set_level(spdlog::level::info);
+
 			logger_->info("=== TFS Logger Initialized ===");
 			logger_->info("Log file: {}", timestampedPath_);
 			logger_->flush();
@@ -218,6 +224,24 @@ public:
 		}
 	}
 
+	void mapCache(std::string_view msg) override
+	{
+		if (mapCacheLogger_) {
+			mapCacheLogger_->info("\033[1;32m[Cache Map System]\033[0m {}", msg);
+		}
+
+		if (logger_) {
+			std::string formattedMsg = fmt::format("[Cache Map System] {}", msg);
+			for (auto& sink : logger_->sinks()) {
+				auto fileSink = std::dynamic_pointer_cast<spdlog::sinks::rotating_file_sink_mt>(sink);
+				if (fileSink) {
+					spdlog::details::log_msg logMsg("tfs", spdlog::level::info, formattedMsg);
+					fileSink->log(logMsg);
+				}
+			}
+		}
+	}
+
 protected:
 	void log(LogLevel level, std::string_view msg) override
 	{
@@ -260,6 +284,7 @@ private:
 	std::shared_ptr<spdlog::logger> statsLoggerConsole_;
 	std::shared_ptr<spdlog::logger> statsWarningLogger_;
 	std::shared_ptr<spdlog::logger> migrationsLogger_;
+	std::shared_ptr<spdlog::logger> mapCacheLogger_;
 	std::string timestampedPath_;
 };
 

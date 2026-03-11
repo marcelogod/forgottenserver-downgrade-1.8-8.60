@@ -195,7 +195,7 @@ void mainLoader(ServiceManager* services)
 		return;
 	}
 
-	LOG_INFO(fmt::format(">> Loading monsters... count: \033[1;33m{}\033[0m", g_monsters.monsters.size()));
+	LOG_INFO(fmt::format(">> Loading monsters... [\033[1;33m{}\033[0m]", g_monsters.monsters.size()));
 	
 	LOG_INFO(">> Loading outfits");
 	if (!Outfits::getInstance().loadFromXml()) {
