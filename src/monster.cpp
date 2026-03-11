@@ -93,6 +93,9 @@ const std::string& Monster::getNameDescription() const
 
 bool Monster::canSee(const Position& pos) const
 {
+	if (pos.z != getPosition().z) {
+		return false;
+	}
 	return Creature::canSee(getPosition(), pos, Map::maxClientViewportX + 1, Map::maxClientViewportY + 1);
 }
 
@@ -440,7 +443,7 @@ void Monster::updateTargetList()
 	}
 
 	SpectatorVec spectators;
-	g_game.map.getSpectators(spectators, position, true);
+	g_game.map.getSpectators(spectators, position, false);
 	spectators.erase(this);
 	for (Creature* spectator : spectators) {
 		onCreatureFound(spectator);
@@ -777,7 +780,7 @@ void Monster::updateIdleStatus()
 			// This prevents hundreds of monsters from staying active forever when blocked or far away.
 			bool playersNearby = false;
 			SpectatorVec spectators;
-			g_game.map.getSpectators(spectators, position, true, true);
+			g_game.map.getSpectators(spectators, position, false, true);
 			for (Creature* spectator : spectators) {
 				if (spectator->getPlayer()) {
 					playersNearby = true;
