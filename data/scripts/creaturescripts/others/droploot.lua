@@ -6,19 +6,6 @@ function DropLoot.onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjus
 
     local isRedOrBlack = table.contains({SKULL_RED, SKULL_BLACK}, player:getSkull())
 
-    local totalReduceSkillLoss = 0
-    for i = CONST_SLOT_HEAD, CONST_SLOT_AMMO do
-        local item = player:getSlotItem(i)
-        if item then
-            local reduceSkillLoss = item:getReduceSkillLoss()
-            if reduceSkillLoss > 0 then
-                totalReduceSkillLoss = totalReduceSkillLoss + reduceSkillLoss
-            end
-        end
-    end
-
-    local baseLoss = player:getLossPercent() * 100
-    local finalLossPercent = math.max(0, baseLoss - totalReduceSkillLoss)
 
     local amulet = player:getSlotItem(CONST_SLOT_NECKLACE)
     if amulet and amulet:getId() == ITEM_AMULETOFLOSS and not isRedOrBlack then
@@ -35,14 +22,29 @@ function DropLoot.onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjus
     for i = CONST_SLOT_HEAD, CONST_SLOT_AMMO do
         local item = player:getSlotItem(i)
         if item then
-            local maxRandom = item:isContainer() and 100 or 1000
-            local randomValue = math.random(1, maxRandom)
-            local threshold = (finalLossPercent / 100) * maxRandom
-            local willLose = isRedOrBlack or randomValue <= threshold
-
-            if willLose and (isRedOrBlack or finalLossPercent > 0) then
+            if isRedOrBlack then
                 if not item:moveTo(corpse) then
                     item:remove()
+                end
+            else
+                local blessCount = 0
+                for blessing = 1, 5 do
+                    if player:hasBlessing(blessing) then
+                        blessCount = blessCount + 1
+                    end
+                end
+                
+                local lossChance = 10 - (blessCount * 2)
+                if lossChance > 0 then
+                    local maxRandom = item:isContainer() and 100 or 1000
+                    local randomValue = math.random(1, maxRandom)
+                    local threshold = (lossChance / 100) * maxRandom
+                    
+                    if randomValue <= threshold then
+                        if not item:moveTo(corpse) then
+                            item:remove()
+                        end
+                    end
                 end
             end
         end
