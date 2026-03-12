@@ -72,6 +72,18 @@ int luaGuildGetMembersOnline(lua_State* L)
 	return 1;
 }
 
+int luaGuildGetMemberCount(lua_State* L)
+{
+	// guild:getMemberCount()
+	const auto& guild = getSharedPtr<const Guild>(L, 1);
+	if (guild) {
+		lua_pushinteger(L, guild->getMemberCount());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int luaGuildAddRank(lua_State* L)
 {
 	// guild:addRank(id, name, level)
@@ -213,6 +225,7 @@ void LuaScriptInterface::registerGuild()
 	registerMethod("Guild", "getId", luaGuildGetId);
 	registerMethod("Guild", "getName", luaGuildGetName);
 	registerMethod("Guild", "getMembersOnline", luaGuildGetMembersOnline);
+	registerMethod("Guild", "getMemberCount", luaGuildGetMemberCount);
 
 	registerMethod("Guild", "addRank", luaGuildAddRank);
 	registerMethod("Guild", "getRankById", luaGuildGetRankById);

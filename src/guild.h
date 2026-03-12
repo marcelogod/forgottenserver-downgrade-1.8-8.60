@@ -37,6 +37,7 @@ public:
 
 	uint64_t getBankBalance() const { return bankBalance; }
 	void setBankBalance(uint64_t balance);
+	void loadBankBalance(uint64_t balance) { bankBalance = balance; }
 
 	uint32_t getHouseId() const { return houseId; }
 	void setHouseId(uint32_t id) { houseId = id; }
@@ -73,6 +74,7 @@ uint32_t getGuildIdByName(std::string_view name);
 std::string getGuildNameById(uint32_t id);
 void guildWar(Player* player, const std::string& param);
 void guildBalance(Player* player, const std::string& param);
+void registerGuildWarKill(Player* killer, Player* victim);
 } // namespace IOGuild
 
 #endif

@@ -198,6 +198,11 @@ depotPremiumLimit = 10000
 maxAllowedOnADummy = 5
 rateExerciseTrainingSpeed = 1.0
 
+-- Guild War Configuration
+guildWarMinFragLimit = 10 -- Minimum frag limit for guild wars
+guildWarMaxFragLimit = 1000 -- Maximum frag limit for guild wars
+guildWarAnnounceKills = true -- Announce kills during guild war
+
 -- World Light
 -- NOTE: if defaultWorldLight is set to true the world light algorithm will
 -- be handled in the sources. set it to false to avoid conflicts if you wish

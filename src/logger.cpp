@@ -251,10 +251,11 @@ protected:
 			}
 
 			if (logger_) {
+				std::string formatted = fmt::format("[migrations] {}", msg);
 				for (auto& sink : logger_->sinks()) {
 					auto fileSink = std::dynamic_pointer_cast<spdlog::sinks::rotating_file_sink_mt>(sink);
 					if (fileSink) {
-						spdlog::details::log_msg logMsg("tfs", spdlog::level::info, fmt::format("[migrations] {}", msg));
+						spdlog::details::log_msg logMsg("tfs", spdlog::level::info, formatted);
 						fileSink->log(logMsg);
 					}
 				}

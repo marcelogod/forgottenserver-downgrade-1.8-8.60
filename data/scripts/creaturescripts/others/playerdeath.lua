@@ -38,6 +38,9 @@ local function playerDeathSuccess(playerId, playerName, killerId, playerGuid, by
         db.asyncQuery(string.format("DELETE FROM `player_deaths` WHERE `player_id` = %d ORDER BY `time` LIMIT %d", playerGuid, limit))
     end
 
+    -- Guild war kills are now handled in C++ (src/player.cpp and src/guild.cpp)
+    -- The code below is kept for reference but is no longer used
+    --[[
     if byPlayer and playerGuildId ~= 0 and killerGuildId ~= 0 and playerGuildId ~= killerGuildId and isInWar(playerId, killerId) then
         resultId = db.storeQuery(string.format(
             "SELECT `id` FROM `guild_wars` WHERE `status` = 1 AND ((`guild1` = %d AND `guild2` = %d) OR (`guild1` = %d AND `guild2` = %d))",
@@ -50,12 +53,13 @@ local function playerDeathSuccess(playerId, playerName, killerId, playerGuid, by
 
             if warId then
                 db.asyncQuery(string.format(
-                    "INSERT INTO `guildwar_kills` (`killer`, `target`, `killerguild`, `targetguild`, `time`, `warid`) VALUES (%s, %s, %d, %d, %d, %d)",
-                    db.escapeString(killerName), db.escapeString(playerName), killerGuildId, playerGuildId, timeNow, warId
+                    "INSERT INTO `guild_war_kills` (`war_id`, `killer_guild`, `killer`, `victim`, `time`) VALUES (%d, %d, %d, %d, %d)",
+                    warId, killerGuildId, killerId, playerId, timeNow
                 ))
             end
         end
     end
+    --]]
 end
 
 local playerDeath = CreatureEvent("PlayerDeath")

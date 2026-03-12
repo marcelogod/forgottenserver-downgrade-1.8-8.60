@@ -66,6 +66,7 @@ enum Boolean
 	ADMIN_LOCALHOST_ONLY,
 	ADMIN_REQUIRE_LOGIN,
 	ADMIN_LOGS,
+	GUILD_WAR_ANNOUNCE_KILLS,
 
 	LAST_BOOLEAN /* this must be the last one */
 };
@@ -202,6 +203,8 @@ enum Integer
 
 	AUTOLOOT_MAXITEMS_FREE,
 	AUTOLOOT_MAXITEMS_PREMIUM,
+	GUILD_WAR_MIN_FRAG_LIMIT,
+	GUILD_WAR_MAX_FRAG_LIMIT,
 
 	LAST_INTEGER /* this must be the last one */
 };

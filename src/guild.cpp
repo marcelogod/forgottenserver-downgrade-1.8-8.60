@@ -69,12 +69,14 @@ void Guild::setBankBalance(uint64_t balance)
 Guild_ptr IOGuild::loadGuild(uint32_t guildId)
 {
 	Database& db = Database::getInstance();
-	DBResult_ptr result = db.storeQuery(fmt::format("SELECT `name` FROM `guilds` WHERE `id` = {:d}", guildId));
+	DBResult_ptr result = db.storeQuery(fmt::format("SELECT `name`, `balance` FROM `guilds` WHERE `id` = {:d}", guildId));
 	if (!result) {
 		return nullptr;
 	}
 
 	const auto& guild = std::make_shared<Guild>(guildId, result->getString("name"));
+	
+	guild->loadBankBalance(result->getNumber<uint64_t>("balance"));
 
 	if (auto ranksResult = db.storeQuery(
 	        fmt::format("SELECT `id`, `name`, `level` FROM `guild_ranks` WHERE `guild_id` = {:d}", guildId))) {
@@ -164,6 +166,15 @@ void IOGuild::guildWar(Player* player, const std::string& param)
 			durationDays = std::atoi(std::string(t[4]).c_str());
 		}
 
+		// Validate frag limit
+		int32_t minFragLimit = getInteger(ConfigManager::GUILD_WAR_MIN_FRAG_LIMIT);
+		int32_t maxFragLimit = getInteger(ConfigManager::GUILD_WAR_MAX_FRAG_LIMIT);
+		
+		if (fragLimit < minFragLimit || fragLimit > maxFragLimit) {
+			player->sendCancelMessage(fmt::format("Frag limit must be between {:d} and {:d}.", minFragLimit, maxFragLimit));
+			return;
+		}
+
 		if (guild->getBankBalance() < static_cast<uint64_t>(payment)) {
 			player->sendCancelMessage("Your guild balance is too low.");
 			return;
@@ -185,7 +196,7 @@ void IOGuild::guildWar(Player* player, const std::string& param)
 			  << ", 0, " << std::time(nullptr) << ", " << (std::time(nullptr) + (durationDays * 86400)) << ", " << fragLimit << ", " << payment << ")";
 		
 		if (db.executeQuery(query.str())) {
-			g_game.broadcastMessage(fmt::format("{:s} has invited {:s} to war.", guild->getName(), enemyName), MESSAGE_EVENT_ADVANCE);
+			g_game.broadcastMessage(fmt::format("{:s} has invited {:s} to war with {:d} frag limit.", guild->getName(), enemyName, fragLimit), MESSAGE_EVENT_ORANGE);
 		}
 
 	} else {
@@ -236,7 +247,7 @@ void IOGuild::guildWar(Player* player, const std::string& param)
 			msg = fmt::format("accepted the war against {:s}.", enemyName);
 			
 			if (db.executeQuery(updateQuery.str())) {
-				g_game.broadcastMessage(fmt::format("{:s} has {:s}", guild->getName(), msg), MESSAGE_EVENT_ADVANCE);
+				g_game.broadcastMessage(fmt::format("{:s} has {:s}", guild->getName(), msg), MESSAGE_EVENT_ORANGE);
 				
 				for (Player* member : guild->getMembersOnline()) {
 					member->reloadWarList(false);
@@ -297,7 +308,7 @@ void IOGuild::guildWar(Player* player, const std::string& param)
 			msg = fmt::format("ended the war with {:s}.", enemyName);
 			
 			if (db.executeQuery(updateQuery.str())) {
-				g_game.broadcastMessage(fmt::format("{:s} has {:s}", guild->getName(), msg), MESSAGE_EVENT_ADVANCE);
+				g_game.broadcastMessage(fmt::format("{:s} has {:s}", guild->getName(), msg), MESSAGE_EVENT_ORANGE);
 
 				for (Player* member : guild->getMembersOnline()) {
 					member->reloadWarList(false);
@@ -327,7 +338,7 @@ void IOGuild::guildWar(Player* player, const std::string& param)
 
 		updateQuery << " WHERE `id` = " << warId;
 		if (db.executeQuery(updateQuery.str())) {
-			g_game.broadcastMessage(fmt::format("{:s} has {:s}", guild->getName(), msg), MESSAGE_EVENT_ADVANCE);
+			g_game.broadcastMessage(fmt::format("{:s} has {:s}", guild->getName(), msg), MESSAGE_EVENT_ORANGE);
 		}
 	}
 }
@@ -388,5 +399,110 @@ void IOGuild::guildBalance(Player* player, const std::string& param)
 
 	} else {
 		player->sendChannelMessage("", "Unknown action. Use donate or pick.", TALKTYPE_CHANNEL_R1, CHANNEL_GUILD);
+	}
+}
+
+void IOGuild::registerGuildWarKill(Player* killer, Player* victim)
+{
+	if (!killer || !victim) {
+		return;
+	}
+
+	auto killerGuild = killer->getGuild();
+	auto victimGuild = victim->getGuild();
+
+	if (!killerGuild || !victimGuild) {
+		return;
+	}
+
+	if (killerGuild->getId() == victimGuild->getId()) {
+		return;
+	}
+
+	Database& db = Database::getInstance();
+	
+	// Check if there's an active war between these guilds
+	DBResult_ptr warResult = db.storeQuery(fmt::format(
+		"SELECT `id`, `guild1`, `guild2`, `name1`, `name2`, `fraglimit` FROM `guild_wars` "
+		"WHERE ((`guild1` = {:d} AND `guild2` = {:d}) OR (`guild1` = {:d} AND `guild2` = {:d})) "
+		"AND `status` = 1",
+		killerGuild->getId(), victimGuild->getId(), victimGuild->getId(), killerGuild->getId()
+	));
+
+	if (!warResult) {
+		return;
+	}
+
+	uint32_t warId = warResult->getNumber<uint32_t>("id");
+	uint32_t guild1 = warResult->getNumber<uint32_t>("guild1");
+	uint32_t guild2 = warResult->getNumber<uint32_t>("guild2");
+	std::string guild1Name(warResult->getString("name1"));
+	std::string guild2Name(warResult->getString("name2"));
+	int32_t fragLimit = warResult->getNumber<int32_t>("fraglimit");
+
+	// Register the kill
+	std::ostringstream query;
+	query << "INSERT INTO `guild_war_kills` (`war_id`, `killer_guild`, `killer`, `victim`, `time`) VALUES ("
+		  << warId << ", " << killerGuild->getId() << ", " << killer->getGUID() << ", " 
+		  << victim->getGUID() << ", " << std::time(nullptr) << ")";
+	
+	if (!db.executeQuery(query.str())) {
+		return;
+	}
+
+	// Get current score
+	DBResult_ptr scoreResult = db.storeQuery(fmt::format(
+		"SELECT "
+		"(SELECT COUNT(*) FROM `guild_war_kills` WHERE `war_id` = {:d} AND `killer_guild` = {:d}) as guild1_kills, "
+		"(SELECT COUNT(*) FROM `guild_war_kills` WHERE `war_id` = {:d} AND `killer_guild` = {:d}) as guild2_kills",
+		warId, guild1, warId, guild2
+	));
+
+	if (!scoreResult) {
+		return;
+	}
+
+	int32_t guild1Kills = scoreResult->getNumber<int32_t>("guild1_kills");
+	int32_t guild2Kills = scoreResult->getNumber<int32_t>("guild2_kills");
+
+	// Announce the kill if enabled
+	if (getBoolean(ConfigManager::GUILD_WAR_ANNOUNCE_KILLS)) {
+		g_game.broadcastMessage(
+			fmt::format("[Guild War] {:s} killed {:s}. Score: {:s} [{:d}] vs {:s} [{:d}] (Limit: {:d})",
+				killer->getName(), victim->getName(),
+				guild1Name, guild1Kills, guild2Name, guild2Kills, fragLimit),
+			MESSAGE_EVENT_ORANGE
+		);
+	}
+
+	// Check if war is finished
+	if (guild1Kills >= fragLimit || guild2Kills >= fragLimit) {
+		uint32_t winnerGuild = (guild1Kills >= fragLimit) ? guild1 : guild2;
+		std::string winnerName = (guild1Kills >= fragLimit) ? guild1Name : guild2Name;
+
+		// Update war status
+		std::ostringstream updateQuery;
+		updateQuery << "UPDATE `guild_wars` SET `status` = 4, `ended` = " << std::time(nullptr) 
+					<< " WHERE `id` = " << warId;
+		db.executeQuery(updateQuery.str());
+
+		g_game.broadcastMessage(
+			fmt::format("[Guild War] {:s} has won the war against {:s}! Final score: {:d} - {:d}",
+				winnerName, (winnerGuild == guild1 ? guild2Name : guild1Name),
+				(winnerGuild == guild1 ? guild1Kills : guild2Kills),
+				(winnerGuild == guild1 ? guild2Kills : guild1Kills)),
+			MESSAGE_EVENT_ORANGE
+		);
+
+		// Reload war lists for all members
+		for (Player* member : killerGuild->getMembersOnline()) {
+			member->reloadWarList(false);
+			g_game.updateCreatureEmblem(member);
+		}
+		
+		for (Player* member : victimGuild->getMembersOnline()) {
+			member->reloadWarList(false);
+			g_game.updateCreatureEmblem(member);
+		}
 	}
 }

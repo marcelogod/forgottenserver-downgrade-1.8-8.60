@@ -22,6 +22,8 @@ PlayerStorageKeys = {
     isCasting = 30030,
     isCastingPassword = 30031,
     rewardExercise = 90705,
+    guildBroadcastCooldown = 50000,
+    guildLeaderChatCooldown = 50001,
 }
 
 

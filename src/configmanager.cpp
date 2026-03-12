@@ -489,6 +489,11 @@ bool ConfigManager::load()
 	integers[Integer::AUTOLOOT_MAXITEMS_FREE] = getGlobalInteger(L, "AutoLoot_MaxItemFree", 5);
 	integers[Integer::AUTOLOOT_MAXITEMS_PREMIUM] = getGlobalInteger(L, "AutoLoot_MaxItemPremium", 10);
 
+	// Guild War Config
+	integers[Integer::GUILD_WAR_MIN_FRAG_LIMIT] = getGlobalInteger(L, "guildWarMinFragLimit", 10);
+	integers[Integer::GUILD_WAR_MAX_FRAG_LIMIT] = getGlobalInteger(L, "guildWarMaxFragLimit", 1000);
+	booleans[Boolean::GUILD_WAR_ANNOUNCE_KILLS] = getGlobalBoolean(L, "guildWarAnnounceKills", true);
+
 	strings[String::ADMIN_PASSWORD] = getGlobalString(L, "adminPassword", "");
 	strings[String::ADMIN_ENCRYPTION] = getGlobalString(L, "adminEncryption", "");
 	strings[String::ADMIN_ENCRYPTION_DATA] = getGlobalString(L, "adminEncryptionData", "");

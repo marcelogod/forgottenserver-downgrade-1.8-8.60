@@ -215,16 +215,17 @@ CREATE TABLE IF NOT EXISTS `guild_wars` (
   KEY `guild2` (`guild2`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
-CREATE TABLE IF NOT EXISTS `guildwar_kills` (
+CREATE TABLE IF NOT EXISTS `guild_war_kills` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `killer` varchar(50) NOT NULL,
-  `target` varchar(50) NOT NULL,
-  `killerguild` int NOT NULL DEFAULT '0',
-  `targetguild` int NOT NULL DEFAULT '0',
-  `warid` int NOT NULL DEFAULT '0',
+  `war_id` int NOT NULL,
+  `killer_guild` int NOT NULL,
+  `killer` int NOT NULL,
+  `victim` int NOT NULL,
   `time` bigint NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`warid`) REFERENCES `guild_wars` (`id`) ON DELETE CASCADE
+  KEY `war_id` (`war_id`),
+  KEY `killer_guild` (`killer_guild`),
+  FOREIGN KEY (`war_id`) REFERENCES `guild_wars` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
 CREATE TABLE IF NOT EXISTS `houses` (

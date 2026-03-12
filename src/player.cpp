@@ -3808,6 +3808,11 @@ bool Player::onKilledCreature(Creature* target, bool lastHit /* = true*/)
 		}
 	}
 
+	// Register guild war kill
+	if (lastHit && isInWar(targetPlayer)) {
+		IOGuild::registerGuildWarKill(this, targetPlayer);
+	}
+
 	return unjustified;
 }
 
