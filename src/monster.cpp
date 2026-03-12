@@ -736,6 +736,12 @@ bool Monster::selectTarget(Creature* creature)
 		return false;
 	}
 
+	if (creature->getPlayer()) {
+		if (creature->getPlayer()->getProtectionTime() > 0) {
+			return false;
+		}
+	}
+
 	auto it = std::find(targetList.begin(), targetList.end(), creature);
 	if (it == targetList.end()) {
 		// Target not found in our target list.
@@ -1066,6 +1072,13 @@ bool Monster::canUseSpell(const Position& pos, const Position& targetPos, const 
 void Monster::onThinkTarget(uint32_t interval)
 {
 	if (!isSummon()) {
+		// protection time
+		if (getAttackedCreature() && getAttackedCreature()->getPlayer() && getAttackedCreature()->getPlayer()->getProtectionTime() > 0) {
+			setAttackedCreature(nullptr);
+			updateTargetList();
+			followCreature = nullptr;
+		}
+
 		if (mType->info.changeTargetSpeed != 0) {
 			bool canChangeTarget = true;
 

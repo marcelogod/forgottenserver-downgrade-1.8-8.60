@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `players` (
   `onlinetime` bigint NOT NULL DEFAULT '0',
   `deletion` bigint NOT NULL DEFAULT '0',
   `balance` bigint unsigned NOT NULL DEFAULT '0',
+  `protection_time` bigint unsigned NOT NULL DEFAULT '0',
   `offlinetraining_time` smallint unsigned NOT NULL DEFAULT '43200',
   `offlinetraining_skill` int NOT NULL DEFAULT '-1',
   `stamina` smallint unsigned NOT NULL DEFAULT '2520',

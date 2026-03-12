@@ -1046,11 +1046,12 @@ public:
 
 	void updateRegeneration();
 
-	const std::map<uint8_t, OpenContainer>& getOpenContainers() const {
-			return openContainers;
-		}
+	const std::map<uint8_t, OpenContainer>& getOpenContainers() const { return openContainers; }
 
-		ProtocolSpectator_ptr client;
+	uint16_t getProtectionTime() const { return protectionTime; }
+	void setProtectionTime(uint16_t newProtectionTime) { protectionTime = newProtectionTime; }
+
+	ProtocolSpectator_ptr client;
 
 	void manageAccount(const std::string& text);
 	bool isAccountManager() const { return accountManager != ACCOUNT_MANAGER_NONE; }
@@ -1257,6 +1258,7 @@ private:
 
 	uint16_t lastStatsTrainingTime = 0;
 	uint16_t staminaMinutes = 2520;
+	uint16_t protectionTime = 10;
 	uint16_t maxWriteLen = 0;
 	int16_t lastDepotId = -1;
 

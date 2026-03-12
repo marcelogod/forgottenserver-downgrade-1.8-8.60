@@ -355,6 +355,7 @@ bool ConfigManager::load()
 	integers[Integer::VIP_PREMIUM_LIMIT] = getGlobalInteger(L, "vipPremiumLimit", 100);
 	integers[Integer::DEPOT_FREE_LIMIT] = getGlobalInteger(L, "depotFreeLimit", 2000);
 	integers[Integer::DEPOT_PREMIUM_LIMIT] = getGlobalInteger(L, "depotPremiumLimit", 15000);
+	integers[Integer::PROTECTION_TIME] = getGlobalInteger(L, "protectionTime", 10);
 	integers[Integer::STAMINA_REGEN_MINUTE] = getGlobalInteger(L, "timeToRegenMinuteStamina", 3 * 60);
 	integers[Integer::STAMINA_REGEN_PREMIUM] = getGlobalInteger(L, "timeToRegenMinutePremiumStamina", 6 * 60);
 	integers[Integer::STAMINA_PZ_GAIN] = getGlobalInteger(L, "staminaPzGain", 1);

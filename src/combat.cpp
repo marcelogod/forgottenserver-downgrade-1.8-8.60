@@ -294,6 +294,14 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 		return g_events->eventCreatureOnTargetCombat(attacker, target);
 	}
 
+	// protection time
+	if (const Player* attackerPlayer = attacker->getPlayer()) {
+		if (attackerPlayer->getProtectionTime() > 0) {
+			Player* player = attacker->getPlayer();
+			player->setProtectionTime(0);
+		}
+	}
+
 	if (const Player* targetPlayer = target->getPlayer()) {
 		if (targetPlayer->hasFlag(PlayerFlag_CannotBeAttacked)) {
 			return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;

@@ -273,6 +273,33 @@ int luaPlayerGetInbox(lua_State* L)
 	return 1;
 }
 
+int luaPlayerGetProtectionTime(lua_State* L)
+{
+    // player:getProtectionTime()
+    Player* player = getUserdata<Player>(L, 1);
+    if (player) {
+        lua_pushnumber(L, player->getProtectionTime());
+    } else {
+        lua_pushnil(L);
+    }
+    return 1;
+}
+
+int luaPlayerSetProtectionTime(lua_State* L)
+{
+    // player:setProtectionTime(time)
+    Player* player = getUserdata<Player>(L, 1);
+    if (!player) {
+        lua_pushnil(L);
+        return 1;
+    }
+
+    uint16_t time = getNumber<uint16_t>(L, 2);
+    player->setProtectionTime(time);
+    pushBoolean(L, true);
+    return 1;
+}
+
 int luaPlayerGetSkullTime(lua_State* L)
 {
 	// player:getSkullTime()
@@ -3060,6 +3087,9 @@ void LuaScriptInterface::registerPlayer()
 	registerMethod("Player", "getDepotChest", luaPlayerGetDepotChest);
 	registerMethod("Player", "getRewardChest", luaPlayerGetRewardChest);
 	registerMethod("Player", "getInbox", luaPlayerGetInbox);
+
+	registerMethod("Player", "getProtectionTime", luaPlayerGetProtectionTime);
+	registerMethod("Player", "setProtectionTime", luaPlayerSetProtectionTime);
 
 	registerMethod("Player", "getSkullTime", luaPlayerGetSkullTime);
 	registerMethod("Player", "setSkullTime", luaPlayerSetSkullTime);

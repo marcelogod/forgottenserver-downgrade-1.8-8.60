@@ -1598,6 +1598,48 @@ void Player::onThink(uint32_t interval)
 {
 	Creature::onThink(interval);
 
+	// protection time down
+	if (this->getProtectionTime() > 0) {
+		uint16_t oldProtectionTime = this->getProtectionTime();
+		this->setProtectionTime(oldProtectionTime - 1);
+
+		if (oldProtectionTime == ConfigManager::getInteger(ConfigManager::PROTECTION_TIME) &&
+			this->getZone() != ZONE_PROTECTION) {
+
+			uint16_t monsterCount = 0;
+
+			SpectatorVec spectators;
+			g_game.map.getSpectators(spectators, getPosition(), false, false);
+
+			for (Creature* spectator : spectators) {
+				if (spectator != this && spectator->getMonster() && canSeeCreature(spectator)) {
+					const Position& monPos = spectator->getPosition();
+					const Position& plyPos = this->getPosition();
+					int dx = std::abs(monPos.x - plyPos.x);
+					int dy = std::abs(monPos.y - plyPos.y);
+
+					if (std::max(dx, dy) <= 5) {
+						monsterCount++;
+					}
+				}
+			}
+
+			if (monsterCount > 0) {
+				std::string monsterText;
+
+				if (monsterCount >= 5) {
+					monsterText = "several monsters, be careful";
+				} else if (monsterCount >= 3) {
+					monsterText = "various monsters nearby";
+				} else {
+					monsterText = "a monster nearby";
+				}
+
+				sendTextMessage(TextMessage(MESSAGE_EVENT_ADVANCE,fmt::format("You are protected for {} seconds because there are {}. ""If you move or attack, your protection will end.", oldProtectionTime, monsterText)));
+			}
+		}
+	}
+
 	if (client && getIP() == 0) {
 		if (hasCondition(CONDITION_INFIGHT)) {
 			ghostModeStartTime = 0;
