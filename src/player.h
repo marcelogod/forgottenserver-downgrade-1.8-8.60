@@ -253,6 +253,19 @@ public:
 	int32_t getHarmony() const { return harmonyPoints; }
 	void setHarmony(int32_t value) { harmonyPoints = value; }
 
+	uint64_t getSereneCooldown() const {
+		uint64_t now = OTSYS_TIME();
+		if (m_serene_cooldown > now) {
+			return m_serene_cooldown - now;
+		}
+		return 0;
+	}
+	void setSereneCooldown(uint64_t addTime) {
+		m_serene_cooldown = OTSYS_TIME() + addTime;
+	}
+
+	void clearCooldowns();
+
 	bool isOffline() const { return (getID() == 0); }
 	void disconnect()
 	{
@@ -1295,6 +1308,7 @@ private:
 	bool staminaPzActive = false;
 	bool staminaTrainerActive = false;
 	int32_t harmonyPoints = 0;
+	uint64_t m_serene_cooldown = 0;
 
 	AccountManagerMode accountManager{ACCOUNT_MANAGER_NONE};
 	std::array<bool, 15> managerTalkState{};

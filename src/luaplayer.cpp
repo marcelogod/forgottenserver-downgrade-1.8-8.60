@@ -1065,6 +1065,33 @@ int luaPlayerAddHarmony(lua_State* L)
 	}
 	return 1;
 }
+
+int luaPlayerSetSereneCooldown(lua_State* L)
+{
+	// player:setSereneCooldown(addTime)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		uint64_t addTime = getNumber<uint64_t>(L, 2, 0);
+		player->setSereneCooldown(addTime);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaPlayerClearSpellCooldowns(lua_State* L)
+{
+	// player:clearSpellCooldowns()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->clearCooldowns();
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
 int luaPlayerGetMaxSoul(lua_State* L)
 {
 	// player:getMaxSoul()
@@ -3129,6 +3156,8 @@ void LuaScriptInterface::registerPlayer()
 	registerMethod("Player", "getHarmony", luaPlayerGetHarmony);
 	registerMethod("Player", "setHarmony", luaPlayerSetHarmony);
 	registerMethod("Player", "addHarmony", luaPlayerAddHarmony);
+	registerMethod("Player", "setSereneCooldown", luaPlayerSetSereneCooldown);
+	registerMethod("Player", "clearSpellCooldowns", luaPlayerClearSpellCooldowns);
 
 	registerMethod("Player", "getBankBalance", luaPlayerGetBankBalance);
 	registerMethod("Player", "setBankBalance", luaPlayerSetBankBalance);

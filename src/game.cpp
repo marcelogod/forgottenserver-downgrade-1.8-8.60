@@ -4798,16 +4798,45 @@ void Game::shutdown()
 {
 	LOG_INFO("Shutting down...");
 
+	{
+		std::vector<Monster*> toRemove;
+		toRemove.reserve(monsters.size());
+		for (auto& [id, monster] : monsters) {
+			toRemove.push_back(monster);
+		}
+		for (Monster* monster : toRemove) {
+			if (!monster->isRemoved()) {
+				removeCreature(monster, false);
+			}
+		}
+	}
+
+	{
+		std::vector<Npc*> toRemove;
+		toRemove.reserve(npcs.size());
+		for (auto& [id, npc] : npcs) {
+			toRemove.push_back(npc);
+		}
+		for (Npc* npc : toRemove) {
+			if (!npc->isRemoved()) {
+				removeCreature(npc, false);
+			}
+		}
+	}
+
+	cleanup();
+
+	map.spawns.clear();
+	raids.clear();
+
+	cleanup();
+
 	g_scheduler.shutdown();
 	g_databaseTasks.shutdown();
 	g_dispatcher.shutdown();
 #ifdef STATS_ENABLED
 	g_stats.shutdown();
 #endif
-	map.spawns.clear();
-	raids.clear();
-
-	cleanup();
 
 	if (serviceManager) {
 		serviceManager->stop();
