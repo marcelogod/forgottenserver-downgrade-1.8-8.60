@@ -1281,6 +1281,10 @@ void Creature::executeConditions(uint32_t interval)
 {
 	ConditionList tempConditions{conditions};
 	for (Condition* condition : tempConditions) {
+		if (isDead() || isRemoved()) {
+			break;
+		}
+
 		auto it = std::find(conditions.begin(), conditions.end(), condition);
 		if (it == conditions.end()) {
 			continue;

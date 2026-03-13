@@ -88,12 +88,51 @@ This custom version includes several enhanced systems and fully integrated featu
 # Install dependencies
 sudo apt install git cmake build-essential libluajit-5.1-dev libmysqlclient-dev libboost-system-dev libboost-iostreams-dev libboost-filesystem-dev libboost-locale-dev libpugixml-dev libfmt-dev libssl-dev libspdlog-dev -y
 
+# (Optional but recommended) Install mimalloc for better memory allocation performance
+sudo apt install libmimalloc-dev -y
+
 # Clone and compile
 git clone -b Revscrypt-full --single-branch https://github.com/Mateuzkl/forgottenserver-downgrade-1.7-8.60.git
 cd forgottenserver-downgrade-1.7-8.60
 mkdir build && cd build
 cmake ..
 make -j$(nproc)
+```
+
+#### ⚡ Optimized Release Build (Recommended for Production)
+
+For maximum performance on Linux (especially for high-load servers), use these cmake flags:
+
+```bash
+mkdir -p build-release && cd build-release
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DDISABLE_STATS=1 \
+      -DENABLE_SLOW_TASK_DETECTION=OFF \
+      -DUSE_MIMALLOC=ON \
+      ..
+cmake --build . -- -j$(nproc)
+```
+
+| Flag | Description |
+|------|-------------|
+| `-DCMAKE_BUILD_TYPE=Release` | Enables `-O3 -march=native -flto` optimizations |
+| `-DDISABLE_STATS=1` | Removes runtime stats overhead |
+| `-DENABLE_SLOW_TASK_DETECTION=OFF` | Removes per-task timing overhead |
+| `-DUSE_MIMALLOC=ON` | Uses Microsoft's mimalloc allocator (faster than glibc malloc) |
+
+**Alternative (mimalloc without recompiling):**
+```bash
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libmimalloc.so ./tfs
+```
+
+#### 🔧 Linux Server Tuning
+
+```bash
+# Set CPU governor to performance mode
+sudo cpupower frequency-set -g performance
+
+# Run with higher priority
+sudo nice -n -10 ./tfs
 ```
 
 ### 🪟 Windows
