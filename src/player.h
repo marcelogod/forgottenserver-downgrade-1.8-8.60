@@ -103,6 +103,7 @@ inline constexpr int32_t PLAYER_MIN_SPEED = 10;
 inline constexpr int32_t PLAYER_MAX_BLESSINGS = 5;
 
 inline constexpr int32_t AVATAR_TIMER_STORAGE = 50099;
+inline constexpr int32_t AVATAR_DAMAGE_REDUCTION_PERCENT = 10;
 
 class Player final : public Creature, public Cylinder
 {
@@ -370,6 +371,11 @@ public:
 	bool isPaladin() const { return vocation->getId() == 3 || vocation->getFromVocation() == 3; }
 	bool isKnight() const { return vocation->getId() == 4 || vocation->getFromVocation() == 4; }
 	bool isMonk() const { return vocation->getId() == 9 || vocation->getFromVocation() == 9; }
+
+	bool isAvatarActive() const {
+		auto val = getStorageValue(AVATAR_TIMER_STORAGE);
+		return val.has_value() && val.value() > static_cast<int64_t>(OTSYS_TIME());
+	}
 
 	PlayerSex_t getSex() const { return sex; }
 	void setSex(PlayerSex_t);

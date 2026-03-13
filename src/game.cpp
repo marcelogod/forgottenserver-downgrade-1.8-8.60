@@ -4267,6 +4267,11 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		damage.primary.value = std::abs(damage.primary.value);
 		damage.secondary.value = std::abs(damage.secondary.value);
 
+		if (targetPlayer && targetPlayer->isAvatarActive()) {
+			damage.primary.value -= static_cast<int32_t>(std::ceil(damage.primary.value * AVATAR_DAMAGE_REDUCTION_PERCENT / 100.0));
+			damage.secondary.value -= static_cast<int32_t>(std::ceil(damage.secondary.value * AVATAR_DAMAGE_REDUCTION_PERCENT / 100.0));
+		}
+
 		int32_t healthChange = damage.primary.value + damage.secondary.value;
 		if (healthChange == 0) {
 			return true;

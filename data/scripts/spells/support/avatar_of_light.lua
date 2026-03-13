@@ -1,5 +1,10 @@
 local condition = Condition(CONDITION_OUTFIT)
-condition:setOutfit({ lookType = AVATAR_LOOKTYPE_LIGHT }) -- Avatar of Light lookType
+condition:setOutfit({ lookType = AVATAR_LOOKTYPE_LIGHT })
+
+local avatarBonus = Condition(CONDITION_ATTRIBUTES)
+avatarBonus:setParameter(CONDITION_PARAM_SUBID, 265)
+avatarBonus:setParameter(CONDITION_PARAM_SPECIALSKILL_CRITICALHITCHANCE, 10)
+avatarBonus:setParameter(CONDITION_PARAM_SPECIALSKILL_CRITICALHITAMOUNT, 50)
 
 local spell = Spell("instant")
 
@@ -17,8 +22,10 @@ function spell.onCastSpell(creature, variant)
 
 	local duration = 15000
 	condition:setTicks(duration)
+	avatarBonus:setTicks(duration)
 	creature:getPosition():sendMagicEffect(CONST_ME_AVATAR_APPEAR)
 	creature:addCondition(condition)
+	creature:addCondition(avatarBonus)
 	creature:avatarTimer((os.time() * 1000) + duration)
 	creature:reloadData()
 
@@ -28,7 +35,6 @@ function spell.onCastSpell(creature, variant)
 			c:reloadData()
 		end
 	end, duration, creature:getId())
-
 	return true
 end
 
@@ -39,8 +45,8 @@ spell:words("uteta res sac")
 spell:level(300)
 spell:mana(1500)
 spell:isPremium(true)
-spell:cooldown(2 * 60 * 60 * 1000) -- Default cooldown = 2 hours
-spell:groupCooldown(2 * 1000)
+spell:cooldown(7200000)
+spell:groupCooldown(2000)
 spell:vocation("paladin", "royal paladin")
 spell:hasParams(true)
 spell:isAggressive(false)

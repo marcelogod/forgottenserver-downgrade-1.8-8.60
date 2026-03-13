@@ -4,12 +4,14 @@
 -- Harmony: points 0-5, accumulated by Builder Spells, consumed by Spender Spells
 -- Virtues: modifies bonus (Harmony, Justice, Sustain)
 -- Serene: state that doubles Virtue effects
+-- Avatar of Balance: enhances all systems for 30 seconds
 --
 -- C++ native methods available on Player:
 --   getHarmony(), setHarmony(v), addHarmony(v), removeHarmony(v)
 --   isSerene(), setSerene(bool), getSereneCooldown(), setSereneCooldown(ms)
 --   getVirtue(), setVirtue(v)
 --   clearSpellCooldowns()
+--   avatarTimer([v]) — get/set avatar end timestamp (ms)
 -- ============================================================
 
 -- === VIRTUE CONSTANTS (must match VirtueMonk_t enum in player.h) ===
@@ -50,6 +52,17 @@ local VIRTUE_NAMES = {
 }
 
 -- ============================================================
+-- isAvatarActive(player)
+-- Returns true if Avatar of Balance is currently active.
+-- Uses avatarTimer() which stores end timestamp in ms.
+-- ============================================================
+function isAvatarActive(player)
+	local timer = player:avatarTimer()
+	if not timer or timer <= 0 then return false end
+	return timer > (os.time() * 1000)
+end
+
+-- ============================================================
 -- getHarmonyPoints(player)
 -- Returns current points clamped 0-5 (wrapper for global use)
 -- ============================================================
@@ -68,7 +81,9 @@ function addHarmonyPoint(player)
 		return false
 	end
 
-	player:addHarmony(1)
+	-- Avatar of Balance doubles harmony gained
+	local amount = isAvatarActive(player) and 2 or 1
+	player:addHarmony(amount)
 	syncHarmonyOpcode(player)
 
 	if player:getHarmony() >= HARMONY_MAX then
@@ -97,6 +112,7 @@ function getHarmonyBonus(player)
 	local points = getHarmonyPoints(player)
 	local virtue = player:getVirtue()
 	local serene = player:isSerene()
+	local avatar = isAvatarActive(player)
 
 	local bonus
 	if virtue == VIRTUE_HARMONY then
@@ -108,6 +124,11 @@ function getHarmonyBonus(player)
 	-- Serene doubles Virtue effects
 	if serene and virtue ~= VIRTUE_NONE then
 		bonus = bonus * 2
+	end
+
+	-- Avatar of Balance increases bonus by 50%
+	if avatar then
+		bonus = math.floor(bonus * 1.5)
 	end
 
 	return bonus
