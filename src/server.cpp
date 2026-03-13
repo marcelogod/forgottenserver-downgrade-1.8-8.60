@@ -118,6 +118,16 @@ void ServicePort::accept()
 	}
 
 	auto connection = ConnectionManager::getInstance().createConnection(io_context, shared_from_this());
+	if (!connection) {
+		// Max connections reached — schedule retry after a brief delay
+		auto timer = std::make_shared<boost::asio::steady_timer>(io_context);
+		timer->expires_after(std::chrono::milliseconds(100));
+		timer->async_wait([timer, thisPtr = shared_from_this()](const boost::system::error_code&) {
+			thisPtr->accept();
+		});
+		return;
+	}
+
 	acceptor->async_accept(connection->getSocket(),
 	                       [=, thisPtr = shared_from_this()](const boost::system::error_code& error) {
 		                       thisPtr->onAccept(connection, error);
@@ -133,6 +143,16 @@ void ServicePort::onAccept(Connection_ptr connection, const boost::system::error
 
 		const auto remote_ip = connection->getIP();
 		if (remote_ip != 0 && acceptConnection(remote_ip)) {
+			// Check per-IP connection limit
+			if (ConnectionManager::getInstance().isMaxConnectionsPerIPReached(remote_ip)) {
+				connection->close(Connection::FORCE_CLOSE);
+				accept();
+				return;
+			}
+
+			// Track this IP's connection count
+			ConnectionManager::getInstance().trackIPConnection(remote_ip);
+
 			Service_ptr service = services.front();
 			if (service->is_single_socket()) {
 				connection->accept(service->make_protocol(connection));

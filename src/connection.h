@@ -7,9 +7,12 @@
 #include "networkmessage.h"
 
 #include <unordered_set>
+#include <unordered_map>
 
 inline constexpr int32_t CONNECTION_WRITE_TIMEOUT = 30;
 inline constexpr int32_t CONNECTION_READ_TIMEOUT = 30;
+inline constexpr size_t MAX_CONNECTIONS_TOTAL = 600;
+inline constexpr size_t MAX_CONNECTIONS_PER_IP = 10;
 
 class Protocol;
 using Protocol_ptr = std::shared_ptr<Protocol>;
@@ -37,11 +40,18 @@ public:
 	void releaseConnection(const Connection_ptr& connection);
 	void closeAll();
 
+	// Connection limit checks
+	bool isMaxConnectionsReached() const;
+	bool isMaxConnectionsPerIPReached(uint32_t ip) const;
+	size_t getConnectionCount() const;
+	void trackIPConnection(uint32_t ip);
+
 private:
 	ConnectionManager() = default;
 
 	std::unordered_set<Connection_ptr> connections;
-	std::mutex connectionManagerLock;
+	std::unordered_map<uint32_t, uint32_t> ipConnectionCount;
+	mutable std::mutex connectionManagerLock;
 };
 
 class Connection : public std::enable_shared_from_this<Connection>

@@ -19,6 +19,64 @@
 
 extern Game g_game;
 
+// --- Brute Force Protection ---
+
+bool LoginAttemptLimiter::allowLogin(uint32_t ip)
+{
+	std::lock_guard<std::mutex> lock(mu);
+	int64_t now = OTSYS_TIME();
+
+	auto it = attempts.find(ip);
+	if (it == attempts.end()) {
+		return true;
+	}
+
+	auto& info = it->second;
+
+	// Still blocked?
+	if (info.blockUntil > now) {
+		return false;
+	}
+
+	// Window expired — reset
+	if (now - info.firstAttempt > WINDOW_MS) {
+		attempts.erase(it);
+		return true;
+	}
+
+	return true;
+}
+
+void LoginAttemptLimiter::recordFailure(uint32_t ip)
+{
+	std::lock_guard<std::mutex> lock(mu);
+	int64_t now = OTSYS_TIME();
+
+	auto& info = attempts[ip];
+
+	// Reset window if expired
+	if (info.firstAttempt == 0 || now - info.firstAttempt > WINDOW_MS) {
+		info.failures = 1;
+		info.firstAttempt = now;
+		info.blockUntil = 0;
+		return;
+	}
+
+	info.failures++;
+
+	if (info.failures >= MAX_FAILURES) {
+		info.blockUntil = now + BLOCK_TIME_MS;
+		LOG_WARN(fmt::format("[Anti-BruteForce] IP {} blocked for {} minutes after {} failed login attempts.",
+		                     convertIPToString(ip), BLOCK_TIME_MS / 60000, info.failures));
+	}
+}
+
+void LoginAttemptLimiter::recordSuccess(uint32_t ip)
+{
+	std::lock_guard<std::mutex> lock(mu);
+	attempts.erase(ip);
+}
+
 void ProtocolLogin::disconnectClient(std::string_view message)
 {
 	auto output = OutputMessagePool::getOutputMessage();
@@ -30,11 +88,17 @@ void ProtocolLogin::disconnectClient(std::string_view message)
 
 void ProtocolLogin::getCharacterList(std::string_view accountName, std::string_view password)
 {
+	auto connection = getConnection();
+	uint32_t clientIP = connection ? connection->getIP() : 0;
+
 	Account account;
 	if (!IOLoginData::loginserverAuthentication(accountName, password, account)) {
+		LoginAttemptLimiter::getInstance().recordFailure(clientIP);
 		disconnectClient("Account name or password is not correct.");
 		return;
 	}
+
+	LoginAttemptLimiter::getInstance().recordSuccess(clientIP);
 
 	auto output = OutputMessagePool::getOutputMessage();
 
@@ -203,6 +267,13 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 	// Read and validate password from the message
 	auto password = msg.getString();
+
+	// Brute force check before dispatching login task
+	uint32_t clientIP = connection ? connection->getIP() : 0;
+	if (!LoginAttemptLimiter::getInstance().allowLogin(clientIP)) {
+		disconnectClient("Too many failed login attempts. Please wait 5 minutes.");
+		return;
+	}
 
 	g_dispatcher.addTask([=, thisPtr = std::static_pointer_cast<ProtocolLogin>(shared_from_this()),
 	                      accountName = std::string{accountName},

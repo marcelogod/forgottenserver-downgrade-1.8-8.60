@@ -12,20 +12,37 @@
 #include "logger.h"
 #include <fmt/format.h>
 
+static constexpr int MAX_RECONNECT_ATTEMPTS = 10;
+static constexpr unsigned int MYSQL_TIMEOUT_SECONDS = 30;
+
 static tfs::detail::Mysql_ptr connectToDatabase(const bool retryIfError)
 {
 	bool isFirstAttemptToConnect = true;
+	int retryCount = 0;
 
 retry:
 	if (!isFirstAttemptToConnect) {
+		if (retryIfError && retryCount >= MAX_RECONNECT_ATTEMPTS) {
+			LOG_ERROR(fmt::format("[Database] Failed to connect after {} attempts. Giving up.", MAX_RECONNECT_ATTEMPTS));
+			return nullptr;
+		}
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 	isFirstAttemptToConnect = false;
+	retryCount++;
 
 	tfs::detail::Mysql_ptr handle{mysql_init(nullptr)};
 	if (!handle) {
 		LOG_ERROR("Failed to initialize MySQL connection handle.");
 		goto error;
+	}
+
+	// Set query timeouts to prevent hanging
+	{
+		unsigned int readTimeout = MYSQL_TIMEOUT_SECONDS;
+		unsigned int writeTimeout = MYSQL_TIMEOUT_SECONDS;
+		mysql_options(handle.get(), MYSQL_OPT_READ_TIMEOUT, &readTimeout);
+		mysql_options(handle.get(), MYSQL_OPT_WRITE_TIMEOUT, &writeTimeout);
 	}
 
 	// Disable SSL enforcement and verification
@@ -68,13 +85,22 @@ static bool isLostConnectionError(const unsigned error)
 
 static bool executeQuery(tfs::detail::Mysql_ptr& handle, std::string_view query, const bool retryIfLostConnection)
 {
+	int retryCount = 0;
 	while (mysql_real_query(handle.get(), query.data(), query.length()) != 0) {
 		LOG_ERROR(fmt::format("[Error - mysql_real_query] Query: {}\nMessage: {}", query.substr(0, 256), mysql_error(handle.get())));
 		const unsigned error = mysql_errno(handle.get());
 		if (!isLostConnectionError(error) || !retryIfLostConnection) {
 			return false;
 		}
+		if (++retryCount >= MAX_RECONNECT_ATTEMPTS) {
+			LOG_ERROR(fmt::format("[Database] Query retry limit ({}) reached. Aborting query.", MAX_RECONNECT_ATTEMPTS));
+			return false;
+		}
 		handle = connectToDatabase(true);
+		if (!handle) {
+			LOG_ERROR("[Database] Reconnection failed during query retry.");
+			return false;
+		}
 	}
 	return true;
 }

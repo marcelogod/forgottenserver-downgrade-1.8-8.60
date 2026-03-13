@@ -6,8 +6,44 @@
 
 #include "protocol.h"
 
+#include <map>
+#include <mutex>
+
 class NetworkMessage;
 class OutputMessage;
+
+class LoginAttemptLimiter
+{
+public:
+	static LoginAttemptLimiter& getInstance()
+	{
+		static LoginAttemptLimiter instance;
+		return instance;
+	}
+
+	// Returns true if the IP is allowed to attempt login
+	bool allowLogin(uint32_t ip);
+	// Record a failed login attempt for this IP
+	void recordFailure(uint32_t ip);
+	// Clear failures for an IP on successful login
+	void recordSuccess(uint32_t ip);
+
+private:
+	LoginAttemptLimiter() = default;
+
+	struct AttemptInfo {
+		uint32_t failures = 0;
+		int64_t blockUntil = 0;  // OTSYS_TIME value
+		int64_t firstAttempt = 0;
+	};
+
+	std::map<uint32_t, AttemptInfo> attempts;
+	std::mutex mu;
+
+	static constexpr uint32_t MAX_FAILURES = 5;
+	static constexpr int64_t WINDOW_MS = 60000;      // 60 seconds
+	static constexpr int64_t BLOCK_TIME_MS = 300000;  // 5 minutes
+};
 
 class ProtocolLogin : public Protocol
 {
