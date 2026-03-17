@@ -1405,11 +1405,6 @@ void Player::onWalk(Direction& dir)
 
 	Creature::onWalk(dir);
 	setNextActionTask(nullptr);
-	// Check if casting while walking is enabled
-	if (!getBoolean(ConfigManager::ALLOW_CASTING_WHILE_WALKING)) {
-		setNextAction(OTSYS_TIME() + getStepDuration(dir));
-	}
-	// If enabled, allow casting spells/runes while walking
 }
 
 void Player::onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos, const Tile* oldTile,
