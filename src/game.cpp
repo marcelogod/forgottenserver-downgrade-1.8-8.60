@@ -1138,6 +1138,8 @@ void Game::playerMoveItem(Player* player, const Position& fromPos, uint16_t spri
 	    internalMoveItem(fromCylinder, toCylinder, toIndex, item, count, nullptr, 0, player, nullptr, &fromPos, &toPos);
 	if (ret != RETURNVALUE_NOERROR) {
 		player->sendCancelMessage(ret);
+	} else {
+		player->setNextAction(OTSYS_TIME() + getInteger(ConfigManager::ACTIONS_DELAY_INTERVAL));
 	}
 }
 
