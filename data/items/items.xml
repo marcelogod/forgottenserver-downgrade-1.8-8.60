@@ -41762,7 +41762,7 @@
 	</item>
 	<item id="23721" article="a" name="gold pouch">
 		<attribute key="description" value="A infinity bag where you can hold coins." />
-		<attribute key="containersize" value="20" />
+		<attribute key="containersize" value="30" />
 		<attribute key="movable" value="0" />
 	</item>
 	<item id="23722" article="a" name="gold converter">
@@ -54466,6 +54466,7 @@
 	<item id="32724" article="a" name="spectral gold nugget">
 		<attribute key="showCount" value="1" />
 		<attribute key="weight" value="135" />
+		<attribute key="worth" value="100000" />
 	</item>
 	<item id="32725" article="a" name="spectral silver nugget">
 		<attribute key="showCount" value="1" />
