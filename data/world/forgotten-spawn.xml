@@ -130,7 +130,7 @@
 		<monster name="Witch" x="0" y="-1" z="5" spawntime="60" />
 	</spawn>
 	<spawn centerx="225" centery="546" centerz="5" radius="1">
-		<npc name="Eryn" x="0" y="0" z="5" spawntime="60" direction="1" />
+		<npc name="Dark Rodo" x="0" y="0" z="5" spawntime="60" direction="1" />
 	</spawn>
 	<spawn centerx="176" centery="566" centerz="5" radius="5">
 		<monster name="Dragon" x="0" y="-1" z="5" spawntime="60" />
@@ -235,7 +235,7 @@
 		<monster name="Orc Warrior" x="-1" y="1" z="6" spawntime="60" />
 	</spawn>
 	<spawn centerx="137" centery="400" centerz="6" radius="1">
-		<npc name="Eryn" x="0" y="0" z="6" spawntime="60" />
+		<npc name="Dark Rodo" x="0" y="0" z="6" spawntime="60" />
 	</spawn>
 	<spawn centerx="308" centery="415" centerz="6" radius="5">
 		<monster name="Elf Scout" x="-1" y="-1" z="6" spawntime="60" />
@@ -389,7 +389,7 @@
 		<npc name="Deruno" x="0" y="0" z="7" spawntime="60" direction="1" />
 	</spawn>
 	<spawn centerx="474" centery="203" centerz="7" radius="1">
-		<npc name="Eryn" x="0" y="0" z="7" spawntime="60" />
+		<npc name="Dark Rodo" x="0" y="0" z="7" spawntime="60" />
 	</spawn>
 	<spawn centerx="435" centery="234" centerz="7" radius="1">
 		<npc name="Riona" x="0" y="0" z="7" spawntime="60" direction="3" />
