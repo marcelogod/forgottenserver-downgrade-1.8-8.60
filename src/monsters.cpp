@@ -1539,3 +1539,12 @@ bool Monsters::registerBestiaryMonster(const MonsterType* mType)
 	}
 	return success;
 }
+
+Monsters::Monsters() = default;
+
+Monsters::~Monsters()
+{
+	monsters.clear();
+	unloadedMonsters.clear();
+	bestiaryMonsters.clear();
+}

@@ -2374,3 +2374,12 @@ std::string_view ItemType::getPluralName() const
 	pluralString.push_back('s');
 	return pluralString;
 }
+
+Items::~Items()
+{
+	nameToItems.clear();
+	currencyItems.clear();
+	items.clear();
+	inventory.clear();
+	clientIdToServerIdMap.clear();
+}

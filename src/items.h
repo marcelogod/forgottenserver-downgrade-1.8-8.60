@@ -441,6 +441,7 @@ public:
 	using CurrencyMap = std::map<uint64_t, uint16_t, std::greater<uint64_t>>;
 
 	Items();
+	~Items();
 
 	// non-copyable
 	Items(const Items&) = delete;

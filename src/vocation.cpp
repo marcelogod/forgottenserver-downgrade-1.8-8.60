@@ -169,3 +169,8 @@ uint64_t Vocation::getReqMana(uint32_t magLevel) const
 	}
 	return 1600 * std::pow(manaMultiplier, static_cast<int32_t>(magLevel - 1));
 }
+
+Vocations::~Vocations()
+{
+	vocationsMap.clear();
+}

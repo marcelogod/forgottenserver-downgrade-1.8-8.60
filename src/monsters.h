@@ -229,7 +229,9 @@ public:
 class Monsters
 {
 public:
-	Monsters() = default;
+	Monsters();
+	~Monsters();
+
 	// non-copyable
 	Monsters(const Monsters&) = delete;
 	Monsters& operator=(const Monsters&) = delete;

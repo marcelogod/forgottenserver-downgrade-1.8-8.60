@@ -98,6 +98,9 @@ using VocationMap = std::map<uint16_t, Vocation>;
 class Vocations
 {
 public:
+	Vocations() = default;
+	~Vocations();
+
 	bool loadFromXml();
 
 	Vocation* getVocation(uint16_t id);
