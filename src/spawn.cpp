@@ -233,6 +233,11 @@ bool Spawns::isInZone(const Position& centerPos, int32_t radius, const Position&
 
 void Spawn::startSpawnCheck()
 {
+	// Do not schedule new events if the game is ending.
+	if (g_game.getGameState() >= GAME_STATE_SHUTDOWN) {
+		return;
+	}
+
 	if (checkSpawnEvent == 0) {
 		checkSpawnEvent = g_scheduler.addEvent(getInterval(), [this]() { checkSpawn(); });
 	}
@@ -240,6 +245,18 @@ void Spawn::startSpawnCheck()
 
 Spawn::~Spawn()
 {
+	// Cancels pending event in scheduler before destroying it.
+	if (checkSpawnEvent != 0) {
+		g_scheduler.stopEvent(checkSpawnEvent);
+		checkSpawnEvent = 0;
+	}
+
+	// Safety net: cancel any scheduleSpawn chain events not yet stopped.
+	for (uint32_t eventId : pendingSpawnEvents) {
+		g_scheduler.stopEvent(eventId);
+	}
+	pendingSpawnEvents.clear();
+
 	for (const auto& it : spawnedMap) {
 		Monster* monster = it.second;
 		monster->setSpawn(nullptr);
@@ -373,6 +390,12 @@ void Spawn::startup()
 void Spawn::checkSpawn()
 {
 	checkSpawnEvent = 0;
+
+	// Guard: does not process or reschedule if the game is closing.
+	if (g_game.getGameState() >= GAME_STATE_SHUTDOWN) {
+		return;
+	}
+
 	cleanup();
 
 	const int64_t now = OTSYS_TIME();
@@ -404,6 +427,11 @@ void Spawn::checkSpawn()
 
 void Spawn::scheduleSpawn(uint32_t spawnId, uint32_t interval, bool blocked)
 {
+	// Guard: if the game is shutting down, bail immediately.
+	if (g_game.getGameState() >= GAME_STATE_SHUTDOWN) {
+		return;
+	}
+
 	auto it = spawnMap.find(spawnId);
 	if (interval == 0 || it == spawnMap.end()) {
 		if (it == spawnMap.end()) {
@@ -463,8 +491,12 @@ void Spawn::scheduleSpawn(uint32_t spawnId, uint32_t interval, bool blocked)
 	nextDelay = std::max<uint32_t>(nextDelay, static_cast<uint32_t>(SCHEDULER_MINTICKS));
 
 	uint32_t remaining = (interval > nextDelay) ? (interval - nextDelay) : 0;
-	g_scheduler.addEvent(nextDelay, [this, spawnId, remaining, blocked]() { scheduleSpawn(spawnId, remaining, blocked); });
-}
+	uint32_t eventId = g_scheduler.addEvent(
+		nextDelay, [this, spawnId, remaining, blocked]()
+		{ scheduleSpawn(spawnId, remaining, blocked); });
+
+	// Track the event ID so stopEvent() can cancel it before Spawn is destroyed.
+	pendingSpawnEvents.push_back(eventId);}
 
 void Spawn::cleanup()
 {
@@ -535,4 +567,10 @@ void Spawn::stopEvent()
 		g_scheduler.stopEvent(checkSpawnEvent);
 		checkSpawnEvent = 0;
 	}
+
+	// Cancel all pending scheduleSpawn chain events.
+	for (uint32_t eventId : pendingSpawnEvents) {
+		g_scheduler.stopEvent(eventId);
+	}
+	pendingSpawnEvents.clear();
 }
