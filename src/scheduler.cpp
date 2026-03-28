@@ -27,6 +27,9 @@ uint32_t Scheduler::addEvent(SchedulerTask* task)
 	boost::asio::post(io_context, [this, guard]() {
 		// insert the event id in the list of active events
 		auto [it, inserted] = eventIdTimerMap.emplace(guard->task->getEventId(), boost::asio::steady_timer{ io_context });
+			if (!inserted) {
+      			return;
+    		}
 		auto& timer = it->second;
 
 		timer.expires_after(std::chrono::milliseconds(guard->task->getDelay()));
