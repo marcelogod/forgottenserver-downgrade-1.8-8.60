@@ -94,7 +94,7 @@ This custom version includes several enhanced systems and fully integrated featu
 #### 1. Install dependencies
 
 ```bash
-sudo apt install git cmake build-essential liblua5.4-dev libmysqlclient-dev libboost-system-dev libboost-iostreams-dev libboost-filesystem-dev libboost-locale-dev libboost-regex-dev libpugixml-dev libfmt-dev libssl-dev libspdlog-dev -y
+sudo apt install git cmake build-essential liblua5.4-dev libmysqlclient-dev libboost-system-dev libboost-iostreams-dev libboost-filesystem-dev libboost-locale-dev libboost-regex-dev libpugixml-dev libfmt-dev libssl-dev libspdlog-dev libmimalloc-dev -y
 ```
 
 #### 2. Install mimalloc (optional but recommended)
@@ -102,6 +102,8 @@ sudo apt install git cmake build-essential liblua5.4-dev libmysqlclient-dev libb
 ```bash
 sudo apt install libmimalloc-dev -y
 ```
+
+> **Note:** Without `libmimalloc-dev`, cmake may print `Could NOT find mimalloc (missing: mimalloc_DIR)` followed by `mimalloc found at /usr/.../libmimalloc.so`. This is expected — the first line means the cmake package config was not found, but the second line confirms the library was located via fallback and **will be linked correctly**. Installing `libmimalloc-dev` eliminates the double message.
 
 #### 3. Clone and compile
 

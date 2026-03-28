@@ -228,11 +228,11 @@ public:
 	void mapCache(std::string_view msg) override
 	{
 		if (mapCacheLogger_) {
-			mapCacheLogger_->info("\033[1;32m[Cache Map System]\033[0m {}", msg);
+			mapCacheLogger_->info("{}", msg);
 		}
 
 		if (logger_) {
-			std::string formattedMsg = fmt::format("[Cache Map System] {}", msg);
+			std::string formattedMsg = fmt::format("{}", msg);
 			for (auto& sink : logger_->sinks()) {
 				auto fileSink = std::dynamic_pointer_cast<spdlog::sinks::rotating_file_sink_mt>(sink);
 				if (fileSink) {
