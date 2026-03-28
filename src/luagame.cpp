@@ -81,7 +81,7 @@ int luaGameGetNpcs(lua_State* L)
 	int index = 0;
 	for (const auto& npcEntry : g_game.getNpcs()) {
 		pushUserdata<Npc>(L, npcEntry.second);
-		setMetatable(L, -1, "Npc");
+		setCreatureMetatable(L, -1, npcEntry.second);
 		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
@@ -95,7 +95,7 @@ int luaGameGetMonsters(lua_State* L)
 	int index = 0;
 	for (const auto& monsterEntry : g_game.getMonsters()) {
 		pushUserdata<Monster>(L, monsterEntry.second);
-		setMetatable(L, -1, "Monster");
+		setCreatureMetatable(L, -1, monsterEntry.second);
 		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
@@ -506,7 +506,7 @@ int luaGameCreateMonster(lua_State* L)
 	if (g_events->eventMonsterOnSpawn(monster, position, false, true) || force) {
 		if (g_game.placeCreature(monster, position, extended, force, magicEffect)) {
 			pushUserdata<Monster>(L, monster);
-			setMetatable(L, -1, "Monster");
+			setCreatureMetatable(L, -1, monster);
 		} else {
 			delete monster;
 			lua_pushnil(L);
@@ -533,7 +533,7 @@ int luaGameCreateNpc(lua_State* L)
 	MagicEffectClasses magicEffect = getInteger<MagicEffectClasses>(L, 5, CONST_ME_TELEPORT);
 	if (g_game.placeCreature(npc.get(), position, extended, force, magicEffect)) {
 		pushUserdata<Npc>(L, npc.get());
-		setMetatable(L, -1, "Npc");
+		setCreatureMetatable(L, -1, npc.get());
 		npc.release();
 	} else {
 		// unique_ptr automatically deletes

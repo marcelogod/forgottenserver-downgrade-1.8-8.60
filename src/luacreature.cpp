@@ -840,8 +840,14 @@ int luaCreatureRemove(lua_State* L)
 		return 1;
 	}
 
-	if (dynamic_cast<Player*>(creature) != nullptr) {
-		static_cast<Player*>(creature)->kickPlayer(true);
+	if (creature->isRemoved()) {
+		*creaturePtr = nullptr;
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	if (Player* player = dynamic_cast<Player*>(creature)) {
+		player->kickPlayer(true);
 	} else {
 		g_game.removeCreature(creature);
 	}
@@ -1180,11 +1186,21 @@ int luaCreatureSetInstanceId(lua_State *L)
 }
 } // namespace
 
+int LuaScriptInterface::luaCreatureGC(lua_State* L)
+{
+	Creature** creaturePtr = getRawUserdata<Creature>(L, 1);
+	if (creaturePtr) {
+		*creaturePtr = nullptr;
+	}
+	return 0;
+}
+
 void LuaScriptInterface::registerCreature()
 {
 	// Creature
 	registerClass("Creature", "", luaCreatureCreate);
 	registerMetaMethod("Creature", "__eq", LuaScriptInterface::luaUserdataCompare);
+	registerMetaMethod("Creature", "__gc", LuaScriptInterface::luaCreatureGC);
 
 	registerMethod("Creature", "getEvents", luaCreatureGetEvents);
 	registerMethod("Creature", "registerEvent", luaCreatureRegisterEvent);

@@ -481,6 +481,7 @@ private:
 	static int luaResultFree(lua_State* L);
 
 	static int luaUserdataCompare(lua_State* L);
+	static int luaCreatureGC(lua_State* L);
 
 	static int luaIsType(lua_State* L);
 	static int luaRawGetMetatable(lua_State* L);

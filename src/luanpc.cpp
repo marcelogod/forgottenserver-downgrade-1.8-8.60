@@ -33,7 +33,7 @@ int luaNpcCreate(lua_State* L)
 
 	if (npc) {
 		pushUserdata<Npc>(L, npc);
-		setMetatable(L, -1, "Npc");
+		setCreatureMetatable(L, -1, npc);
 	} else {
 		lua_pushnil(L);
 	}
@@ -78,7 +78,7 @@ int luaNpcGetSpectators(lua_State* L)
 	int index = 0;
 	for (const auto& spectatorPlayer : npc->getSpectators()) {
 		pushUserdata<const Player>(L, spectatorPlayer);
-		setMetatable(L, -1, "Player");
+		setCreatureMetatable(L, -1, spectatorPlayer);
 		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
@@ -90,6 +90,7 @@ void LuaScriptInterface::registerNpc()
 	// Npc
 	registerClass("Npc", "Creature", luaNpcCreate);
 	registerMetaMethod("Npc", "__eq", LuaScriptInterface::luaUserdataCompare);
+	registerMetaMethod("Npc", "__gc", LuaScriptInterface::luaCreatureGC);
 
 	registerMethod("Npc", "isNpc", luaNpcIsNpc);
 

@@ -51,7 +51,7 @@ int luaPlayerCreate(lua_State* L)
 
 	if (player) {
 		pushUserdata<Player>(L, player);
-		setMetatable(L, -1, "Player");
+		setCreatureMetatable(L, -1, player);
 	} else {
 		lua_pushnil(L);
 	}
@@ -3232,6 +3232,7 @@ void LuaScriptInterface::registerPlayer()
     // Player
     registerClass("Player", "Creature", luaPlayerCreate);
     registerMetaMethod("Player", "__eq", LuaScriptInterface::luaUserdataCompare);
+	registerMetaMethod("Player", "__gc", LuaScriptInterface::luaCreatureGC);
 
     registerMethod("Player", "isPlayer", luaPlayerIsPlayer);
 

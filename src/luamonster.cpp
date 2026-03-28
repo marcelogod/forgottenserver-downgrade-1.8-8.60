@@ -30,7 +30,7 @@ int luaMonsterCreate(lua_State* L)
 
 	if (monster) {
 		pushUserdata<Monster>(L, monster);
-		setMetatable(L, -1, "Monster");
+		setCreatureMetatable(L, -1, monster);
 	} else {
 		lua_pushnil(L);
 	}
@@ -430,6 +430,7 @@ void LuaScriptInterface::registerMonster()
 	// Monster
 	registerClass("Monster", "Creature", luaMonsterCreate);
 	registerMetaMethod("Monster", "__eq", LuaScriptInterface::luaUserdataCompare);
+	registerMetaMethod("Monster", "__gc", LuaScriptInterface::luaCreatureGC);
 
 	registerMethod("Monster", "isMonster", luaMonsterIsMonster);
 

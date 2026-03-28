@@ -762,6 +762,7 @@ void Lua::setCreatureMetatable(lua_State* L, int32_t index, const Creature* crea
 		luaL_getmetatable(L, "Npc");
 	}
 	lua_setmetatable(L, index - 1);
+	const_cast<Creature*>(creature)->incrementReferenceCounter();
 }
 
 // Is
