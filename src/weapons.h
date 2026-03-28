@@ -44,8 +44,6 @@ public:
 private:
 	LuaScriptInterface& getScriptInterface() override;
 	std::string_view getScriptBaseName() const override;
-	Event_ptr getEvent(std::string_view nodeName) override;
-	bool registerEvent(Event_ptr event, const pugi::xml_node& node) override;
 
 	std::map<uint32_t, std::unique_ptr<Weapon>> weapons;
 
@@ -57,8 +55,6 @@ class Weapon : public Event
 public:
 	explicit Weapon(LuaScriptInterface* interface) : Event(interface) {}
 
-	bool configureEvent(const pugi::xml_node& node) override;
-	bool loadFunction(const pugi::xml_attribute&, bool) final { return true; }
 	virtual void configureWeapon(const ItemType& it);
 	virtual bool interruptSwing() const { return false; }
 
@@ -222,7 +218,6 @@ class WeaponWand final : public Weapon
 public:
 	explicit WeaponWand(LuaScriptInterface* interface) : Weapon(interface) {}
 
-	bool configureEvent(const pugi::xml_node& node) override;
 	void configureWeapon(const ItemType& it) override;
 
 	int32_t getWeaponDamage(const Player* player, const Creature* target, const Item* item,

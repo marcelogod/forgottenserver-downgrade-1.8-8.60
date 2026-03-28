@@ -176,8 +176,6 @@ public:
 	explicit ScriptEvent(LuaScriptInterface* interface) : Event(interface) {}
 
 	bool configureRaidEvent(const pugi::xml_node& eventNode) override;
-	bool configureEvent(const pugi::xml_node&) override { return false; }
-
 	bool executeEvent() override;
 
 private:

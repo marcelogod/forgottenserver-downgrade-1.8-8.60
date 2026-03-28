@@ -7,7 +7,6 @@
 
 #include "game.h"
 #include "pugicast.h"
-#include "pugicast.h"
 #include "scheduler.h"
 #include "logger.h"
 #include <fmt/format.h>

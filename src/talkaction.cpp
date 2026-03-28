@@ -28,25 +28,6 @@ void TalkActions::clear(bool fromLua)
 
 LuaScriptInterface& TalkActions::getScriptInterface() { return scriptInterface; }
 
-Event_ptr TalkActions::getEvent(std::string_view nodeName)
-{
-	if (!caseInsensitiveEqual(nodeName, "talkaction")) {
-		return nullptr;
-	}
-	return Event_ptr(new TalkAction(&scriptInterface));
-}
-
-bool TalkActions::registerEvent(Event_ptr event, const pugi::xml_node&)
-{
-	TalkAction_ptr talkAction{static_cast<TalkAction*>(event.release())}; // event is guaranteed to be a TalkAction
-	const auto& words = talkAction->stealWordsMap();
-
-	for (const auto& word : words) {
-		talkActions.emplace(word, *talkAction);
-	}
-	return true;
-}
-
 bool TalkActions::registerLuaEvent(TalkAction* event)
 {
 	TalkAction_ptr talkAction{event};
@@ -109,35 +90,6 @@ TalkActionResult TalkActions::playerSaySpell(Player* player, SpeakClasses type, 
 			return TalkActionResult::BREAK;
 	}
 	return TalkActionResult::CONTINUE;
-}
-
-bool TalkAction::configureEvent(const pugi::xml_node& node)
-{
-	pugi::xml_attribute wordsAttribute = node.attribute("words");
-	if (!wordsAttribute) {
-		LOG_ERROR("[Error - TalkAction::configureEvent] Missing words for talk action or spell");
-		return false;
-	}
-
-	pugi::xml_attribute separatorAttribute = node.attribute("separator");
-	if (separatorAttribute) {
-		separator = separatorAttribute.as_string();
-	}
-
-	pugi::xml_attribute accessAttribute = node.attribute("access");
-	if (accessAttribute) {
-		needAccess = accessAttribute.as_bool();
-	}
-
-	pugi::xml_attribute accountTypeAttribute = node.attribute("accountType");
-	if (accountTypeAttribute) {
-		requiredAccountType = static_cast<AccountType_t>(pugi::cast<int32_t>(accountTypeAttribute.value()));
-	}
-
-	for (std::string_view word : explodeString(wordsAttribute.as_string(), ";")) {
-		setWords(word);
-	}
-	return true;
 }
 
 bool TalkAction::executeSay(Player* player, std::string_view words, std::string_view param, SpeakClasses type) const

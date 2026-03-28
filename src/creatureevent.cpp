@@ -37,38 +37,6 @@ LuaScriptInterface& CreatureEvents::getScriptInterface() { return scriptInterfac
 
 std::string_view CreatureEvents::getScriptBaseName() const { return "creaturescripts"; }
 
-Event_ptr CreatureEvents::getEvent(std::string_view nodeName)
-{
-	if (!caseInsensitiveEqual(nodeName, "event")) {
-		return nullptr;
-	}
-	return Event_ptr(new CreatureEvent(&scriptInterface));
-}
-
-bool CreatureEvents::registerEvent(Event_ptr event, const pugi::xml_node&)
-{
-	CreatureEvent_ptr creatureEvent{
-	    static_cast<CreatureEvent*>(event.release())}; // event is guaranteed to be a CreatureEvent
-	if (creatureEvent->getEventType() == CREATURE_EVENT_NONE) {
-		LOG_ERROR("[Error - CreatureEvents::registerEvent] Trying to register event without type!");
-		return false;
-	}
-
-	CreatureEvent* oldEvent = getEventByName(creatureEvent->getName(), false);
-	if (oldEvent) {
-		// if there was an event with the same that is not loaded
-		//(happens when reloading), it is reused
-		if (!oldEvent->isLoaded() && oldEvent->getEventType() == creatureEvent->getEventType()) {
-			oldEvent->copyEvent(creatureEvent.get());
-		}
-		return false;
-	}
-
-	// if not, register it normally
-	creatureEvents.emplace(boost::algorithm::to_lower_copy(creatureEvent->getName()), std::move(*creatureEvent));
-	return true;
-}
-
 bool CreatureEvents::registerLuaEvent(CreatureEvent* event)
 {
 	CreatureEvent_ptr creatureEvent{event};
@@ -157,60 +125,6 @@ bool CreatureEvents::playerAdvance(Player* player, skills_t skill, uint32_t oldL
 
 CreatureEvent::CreatureEvent(LuaScriptInterface* interface) : Event(interface), type(CREATURE_EVENT_NONE), loaded(false)
 {}
-
-bool CreatureEvent::configureEvent(const pugi::xml_node& node)
-{
-	// Name that will be used in monster xml files and
-	// lua function to register events to reference this event
-	pugi::xml_attribute nameAttribute = node.attribute("name");
-	if (!nameAttribute) {
-		LOG_ERROR("[Error - CreatureEvent::configureEvent] Missing name for creature event");
-		return false;
-	}
-
-	eventName = nameAttribute.as_string();
-
-	pugi::xml_attribute typeAttribute = node.attribute("type");
-	if (!typeAttribute) {
-		LOG_ERROR(fmt::format("[Error - CreatureEvent::configureEvent] Missing type for creature event: {}", eventName));
-		return false;
-	}
-
-	std::string tmpStr = boost::algorithm::to_lower_copy<std::string>(typeAttribute.as_string());
-	if (tmpStr == "login") {
-		type = CREATURE_EVENT_LOGIN;
-	} else if (tmpStr == "logout") {
-		type = CREATURE_EVENT_LOGOUT;
-	} else if (tmpStr == "reconnect") {
-		type = CREATURE_EVENT_RECONNECT;
-	} else if (tmpStr == "think") {
-		type = CREATURE_EVENT_THINK;
-	} else if (tmpStr == "preparedeath") {
-		type = CREATURE_EVENT_PREPAREDEATH;
-	} else if (tmpStr == "death") {
-		type = CREATURE_EVENT_DEATH;
-	} else if (tmpStr == "kill") {
-		type = CREATURE_EVENT_KILL;
-	} else if (tmpStr == "advance") {
-		type = CREATURE_EVENT_ADVANCE;
-	} else if (tmpStr == "modalwindow") {
-		type = CREATURE_EVENT_MODALWINDOW;
-	} else if (tmpStr == "textedit") {
-		type = CREATURE_EVENT_TEXTEDIT;
-	} else if (tmpStr == "healthchange") {
-		type = CREATURE_EVENT_HEALTHCHANGE;
-	} else if (tmpStr == "manachange") {
-		type = CREATURE_EVENT_MANACHANGE;
-	} else if (tmpStr == "extendedopcode") {
-		type = CREATURE_EVENT_EXTENDED_OPCODE;
-	} else {
-		LOG_ERROR(fmt::format("[Error - CreatureEvent::configureEvent] Invalid type for creature event: {}", eventName));
-		return false;
-	}
-
-	loaded = true;
-	return true;
-}
 
 std::string_view CreatureEvent::getScriptEventName() const
 {

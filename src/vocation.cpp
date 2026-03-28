@@ -7,7 +7,6 @@
 
 #include "player.h"
 #include "pugicast.h"
-#include "pugicast.h"
 #include "tools.h"
 #include "logger.h"
 #include <fmt/format.h>

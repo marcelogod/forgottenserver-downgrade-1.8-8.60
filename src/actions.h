@@ -18,9 +18,6 @@ class Action : public Event
 public:
 	explicit Action(LuaScriptInterface* interface);
 
-	bool configureEvent(const pugi::xml_node& node) override;
-	bool loadFunction(const pugi::xml_attribute& attr, bool isScripted) override;
-
 	// scripting
 	virtual bool executeUse(Player* player, Item* item, const Position& fromPosition, Thing* target,
 	                        const Position& toPosition, bool isHotkey);
@@ -107,8 +104,6 @@ private:
 
 	LuaScriptInterface& getScriptInterface() override;
 	std::string_view getScriptBaseName() const override;
-	Event_ptr getEvent(std::string_view nodeName) override;
-	bool registerEvent(Event_ptr event, const pugi::xml_node& node) override;
 
 	using ActionUseMap = std::map<uint16_t, Action>;
 	ActionUseMap useItemMap;

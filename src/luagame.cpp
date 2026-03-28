@@ -590,7 +590,7 @@ int luaGameCreateMonsterType(lua_State* L)
 		return 1;
 	}
 
-	MonsterType* monsterType = g_monsters.getMonsterType(name, false);
+	MonsterType* monsterType = g_monsters.getMonsterType(name);
 	if (!monsterType) {
 		monsterType = &g_monsters.monsters[boost::algorithm::to_lower_copy<std::string>(name)];
 		monsterType->name = name;

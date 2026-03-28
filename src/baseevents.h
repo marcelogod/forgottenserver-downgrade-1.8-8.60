@@ -15,12 +15,8 @@ public:
 	explicit Event(LuaScriptInterface* interface);
 	virtual ~Event() = default;
 
-	virtual bool configureEvent(const pugi::xml_node& node) = 0;
-
-	bool checkScript(std::string_view basePath, std::string_view scriptsName, std::string_view scriptFile) const;
-	bool loadScript(std::string_view scriptFile);
 	bool loadCallback();
-	virtual bool loadFunction(const pugi::xml_attribute&, bool) { return false; }
+	bool loadScript(const std::string& scriptFile);
 
 	bool isScripted() const { return scripted; }
 
@@ -51,8 +47,6 @@ public:
 private:
 	virtual LuaScriptInterface& getScriptInterface() = 0;
 	virtual std::string_view getScriptBaseName() const = 0;
-	virtual Event_ptr getEvent(std::string_view nodeName) = 0;
-	virtual bool registerEvent(Event_ptr event, const pugi::xml_node& node) = 0;
 	virtual void clear(bool) = 0;
 
 	bool loaded = false;

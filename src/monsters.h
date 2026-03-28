@@ -236,11 +236,10 @@ public:
 	Monsters(const Monsters&) = delete;
 	Monsters& operator=(const Monsters&) = delete;
 
-	bool loadFromXml(bool reloading = false);
 	bool isLoaded() const { return loaded; }
 	bool reload();
 
-	MonsterType* getMonsterType(const std::string& name, bool loadFromFile = true);
+	MonsterType* getMonsterType(const std::string &name);
 	MonsterType* getMonsterType(uint32_t raceId);
 	bool deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std::string& description = "");
 	bool registerBestiaryMonster(const MonsterType* mType);
@@ -251,14 +250,7 @@ public:
 private:
 	ConditionDamage* getDamageCondition(ConditionType_t conditionType, int32_t maxDamage, int32_t minDamage,
 	                                    int32_t startDamage, uint32_t tickInterval);
-	bool deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, const std::string& description = "");
 
-	MonsterType* loadMonster(const std::string& file, const std::string& monsterName, bool reloading = false);
-
-	void loadLootContainer(const pugi::xml_node& node, LootBlock&);
-	bool loadLootItem(const pugi::xml_node& node, LootBlock&);
-
-	std::map<std::string, std::string> unloadedMonsters;
 	std::unordered_map<uint32_t, std::string> bestiaryMonsters;
 
 	bool loaded = false;

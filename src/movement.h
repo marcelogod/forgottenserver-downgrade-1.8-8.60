@@ -69,8 +69,6 @@ private:
 
 	LuaScriptInterface& getScriptInterface() override;
 	std::string_view getScriptBaseName() const override;
-	Event_ptr getEvent(std::string_view nodeName) override;
-	bool registerEvent(Event_ptr event, const pugi::xml_node& node) override;
 
 	void addEvent(MoveEvent moveEvent, const Position& pos, MovePosListMap& map);
 	MoveEvent* getEvent(const Tile* tile, MoveEvent_t eventType);
@@ -97,9 +95,6 @@ public:
 
 	MoveEvent_t getEventType() const;
 	void setEventType(MoveEvent_t type);
-
-	bool configureEvent(const pugi::xml_node& node) override;
-	bool loadFunction(const pugi::xml_attribute& attr, bool isScripted) override;
 
 	uint32_t fireStepEvent(Creature* creature, Item* item, const Position& pos);
 	uint32_t fireAddRemItem(Item* item, Item* tileItem, const Position& pos);

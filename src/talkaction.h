@@ -23,8 +23,6 @@ class TalkAction : public Event
 public:
 	explicit TalkAction(LuaScriptInterface* interface) : Event(interface) {}
 
-	bool configureEvent(const pugi::xml_node& node) override;
-
 	std::string_view getWords() const { return words; }
 	auto stealWordsMap()
 	{
@@ -81,8 +79,6 @@ public:
 private:
 	LuaScriptInterface& getScriptInterface() override;
 	std::string_view getScriptBaseName() const override { return "talkactions"; }
-	Event_ptr getEvent(std::string_view nodeName) override;
-	bool registerEvent(Event_ptr event, const pugi::xml_node& node) override;
 
 	std::map<std::string, TalkAction> talkActions;
 

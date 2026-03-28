@@ -51,8 +51,6 @@ public:
 
 private:
 	LuaScriptInterface& getScriptInterface() override;
-	Event_ptr getEvent(std::string_view nodeName) override;
-	bool registerEvent(Event_ptr event, const pugi::xml_node& node) override;
 
 	std::map<uint16_t, RuneSpell> runes;
 	std::map<std::string, InstantSpell> instants;
@@ -82,7 +80,6 @@ public:
 
 	bool castSpell(Creature* creature) override;
 	bool castSpell(Creature* creature, Creature* target) override;
-	bool configureEvent(const pugi::xml_node&) override { return true; }
 
 	// scripting
 	bool executeCastSpell(Creature* creature, const LuaVariant& var);
@@ -104,7 +101,6 @@ class Spell : public BaseSpell
 public:
 	Spell() = default;
 
-	bool configureSpell(const pugi::xml_node& node);
 	std::string_view getName() const { return name; }
 	void setName(std::string_view newName) { name = newName; }
 	uint8_t getId() const { return spellId; }
@@ -236,8 +232,6 @@ class InstantSpell final : public TalkAction, public Spell
 public:
 	explicit InstantSpell(LuaScriptInterface* interface) : TalkAction(interface) {}
 
-	bool configureEvent(const pugi::xml_node& node) override;
-
 	virtual bool playerCastInstant(Player* player, std::string& param);
 
 	bool castSpell(Creature* creature) override;
@@ -276,8 +270,6 @@ class RuneSpell final : public Action, public Spell
 {
 public:
 	explicit RuneSpell(LuaScriptInterface* interface) : Action(interface) {}
-
-	bool configureEvent(const pugi::xml_node& node) override;
 
 	ReturnValue canExecuteAction(const Player* player, const Position& toPos) override;
 	bool hasOwnErrorHandler() override { return true; }
