@@ -381,18 +381,23 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
 		}
 	}
 
+	auto [it, inserted] = spawnedMap.insert({spawnId, monster_ptr.get()});
+	if (!inserted) {
+		// spawnId already occupied — need to safely remove creature without double free.
+		// Release ownership first to avoid unique_ptr deleting it.
+		monster_ptr.release();
+
+		// Remove from game (this will handle deletion via refcount).
+		g_game.removeCreature(monster);
+		return false;
+	}
+
+	// Insert succeeded: transfer ownership out of unique_ptr.
 	monster_ptr.release();
 	monster->setDirection(dir);
 	monster->setSpawn(this);
 	monster->setMasterPos(finalPos);
-	monster->incrementReferenceCounter();
 
-	auto [it, inserted] = spawnedMap.insert({spawnId, monster});
-	if (!inserted) {
-		// spawnId already occupied — roll back the spawn reference to prevent leak
-		monster->setSpawn(nullptr);
-		monster->decrementReferenceCounter();
-	}
 	spawnMap[spawnId].lastSpawn = OTSYS_TIME();
 	return true;
 }
