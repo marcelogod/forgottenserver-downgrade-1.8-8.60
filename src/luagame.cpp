@@ -10,18 +10,15 @@
 #include "monster.h"
 #include "monsters.h"
 #include "script.h"
+#include "scriptmanager.h"
 #include "spells.h"
 #include "talkaction.h"
 #include "logger.h"
 #include <fmt/format.h>
 
-extern Events* g_events;
 extern Vocations g_vocations;
 extern Game g_game;
 extern Monsters g_monsters;
-extern Scripts* g_scripts;
-extern Spells* g_spells;
-extern TalkActions* g_talkActions;
 
 extern LuaEnvironment g_luaEnvironment;
 

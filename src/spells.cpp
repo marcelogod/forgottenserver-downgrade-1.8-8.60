@@ -12,12 +12,11 @@
 #include "luavariant.h"
 #include "monster.h"
 #include "pugicast.h"
+#include "scriptmanager.h"
 #include "logger.h"
 #include <fmt/format.h>
 
 extern Game g_game;
-extern Spells* g_spells;
-extern Events* g_events;
 extern Monsters g_monsters;
 extern LuaEnvironment g_luaEnvironment;
 

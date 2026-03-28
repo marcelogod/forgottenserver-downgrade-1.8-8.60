@@ -20,10 +20,9 @@
 #include "pugicast.h"
 #include "spells.h"
 #include "rewardchest.h"
+#include "scriptmanager.h"
 
 extern Game g_game;
-extern Spells* g_spells;
-extern Actions* g_actions;
 
 
 Actions::Actions() : scriptInterface("Action Interface") { scriptInterface.initState(); }

@@ -10,12 +10,12 @@
 #include "game.h"
 #include "luavariant.h"
 #include "pugicast.h"
+#include "scriptmanager.h"
 #include "logger.h"
 #include <fmt/format.h>
 
 extern Game g_game;
 extern Vocations g_vocations;
-extern Weapons* g_weapons;
 
 Weapons::Weapons() { scriptInterface.initState(); }
 

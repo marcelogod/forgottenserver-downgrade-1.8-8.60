@@ -4,6 +4,32 @@
 #ifndef FS_SCRIPTMANAGER_H
 #define FS_SCRIPTMANAGER_H
 
+#include <memory>
+
+// Forward declarations
+class Actions;
+class Chat;
+class CreatureEvents;
+class Events;
+class GlobalEvents;
+class MoveEvents;
+class Scripts;
+class Spells;
+class TalkActions;
+class Weapons;
+
+// Centralized extern declarations — owned by ScriptingManager via unique_ptr
+extern Actions *g_actions;
+extern Chat *g_chat;
+extern CreatureEvents *g_creatureEvents;
+extern Events *g_events;
+extern GlobalEvents *g_globalEvents;
+extern MoveEvents *g_moveEvents;
+extern Scripts *g_scripts;
+extern Spells *g_spells;
+extern TalkActions *g_talkActions;
+extern Weapons *g_weapons;
+
 class ScriptingManager
 {
 public:
@@ -14,14 +40,24 @@ public:
 	ScriptingManager(const ScriptingManager&) = delete;
 	ScriptingManager& operator=(const ScriptingManager&) = delete;
 
-	static ScriptingManager& getInstance()
-	{
-		static ScriptingManager instance;
-		return instance;
-	}
+	static ScriptingManager& getInstance();
 
 	bool loadPreItems();
 	bool loadScriptSystems();
+
+private:
+	// Ownership via unique_ptr — declared in reverse destruction order
+	// (members are destroyed in reverse declaration order)
+	std::unique_ptr<Scripts> scripts_;
+	std::unique_ptr<GlobalEvents> globalEvents_;
+	std::unique_ptr<CreatureEvents> creatureEvents_;
+	std::unique_ptr<Chat> chat_;
+	std::unique_ptr<MoveEvents> moveEvents_;
+	std::unique_ptr<TalkActions> talkActions_;
+	std::unique_ptr<Actions> actions_;
+	std::unique_ptr<Spells> spells_;
+	std::unique_ptr<Weapons> weapons_;
+	std::unique_ptr<Events> events_;
 };
 
 #endif

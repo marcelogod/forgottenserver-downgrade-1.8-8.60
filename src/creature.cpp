@@ -10,12 +10,11 @@
 #include "game.h"
 #include "monster.h"
 #include "scheduler.h"
+#include "scriptmanager.h"
 #include "instance_utils.h"
 
 #include <cstring>
 
-extern CreatureEvents* g_creatureEvents;
-extern Events* g_events;
 extern Game g_game;
 
 Creature::Creature() { onIdleStatus(); }

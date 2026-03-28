@@ -13,15 +13,14 @@
 #include "house.h"
 #include "mailbox.h"
 #include "scheduler.h"
+#include "scriptmanager.h"
 #include "spells.h"
 #include "teleport.h"
 #include "trashholder.h"
 #include "rewardchest.h"
 
 extern Game g_game;
-extern Spells* g_spells;
 extern Vocations g_vocations;
-extern Events* g_events;
 
 Items Item::items;
 

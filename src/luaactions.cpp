@@ -6,9 +6,7 @@
 #include "actions.h"
 #include "luascript.h"
 #include "script.h"
-
-extern Actions* g_actions;
-extern Scripts* g_scripts;
+#include "scriptmanager.h"
 
 namespace {
 using namespace Lua;

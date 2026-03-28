@@ -12,14 +12,13 @@
 #include "map.h"
 #include "mounts.h"
 #include "player.h"
+#include "scriptmanager.h"
 #include "spells.h"
 #include "tile.h"
 #include "vocation.h"
 
-extern Chat* g_chat;
 extern Game g_game;
 extern Vocations g_vocations;
-extern Spells* g_spells;
 
 namespace {
 using namespace Lua;

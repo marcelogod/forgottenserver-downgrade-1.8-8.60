@@ -16,6 +16,12 @@
 #include "weapons.h"
 #include "logger.h"
 
+ScriptingManager& ScriptingManager::getInstance()
+{
+	static ScriptingManager instance;
+	return instance;
+}
+
 Actions* g_actions = nullptr;
 CreatureEvents* g_creatureEvents = nullptr;
 Chat* g_chat = nullptr;
@@ -31,16 +37,18 @@ extern LuaEnvironment g_luaEnvironment;
 
 ScriptingManager::~ScriptingManager()
 {
-	delete g_events;
-	delete g_weapons;
-	delete g_spells;
-	delete g_actions;
-	delete g_talkActions;
-	delete g_moveEvents;
-	delete g_chat;
-	delete g_creatureEvents;
-	delete g_globalEvents;
-	delete g_scripts;
+	// Nullify globals before unique_ptrs destroy the objects
+	g_events = nullptr;
+	g_weapons = nullptr;
+	g_spells = nullptr;
+	g_actions = nullptr;
+	g_talkActions = nullptr;
+	g_moveEvents = nullptr;
+	g_chat = nullptr;
+	g_creatureEvents = nullptr;
+	g_globalEvents = nullptr;
+	g_scripts = nullptr;
+	// unique_ptr members auto-destroy in reverse declaration order
 }
 
 bool ScriptingManager::loadPreItems()
@@ -53,9 +61,15 @@ bool ScriptingManager::loadPreItems()
 		}
 	}
 
-	if (!g_weapons) g_weapons = new Weapons();
-	if (!g_moveEvents) g_moveEvents = new MoveEvents();
-	
+	if (!weapons_) {
+		weapons_ = std::make_unique<Weapons>();
+		g_weapons = weapons_.get();
+	}
+	if (!moveEvents_) {
+		moveEvents_ = std::make_unique<MoveEvents>();
+		g_moveEvents = moveEvents_.get();
+	}
+
 	return true;
 }
 
@@ -70,33 +84,47 @@ bool ScriptingManager::loadScriptSystems()
 	}
 
 	if (g_luaEnvironment.loadFile("data/global.lua") == -1) {
-		LOG_WARN("[Warning - ScriptingManager::loadScriptSystems] Can not load data/global.lua");
+		LOG_WARN("[Warning - ScriptingManager::loadScriptSystems] Can not load " "data/global.lua");
 	}
 
-	g_scripts = new Scripts();
+	scripts_ = std::make_unique<Scripts>();
+	g_scripts = scripts_.get();
 	LOG_INFO(">> Loading lua libs");
 	if (!g_scripts->loadScripts("scripts/lib", true, false)) {
 		LOG_ERROR("> ERROR: Unable to load lua libs!");
 		return false;
 	}
 
-	g_chat = new Chat();
+	chat_ = std::make_unique<Chat>();
+	g_chat = chat_.get();
 
 	if (!g_scripts->loadScripts("items", false, false)) {
 		LOG_ERROR("> ERROR: Unable to load items (LUA)!");
 		return false;
 	}
 
-	if (!g_weapons) g_weapons = new Weapons();
+	if (!weapons_) {
+		weapons_ = std::make_unique<Weapons>();
+		g_weapons = weapons_.get();
+	}
 	g_weapons->loadDefaults();
-	g_spells = new Spells();
-	g_actions = new Actions();
-	g_talkActions = new TalkActions();
-	if (!g_moveEvents) g_moveEvents = new MoveEvents();
-	g_creatureEvents = new CreatureEvents();
-	g_globalEvents = new GlobalEvents();
+	spells_ = std::make_unique<Spells>();
+	g_spells = spells_.get();
+	actions_ = std::make_unique<Actions>();
+	g_actions = actions_.get();
+	talkActions_ = std::make_unique<TalkActions>();
+	g_talkActions = talkActions_.get();
+	if (!moveEvents_) {
+		moveEvents_ = std::make_unique<MoveEvents>();
+		g_moveEvents = moveEvents_.get();
+	}
+	creatureEvents_ = std::make_unique<CreatureEvents>();
+	g_creatureEvents = creatureEvents_.get();
+	globalEvents_ = std::make_unique<GlobalEvents>();
+	g_globalEvents = globalEvents_.get();
 
-	g_events = new Events();
+	events_ = std::make_unique<Events>();
+	g_events = events_.get();
 	if (!g_events->load()) {
 		LOG_ERROR("> ERROR: Unable to load events!");
 		return false;

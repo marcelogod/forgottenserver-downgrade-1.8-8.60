@@ -8,14 +8,11 @@
 #include "movement.h"
 #include "pugicast.h"
 #include "script.h"
+#include "scriptmanager.h"
 #include "spells.h"
 #include "weapons.h"
 #include "logger.h"
 #include <fmt/format.h>
-
-extern MoveEvents* g_moveEvents;
-extern Weapons* g_weapons;
-extern Scripts* g_scripts;
 
 namespace {
 

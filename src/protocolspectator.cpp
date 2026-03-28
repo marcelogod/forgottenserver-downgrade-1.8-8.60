@@ -3,8 +3,8 @@
 #include "iologindata.h"
 #include "chat.h"
 #include "game.h"
+#include "scriptmanager.h"
 
-extern Chat* g_chat;
 extern Game g_game;
 
 void ProtocolSpectator::setBroadcast(bool value)

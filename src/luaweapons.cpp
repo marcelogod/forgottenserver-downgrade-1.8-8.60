@@ -5,12 +5,10 @@
 
 #include "luascript.h"
 #include "script.h"
+#include "scriptmanager.h"
 #include "weapons.h"
 #include "logger.h"
 #include <fmt/format.h>
-
-extern Weapons* g_weapons;
-extern Scripts* g_scripts;
 
 namespace {
 using namespace Lua;

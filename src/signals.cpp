@@ -18,6 +18,7 @@
 #include "spells.h"
 #include "talkaction.h"
 #include "tasks.h"
+#include "scriptmanager.h"
 #include "weapons.h"
 
 #include <csignal>
@@ -28,17 +29,8 @@ extern Scheduler g_scheduler;
 extern DatabaseTasks g_databaseTasks;
 extern Dispatcher g_dispatcher;
 
-extern Actions* g_actions;
 extern Monsters g_monsters;
-extern TalkActions* g_talkActions;
-extern MoveEvents* g_moveEvents;
-extern Spells* g_spells;
-extern Weapons* g_weapons;
 extern Game g_game;
-extern CreatureEvents* g_creatureEvents;
-extern GlobalEvents* g_globalEvents;
-extern Events* g_events;
-extern Chat* g_chat;
 extern LuaEnvironment g_luaEnvironment;
 
 namespace {

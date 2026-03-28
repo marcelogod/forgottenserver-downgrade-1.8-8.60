@@ -9,6 +9,7 @@
 #include "game.h"
 #include "matrixarea.h"
 #include "monster.h"
+#include "scriptmanager.h"
 #include "spells.h"
 #include "weapons.h"
 #include "logger.h"
@@ -16,7 +17,6 @@
 #include "weapons.h"
 
 extern Game g_game;
-extern Spells* g_spells;
 extern Monsters g_monsters;
 
 spellBlock_t::~spellBlock_t()

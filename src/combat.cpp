@@ -10,11 +10,10 @@
 #include "game.h"
 #include "instance_utils.h"
 #include "matrixarea.h"
+#include "scriptmanager.h"
 #include "weapons.h"
 
 extern Game g_game;
-extern Weapons* g_weapons;
-extern Events* g_events;
 
 std::vector<Tile*> getList(const MatrixArea& area, const Position& targetPos, const Direction dir)
 {

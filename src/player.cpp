@@ -17,6 +17,7 @@
 #include "monster.h"
 #include "movement.h"
 #include "rewardchest.h"
+#include "scriptmanager.h"
 #include "scheduler.h"
 #include "logger.h"
 #include <fmt/format.h>
@@ -24,12 +25,7 @@
 #include "weapons.h"
 
 extern Game g_game;
-extern Chat* g_chat;
 extern Vocations g_vocations;
-extern MoveEvents* g_moveEvents;
-extern Weapons* g_weapons;
-extern CreatureEvents* g_creatureEvents;
-extern Events* g_events;
 
 namespace {
 void trimString(std::string& str) { boost::algorithm::trim(str); }

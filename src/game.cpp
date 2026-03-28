@@ -26,6 +26,7 @@
 #include "stats.h"
 #include "spells.h"
 #include "talkaction.h"
+#include "scriptmanager.h"
 #include "weapons.h"
 #include "logger.h"
 #include <fmt/format.h>
@@ -33,18 +34,8 @@
 #include "luascript.h"
 #include "save_manager.h"
 
-extern Actions* g_actions;
-extern Chat* g_chat;
-extern TalkActions* g_talkActions;
-extern Spells* g_spells;
 extern Vocations g_vocations;
-extern GlobalEvents* g_globalEvents;
-extern CreatureEvents* g_creatureEvents;
-extern Events* g_events;
 extern Monsters g_monsters;
-extern MoveEvents* g_moveEvents;
-extern Weapons* g_weapons;
-extern Scripts* g_scripts;
 extern LuaEnvironment g_luaEnvironment;
 
 void Game::start(ServiceManager* manager)

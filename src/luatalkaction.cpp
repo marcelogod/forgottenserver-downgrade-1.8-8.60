@@ -5,10 +5,8 @@
 
 #include "luascript.h"
 #include "script.h"
+#include "scriptmanager.h"
 #include "talkaction.h"
-
-extern TalkActions* g_talkActions;
-extern Scripts* g_scripts;
 
 namespace {
 using namespace Lua;

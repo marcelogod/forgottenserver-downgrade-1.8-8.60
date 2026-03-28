@@ -4,11 +4,10 @@
 #include "otpch.h"
 
 #include "luascript.h"
+#include "scriptmanager.h"
 #include "spells.h"
 #include "logger.h"
 #include <fmt/format.h>
-
-extern Spells* g_spells;
 
 namespace {
 using namespace Lua;

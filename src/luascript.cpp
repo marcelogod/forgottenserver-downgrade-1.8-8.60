@@ -23,6 +23,7 @@
 #include "protocolstatus.h"
 #include "scheduler.h"
 #include "script.h"
+#include "scriptmanager.h"
 #include "spectators.h"
 #include "spells.h"
 #include "teleport.h"
@@ -34,11 +35,8 @@ extern GlobalEvents* g_globalEvents;
 
 #include <boost/range/adaptor/reversed.hpp>
 
-extern Chat* g_chat;
 extern Game g_game;
 extern Vocations g_vocations;
-extern Scripts* g_scripts;
-extern Spells* g_spells;
 
 ScriptEnvironment::DBResultMap ScriptEnvironment::tempResults;
 uint32_t ScriptEnvironment::lastResultId = 0;

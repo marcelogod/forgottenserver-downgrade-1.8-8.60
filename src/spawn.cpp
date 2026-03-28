@@ -11,12 +11,12 @@
 #include "monster.h"
 #include "pugicast.h"
 #include "scheduler.h"
+#include "scriptmanager.h"
 #include "logger.h"
 #include <fmt/format.h>
 
 extern Monsters g_monsters;
 extern Game g_game;
-extern Events* g_events;
 
 inline constexpr int32_t MINSPAWN_INTERVAL = 10 * 1000;           // 10 seconds to match RME
 inline constexpr int32_t MAXSPAWN_INTERVAL = 24 * 60 * 60 * 1000; // 1 day

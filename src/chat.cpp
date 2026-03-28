@@ -8,10 +8,10 @@
 #include "game.h"
 #include "pugicast.h"
 #include "scheduler.h"
+#include "scriptmanager.h"
 #include "logger.h"
 #include <fmt/format.h>
 
-extern Chat* g_chat;
 extern Game g_game;
 
 bool PrivateChatChannel::isInvited(uint32_t guid) const

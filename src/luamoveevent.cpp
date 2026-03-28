@@ -6,11 +6,9 @@
 #include "luascript.h"
 #include "movement.h"
 #include "script.h"
+#include "scriptmanager.h"
 #include "logger.h"
 #include <fmt/format.h>
-
-extern MoveEvents* g_moveEvents;
-extern Scripts* g_scripts;
 
 namespace {
 using namespace Lua;

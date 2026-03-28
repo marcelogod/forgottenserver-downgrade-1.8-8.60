@@ -6,11 +6,9 @@
 #include "creatureevent.h"
 #include "luascript.h"
 #include "script.h"
+#include "scriptmanager.h"
 #include "logger.h"
 #include <fmt/format.h>
-
-extern CreatureEvents* g_creatureEvents;
-extern Scripts* g_scripts;
 
 namespace {
 using namespace Lua;

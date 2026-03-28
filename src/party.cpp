@@ -8,9 +8,9 @@
 #include "configmanager.h"
 #include "events.h"
 #include "game.h"
+#include "scriptmanager.h"
 
 extern Game g_game;
-extern Events* g_events;
 
 Party::Party(Player* leader) : leader(leader) { leader->setParty(this); }
 

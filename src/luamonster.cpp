@@ -7,8 +7,8 @@
 #include "game.h"
 #include "luascript.h"
 #include "monster.h"
+#include "scriptmanager.h"
 
-extern Events* g_events;
 extern Game g_game;
 extern Monsters g_monsters;
 

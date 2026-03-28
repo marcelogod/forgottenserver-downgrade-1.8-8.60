@@ -13,11 +13,11 @@
 #include "mailbox.h"
 #include "monster.h"
 #include "movement.h"
+#include "scriptmanager.h"
 #include "teleport.h"
 #include "trashholder.h"
 
 extern Game g_game;
-extern MoveEvents* g_moveEvents;
 
 StaticTile real_nullptr_tile(0xFFFF, 0xFFFF, 0xFF);
 Tile& Tile::nullptr_tile = real_nullptr_tile;

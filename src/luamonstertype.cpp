@@ -6,12 +6,12 @@
 #include "luascript.h"
 #include "monsters.h"
 #include "script.h"
+#include "scriptmanager.h"
 #include "spells.h"
 #include "logger.h"
 #include <fmt/format.h>
 
 extern Monsters g_monsters;
-extern Scripts* g_scripts;
 
 namespace {
 using namespace Lua;

@@ -8,8 +8,8 @@
 #include "game.h"
 #include "luascript.h"
 #include "player.h"
+#include "scriptmanager.h"
 
-extern Events* g_events;
 extern Game g_game;
 
 namespace {

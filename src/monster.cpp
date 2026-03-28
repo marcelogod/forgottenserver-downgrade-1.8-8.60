@@ -11,12 +11,12 @@
 #include "iologindata.h"
 #include "logger.h"
 #include "spells.h"
+#include "scriptmanager.h"
 
 #include <fmt/format.h>
 
 extern Game g_game;
 extern Monsters g_monsters;
-extern Events* g_events;
 
 int32_t Monster::despawnRange;
 int32_t Monster::despawnRadius;

@@ -38,7 +38,6 @@ Stats g_stats;
 Game g_game;
 Monsters g_monsters;
 Vocations g_vocations;
-extern Scripts* g_scripts;
 
 std::mutex g_loaderLock;
 std::condition_variable g_loaderSignal;

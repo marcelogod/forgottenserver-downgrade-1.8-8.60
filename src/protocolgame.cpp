@@ -14,14 +14,10 @@
 #include "player.h"
 #include "protocolgame.h"
 #include "scheduler.h"
-
-#include <unordered_set>
+#include "scriptmanager.h"
 
 uint32_t ProtocolGame::spectatorId = 1;
 std::set<std::string> ProtocolGame::spectatorNames;
-
-extern CreatureEvents* g_creatureEvents;
-extern Chat* g_chat;
 
 namespace {
 

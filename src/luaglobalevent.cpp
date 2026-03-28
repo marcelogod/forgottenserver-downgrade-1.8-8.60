@@ -6,12 +6,10 @@
 #include "globalevent.h"
 #include "luascript.h"
 #include "script.h"
+#include "scriptmanager.h"
 #include "tools.h"
 #include "logger.h"
 #include <fmt/format.h>
-
-extern GlobalEvents* g_globalEvents;
-extern Scripts* g_scripts;
 
 namespace {
 using namespace Lua;
