@@ -54,7 +54,8 @@ struct FindPathParams;
 struct AStarNode
 {
 	AStarNode* parent;
-	int_fast32_t f;
+	int_fast32_t f;       // f = g_score + h_score, used for heap ordering
+	int_fast32_t g_score; // actual accumulated cost from start to this node
 	uint16_t x, y;
 };
 
@@ -66,23 +67,27 @@ class AStarNodes
 {
 public:
 	AStarNodes(uint32_t x, uint32_t y);
+	~AStarNodes();
 
-	AStarNode* createOpenNode(AStarNode* parent, uint32_t x, uint32_t y, int_fast32_t f);
-	AStarNode* getBestNode();
-	void closeNode(AStarNode* node);
-	void openNode(AStarNode* node);
-	int_fast32_t getClosedNodes() const;
-	AStarNode* getNodeByPosition(uint32_t x, uint32_t y);
+	AStarNode* CreateOpenNode(AStarNode* parent, uint32_t x, uint32_t y, int_fast32_t f, int_fast32_t g_score);
+	AStarNode* GetBestNode();
+	void CloseNode(const AStarNode* node);
+	void OpenNode(AStarNode* node);
+	int_fast32_t GetClosedNodes() const;
+	AStarNode* GetNodeByPosition(uint32_t x, uint32_t y);
 
-	static int_fast32_t getMapWalkCost(AStarNode* node, const Position& neighborPos);
-	static int_fast32_t getTileWalkCost(const Creature& creature, const Tile* tile);
+	static int_fast32_t GetMapWalkCost(const AStarNode *node, const Position &neighborPos);
+	static int_fast32_t GetTileWalkCost(const Creature &creature, const Tile* tile);
 
 private:
-	AStarNode nodes[MAX_NODES];
-	bool openNodes[MAX_NODES];
-	std::unordered_map<uint32_t, AStarNode*> nodeTable;
-	size_t curNode;
-	int_fast32_t closedNodes;
+	void SiftUp(uint16_t pos);
+	uint16_t SiftDown(uint16_t pos);
+	void Insert(uint32_t key, uint16_t nodeIdx);
+	uint16_t Find(uint32_t key) const;
+
+	uint16_t heap_size;
+	uint16_t current_node;
+	int_fast32_t closed_nodes;
 };
 
 using SpectatorCache = absl::flat_hash_map<Position, SpectatorsCache, PositionHasher>;

@@ -24,10 +24,12 @@ extern Vocations g_vocations;
 
 Items Item::items;
 
-// Global registry to track valid Item pointers
-// Fix: plain static avoids the 82KB "still reachable" block reported by Valgrind.
-// The destructor runs automatically at program exit, properly releasing all bucket memory.
-static std::unordered_set<Item*> g_validItems;
+// Global registry to track valid Item pointers.
+// Intentionally leaked (never deleted) to avoid the Static Destruction Order
+// Fiasco: the Map QTree destroys Items after static locals are torn down,
+// causing Item::~Item() to erase() from an already-freed set (UAF).
+// The OS reclaims the memory when the process exits.
+static auto &g_validItems = *new std::unordered_set<Item*>();
 
 Item* Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 {
