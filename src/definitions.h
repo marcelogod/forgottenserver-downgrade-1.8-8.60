@@ -39,7 +39,9 @@ inline constexpr unsigned int AUTHENTICATOR_PERIOD = 30;
 
 #define WIN32_LEAN_AND_MEAN
 
+#ifndef STATS_ENABLED
 #define STATS_ENABLED
+#endif
 
 #ifdef _MSC_VER
 #ifdef NDEBUG
