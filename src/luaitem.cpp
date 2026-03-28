@@ -894,6 +894,105 @@ int luaItemSetInstanceId(lua_State *L)
 }
 } // namespace
 
+// Forge Tier Lua bindings
+int LuaScriptInterface::luaItemGetTier(lua_State *L)
+{
+	// item:getTier()
+	const Item *item = getUserdata<const Item>(L, 1);
+	if (item) {
+		lua_pushinteger(L, item->getTier());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemSetTier(lua_State *L)
+{
+	// item:setTier(tier)
+	Item *item = getUserdata<Item>(L, 1);
+	if (item) {
+		item->setTier(getInteger<uint8_t>(L, 2));
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemGetClassification(lua_State *L)
+{
+	// item:getClassification()
+	const Item *item = getUserdata<const Item>(L, 1);
+	if (item) {
+		lua_pushinteger(L, item->getClassification());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemSetClassification(lua_State *L)
+{
+	// item:setClassification(classification)
+	Item *item = getUserdata<Item>(L, 1);
+	if (item) {
+		item->setClassification(getInteger<uint8_t>(L, 2));
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemGetFatalChance(lua_State *L)
+{
+	// item:getFatalChance()
+	const Item *item = getUserdata<const Item>(L, 1);
+	if (item) {
+		lua_pushnumber(L, item->getFatalChance());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemGetDodgeChance(lua_State *L)
+{
+	// item:getDodgeChance()
+	const Item *item = getUserdata<const Item>(L, 1);
+	if (item) {
+		lua_pushnumber(L, item->getDodgeChance());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemGetMomentumChance(lua_State *L)
+{
+	// item:getMomentumChance()
+	const Item *item = getUserdata<const Item>(L, 1);
+	if (item) {
+		lua_pushnumber(L, item->getMomentumChance());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemGetTranscendenceChance(lua_State *L)
+{
+	// item:getTranscendenceChance()
+	const Item *item = getUserdata<const Item>(L, 1);
+	if (item) {
+		lua_pushnumber(L, item->getTranscendenceChance());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 void LuaScriptInterface::registerItem()
 {
 	// Item
@@ -972,4 +1071,14 @@ void LuaScriptInterface::registerItem()
 	registerMethod("Item", "addImbuement", LuaScriptInterface::luaItemAddImbuement);
 	registerMethod("Item", "removeImbuement", LuaScriptInterface::luaItemRemoveImbuement);
 	registerMethod("Item", "getImbuements", LuaScriptInterface::luaItemGetImbuements);
+
+	// Forge Tier
+	registerMethod("Item", "getTier", LuaScriptInterface::luaItemGetTier);
+	registerMethod("Item", "setTier", LuaScriptInterface::luaItemSetTier);
+	registerMethod("Item", "getClassification", LuaScriptInterface::luaItemGetClassification);
+	registerMethod("Item", "setClassification", LuaScriptInterface::luaItemSetClassification);
+	registerMethod("Item", "getFatalChance", LuaScriptInterface::luaItemGetFatalChance);
+	registerMethod("Item", "getDodgeChance", LuaScriptInterface::luaItemGetDodgeChance);
+	registerMethod("Item", "getMomentumChance", LuaScriptInterface::luaItemGetMomentumChance);
+	registerMethod("Item", "getTranscendenceChance", LuaScriptInterface::luaItemGetTranscendenceChance);
 }

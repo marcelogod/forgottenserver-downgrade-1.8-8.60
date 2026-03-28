@@ -826,6 +826,34 @@ public:
 	void setBoostPercent(CombatType_t combatType, uint16_t value) { getAttributes()->boostPercent[combatType] = value; }
 	uint16_t getBoostPercent(CombatType_t combatType, bool total = true) const;
 
+	uint8_t getTier() const
+	{
+		if (!hasAttribute(ITEM_ATTRIBUTE_TIER)) {
+			return 0;
+		}
+		return static_cast<uint8_t>(getIntAttr(ITEM_ATTRIBUTE_TIER));
+	}
+	void setTier(uint8_t tier)
+	{
+		setIntAttr(ITEM_ATTRIBUTE_TIER, tier);
+	}
+	uint8_t getClassification() const
+	{
+		if (hasAttribute(ITEM_ATTRIBUTE_CLASSIFICATION)) {
+			return static_cast<uint8_t>(getIntAttr(ITEM_ATTRIBUTE_CLASSIFICATION));
+		}
+		return static_cast<uint8_t>(items[id].classification);
+	}
+	void setClassification(uint8_t classification)
+	{
+		setIntAttr(ITEM_ATTRIBUTE_CLASSIFICATION, classification);
+	}
+
+	double getFatalChance() const;
+	double getDodgeChance() const;
+	double getMomentumChance() const;
+	double getTranscendenceChance() const;
+
 	bool hasProperty(ITEMPROPERTY prop) const;
 	bool isBlocking() const { return items[id].blockSolid; }
 	bool isStackable() const { return items[id].stackable; }

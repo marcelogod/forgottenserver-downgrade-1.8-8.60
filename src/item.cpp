@@ -1187,6 +1187,59 @@ uint16_t Item::getBoostPercent(CombatType_t combatType, bool total /* = true */)
 	return boostPercent;
 }
 
+static double quadraticPoly(double a, double b, double c, uint8_t tier)
+{
+	return a* tier* tier + b* tier + c;
+}
+
+double Item::getFatalChance() const
+{
+	uint8_t tier = getTier();
+	if (tier == 0) {
+		return 0.0;
+	}
+	return quadraticPoly(
+		ConfigManager::getFloat(ConfigManager::FORGE_FATAL_A),
+		ConfigManager::getFloat(ConfigManager::FORGE_FATAL_B),
+		ConfigManager::getFloat(ConfigManager::FORGE_FATAL_C), tier);
+}
+
+double Item::getDodgeChance() const
+{
+	uint8_t tier = getTier();
+	if (tier == 0) {
+		return 0.0;
+	}
+	return quadraticPoly(
+		ConfigManager::getFloat(ConfigManager::FORGE_DODGE_A),
+		ConfigManager::getFloat(ConfigManager::FORGE_DODGE_B),
+		ConfigManager::getFloat(ConfigManager::FORGE_DODGE_C), tier);
+}
+
+double Item::getMomentumChance() const
+{
+	uint8_t tier = getTier();
+	if (tier == 0) {
+		return 0.0;
+	}
+	return quadraticPoly(
+		ConfigManager::getFloat(ConfigManager::FORGE_MOMENTUM_A),
+		ConfigManager::getFloat(ConfigManager::FORGE_MOMENTUM_B),
+		ConfigManager::getFloat(ConfigManager::FORGE_MOMENTUM_C), tier);
+}
+
+double Item::getTranscendenceChance() const
+{
+	uint8_t tier = getTier();
+	if (tier == 0) {
+		return 0.0;
+	}
+	return quadraticPoly(
+		ConfigManager::getFloat(ConfigManager::FORGE_TRANSCENDENCE_A),
+		ConfigManager::getFloat(ConfigManager::FORGE_TRANSCENDENCE_B),
+		ConfigManager::getFloat(ConfigManager::FORGE_TRANSCENDENCE_C), tier);
+}
+
 std::string ItemAttributes::emptyString;
 int64_t ItemAttributes::emptyInt;
 double ItemAttributes::emptyDouble;

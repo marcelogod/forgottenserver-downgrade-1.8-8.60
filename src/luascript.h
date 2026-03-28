@@ -523,6 +523,16 @@ private:
 	static int luaItemGetImbuements(lua_State* L);
 	static int luaItemCanApplyImbuement(lua_State* L);
 
+	// Item Forge Tier
+	static int luaItemGetTier(lua_State *L);
+	static int luaItemSetTier(lua_State *L);
+	static int luaItemGetClassification(lua_State *L);
+	static int luaItemSetClassification(lua_State *L);
+	static int luaItemGetFatalChance(lua_State *L);
+	static int luaItemGetDodgeChance(lua_State *L);
+	static int luaItemGetMomentumChance(lua_State *L);
+	static int luaItemGetTranscendenceChance(lua_State *L);
+
 	// Imbuement
 	static int luaImbuementCreate(lua_State* L);
 	static int luaImbuementGetType(lua_State* L);

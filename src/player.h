@@ -448,6 +448,9 @@ public:
 	void setVarStats(stats_t stat, int32_t modifier);
 	int32_t getDefaultStats(stats_t stat) const;
 
+	int32_t getHelmetCooldownReduction() const { return helmetCooldownReduction; }
+	void setHelmetCooldownReduction(int32_t value) { helmetCooldownReduction = value; }
+
 	void addConditionSuppressions(uint32_t conditions);
 	void removeConditionSuppressions(uint32_t conditions);
 
@@ -1349,6 +1352,7 @@ private:
 	int32_t offlineTrainingSkill = -1;
 	int32_t offlineTrainingTime = 0;
 	int32_t idleTime = 0;
+	int32_t helmetCooldownReduction = 0;
 
 	uint16_t lastStatsTrainingTime = 0;
 	uint16_t staminaMinutes = 2520;

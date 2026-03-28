@@ -864,6 +864,32 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 			return;
 		}
 
+		if (target && target->getPlayer() &&
+				damage.primary.type != COMBAT_HEALING &&
+				damage.origin != ORIGIN_CONDITION) {
+			Player *targetPlayer = target->getPlayer();
+			Item *armor = targetPlayer->getInventoryItem(CONST_SLOT_ARMOR);
+			if (armor && armor->getTier() > 0) {
+				double dodgeChance = armor->getDodgeChance();
+				Item *boots = targetPlayer->getInventoryItem(CONST_SLOT_FEET);
+				if (boots && boots->getTier() > 0) {
+					double ampChance = boots->getMomentumChance()* 0.02;
+					dodgeChance *= (1.0 + ampChance);
+				}
+				if (dodgeChance > 0 && (normal_random(1, 10000) / 100.0) < dodgeChance) {
+					damage.primary.value = 0;
+					damage.secondary.value = 0;
+					damage.blockType = BLOCK_DODGE;
+					damage.dodge = true;
+					SpectatorVec dodgeSpectators;
+					g_game.map.getSpectators(dodgeSpectators, target->getPosition(), true, true);
+					InstanceUtils::sendMagicEffectToInstance(dodgeSpectators,
+						target->getPosition(), CONST_ME_DODGE, target->getInstanceID());
+					return;
+				}
+			}
+		}
+
 		if (casterPlayer) {
 			Player* targetPlayer = target ? target->getPlayer() : nullptr;
 			if (targetPlayer && casterPlayer != targetPlayer && targetPlayer->getSkull() != SKULL_BLACK &&
@@ -913,6 +939,76 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 			g_game.map.getSpectators(critSpectators, target->getPosition(), true, true);
 			InstanceUtils::sendMagicEffectToInstance(
 				critSpectators, target->getPosition(), CONST_ME_CRITICAL_HIT, target->getInstanceID());
+		}
+
+		if (damage.fatal && target) {
+			SpectatorVec fatalSpectators;
+			g_game.map.getSpectators(fatalSpectators, target->getPosition(), true, true);
+			InstanceUtils::sendMagicEffectToInstance(fatalSpectators, target->getPosition(), CONST_ME_FATAL, target->getInstanceID());
+		}
+
+		if (target && target->getPlayer() &&
+				damage.primary.type != COMBAT_HEALING &&
+				damage.origin != ORIGIN_CONDITION) {
+			Player *targetPlayer = target->getPlayer();
+			if (!targetPlayer->isAvatarActive()) {
+				Item *legs = targetPlayer->getInventoryItem(CONST_SLOT_LEGS);
+				if (legs && legs->getTier() > 0) {
+					double transChance = legs->getTranscendenceChance();
+					Item *boots = targetPlayer->getInventoryItem(CONST_SLOT_FEET);
+					if (boots && boots->getTier() > 0) {
+						double ampChance = boots->getMomentumChance()* 0.02;
+						transChance *= (1.0 + ampChance);
+					}
+					if (transChance > 0 &&
+							(normal_random(1, 10000) / 100.0) < transChance) {
+						uint16_t avatarLookType = 0;
+						int32_t avatarDuration = 15000;
+						if (targetPlayer->isKnight()) {
+							avatarLookType = AVATAR_LOOKTYPE_STEEL;
+						} else if (targetPlayer->isPaladin()) {
+							avatarLookType = AVATAR_LOOKTYPE_LIGHT;
+						} else if (targetPlayer->isSorcerer()) {
+							avatarLookType = AVATAR_LOOKTYPE_STORM;
+						} else if (targetPlayer->isDruid()) {
+							avatarLookType = AVATAR_LOOKTYPE_NATURE;
+						} else if (targetPlayer->isMonk()) {
+							avatarLookType = AVATAR_LOOKTYPE_BALANCE;
+							avatarDuration = 30000;
+						}
+
+						if (avatarLookType != 0) {
+							ConditionOutfit *outfitCond = static_cast<ConditionOutfit *>(
+									Condition::createCondition(CONDITIONID_COMBAT,
+																						 CONDITION_OUTFIT, avatarDuration));
+							Outfit_t avatarOutfit;
+							avatarOutfit.lookType = avatarLookType;
+							outfitCond->setOutfit(avatarOutfit);
+							targetPlayer->addCondition(outfitCond);
+
+							Condition *attrCond = Condition::createCondition(
+									CONDITIONID_COMBAT, CONDITION_ATTRIBUTES, avatarDuration, 0,
+									false, 9999);
+							attrCond->setParam(
+									CONDITION_PARAM_SPECIALSKILL_CRITICALHITCHANCE, 1000);
+							attrCond->setParam(
+									CONDITION_PARAM_SPECIALSKILL_CRITICALHITAMOUNT, 5000);
+							targetPlayer->addCondition(attrCond);
+
+							targetPlayer->setStorageValue(
+									AVATAR_TIMER_STORAGE,
+									static_cast<int64_t>(OTSYS_TIME()) + avatarDuration);
+
+							SpectatorVec avatarSpecs;
+							g_game.map.getSpectators(avatarSpecs, target->getPosition(),
+																			 true, true);
+							InstanceUtils::sendMagicEffectToInstance(
+									avatarSpecs, target->getPosition(), CONST_ME_AVATAR_APPEAR,
+									target->getInstanceID());
+						}
+					}
+				}
+			}
 		}
 
 		if (!damage.leeched && damage.primary.type != COMBAT_HEALING && casterPlayer && target != caster &&

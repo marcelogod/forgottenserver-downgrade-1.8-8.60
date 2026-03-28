@@ -106,6 +106,21 @@ timeBetweenExActions = 1000
 exhaustPotionMiliSeconds = 1500
 exhaustItemAtUsePotion = true
 
+-- Forge Tier Abilities
+-- Formula: chance = A * tier^2 + B * tier + C
+forgeFatalA = 0.05
+forgeFatalB = 0.4
+forgeFatalC = 0.05
+forgeDodgeA = 0.0307576
+forgeDodgeB = 0.440697
+forgeDodgeC = 0.026
+forgeMomentumA = 0.05
+forgeMomentumB = 1.9
+forgeMomentumC = 0.05
+forgeTranscendenceA = 0.0127
+forgeTranscendenceB = 0.1070
+forgeTranscendenceC = 0.0073
+
 -- Fast Potions Configuration
 fastPotions = true
 fastPotionIds = { 23375, 23374, 7643, 239, 7642, 236, 23373, 238, 237, 268, 266, 7876, 7644 }

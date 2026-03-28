@@ -313,7 +313,8 @@ enum BlockType_t : uint8_t
 	BLOCK_NONE,
 	BLOCK_DEFENSE,
 	BLOCK_ARMOR,
-	BLOCK_IMMUNITY
+	BLOCK_IMMUNITY,
+	BLOCK_DODGE
 };
 
 enum skills_t : uint8_t
@@ -675,6 +676,8 @@ struct CombatDamage
 	BlockType_t blockType = BLOCK_NONE;
 	bool critical = false;
 	bool leeched = false;
+	bool fatal = false;
+	bool dodge = false;
 };
 
 using ShopInfoList = std::list<ShopInfo>;

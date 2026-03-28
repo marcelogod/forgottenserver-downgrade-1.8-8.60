@@ -741,9 +741,23 @@ void Spell::postCastSpell(Player* player, bool finishedCast /*= true*/, bool pay
 {
 	if (finishedCast) {
 		if (!player->hasFlag(PlayerFlag_HasNoExhaustion)) {
+			int32_t momentumReduction = 0;
+			Item *helmet = player->getInventoryItem(CONST_SLOT_HEAD);
+			if (helmet && helmet->getTier() > 0) {
+				double momentumChance = helmet->getMomentumChance();
+				Item *boots = player->getInventoryItem(CONST_SLOT_FEET);
+				if (boots && boots->getTier() > 0) {
+					double ampChance = boots->getMomentumChance()* 0.02;
+					momentumChance *= (1.0 + ampChance);
+				}
+				if (momentumChance > 0 && (normal_random(1, 10000) / 100.0) < momentumChance) {
+					momentumReduction = 2000; // 2 second reduction
+				}
+			}
 			if (cooldown > 0) {
+				int32_t adjustedCooldown = std::max<int32_t>(1000, static_cast<int32_t>(cooldown) - momentumReduction);
 				Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLCOOLDOWN,
-				                                                  cooldown, 0, false, spellId);
+				                                                  adjustedCooldown, 0, false, spellId);
 				player->addCondition(condition);
 			}
 

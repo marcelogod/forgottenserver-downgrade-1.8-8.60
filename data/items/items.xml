@@ -2513,6 +2513,7 @@
 		<attribute key="floorchange" value="down" />
 	</item>
 	<item id="860" article="a" name="crimson sword">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="Its blade is very notchy" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="18" />
@@ -5849,6 +5850,7 @@
 	</item>
 	<item id="3064" article="the" name="orb of nature" />
 	<item id="3065" article="a" name="terra rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="Small stones are flying from its tip" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="smallearth" />
@@ -5866,6 +5868,7 @@
 		</attribute>
 	</item>
 	<item id="3066" article="a" name="snakebite rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It seems to twitch and quiver as if trying to escape your grip" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="smallearth" />
@@ -5883,6 +5886,7 @@
 		</attribute>
 	</item>
 	<item id="3067" article="a" name="hailstorm rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It grants you the power of striking your foes with furious hailstorms" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="smallice" />
@@ -5903,6 +5907,7 @@
 		<attribute key="weight" value="2800" />
 	</item>
 	<item id="3069" article="a" name="necrotic rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It was brought up from hell to deliver death" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="death" />
@@ -5920,6 +5925,7 @@
 		</attribute>
 	</item>
 	<item id="3070" article="a" name="moonlight rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="Icecold rays of moonlight shimmer on its tip" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="smallice" />
@@ -5937,6 +5943,7 @@
 		</attribute>
 	</item>
 	<item id="3071" article="a" name="wand of inferno">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It unleashes the very fires of hell" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="fire" />
@@ -5954,6 +5961,7 @@
 		</attribute>
 	</item>
 	<item id="3072" article="a" name="wand of decay">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It is half-rotten itself and reeks terribly" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="death" />
@@ -5971,6 +5979,7 @@
 		</attribute>
 	</item>
 	<item id="3073" article="a" name="wand of cosmic energy">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="The energy of a radiant star is trapped inside its globe" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="energy" />
@@ -5988,6 +5997,7 @@
 		</attribute>
 	</item>
 	<item id="3074" article="a" name="wand of vortex">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="Surges of energy rush through the tip of this wand" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="energy" />
@@ -6005,6 +6015,7 @@
 		</attribute>
 	</item>
 	<item id="3075" article="a" name="wand of dragonbreath">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="Legends say that this wand holds the soul of a young dragon" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="fire" />
@@ -6653,6 +6664,7 @@
 		<attribute key="weight" value="2180" />
 	</item>
 	<item id="3208" article="a" name="giant smithhammer">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This cyclopean hammer seems to be an awesome smithing tool" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="24" />
@@ -6923,6 +6935,7 @@
 		<attribute key="weight" value="1300" />
 	</item>
 	<item id="3264" article="a" name="sword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="14" />
 		<attribute key="extradef" value="1" />
@@ -6941,6 +6954,7 @@
 		</attribute>
 	</item>
 	<item id="3265" article="a" name="two handed sword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="30" />
@@ -6954,6 +6968,7 @@
 		</attribute>
 	</item>
 	<item id="3266" article="a" name="battle axe">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="25" />
@@ -6966,6 +6981,7 @@
 		</attribute>
 	</item>
 	<item id="3267" article="a" name="dagger">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="8" />
 		<attribute key="defense" value="6" />
@@ -6976,6 +6992,7 @@
 		</attribute>
 	</item>
 	<item id="3268" article="a" name="hand axe">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="10" />
 		<attribute key="defense" value="5" />
@@ -6986,6 +7003,7 @@
 		</attribute>
 	</item>
 	<item id="3269" article="a" name="halberd">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="35" />
@@ -6998,6 +7016,7 @@
 		</attribute>
 	</item>
 	<item id="3270" article="a" name="club">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="7" />
 		<attribute key="defense" value="7" />
@@ -7008,6 +7027,7 @@
 		</attribute>
 	</item>
 	<item id="3271" article="a" name="spike sword">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It can be enchanted with an element." />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="24" />
@@ -7027,6 +7047,7 @@
 		</attribute>
 	</item>
 	<item id="3272" article="a" name="rapier">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="10" />
 		<attribute key="extradef" value="1" />
@@ -7038,6 +7059,7 @@
 		</attribute>
 	</item>
 	<item id="3273" article="a" name="sabre">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="12" />
 		<attribute key="extradef" value="1" />
@@ -7049,6 +7071,7 @@
 		</attribute>
 	</item>
 	<item id="3274" article="an" name="axe">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="12" />
 		<attribute key="defense" value="6" />
@@ -7059,6 +7082,7 @@
 		</attribute>
 	</item>
 	<item id="3275" article="a" name="double axe">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="35" />
@@ -7072,6 +7096,7 @@
 		</attribute>
 	</item>
 	<item id="3276" article="a" name="hatchet">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="15" />
 		<attribute key="defense" value="8" />
@@ -7109,6 +7134,7 @@
 		</attribute>
 	</item>
 	<item id="3279" article="a" name="war hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="45" />
@@ -7129,6 +7155,7 @@
 		</attribute>
 	</item>
 	<item id="3280" article="a" name="fire sword">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="The blade is a magic flame" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="elementfire" value="11" />
@@ -7144,6 +7171,7 @@
 		</attribute>
 	</item>
 	<item id="3281" article="a" name="giant sword">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This sword has been forged by ancient giants" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
@@ -7165,6 +7193,7 @@
 		</attribute>
 	</item>
 	<item id="3282" article="a" name="morning star">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="25" />
 		<attribute key="defense" value="11" />
@@ -7175,6 +7204,7 @@
 		</attribute>
 	</item>
 	<item id="3283" article="a" name="carlin sword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="15" />
 		<attribute key="extradef" value="1" />
@@ -7200,6 +7230,7 @@
 		</attribute>
 	</item>
 	<item id="3285" article="a" name="longsword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="17" />
 		<attribute key="defense" value="14" />
@@ -7210,6 +7241,7 @@
 		</attribute>
 	</item>
 	<item id="3286" article="a" name="mace">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="16" />
 		<attribute key="defense" value="11" />
@@ -7233,12 +7265,14 @@
 		</attribute>
 	</item>
 	<item id="3288" article="a" name="magic sword">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="It's the Sword of Valor" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="48" />
 		<attribute key="extradef" value="3" />
 		<attribute key="defense" value="35" />
 		<attribute key="weight" value="4200" />
+		<attribute key="classification" value="2"/>
 		<attribute key="imbuementslot" value="2">
 			<attribute key="elemental damage" value="3" />
 			<attribute key="life leech" value="3" />
@@ -7264,6 +7298,7 @@
 		</attribute>
 	</item>
 	<item id="3290" article="a" name="silver dagger">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="9" />
 		<attribute key="defense" value="7" />
@@ -7274,6 +7309,7 @@
 		</attribute>
 	</item>
 	<item id="3291" article="a" name="knife">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -7284,6 +7320,7 @@
 		</attribute>
 	</item>
 	<item id="3292" article="a" name="combat knife">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="8" />
 		<attribute key="defense" value="6" />
@@ -7294,6 +7331,7 @@
 		</attribute>
 	</item>
 	<item id="3293" article="a" name="sickle">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="4" />
@@ -7304,6 +7342,7 @@
 		</attribute>
 	</item>
 	<item id="3294" article="a" name="short sword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="11" />
 		<attribute key="defense" value="11" />
@@ -7314,6 +7353,7 @@
 		</attribute>
 	</item>
 	<item id="3295" article="a" name="bright sword">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="The blade shimmers in light blue" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="36" />
@@ -7349,6 +7389,7 @@
 		</attribute>
 	</item>
 	<item id="3297" article="a" name="serpent sword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="elementearth" value="8" />
 		<attribute key="attack" value="18" />
@@ -7374,6 +7415,7 @@
 		</attribute>
 	</item>
 	<item id="3299" article="a" name="poison dagger">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="elementearth" value="2" />
 		<attribute key="attack" value="16" />
@@ -7385,6 +7427,7 @@
 		</attribute>
 	</item>
 	<item id="3300" article="a" name="katana">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="16" />
 		<attribute key="extradef" value="1" />
@@ -7396,6 +7439,7 @@
 		</attribute>
 	</item>
 	<item id="3301" article="a" name="broadsword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="26" />
@@ -7414,6 +7458,7 @@
 		</attribute>
 	</item>
 	<item id="3302" article="a" name="dragon lance">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="The extraordinary sharp blade penetrates every armor" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
@@ -7455,6 +7500,7 @@
 		</attribute>
 	</item>
 	<item id="3304" article="a" name="crowbar">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It may come in handy sometime" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
@@ -7466,6 +7512,7 @@
 		</attribute>
 	</item>
 	<item id="3305" article="a" name="battle hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="24" />
 		<attribute key="defense" value="14" />
@@ -7476,6 +7523,7 @@
 		</attribute>
 	</item>
 	<item id="3306" article="a" name="golden sickle">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="13" />
 		<attribute key="defense" value="6" />
@@ -7486,6 +7534,7 @@
 		</attribute>
 	</item>
 	<item id="3307" article="a" name="scimitar">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="19" />
 		<attribute key="extradef" value="1" />
@@ -7497,6 +7546,7 @@
 		</attribute>
 	</item>
 	<item id="3308" article="a" name="machete">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="12" />
 		<attribute key="defense" value="9" />
@@ -7528,6 +7578,7 @@
 		</attribute>
 	</item>
 	<item id="3310" article="an" name="iron hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="18" />
 		<attribute key="defense" value="10" />
@@ -7538,6 +7589,7 @@
 		</attribute>
 	</item>
 	<item id="3311" article="a" name="clerical mace">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="28" />
 		<attribute key="extradef" value="1" />
@@ -7579,6 +7631,7 @@
 		</attribute>
 	</item>
 	<item id="3313" article="an" name="obsidian lance">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="34" />
@@ -7591,6 +7644,7 @@
 		</attribute>
 	</item>
 	<item id="3314" article="a" name="naginata">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="39" />
@@ -7603,6 +7657,7 @@
 		</attribute>
 	</item>
 	<item id="3315" article="a" name="guardian halberd">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="46" />
@@ -7622,6 +7677,7 @@
 		</attribute>
 	</item>
 	<item id="3316" article="an" name="orcish axe">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="23" />
 		<attribute key="defense" value="12" />
@@ -7632,6 +7688,7 @@
 		</attribute>
 	</item>
 	<item id="3317" article="a" name="barbarian axe">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="28" />
 		<attribute key="extradef" value="1" />
@@ -7652,6 +7709,7 @@
 		</attribute>
 	</item>
 	<item id="3318" article="a" name="knight axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="33" />
 		<attribute key="extradef" value="1" />
@@ -7672,6 +7730,7 @@
 		</attribute>
 	</item>
 	<item id="3319" article="a" name="stonecutter axe">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="You feel the power of this mighty axe" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="50" />
@@ -7692,6 +7751,7 @@
 		</attribute>
 	</item>
 	<item id="3320" article="a" name="fire axe">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="The blade is a magic flame" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="elementfire" value="11" />
@@ -7721,6 +7781,7 @@
 		</attribute>
 	</item>
 	<item id="3322" article="a" name="dragon hammer">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="32" />
 		<attribute key="defense" value="20" />
@@ -7733,6 +7794,7 @@
 		</attribute>
 	</item>
 	<item id="3323" article="a" name="dwarven axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="31" />
 		<attribute key="extradef" value="2" />
@@ -7753,6 +7815,7 @@
 		</attribute>
 	</item>
 	<item id="3324" article="a" name="skull staff">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="The staff longs for death" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="36" />
@@ -7784,6 +7847,7 @@
 		</attribute>
 	</item>
 	<item id="3326" article="an" name="epee">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="37" />
 		<attribute key="defense" value="23" />
@@ -7803,6 +7867,7 @@
 		</attribute>
 	</item>
 	<item id="3327" article="a" name="daramian mace">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="21" />
 		<attribute key="defense" value="12" />
@@ -7813,6 +7878,7 @@
 		</attribute>
 	</item>
 	<item id="3328" article="a" name="daramian waraxe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="39" />
@@ -7836,6 +7902,7 @@
 		</attribute>
 	</item>
 	<item id="3330" article="a" name="heavy machete">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="16" />
 		<attribute key="defense" value="10" />
@@ -7865,6 +7932,7 @@
 		</attribute>
 	</item>
 	<item id="3332" article="a" name="hammer of wrath">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="A giant is said to have forged this hammer to take revenge for the death of his brother" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
@@ -7886,6 +7954,7 @@
 		</attribute>
 	</item>
 	<item id="3333" article="a" name="crystal mace">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="38" />
 		<attribute key="extradef" value="1" />
@@ -7939,6 +8008,7 @@
 		</attribute>
 	</item>
 	<item id="3336" article="a" name="studded club">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It has been reinforced with iron" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="9" />
@@ -7950,6 +8020,7 @@
 		</attribute>
 	</item>
 	<item id="3337" article="a" name="bone club">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It apparently originally belonged to some lesser undead" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="12" />
@@ -7961,6 +8032,7 @@
 		</attribute>
 	</item>
 	<item id="3338" article="a" name="bone sword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="13" />
 		<attribute key="defense" value="10" />
@@ -7991,6 +8063,7 @@
 		</attribute>
 	</item>
 	<item id="3340" article="a" name="heavy mace">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="Its tip is made of extremely solid steel" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
@@ -8011,6 +8084,7 @@
 		</attribute>
 	</item>
 	<item id="3341" article="an" name="arcane staff">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="It is enchanted with ancient magic that renders a weak staff into a powerful weapon" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
@@ -8032,6 +8106,7 @@
 		</attribute>
 	</item>
 	<item id="3342" article="a" name="war axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="48" />
@@ -8066,6 +8141,7 @@
 		</attribute>
 	</item>
 	<item id="3344" article="a" name="beastslayer axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="35" />
 		<attribute key="extradef" value="1" />
@@ -8086,6 +8162,7 @@
 		</attribute>
 	</item>
 	<item id="3345" article="a" name="templar scytheblade">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="23" />
 		<attribute key="extradef" value="1" />
@@ -8097,6 +8174,7 @@
 		</attribute>
 	</item>
 	<item id="3346" article="a" name="ripper lance">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="28" />
@@ -8122,6 +8200,7 @@
 		</attribute>
 	</item>
 	<item id="3348" article="a" name="banana staff">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="25" />
 		<attribute key="extradef" value="2" />
@@ -8133,6 +8212,7 @@
 		</attribute>
 	</item>
 	<item id="3349" article="a" name="crossbow">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="bolt" />
@@ -8150,6 +8230,7 @@
 		</attribute>
 	</item>
 	<item id="3350" article="a" name="bow">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="arrow" />
@@ -8512,6 +8593,7 @@
 		<attribute key="description" value="You hear an evil whispering from inside" />
 		<attribute key="armor" value="10" />
 		<attribute key="weight" value="2950" />
+		<attribute key="classification" value="2"/>
 		<attribute key="imbuementslot" value="2">
 			<attribute key="mana leech" value="3" />
 			<attribute key="skillboost axe" value="3" />
@@ -8527,6 +8609,7 @@
 	<item id="3388" article="a" name="demon armor">
 		<attribute key="armor" value="16" />
 		<attribute key="weight" value="8000" />
+		<attribute key="classification" value="2"/>
 		<attribute key="imbuementslot" value="2">
 			<attribute key="life leech" value="3" />
 			<attribute key="elemental protection death" value="3" />
@@ -8543,6 +8626,7 @@
 	<item id="3389" name="demon legs">
 		<attribute key="armor" value="9" />
 		<attribute key="weight" value="7000" />
+		<attribute key="classification" value="2"/>
 		<attribute key="script" value="moveevent">
 			<attribute key="slot" value="legs" />
 		</attribute>
@@ -9295,6 +9379,7 @@
 		<attribute key="weight" value="1500" />
 	</item>
 	<item id="3453" article="a" name="scythe">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="8" />
@@ -13671,6 +13756,7 @@
 		<attribute key="weight" value="1200" />
 	</item>
 	<item id="5803" article="an" name="arbalest">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="It is a bit heavy due to the iron mounting, but very precise" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
@@ -13741,8 +13827,10 @@
 	<item fromid="5854" toid="5855" article="a" name="lance">
 	</item>
 	<item fromid="5856" toid="5857" article="a" name="sword">
+		<attribute key="classification" value="1" />
 	</item>
 	<item fromid="5858" toid="5859" article="a" name="scimitar">
+		<attribute key="classification" value="1" />
 	</item>
 	<item fromid="5860" toid="5863" article="an" name="armor" />
 	<item id="5864" name="obsidian pipes" />
@@ -15920,6 +16008,7 @@
 		<attribute key="decayTo" value="0" />
 	</item>
 	<item id="6553" article="a" name="ruthless axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="50" />
@@ -17033,6 +17122,7 @@
 		</attribute>
 	</item>
 	<item id="7379" article="a" name="brutetamer's staff">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="Barbarian women are said to use it for conjuring beasts" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
@@ -17046,6 +17136,7 @@
 		</attribute>
 	</item>
 	<item id="7380" article="a" name="headchopper">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This axe is only granted to a greenhorn of the Svargrond arena" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
@@ -17067,6 +17158,7 @@
 		</attribute>
 	</item>
 	<item id="7381" article="a" name="mammoth whopper">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="Made from a mammoth's legbones, it is one of the favoured weapons among barbarians" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="30" />
@@ -17080,6 +17172,7 @@
 		</attribute>
 	</item>
 	<item id="7382" article="a" name="demonrage sword">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="47" />
@@ -17100,6 +17193,7 @@
 		</attribute>
 	</item>
 	<item id="7383" article="a" name="relic sword">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="42" />
 		<attribute key="extradef" value="1" />
@@ -17120,6 +17214,7 @@
 		</attribute>
 	</item>
 	<item id="7384" article="a" name="mystic blade">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This sword is only granted to a scrapper of the Svargrond arena" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="44" />
@@ -17141,6 +17236,7 @@
 		</attribute>
 	</item>
 	<item id="7385" article="a" name="crimson sword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="28" />
 		<attribute key="extradef" value="1" />
@@ -17161,6 +17257,7 @@
 		</attribute>
 	</item>
 	<item id="7386" article="a" name="mercenary sword">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This axe is only granted to a scrapper of the Svargrond arena." />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
@@ -17175,6 +17272,7 @@
 		</attribute>
 	</item>
 	<item id="7387" article="a" name="diamond sceptre">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="The beautiful jewel on the top of this sceptre is sharp enough to cut through glass" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="34" />
@@ -17188,6 +17286,7 @@
 		</attribute>
 	</item>
 	<item id="7388" article="a" name="vile axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="43" />
 		<attribute key="extradef" value="3" />
@@ -17201,6 +17300,7 @@
 		</attribute>
 	</item>
 	<item id="7389" article="a" name="heroic axe">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This axe is only granted to a scrapper of the Svargrond arena" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="44" />
@@ -17236,6 +17336,7 @@
 		</attribute>
 	</item>
 	<item id="7391" article="a" name="thaian sword">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="45" />
@@ -17256,6 +17357,7 @@
 		</attribute>
 	</item>
 	<item id="7392" article="an" name="orcish maul">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This club is only granted to a greenhorn of the Svargrond arena" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
@@ -17303,6 +17405,7 @@
 		<attribute key="weight" value="500" />
 	</item>
 	<item id="7402" article="a" name="dragon slayer">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="44" />
@@ -17323,6 +17426,7 @@
 		</attribute>
 	</item>
 	<item id="7403" article="a" name="berserker">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="48" />
@@ -17343,6 +17447,7 @@
 		</attribute>
 	</item>
 	<item id="7404" article="an" name="assassin dagger">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="40" />
 		<attribute key="extradef" value="-2" />
@@ -17383,6 +17488,7 @@
 		</attribute>
 	</item>
 	<item id="7406" article="a" name="blacksteel sword">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This sword is only granted to a greenhorn of the Svargrond arena" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
@@ -17404,6 +17510,7 @@
 		</attribute>
 	</item>
 	<item id="7407" article="a" name="haunted blade">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="40" />
@@ -17424,6 +17531,7 @@
 		</attribute>
 	</item>
 	<item id="7408" article="a" name="wyvern fang">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="32" />
 		<attribute key="extradef" value="1" />
@@ -17444,6 +17552,7 @@
 		</attribute>
 	</item>
 	<item id="7409" article="a" name="northern star">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="42" />
 		<attribute key="extradef" value="1" />
@@ -17476,6 +17585,7 @@
 		</attribute>
 	</item>
 	<item id="7411" article="an" name="ornamented axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="42" />
 		<attribute key="extradef" value="2" />
@@ -17489,6 +17599,7 @@
 		</attribute>
 	</item>
 	<item id="7412" article="a" name="butcher's axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="41" />
 		<attribute key="extradef" value="-2" />
@@ -17509,6 +17620,7 @@
 		</attribute>
 	</item>
 	<item id="7413" article="a" name="titan axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="43" />
@@ -17522,6 +17634,7 @@
 		</attribute>
 	</item>
 	<item id="7414" article="an" name="abyss hammer">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="Floating stones form the tip of this strange weapon, held in place by unspeakable magic" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
@@ -17543,6 +17656,7 @@
 		</attribute>
 	</item>
 	<item id="7415" article="a" name="cranial basher">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This club is only granted to a scrapper of the Svargrond arena" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="44" />
@@ -17564,6 +17678,7 @@
 		</attribute>
 	</item>
 	<item id="7416" article="a" name="bloody edge">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="43" />
 		<attribute key="extradef" value="-3" />
@@ -17584,6 +17699,7 @@
 		</attribute>
 	</item>
 	<item id="7417" article="a" name="runed sword">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="45" />
 		<attribute key="extradef" value="2" />
@@ -17604,6 +17720,7 @@
 		</attribute>
 	</item>
 	<item id="7418" article="a" name="nightmare blade">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="46" />
 		<attribute key="extradef" value="-3" />
@@ -17624,6 +17741,7 @@
 		</attribute>
 	</item>
 	<item id="7419" article="a" name="dreaded cleaver">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="40" />
 		<attribute key="extradef" value="-3" />
@@ -17657,6 +17775,7 @@
 		</attribute>
 	</item>
 	<item id="7421" article="an" name="onyx flail">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="45" />
 		<attribute key="defense" value="18" />
@@ -17676,6 +17795,7 @@
 		</attribute>
 	</item>
 	<item id="7422" article="a" name="jade hammer">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="46" />
 		<attribute key="extradef" value="1" />
@@ -17709,6 +17829,7 @@
 		</attribute>
 	</item>
 	<item id="7424" article="a" name="lunar staff">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="40" />
@@ -17728,6 +17849,7 @@
 		</attribute>
 	</item>
 	<item id="7425" article="a" name="taurus mace">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="30" />
@@ -17740,6 +17862,7 @@
 		</attribute>
 	</item>
 	<item id="7426" article="an" name="amber staff">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="43" />
@@ -17759,6 +17882,7 @@
 		</attribute>
 	</item>
 	<item id="7427" article="a" name="chaos mace">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="Only those who have descended to the deepest depths may wield this hammer without it cursing them" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
@@ -17772,6 +17896,7 @@
 		</attribute>
 	</item>
 	<item id="7428" article="a" name="bonebreaker">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This weapon has to be swung in both hands and requires a lot of strength" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
@@ -17786,6 +17911,7 @@
 		</attribute>
 	</item>
 	<item id="7429" article="a" name="blessed sceptre">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This sceptre is only granted to a warlord of the Svargrond arena" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="47" />
@@ -17807,6 +17933,7 @@
 		</attribute>
 	</item>
 	<item id="7430" article="a" name="dragonbone staff">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="Small flames are dancing around this strange weapon" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="35" />
@@ -17847,6 +17974,7 @@
 		</attribute>
 	</item>
 	<item id="7432" article="a" name="furry club">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="31" />
 		<attribute key="extradef" value="1" />
@@ -17873,6 +18001,7 @@
 		</attribute>
 	</item>
 	<item id="7434" article="a" name="royal axe">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This axe is only granted to a warlord of the Svargrond arena" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="47" />
@@ -17914,6 +18043,7 @@
 		</attribute>
 	</item>
 	<item id="7436" article="an" name="angelic axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="44" />
@@ -17927,6 +18057,7 @@
 		</attribute>
 	</item>
 	<item id="7437" article="a" name="sapphire hammer">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="A beautiful gem is embedded in this weapon" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="37" />
@@ -17947,6 +18078,7 @@
 		</attribute>
 	</item>
 	<item id="7438" article="an" name="elvish bow">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This beautifully ornamented bow was made by a skilled elvish bowmaker" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
@@ -18000,6 +18132,7 @@
 		<attribute key="weight" value="1000" />
 	</item>
 	<item id="7449" article="a" name="crystal sword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="35" />
@@ -18026,6 +18159,7 @@
 		</attribute>
 	</item>
 	<item id="7451" article="a" name="shadow sceptre">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="39" />
 		<attribute key="defense" value="17" />
@@ -18045,6 +18179,7 @@
 		</attribute>
 	</item>
 	<item id="7452" article="a" name="spiked squelcher">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="41" />
@@ -18085,6 +18220,7 @@
 		</attribute>
 	</item>
 	<item id="7454" article="a" name="glorious axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="40" />
@@ -18118,6 +18254,7 @@
 		</attribute>
 	</item>
 	<item id="7456" article="a" name="noble axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="39" />
 		<attribute key="defense" value="22" />
@@ -18551,6 +18688,7 @@
 		<attribute key="weight" value="100000" />
 	</item>
 	<item id="7773" article="a" name="steel axe">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="21" />
 		<attribute key="defense" value="10" />
@@ -18561,6 +18699,7 @@
 		</attribute>
 	</item>
 	<item id="7774" article="a" name="jagged sword">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="21" />
 		<attribute key="extradef" value="1" />
@@ -18895,6 +19034,7 @@
 		<attribute key="weight" value="1200" />
 	</item>
 	<item id="8021" article="a" name="modified crossbow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="bolt" />
@@ -19024,6 +19164,7 @@
 		</attribute>
 	</item>
 	<item id="8027" article="a" name="composite hornbow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="arrow" />
@@ -19060,6 +19201,7 @@
 		</attribute>
 	</item>
 	<item id="8029" article="a" name="silkweaver bow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="arrow" />
@@ -19558,6 +19700,7 @@
 		</attribute>
 	</item>
 	<item id="8082" article="an" name="underworld rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="No one knows which hell this unholy rod comes from" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="death" />
@@ -19580,6 +19723,7 @@
 		</attribute>
 	</item>
 	<item id="8083" article="a" name="northwind rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It was made by one of the shamans in Svargrond and symbolises an icy mammoth" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="smallice" />
@@ -19602,6 +19746,7 @@
 		</attribute>
 	</item>
 	<item id="8084" article="a" name="springsprout rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It is filled with the energy of growing plants" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="smallearth" />
@@ -19634,6 +19779,7 @@
 		<attribute key="description" value="It is Yandur's healing rune. You can't remove it from his house, but you may use it." />
 	</item>
 	<item id="8092" article="a" name="wand of starstorm">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It is sparkling with universal energy" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="energy" />
@@ -19656,6 +19802,7 @@
 		</attribute>
 	</item>
 	<item id="8093" article="a" name="wand of draconia">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This wand holds the spirit and soul of a dragon lord" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="fire" />
@@ -19678,6 +19825,7 @@
 		</attribute>
 	</item>
 	<item id="8094" article="a" name="wand of voodoo">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="It is filled with the dark hatred and rage of a tormented demonic being" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="death" />
@@ -22241,6 +22389,7 @@
 		</attribute>
 	</item>
 	<item id="9373" name="glutton's mace">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="It would be an awesome weapon if the handle weren't that greasy" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="16" />
@@ -22268,6 +22417,7 @@
 		</attribute>
 	</item>
 	<item id="9375" article="a" name="pointed rabbitslayer">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="Someone has sharpened this carrot to inflict some nasty damage especially on rabbits" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="16" />
@@ -22279,6 +22429,7 @@
 		</attribute>
 	</item>
 	<item id="9376" article="a" name="stale bread of ancientness">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This bread is so old that it has become unbreakable and a formidable weapon" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="18" />
@@ -22308,6 +22459,7 @@
 		</attribute>
 	</item>
 	<item id="9378" article="a" name="musician's bow">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="If you could only figure out how you are supposed to fire more arrows at once" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
@@ -22401,6 +22553,7 @@
 		</attribute>
 	</item>
 	<item id="9384" article="a" name="scythe of the reaper">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This scythe has harvested countless souls and still hungers for more" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
@@ -22412,6 +22565,7 @@
 		</attribute>
 	</item>
 	<item id="9385" article="a" name="club of the fury">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="It's ready to unleash a fury's wrath on its enemies" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="16" />
@@ -22423,6 +22577,7 @@
 		</attribute>
 	</item>
 	<item id="9386" article="a" name="farmer's avenger">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="A weapon forged to fight oppression of the poor underdogs" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
@@ -22434,6 +22589,7 @@
 		</attribute>
 	</item>
 	<item id="9387" article="a" name="poet's fencing quill">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This feather is mightier than a sword" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="10" />
@@ -22492,6 +22648,7 @@
 		<attribute key="weight" value="500" />
 	</item>
 	<item id="9396" article="an" name="incredible mumpiz slayer">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="This magnificent weapon was forged to slay arch mumpiz demons with a single blow" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="17" />
@@ -24025,6 +24182,7 @@
 		</attribute>
 	</item>
 	<item id="10388" article="a" name="drakinata">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="47" />
@@ -24064,6 +24222,7 @@
 		</attribute>
 	</item>
 	<item id="10390" article="a" name="Zaoan sword">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="43" />
 		<attribute key="extradef" value="2" />
@@ -24104,6 +24263,7 @@
 		</attribute>
 	</item>
 	<item id="10392" article="a" name="twin hooks">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="32" />
@@ -24181,6 +24341,7 @@
 		<attribute key="weight" value="120" />
 	</item>
 	<item id="10406" article="a" name="Zaoan halberd">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="37" />
@@ -25502,6 +25663,7 @@
 		<attribute key="decayTo" value="0" />
 	</item>
 	<item id="11657" article="a" name="twiceslicer">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="47" />
@@ -25738,6 +25900,7 @@
 		</attribute>
 	</item>
 	<item id="11693" article="a" name="blade of corruption">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="48" />
 		<attribute key="extradef" value="2" />
@@ -27132,6 +27295,7 @@
 		<attribute key="weight" value="4000" />
 	</item>
 	<item id="12683" article="a" name="heavy trident">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="35" />
@@ -28199,6 +28363,7 @@
 		<attribute key="decayTo" value="0" />
 	</item>
 	<item id="13987" article="a" name="deepling staff">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="43" />
@@ -28224,6 +28389,7 @@
 		</attribute>
 	</item>
 	<item id="13991" article="a" name="deepling axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="49" />
 		<attribute key="defense" value="29" />
@@ -28366,6 +28532,7 @@
 		</attribute>
 	</item>
 	<item id="14001" article="an" name="ornate mace">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="49" />
 		<attribute key="defense" value="24" />
@@ -28523,6 +28690,7 @@
 	</item>
 	<item id="14039" name="RESERVED SPRITE" />
 	<item id="14040" article="a" name="warrior's axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="42" />
 		<attribute key="defense" value="21" />
@@ -28562,6 +28730,7 @@
 		</attribute>
 	</item>
 	<item id="14043" article="a" name="guardian axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="46" />
@@ -28677,6 +28846,7 @@
 		</attribute>
 	</item>
 	<item id="14089" article="a" name="hive scythe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="46" />
 		<attribute key="defense" value="24" />
@@ -28863,6 +29033,7 @@
 		<attribute key="weight" value="9500" />
 	</item>
 	<item id="14246" article="a" name="hive bow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="arrow" />
@@ -28885,6 +29056,7 @@
 		</attribute>
 	</item>
 	<item id="14247" article="an" name="ornate crossbow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="bolt" />
@@ -28920,6 +29092,7 @@
 		</attribute>
 	</item>
 	<item id="14250" article="a" name="deepling squelcher">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="44" />
 		<attribute key="defense" value="28" />
@@ -30059,6 +30232,7 @@
 		<attribute key="weight" value="1000" />
 	</item>
 	<item id="16096" article="a" name="wand of defiance">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="It reveals devastating energy arcs" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="energy" />
@@ -30259,6 +30433,7 @@
 		</attribute>
 	</item>
 	<item id="16115" article="a" name="wand of everblazing">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="It contains the everblazing fire" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="fire" />
@@ -30290,6 +30465,7 @@
 		</attribute>
 	</item>
 	<item id="16117" article="a" name="muck rod">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="A true staff of old, spitting slimy orbs" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="smallearth" />
@@ -30308,6 +30484,7 @@
 		</attribute>
 	</item>
 	<item id="16118" article="a" name="glacial rod">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="Hurls the icy essence of the Svargrond glaciers" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="smallice" />
@@ -30490,6 +30667,7 @@
 	</item>
 	<item fromid="16156" toid="16159" name="RESERVED SPRITE" />
 	<item id="16160" article="a" name="crystalline sword">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="47" />
 		<attribute key="extradef" value="1" />
@@ -30503,6 +30681,7 @@
 		</attribute>
 	</item>
 	<item id="16161" article="a" name="crystalline axe">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="Even in the light of day, the stars seem to reflect in each facet of this crystalline axe" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="skillaxe" value="1" />
@@ -30525,6 +30704,7 @@
 		</attribute>
 	</item>
 	<item id="16162" article="a" name="mycological mace">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="skillclub" value="1" />
 		<attribute key="attack" value="50" />
@@ -30546,6 +30726,7 @@
 		</attribute>
 	</item>
 	<item id="16163" article="a" name="crystal crossbow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="bolt" />
@@ -30561,6 +30742,7 @@
 		</attribute>
 	</item>
 	<item id="16164" article="a" name="mycological bow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="arrow" />
@@ -30610,6 +30792,7 @@
 	<item id="16174" name="crystal glass floor">
 	</item>
 	<item id="16175" article="a" name="shiny blade">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="skillsword" value="1" />
 		<attribute key="attack" value="49" />
@@ -31772,6 +31955,7 @@
 	</item>
 	<item id="17811" name="RESERVED SPRITE" />
 	<item id="17812" article="a" name="ratana">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="27" />
 		<attribute key="extradef" value="1" />
@@ -31785,6 +31969,7 @@
 		</attribute>
 	</item>
 	<item id="17813" article="a" name="life preserver">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="27" />
 		<attribute key="extradef" value="2" />
@@ -31830,6 +32015,7 @@
 		<attribute key="weight" value="350" />
 	</item>
 	<item id="17824" article="a" name="swampling club">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="17" />
 		<attribute key="defense" value="12" />
@@ -31946,6 +32132,7 @@
 		<attribute key="weight" value="200" />
 	</item>
 	<item id="17859" article="a" name="spiky club">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="31" />
 		<attribute key="defense" value="14" />
@@ -35008,6 +35195,7 @@
 		<attribute key="weight" value="850" />
 	</item>
 	<item id="19362" article="an" name="icicle bow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="arrow" />
@@ -35146,6 +35334,7 @@
 	</item>
 	<item id="19399" name="RESERVED SPRITE" />
 	<item id="19400" name="arcane staff">
+		<attribute key="classification" value="2" />
 		<attribute key="attack" value="50" />
 		<attribute key="defense" value="30" />
 		<attribute key="weight" value="4000" />
@@ -35373,6 +35562,7 @@
 		<attribute key="weight" value="390" />
 	</item>
 	<item id="20064" article="a" name="crude umbral blade">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="48" />
 		<attribute key="extradef" value="1" />
@@ -35430,6 +35620,7 @@
 		</attribute>
 	</item>
 	<item id="20067" article="a" name="crude umbral slayer">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="51" />
@@ -35484,6 +35675,7 @@
 		</attribute>
 	</item>
 	<item id="20070" article="a" name="crude umbral axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="49" />
 		<attribute key="extradef" value="1" />
@@ -35541,6 +35733,7 @@
 		</attribute>
 	</item>
 	<item id="20073" article="a" name="crude umbral chopper">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="51" />
@@ -35595,6 +35788,7 @@
 		</attribute>
 	</item>
 	<item id="20076" article="a" name="crude umbral mace">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="48" />
 		<attribute key="extradef" value="1" />
@@ -35652,6 +35846,7 @@
 		</attribute>
 	</item>
 	<item id="20079" article="a" name="crude umbral hammer">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="51" />
@@ -35706,6 +35901,7 @@
 		</attribute>
 	</item>
 	<item id="20082" article="a" name="crude umbral bow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="arrow" />
@@ -35766,6 +35962,7 @@
 		</attribute>
 	</item>
 	<item id="20085" article="a" name="crude umbral crossbow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="bolt" />
@@ -37232,6 +37429,7 @@
 		</attribute>
 	</item>
 	<item id="21171" article="a" name="metal bat">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="44" />
 		<attribute key="defense" value="20" />
@@ -37244,6 +37442,7 @@
 		</attribute>
 	</item>
 	<item id="21172" article="a" name="glooth whip">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="33" />
 		<attribute key="defense" value="19" />
@@ -37263,6 +37462,7 @@
 		</attribute>
 	</item>
 	<item id="21173" article="a" name="moohtant cudgel">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="47" />
@@ -37275,6 +37475,7 @@
 		</attribute>
 	</item>
 	<item id="21174" article="a" name="mino lance">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="40" />
 		<attribute key="defense" value="23" />
@@ -37295,6 +37496,7 @@
 		</attribute>
 	</item>
 	<item id="21176" article="an" name="execowtioner axe">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="46" />
@@ -37307,6 +37509,7 @@
 		</attribute>
 	</item>
 	<item id="21177" article="a" name="cowtana">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="34" />
 		<attribute key="extradef" value="1" />
@@ -39436,6 +39639,7 @@
 		</attribute>
 	</item>
 	<item id="22171" article="an" name="ogre klubba">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="45" />
@@ -39448,6 +39652,7 @@
 		</attribute>
 	</item>
 	<item id="22172" article="an" name="ogre choppa">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="39" />
@@ -39467,6 +39672,7 @@
 		<attribute key="weight" value="3000" />
 	</item>
 	<item id="22183" article="an" name="ogre scepta">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="smallearth" />
 		<attribute key="range" value="3" />
@@ -40164,6 +40370,7 @@
 		</attribute>
 	</item>
 	<item id="22727" article="a" name="rift lance">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="48" />
@@ -40619,6 +40826,7 @@
 		<attribute key="weight" value="850" />
 	</item>
 	<item id="22866" article="a" name="rift bow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="arrow" />
@@ -40641,6 +40849,7 @@
 		</attribute>
 	</item>
 	<item id="22867" article="a" name="rift crossbow">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="bolt" />
@@ -43165,6 +43374,7 @@
 		</attribute>
 	</item>
 	<item id="25700" article="a" name="dream blossom staff">
+		<attribute key="classification" value="2" />
 		<attribute key="description" value="It's a gnarly branch with a gleaming blue blossom" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="energy" />
@@ -43807,6 +44017,7 @@
 		<attribute key="weight" value="77500" />
 	</item>
 	<item id="25915" article="a" name="fiery spike sword replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43817,6 +44028,7 @@
 		</attribute>
 	</item>
 	<item id="25916" article="a" name="fiery relic sword replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43827,6 +44039,7 @@
 		</attribute>
 	</item>
 	<item id="25917" article="a" name="fiery mystic blade replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43837,6 +44050,7 @@
 		</attribute>
 	</item>
 	<item id="25918" article="a" name="fire blacksteel replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43847,6 +44061,7 @@
 		</attribute>
 	</item>
 	<item id="25919" article="a" name="fiery dragon slayer replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43857,6 +44072,7 @@
 		</attribute>
 	</item>
 	<item id="25920" article="a" name="fiery barbarian axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43867,6 +44083,7 @@
 		</attribute>
 	</item>
 	<item id="25921" article="a" name="fiery knight axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43877,6 +44094,7 @@
 		</attribute>
 	</item>
 	<item id="25922" article="a" name="fiery heroic axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43887,6 +44105,7 @@
 		</attribute>
 	</item>
 	<item id="25923" article="a" name="fiery headchopper replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43897,6 +44116,7 @@
 		</attribute>
 	</item>
 	<item id="25924" article="a" name="fiery war axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43907,6 +44127,7 @@
 		</attribute>
 	</item>
 	<item id="25925" article="a" name="fiery clerical mace replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43917,6 +44138,7 @@
 		</attribute>
 	</item>
 	<item id="25926" article="a" name="fiery crystal mace replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43927,6 +44149,7 @@
 		</attribute>
 	</item>
 	<item id="25927" article="a" name="fiery basher replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43937,6 +44160,7 @@
 		</attribute>
 	</item>
 	<item id="25928" article="a" name="fiery orcish maul replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43947,6 +44171,7 @@
 		</attribute>
 	</item>
 	<item id="25929" article="a" name="fiery war hammer replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43957,6 +44182,7 @@
 		</attribute>
 	</item>
 	<item id="25930" article="an" name="icy spike sword replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43967,6 +44193,7 @@
 		</attribute>
 	</item>
 	<item id="25931" article="an" name="icy relic sword replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43977,6 +44204,7 @@
 		</attribute>
 	</item>
 	<item id="25932" article="an" name="icy mystic blade replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43987,6 +44215,7 @@
 		</attribute>
 	</item>
 	<item id="25933" article="an" name="icy blacksteel replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -43997,6 +44226,7 @@
 		</attribute>
 	</item>
 	<item id="25934" article="an" name="icy dragon slayer replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44007,6 +44237,7 @@
 		</attribute>
 	</item>
 	<item id="25935" article="an" name="icy barbarian axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44017,6 +44248,7 @@
 		</attribute>
 	</item>
 	<item id="25936" article="an" name="icy knight axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44027,6 +44259,7 @@
 		</attribute>
 	</item>
 	<item id="25937" article="an" name="icy heroic axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44037,6 +44270,7 @@
 		</attribute>
 	</item>
 	<item id="25938" article="an" name="icy headchopper replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44047,6 +44281,7 @@
 		</attribute>
 	</item>
 	<item id="25939" article="an" name="icy war axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44057,6 +44292,7 @@
 		</attribute>
 	</item>
 	<item id="25940" article="an" name="icy clerical mace replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44067,6 +44303,7 @@
 		</attribute>
 	</item>
 	<item id="25941" article="an" name="icy crystal mace replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44077,6 +44314,7 @@
 		</attribute>
 	</item>
 	<item id="25942" article="an" name="icy cranial basher replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44087,6 +44325,7 @@
 		</attribute>
 	</item>
 	<item id="25943" article="an" name="icy orcish maul replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44097,6 +44336,7 @@
 		</attribute>
 	</item>
 	<item id="25944" article="an" name="icy war hammer replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44107,6 +44347,7 @@
 		</attribute>
 	</item>
 	<item id="25945" article="an" name="earth spike sword replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44117,6 +44358,7 @@
 		</attribute>
 	</item>
 	<item id="25946" article="an" name="earth relic sword replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44127,6 +44369,7 @@
 		</attribute>
 	</item>
 	<item id="25947" article="an" name="earth mystic blade replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44137,6 +44380,7 @@
 		</attribute>
 	</item>
 	<item id="25948" article="an" name="earth blacksteel replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44147,6 +44391,7 @@
 		</attribute>
 	</item>
 	<item id="25949" article="an" name="earth slayer replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44157,6 +44402,7 @@
 		</attribute>
 	</item>
 	<item id="25950" article="an" name="earth barbaric axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44167,6 +44413,7 @@
 		</attribute>
 	</item>
 	<item id="25951" article="an" name="earth knight axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44177,6 +44424,7 @@
 		</attribute>
 	</item>
 	<item id="25952" article="an" name="earth heroic axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44187,6 +44435,7 @@
 		</attribute>
 	</item>
 	<item id="25953" article="an" name="earth headchopper replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44197,6 +44446,7 @@
 		</attribute>
 	</item>
 	<item id="25954" article="an" name="earth war axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44207,6 +44457,7 @@
 		</attribute>
 	</item>
 	<item id="25955" article="an" name="earth cleric mace replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44217,6 +44468,7 @@
 		</attribute>
 	</item>
 	<item id="25956" article="an" name="earth crystal mace replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44227,6 +44479,7 @@
 		</attribute>
 	</item>
 	<item id="25957" article="an" name="earth basher replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44237,6 +44490,7 @@
 		</attribute>
 	</item>
 	<item id="25958" article="an" name="earth orcish maul replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44247,6 +44501,7 @@
 		</attribute>
 	</item>
 	<item id="25959" article="an" name="earth war hammer replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44257,6 +44512,7 @@
 		</attribute>
 	</item>
 	<item id="25960" article="an" name="energy spike sword replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44267,6 +44523,7 @@
 		</attribute>
 	</item>
 	<item id="25961" article="an" name="energy relic sword replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44277,6 +44534,7 @@
 		</attribute>
 	</item>
 	<item id="25962" article="an" name="energy blade replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44287,6 +44545,7 @@
 		</attribute>
 	</item>
 	<item id="25963" article="an" name="energy blacksteel replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44297,6 +44556,7 @@
 		</attribute>
 	</item>
 	<item id="25964" article="an" name="energy slayer replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44307,6 +44567,7 @@
 		</attribute>
 	</item>
 	<item id="25965" article="an" name="energy axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44317,6 +44578,7 @@
 		</attribute>
 	</item>
 	<item id="25966" article="an" name="energy knight axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44327,6 +44589,7 @@
 		</attribute>
 	</item>
 	<item id="25967" article="an" name="energy heroic axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44337,6 +44600,7 @@
 		</attribute>
 	</item>
 	<item id="25968" article="an" name="energy headchopper replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44347,6 +44611,7 @@
 		</attribute>
 	</item>
 	<item id="25969" article="an" name="energy war axe replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44357,6 +44622,7 @@
 		</attribute>
 	</item>
 	<item id="25970" article="an" name="energy cleric mace replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44367,6 +44633,7 @@
 		</attribute>
 	</item>
 	<item id="25971" article="an" name="energy mace replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44377,6 +44644,7 @@
 		</attribute>
 	</item>
 	<item id="25972" article="an" name="energy basher replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44387,6 +44655,7 @@
 		</attribute>
 	</item>
 	<item id="25973" article="an" name="energy orcish maul replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44397,6 +44666,7 @@
 		</attribute>
 	</item>
 	<item id="25974" article="an" name="energy war hammer replica">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44450,6 +44720,7 @@
 		</attribute>
 	</item>
 	<item id="25983" article="a" name="plain mayhem blade">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44460,6 +44731,7 @@
 		</attribute>
 	</item>
 	<item id="25984" article="a" name="valuable mayhem blade">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44470,6 +44742,7 @@
 		</attribute>
 	</item>
 	<item id="25985" article="an" name="ornate mayhem blade">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44480,6 +44753,7 @@
 		</attribute>
 	</item>
 	<item id="25986" article="a" name="plain mayhem slayer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44490,6 +44764,7 @@
 		</attribute>
 	</item>
 	<item id="25987" article="a" name="valuable mayhem slayer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44500,6 +44775,7 @@
 		</attribute>
 	</item>
 	<item id="25988" article="an" name="ornate mayhem slayer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44510,6 +44786,7 @@
 		</attribute>
 	</item>
 	<item id="25989" article="a" name="plain mayhem axe">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44520,6 +44797,7 @@
 		</attribute>
 	</item>
 	<item id="25990" article="a" name="valuable mayhem axe">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44530,6 +44808,7 @@
 		</attribute>
 	</item>
 	<item id="25991" article="an" name="ornate mayhem axe">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44540,6 +44819,7 @@
 		</attribute>
 	</item>
 	<item id="25992" article="a" name="plain mayhem chopper">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44550,6 +44830,7 @@
 		</attribute>
 	</item>
 	<item id="25993" article="a" name="valuable mayhem chopper">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44560,6 +44841,7 @@
 		</attribute>
 	</item>
 	<item id="25994" article="an" name="ornate mayhem chopper">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44570,6 +44852,7 @@
 		</attribute>
 	</item>
 	<item id="25995" article="a" name="plain mayhem mace">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44580,6 +44863,7 @@
 		</attribute>
 	</item>
 	<item id="25996" article="a" name="valuable mayhem mace">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44590,6 +44874,7 @@
 		</attribute>
 	</item>
 	<item id="25997" article="an" name="ornate mayhem mace">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44600,6 +44885,7 @@
 		</attribute>
 	</item>
 	<item id="25998" article="a" name="plain mayhem hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44610,6 +44896,7 @@
 		</attribute>
 	</item>
 	<item id="25999" article="a" name="valuable mayhem hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44620,6 +44907,7 @@
 		</attribute>
 	</item>
 	<item id="26000" article="an" name="ornate mayhem hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44660,36 +44948,43 @@
 		<attribute key="weight" value="6500" />
 	</item>
 	<item id="26007" article="a" name="plain mayhem wand">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26008" article="a" name="valuable mayhem wand">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26009" article="an" name="ornate mayhem wand">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26010" article="a" name="plain mayhem rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26011" article="a" name="valuable mayhem rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26012" article="an" name="ornate mayhem rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26014" article="a" name="plain remedy blade">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44700,6 +44995,7 @@
 		</attribute>
 	</item>
 	<item id="26015" article="a" name="valuable remedy blade">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44710,6 +45006,7 @@
 		</attribute>
 	</item>
 	<item id="26016" article="an" name="ornate remedy blade">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44720,6 +45017,7 @@
 		</attribute>
 	</item>
 	<item id="26017" article="a" name="plain remedy slayer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44730,6 +45028,7 @@
 		</attribute>
 	</item>
 	<item id="26018" article="a" name="valuable remedy slayer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44740,6 +45039,7 @@
 		</attribute>
 	</item>
 	<item id="26019" article="an" name="ornate remedy slayer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44750,6 +45050,7 @@
 		</attribute>
 	</item>
 	<item id="26020" article="a" name="plain remedy axe">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44760,6 +45061,7 @@
 		</attribute>
 	</item>
 	<item id="26021" article="a" name="valuable remedy axe">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44770,6 +45072,7 @@
 		</attribute>
 	</item>
 	<item id="26022" article="an" name="ornate remedy axe">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44780,6 +45083,7 @@
 		</attribute>
 	</item>
 	<item id="26023" article="a" name="plain remedy chopper">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44790,6 +45094,7 @@
 		</attribute>
 	</item>
 	<item id="26024" article="a" name="valuable remedy chopper">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44800,6 +45105,7 @@
 		</attribute>
 	</item>
 	<item id="26025" article="an" name="ornate remedy chopper">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44810,6 +45116,7 @@
 		</attribute>
 	</item>
 	<item id="26026" article="a" name="plain remedy mace">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44820,6 +45127,7 @@
 		</attribute>
 	</item>
 	<item id="26027" article="a" name="valuable remedy mace">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44830,6 +45138,7 @@
 		</attribute>
 	</item>
 	<item id="26028" article="an" name="ornate remedy mace">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44840,6 +45149,7 @@
 		</attribute>
 	</item>
 	<item id="26029" article="a" name="plain remedy hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44850,6 +45160,7 @@
 		</attribute>
 	</item>
 	<item id="26030" article="a" name="valuable remedy hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44860,6 +45171,7 @@
 		</attribute>
 	</item>
 	<item id="26031" article="an" name="ornate remedy hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44900,36 +45212,43 @@
 		<attribute key="weight" value="6500" />
 	</item>
 	<item id="26038" article="a" name="plain remedy wand">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26039" article="a" name="valuable remedy wand">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26040" article="an" name="ornate remedy wand">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26041" article="a" name="plain remedy rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26042" article="a" name="valuable remedy rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26043" article="an" name="ornate remedy rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26044" article="a" name="plain carving blade">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44940,6 +45259,7 @@
 		</attribute>
 	</item>
 	<item id="26045" article="a" name="valuable carving blade">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44950,6 +45270,7 @@
 		</attribute>
 	</item>
 	<item id="26046" article="an" name="ornate carving blade">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44960,6 +45281,7 @@
 		</attribute>
 	</item>
 	<item id="26047" article="a" name="plain carving slayer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44970,6 +45292,7 @@
 		</attribute>
 	</item>
 	<item id="26048" article="a" name="valuable carving slayer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44980,6 +45303,7 @@
 		</attribute>
 	</item>
 	<item id="26049" article="an" name="ornate carving slayer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -44990,6 +45314,7 @@
 		</attribute>
 	</item>
 	<item id="26050" article="a" name="plain carving axe">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45000,6 +45325,7 @@
 		</attribute>
 	</item>
 	<item id="26051" article="a" name="valuable carving axe">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45010,6 +45336,7 @@
 		</attribute>
 	</item>
 	<item id="26052" article="an" name="ornate carving axe">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45020,6 +45347,7 @@
 		</attribute>
 	</item>
 	<item id="26053" article="a" name="plain carving chopper">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45030,6 +45358,7 @@
 		</attribute>
 	</item>
 	<item id="26054" article="a" name="valuable carving chopper">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45040,6 +45369,7 @@
 		</attribute>
 	</item>
 	<item id="26055" article="an" name="ornate carving chopper">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45050,6 +45380,7 @@
 		</attribute>
 	</item>
 	<item id="26056" article="a" name="plain carving mace">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45060,6 +45391,7 @@
 		</attribute>
 	</item>
 	<item id="26057" article="a" name="valuable carving mace">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45070,6 +45402,7 @@
 		</attribute>
 	</item>
 	<item id="26058" article="an" name="ornate carving mace">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45080,6 +45413,7 @@
 		</attribute>
 	</item>
 	<item id="26059" article="a" name="plain carving hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45090,6 +45424,7 @@
 		</attribute>
 	</item>
 	<item id="26060" article="a" name="valuable carving hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45100,6 +45435,7 @@
 		</attribute>
 	</item>
 	<item id="26061" article="an" name="ornate carving hammer">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="5" />
@@ -45140,31 +45476,37 @@
 		<attribute key="weight" value="6500" />
 	</item>
 	<item id="26068" article="a" name="plain carving wand">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26069" article="a" name="valuable carving wand">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26070" article="an" name="ornate carving wand">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26071" article="a" name="plain carving rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26072" article="a" name="valuable carving rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks heavily charged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
 	</item>
 	<item id="26073" article="an" name="ornate carving rod">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="This replica looks overcharged" />
 		<attribute key="range" value="3" />
 		<attribute key="weight" value="3500" />
@@ -45649,6 +45991,7 @@
 		<attribute key="containersize" value="6" />
 	</item>
 	<item id="27449" article="a" name="blade of destruction">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="50" />
 		<attribute key="defense" value="33" />
@@ -45669,6 +46012,7 @@
 		</attribute>
 	</item>
 	<item id="27450" article="a" name="slayer of destruction">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="52" />
@@ -45689,6 +46033,7 @@
 		</attribute>
 	</item>
 	<item id="27451" article="an" name="axe of destruction">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="attack" value="51" />
 		<attribute key="defense" value="31" />
@@ -45709,6 +46054,7 @@
 		</attribute>
 	</item>
 	<item id="27452" article="a" name="chopper of destruction">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="52" />
@@ -45729,6 +46075,7 @@
 		</attribute>
 	</item>
 	<item id="27453" article="a" name="mace of destruction">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="attack" value="50" />
 		<attribute key="defense" value="32" />
@@ -45749,6 +46096,7 @@
 		</attribute>
 	</item>
 	<item id="27454" article="a" name="hammer of destruction">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="attack" value="53" />
@@ -45769,6 +46117,7 @@
 		</attribute>
 	</item>
 	<item id="27455" article="a" name="bow of destruction">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="arrow" />
@@ -45791,6 +46140,7 @@
 		</attribute>
 	</item>
 	<item id="27456" article="a" name="crossbow of destruction">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="ammotype" value="bolt" />
@@ -45813,6 +46163,7 @@
 		</attribute>
 	</item>
 	<item id="27457" article="a" name="wand of destruction">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="energy" />
 		<attribute key="magiclevelpoints" value="1" />
@@ -45836,6 +46187,7 @@
 		</attribute>
 	</item>
 	<item id="27458" article="a" name="rod of destruction">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="wand" />
 		<attribute key="shootType" value="smallice" />
 		<attribute key="magiclevelpoints" value="1" />
@@ -48799,6 +49151,7 @@
 	<item fromid="29277" toid="29285" article="a" name="fountain">
 	</item>
 	<item id="29286" article="a" name="golden axe">
+		<attribute key="classification" value="1" />
 		<attribute key="description" value="Forged and wielded by a long forgotten dwarf with a heart as black as an adder" />
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
@@ -50339,6 +50692,7 @@
 		<attribute key="weight" value="850" />
 	</item>
 	<item id="30283" article="an" name="ice hatchet">
+		<attribute key="classification" value="2" />
 		<attribute key="elementice" value="11" />
 		<attribute key="attack" value="4" />
 		<attribute key="defense" value="8" />
@@ -52385,6 +52739,7 @@
 		<attribute key="weight" value="4500" />
 	</item>
 	<item id="31614" article="a" name="tagralt blade">
+		<attribute key="classification" value="2" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="elementearth" value="49" />
@@ -73549,6 +73904,7 @@
 		<attribute key="weight" value="20" />
 	</item>
 	<item id="51475" article="a" name="ritual bone knife">
+		<attribute key="classification" value="1" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="attack" value="5" />
 		<attribute key="defense" value="1" />
@@ -73956,6 +74312,7 @@
 		<attribute key="weight" value="120" />
 	</item>
 	<item id="51666" name="ink sword">
+		<attribute key="classification" value="1" />
 		<attribute key="attack" value="14" />
 		<attribute key="weight" value="3510" />
 		<attribute key="imbuementslot" value="2" />

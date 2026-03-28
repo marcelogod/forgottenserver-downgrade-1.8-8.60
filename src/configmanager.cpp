@@ -453,6 +453,19 @@ bool ConfigManager::load()
 	floats[OFFLINE_TRAINING_MONK_MELEE] = getGlobalFloat(L, "offlineTrainingMonkMelee", 0.5f);
 	floats[OFFLINE_TRAINING_MONK_SHIELD] = getGlobalFloat(L, "offlineTrainingMonkShield", 0.5f);
 
+	floats[FORGE_FATAL_A] = getGlobalFloat(L, "forgeFatalA", 0.05f);
+	floats[FORGE_FATAL_B] = getGlobalFloat(L, "forgeFatalB", 0.4f);
+	floats[FORGE_FATAL_C] = getGlobalFloat(L, "forgeFatalC", 0.05f);
+	floats[FORGE_DODGE_A] = getGlobalFloat(L, "forgeDodgeA", 0.0307576f);
+	floats[FORGE_DODGE_B] = getGlobalFloat(L, "forgeDodgeB", 0.440697f);
+	floats[FORGE_DODGE_C] = getGlobalFloat(L, "forgeDodgeC", 0.026f);
+	floats[FORGE_MOMENTUM_A] = getGlobalFloat(L, "forgeMomentumA", 0.05f);
+	floats[FORGE_MOMENTUM_B] = getGlobalFloat(L, "forgeMomentumB", 1.9f);
+	floats[FORGE_MOMENTUM_C] = getGlobalFloat(L, "forgeMomentumC", 0.05f);
+	floats[FORGE_TRANSCENDENCE_A] = getGlobalFloat(L, "forgeTranscendenceA", 0.0127f);
+	floats[FORGE_TRANSCENDENCE_B] = getGlobalFloat(L, "forgeTranscendenceB", 0.1070f);
+	floats[FORGE_TRANSCENDENCE_C] = getGlobalFloat(L, "forgeTranscendenceC", 0.0073f);
+
 	integers[Integer::NEW_PLAYER_SPAWN_POS_X] = getGlobalInteger(L, "newPlayerSpawnPosX", 0);
 	integers[Integer::NEW_PLAYER_SPAWN_POS_Y] = getGlobalInteger(L, "newPlayerSpawnPosY", 0);
 	integers[Integer::NEW_PLAYER_SPAWN_POS_Z] = getGlobalInteger(L, "newPlayerSpawnPosZ", 0);

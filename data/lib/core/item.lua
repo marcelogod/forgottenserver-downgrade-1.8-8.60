@@ -399,12 +399,43 @@ do
 			if reduceSkillLoss > 0 then descriptions[#descriptions + 1] = fmt("reduces skill loss by %d%%", reduceSkillLoss) end
 		end
 
-		-- classification and tier
+		-- classification and tier + forge abilities
+		local forgeDescriptions = {}
 		do
 			local classification = item:getClassification()
 			local tier = item:getTier()
 			if classification > 0 then
-				descriptions[#descriptions + 1] = fmt("Classification: %d Tier: %d", classification, tier)
+				forgeDescriptions[#forgeDescriptions + 1] = fmt("Classification: %d Tier: %d", classification, tier)
+			end
+
+			if tier > 0 and not isVirtual then
+				-- Show forge ability based on item slot
+				local slotPos = itemType:getSlotPosition()
+				local fatalChance = item:getFatalChance()
+				local dodgeChance = item:getDodgeChance()
+				local momentumChance = item:getMomentumChance()
+				local transcendenceChance = item:getTranscendenceChance()
+
+				-- Weapon (hand slot) -> Onslaught
+				if fatalChance > 0 and item:getAttack() > 0 then
+					forgeDescriptions[#forgeDescriptions + 1] = fmt("Onslaught: %.2f%%", fatalChance)
+				end
+				-- Armor -> Ruse (Dodge)
+				if dodgeChance > 0 and (bit.band(slotPos, SLOTP_ARMOR) ~= 0) then
+					forgeDescriptions[#forgeDescriptions + 1] = fmt("Ruse: %.2f%%", dodgeChance)
+				end
+				-- Helmet -> Momentum
+				if momentumChance > 0 and (bit.band(slotPos, SLOTP_HEAD) ~= 0) then
+					forgeDescriptions[#forgeDescriptions + 1] = fmt("Momentum: %.2f%%", momentumChance)
+				end
+				-- Legs -> Transcendence
+				if transcendenceChance > 0 and (bit.band(slotPos, SLOTP_LEGS) ~= 0) then
+					forgeDescriptions[#forgeDescriptions + 1] = fmt("Transcendence: %.2f%%", transcendenceChance)
+				end
+				-- Boots -> (amplifies other abilities)
+				if momentumChance > 0 and (bit.band(slotPos, SLOTP_FEET) ~= 0) then
+					forgeDescriptions[#forgeDescriptions + 1] = fmt("Amplification: %.2f%%", momentumChance)
+				end
 			end
 		end
 
@@ -670,6 +701,8 @@ do
 
 		-- primary attributes parenthesis
 		if #descriptions > 0 then response[#response + 1] = fmt(" (%s)", concat(descriptions, ", ")) end
+
+		if #forgeDescriptions > 0 then response[#response + 1] = fmt(".\n%s", concat(forgeDescriptions, ", ")) end
 
 		-- charges and duration
 		do
