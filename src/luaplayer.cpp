@@ -2981,6 +2981,59 @@ int luaPlayerSetHelmetCooldownReduction(lua_State *L)
 	return 1;
 }
 
+// reset system
+int luaPlayerGetReset(lua_State* L)
+{
+	// player:getReset()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->getReset());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaPlayerDoReset(lua_State* L)
+{
+	// player:doReset()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->doReset();
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaPlayerSetReset(lua_State* L)
+{
+	// player:setReset(reset)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		uint32_t reset = getNumber<uint32_t>(L, 2);
+		player->setReset(reset);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaPlayerReloadWarList(lua_State* L)
+{
+	// player:reloadWarList()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->reloadWarList();
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 } // namespace
 
 int LuaScriptInterface::luaPlayerSendAutoLootWindow(lua_State* L)
@@ -3506,6 +3559,12 @@ void LuaScriptInterface::registerPlayer()
 	// Forge Momentum
 	registerMethod("Player", "getHelmetCooldownReduction", luaPlayerGetHelmetCooldownReduction);
 	registerMethod("Player", "setHelmetCooldownReduction", luaPlayerSetHelmetCooldownReduction);
+
+	// Reset system
+	registerMethod("Player", "getReset", luaPlayerGetReset);
+	registerMethod("Player", "doReset", luaPlayerDoReset);
+	registerMethod("Player", "setReset", luaPlayerSetReset);
+	registerMethod("Player", "reloadWarList", luaPlayerReloadWarList);
 
 	// OfflinePlayer
 	registerClass("OfflinePlayer", "Player", luaOfflinePlayerCreate);

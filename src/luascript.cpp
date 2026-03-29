@@ -2463,11 +2463,6 @@ void LuaScriptInterface::registerFunctions()
 	registerGlobalEvents();
 	registerWeapons();
 	registerXML();
-
-	registerMethod("Player", "getReset", LuaScriptInterface::luaPlayerGetReset); // reset system
-	registerMethod("Player", "doReset", LuaScriptInterface::luaPlayerDoReset); // reset system
-	registerMethod("Player", "setReset", LuaScriptInterface::luaPlayerSetReset); // reset system
-	registerMethod("Player", "reloadWarList", LuaScriptInterface::luaPlayerReloadWarList);
 }
 
 #undef registerEnum
@@ -3825,56 +3820,4 @@ void LuaEnvironment::executeTimerEvent(uint32_t eventIndex)
 	for (auto parameter : timerEventDesc.parameters) {
 		luaL_unref(luaState, LUA_REGISTRYINDEX, parameter);
 	}
-}
-
-int LuaScriptInterface::luaPlayerGetReset(lua_State* L) // reset system
-{
-	// player:getReset()
-	Player* player = Lua::getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushnumber(L, player->getReset());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerDoReset(lua_State* L) // reset system
-{
-	// player:doReset()
-	Player* player = Lua::getUserdata<Player>(L, 1);
-	if (player) {
-		player->doReset();
-		lua_pushboolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerSetReset(lua_State* L) // reset system
-{
-	// player:setReset(reset)
-	Player* player = Lua::getUserdata<Player>(L, 1);
-	if (player) {
-		uint32_t reset = Lua::getNumber<uint32_t>(L, 2);
-		player->setReset(reset);
-		lua_pushboolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerReloadWarList(lua_State* L)
-{
-	// player:reloadWarList()
-	Player* player = Lua::getUserdata<Player>(L, 1);
-	if (player) {
-		player->reloadWarList();
-		lua_pushboolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
 }
