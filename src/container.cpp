@@ -79,7 +79,7 @@ bool Container::unserializeItemNode(OTB::Loader& loader, const OTB::Node& node, 
 
 	for (auto& itemNode : node.children) {
 		// load container items
-		if (itemNode.type != OTBM_ITEM) {
+		if (static_cast<OTBM_NodeTypes_t>(itemNode.type) != OTBM_NodeTypes_t::ITEM) {
 			// unknown type
 			return false;
 		}

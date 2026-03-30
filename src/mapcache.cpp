@@ -335,11 +335,11 @@ std::shared_ptr<BasicItem> parseBasicItemFromStream(PropStream& propStream) {
             }
             
             // Ignored string attributes
-            case OTBM_ATTR_DESCRIPTION:
-            case OTBM_ATTR_DESC:
-            case OTBM_ATTR_EXT_FILE:
-            case OTBM_ATTR_EXT_SPAWN_FILE:
-            case OTBM_ATTR_EXT_HOUSE_FILE:
+            case tfs::to_underlying(OTBM_AttrTypes_t::DESCRIPTION):
+            case tfs::to_underlying(OTBM_AttrTypes_t::DESC):
+            case tfs::to_underlying(OTBM_AttrTypes_t::EXT_FILE):
+            case tfs::to_underlying(OTBM_AttrTypes_t::EXT_SPAWN_FILE):
+            case tfs::to_underlying(OTBM_AttrTypes_t::EXT_HOUSE_FILE):
             case ATTR_NAME:
             case ATTR_ARTICLE:
             case ATTR_PLURALNAME:
@@ -421,7 +421,7 @@ std::shared_ptr<BasicItem> MapCache::parseBasicItem(void* loaderptr, const void*
     
     // Parse children (containers)
     for (auto& childNode : node.children) {
-        if (childNode.type == OTBM_ITEM) {
+        if (static_cast<OTBM_NodeTypes_t>(childNode.type) == OTBM_NodeTypes_t::ITEM) {
             auto child = parseBasicItem(loaderptr, &childNode, item.get());
             if (child) {
                 item->items.push_back(child);
@@ -454,7 +454,7 @@ std::shared_ptr<BasicTile> MapCache::parseBasicTile(void* loaderptr, const void*
     auto tile = std::make_shared<BasicTile>();
     
     // Check for HouseTile
-    if (tileNode.type == OTBM_HOUSETILE) {
+    if (static_cast<OTBM_NodeTypes_t>(tileNode.type) == OTBM_NodeTypes_t::HOUSETILE) {
         uint32_t houseId;
         if (propStream.read<uint32_t>(houseId)) {
             tile->houseId = houseId;
@@ -466,20 +466,20 @@ std::shared_ptr<BasicTile> MapCache::parseBasicTile(void* loaderptr, const void*
     // Read tile attributes
     uint8_t attribute;
     while (propStream.read<uint8_t>(attribute)) {
-        switch (attribute) {
-            case OTBM_ATTR_TILE_FLAGS: {
+        switch (static_cast<OTBM_AttrTypes_t>(attribute)) {
+            case OTBM_AttrTypes_t::TILE_FLAGS: {
                 uint32_t flags;
                 if (propStream.read<uint32_t>(flags)) {
-                    if ((flags & OTBM_TILEFLAG_PROTECTIONZONE) != 0) tile->flags |= TILESTATE_PROTECTIONZONE;
-                    if ((flags & OTBM_TILEFLAG_NOPVPZONE) != 0) tile->flags |= TILESTATE_NOPVPZONE;
-                    if ((flags & OTBM_TILEFLAG_PVPZONE) != 0) tile->flags |= TILESTATE_PVPZONE;
-                    if ((flags & OTBM_TILEFLAG_NOLOGOUT) != 0) tile->flags |= TILESTATE_NOLOGOUT;
+                    if ((flags & tfs::to_underlying(OTBM_TileFlag_t::PROTECTIONZONE)) != 0) tile->flags |= TILESTATE_PROTECTIONZONE;
+                    if ((flags & tfs::to_underlying(OTBM_TileFlag_t::NOPVPZONE)) != 0) tile->flags |= TILESTATE_NOPVPZONE;
+                    if ((flags & tfs::to_underlying(OTBM_TileFlag_t::PVPZONE)) != 0) tile->flags |= TILESTATE_PVPZONE;
+                    if ((flags & tfs::to_underlying(OTBM_TileFlag_t::NOLOGOUT)) != 0) tile->flags |= TILESTATE_NOLOGOUT;
                 } else {
                     LOG_ERROR("[MapCache] Failed to read tile flags");
                 }
                 break;
             }
-            case OTBM_ATTR_ITEM: {
+            case OTBM_AttrTypes_t::ITEM: {
                 // Inline item
                 auto item = parseBasicItemFromStream(propStream);
                 if (item) {
@@ -500,7 +500,7 @@ std::shared_ptr<BasicTile> MapCache::parseBasicTile(void* loaderptr, const void*
     
     // Parse nested items
     for (auto& itemNode : tileNode.children) {
-        if (itemNode.type == OTBM_ITEM) {
+        if (static_cast<OTBM_NodeTypes_t>(itemNode.type) == OTBM_NodeTypes_t::ITEM) {
             auto item = parseBasicItem(loaderptr, &itemNode, nullptr);
             if (item) {
                 const ItemType& it = Item::items[item->id];

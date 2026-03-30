@@ -3169,15 +3169,15 @@ void ProtocolGame::sendFeatures()
 	if (!isOTCv8) return;
 
 	std::map<GameFeature, bool> features;
-	features[GameExtendedOpcode] = false;
-	features[GameSkillsBase] = true;
-	features[GamePlayerMounts] = true;
-	features[GameMagicEffectU16] = true;
-	features[GameOfflineTrainingTime] = true;
-	features[GameDoubleSkills] = true;
-	features[GameBaseSkillU16] = true;
-	features[GameAdditionalSkills] = true;
-	features[GameExtendedClientPing] = true;
+	features[GameFeature::ExtendedOpcode] = false;
+	features[GameFeature::SkillsBase] = true;
+	features[GameFeature::PlayerMounts] = true;
+	features[GameFeature::MagicEffectU16] = true;
+	features[GameFeature::OfflineTrainingTime] = true;
+	features[GameFeature::DoubleSkills] = true;
+	features[GameFeature::BaseSkillU16] = true;
+	features[GameFeature::AdditionalSkills] = true;
+	features[GameFeature::ExtendedClientPing] = true;
 
 	if (features.empty()) return;
 
@@ -3185,7 +3185,7 @@ void ProtocolGame::sendFeatures()
 	msg.addByte(0x43);
 	msg.add<uint16_t>(features.size());
 	for (auto& feature : features) {
-		msg.addByte((uint8_t)feature.first);
+		msg.addByte(static_cast<uint8_t>(feature.first));
 		msg.addByte(feature.second ? 1 : 0);
 	}
 	writeToOutputBuffer(msg);

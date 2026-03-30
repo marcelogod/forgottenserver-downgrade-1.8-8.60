@@ -106,7 +106,7 @@ bool IOMap::loadMap(Map* map, const std::filesystem::path& fileName) {
         map->width = root_header.width;
         map->height = root_header.height;
 
-        if (root.children.size() != 1 || root.children[0].type != OTBM_MAP_DATA) {
+        if (root.children.size() != 1 || static_cast<OTBM_NodeTypes_t>(root.children[0].type) != OTBM_NodeTypes_t::MAP_DATA) {
             setLastErrorString("Could not read data node.");
             return false;
         }
@@ -117,15 +117,15 @@ bool IOMap::loadMap(Map* map, const std::filesystem::path& fileName) {
         }
 
         for (auto& mapDataNode : mapNode.children) {
-            if (mapDataNode.type == OTBM_TILE_AREA) {
+            if (static_cast<OTBM_NodeTypes_t>(mapDataNode.type) == OTBM_NodeTypes_t::TILE_AREA) {
                 if (!parseTileArea(loader, mapDataNode, *map)) {
                     return false;
                 }
-            } else if (mapDataNode.type == OTBM_TOWNS) {
+            } else if (static_cast<OTBM_NodeTypes_t>(mapDataNode.type) == OTBM_NodeTypes_t::TOWNS) {
                 if (!parseTowns(loader, mapDataNode, *map)) {
                     return false;
                 }
-            } else if (mapDataNode.type == OTBM_WAYPOINTS && headerVersion > 1) {
+            } else if (static_cast<OTBM_NodeTypes_t>(mapDataNode.type) == OTBM_NodeTypes_t::WAYPOINTS && headerVersion > 1) {
                 if (!parseWaypoints(loader, mapDataNode, *map)) {
                     return false;
                 }
@@ -158,8 +158,8 @@ bool IOMap::parseMapDataAttributes(OTB::Loader& loader, const OTB::Node& mapNode
 
     uint8_t attribute;
     while (propStream.read(attribute)) {
-        switch (attribute) {
-            case OTBM_ATTR_DESCRIPTION: {
+        switch (static_cast<OTBM_AttrTypes_t>(attribute)) {
+            case OTBM_AttrTypes_t::DESCRIPTION: {
                 auto [mapDescription, ok] = propStream.readString();
                 if (!ok) {
                     setLastErrorString("Invalid description tag.");
@@ -168,7 +168,7 @@ bool IOMap::parseMapDataAttributes(OTB::Loader& loader, const OTB::Node& mapNode
                 break;
             }
 
-            case OTBM_ATTR_EXT_SPAWN_FILE: {
+            case OTBM_AttrTypes_t::EXT_SPAWN_FILE: {
                 auto [spawnFile, ok] = propStream.readString();
                 if (!ok) {
                     setLastErrorString("Invalid spawn tag.");
@@ -178,7 +178,7 @@ bool IOMap::parseMapDataAttributes(OTB::Loader& loader, const OTB::Node& mapNode
                 break;
             }
 
-            case OTBM_ATTR_EXT_HOUSE_FILE: {
+            case OTBM_AttrTypes_t::EXT_HOUSE_FILE: {
                 auto [houseFile, ok] = propStream.readString();
                 if (!ok) {
                     setLastErrorString("Invalid house tag.");
@@ -214,7 +214,7 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
     uint16_t z = area_coord.z;
 
     for (auto& tileNode : tileAreaNode.children) {
-        if (tileNode.type == OTBM_HOUSETILE) {
+        if (static_cast<OTBM_NodeTypes_t>(tileNode.type) == OTBM_NodeTypes_t::HOUSETILE) {
             // Legacy parsing for House Tiles to ensure full compatibility
             PropStream tilePropStream;
             if (!loader.getProps(tileNode, tilePropStream)) {
@@ -255,29 +255,29 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 
             uint8_t attribute;
             while (tilePropStream.read(attribute)) {
-                switch (attribute) {
-                    case OTBM_ATTR_TILE_FLAGS: {
+                switch (static_cast<OTBM_AttrTypes_t>(attribute)) {
+                    case OTBM_AttrTypes_t::TILE_FLAGS: {
                         uint32_t flags;
                         if (!tilePropStream.read(flags)) {
                             setLastErrorString(fmt::format("[x:{:d}, y:{:d}, z:{:d}] Failed to read tile flags.", x, y, z));
                             return false;
                         }
 
-                        if ((flags & OTBM_TILEFLAG_PROTECTIONZONE) != 0) {
+                        if ((flags & tfs::to_underlying(OTBM_TileFlag_t::PROTECTIONZONE)) != 0) {
                             tileflags |= TILESTATE_PROTECTIONZONE;
-                        } else if ((flags & OTBM_TILEFLAG_NOPVPZONE) != 0) {
+                        } else if ((flags & tfs::to_underlying(OTBM_TileFlag_t::NOPVPZONE)) != 0) {
                             tileflags |= TILESTATE_NOPVPZONE;
-                        } else if ((flags & OTBM_TILEFLAG_PVPZONE) != 0) {
+                        } else if ((flags & tfs::to_underlying(OTBM_TileFlag_t::PVPZONE)) != 0) {
                             tileflags |= TILESTATE_PVPZONE;
                         }
 
-                        if ((flags & OTBM_TILEFLAG_NOLOGOUT) != 0) {
+                        if ((flags & tfs::to_underlying(OTBM_TileFlag_t::NOLOGOUT)) != 0) {
                             tileflags |= TILESTATE_NOLOGOUT;
                         }
                         break;
                     }
 
-                    case OTBM_ATTR_ITEM: {
+                    case OTBM_AttrTypes_t::ITEM: {
                         std::unique_ptr<Item> item(Item::CreateItem(tilePropStream));
                         if (!item) {
                             setLastErrorString(fmt::format("[x:{:d}, y:{:d}, z:{:d}] Failed to create item.", x, y, z));
@@ -322,7 +322,7 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 
             // Parse children items
             for (auto& itemNode : tileNode.children) {
-                if (itemNode.type != OTBM_ITEM) {
+                if (static_cast<OTBM_NodeTypes_t>(itemNode.type) != OTBM_NodeTypes_t::ITEM) {
                     setLastErrorString(fmt::format("[x:{:d}, y:{:d}, z:{:d}] Unknown node type.", x, y, z));
                     return false;
                 }
@@ -388,7 +388,7 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 
         } else {
             // Optimized MapCache parsing for standard tiles
-            if (tileNode.type != OTBM_TILE) {
+            if (static_cast<OTBM_NodeTypes_t>(tileNode.type) != OTBM_NodeTypes_t::TILE) {
                 setLastErrorString("Unknown tile node.");
                 return false;
             }
@@ -411,7 +411,7 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 bool IOMap::parseTowns(OTB::Loader& loader, const OTB::Node& townsNode, Map& map) {
     for (auto& townNode : townsNode.children) {
         PropStream propStream;
-        if (townNode.type != OTBM_TOWN) {
+        if (static_cast<OTBM_NodeTypes_t>(townNode.type) != OTBM_NodeTypes_t::TOWN) {
             setLastErrorString("Unknown town node.");
             return false;
         }
@@ -456,7 +456,7 @@ bool IOMap::parseTowns(OTB::Loader& loader, const OTB::Node& townsNode, Map& map
 bool IOMap::parseWaypoints(OTB::Loader& loader, const OTB::Node& waypointsNode, Map& map) {
     PropStream propStream;
     for (auto& node : waypointsNode.children) {
-        if (node.type != OTBM_WAYPOINT) {
+        if (static_cast<OTBM_NodeTypes_t>(node.type) != OTBM_NodeTypes_t::WAYPOINT) {
             setLastErrorString("Unknown waypoint node.");
             return false;
         }
