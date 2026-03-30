@@ -433,12 +433,12 @@ void ConditionAttributes::addCondition(Creature* creature, const Condition* cond
 		endCondition(creature);
 
 		// Apply the new one
-		memcpy(skills, conditionAttrs.skills, sizeof(skills));
-		memcpy(specialSkills, conditionAttrs.specialSkills, sizeof(specialSkills));
-		memcpy(skillsPercent, conditionAttrs.skillsPercent, sizeof(skillsPercent));
-		memcpy(stats, conditionAttrs.stats, sizeof(stats));
-		memcpy(statsPercent, conditionAttrs.statsPercent, sizeof(statsPercent));
-		memcpy(experienceRate, conditionAttrs.experienceRate, sizeof(experienceRate));
+		std::copy_n(conditionAttrs.skills, SKILL_LAST + 1, skills);
+		std::copy_n(conditionAttrs.specialSkills, SPECIALSKILL_LAST + 1, specialSkills);
+		std::copy_n(conditionAttrs.skillsPercent, SKILL_LAST + 1, skillsPercent);
+		std::copy_n(conditionAttrs.stats, STAT_LAST + 1, stats);
+		std::copy_n(conditionAttrs.statsPercent, STAT_LAST + 1, statsPercent);
+		std::copy_n(conditionAttrs.experienceRate, static_cast<size_t>(ExperienceRateType::STAMINA) + 1, experienceRate);
 		disableDefense = conditionAttrs.disableDefense;
 
 		if (Player* player = creature->getPlayer()) {

@@ -17,64 +17,56 @@ static constexpr unsigned int MYSQL_TIMEOUT_SECONDS = 30;
 
 static tfs::detail::Mysql_ptr connectToDatabase(const bool retryIfError)
 {
-	bool isFirstAttemptToConnect = true;
-	int retryCount = 0;
-
-retry:
-	if (!isFirstAttemptToConnect) {
-		if (retryIfError && retryCount >= MAX_RECONNECT_ATTEMPTS) {
-			LOG_ERROR(fmt::format("[Database] Failed to connect after {} attempts. Giving up.", MAX_RECONNECT_ATTEMPTS));
-			return nullptr;
+	for (int retryCount = 0; ; ++retryCount) {
+		if (retryCount > 0) {
+			if (!retryIfError || retryCount > MAX_RECONNECT_ATTEMPTS) {
+				if (retryIfError) {
+					LOG_ERROR(fmt::format("[Database] Failed to connect after {} attempts. Giving up.", MAX_RECONNECT_ATTEMPTS));
+				}
+				return nullptr;
+			}
+			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
-	isFirstAttemptToConnect = false;
-	retryCount++;
 
-	tfs::detail::Mysql_ptr handle{mysql_init(nullptr)};
-	if (!handle) {
-		LOG_ERROR("Failed to initialize MySQL connection handle.");
-		goto error;
-	}
+		tfs::detail::Mysql_ptr handle{mysql_init(nullptr)};
+		if (!handle) {
+			LOG_ERROR("Failed to initialize MySQL connection handle.");
+			continue;
+		}
 
-	// Set query timeouts to prevent hanging
-	{
-		unsigned int readTimeout = MYSQL_TIMEOUT_SECONDS;
-		unsigned int writeTimeout = MYSQL_TIMEOUT_SECONDS;
-		mysql_options(handle.get(), MYSQL_OPT_READ_TIMEOUT, &readTimeout);
-		mysql_options(handle.get(), MYSQL_OPT_WRITE_TIMEOUT, &writeTimeout);
-	}
+		// Set query timeouts to prevent hanging
+		{
+			unsigned int readTimeout = MYSQL_TIMEOUT_SECONDS;
+			unsigned int writeTimeout = MYSQL_TIMEOUT_SECONDS;
+			mysql_options(handle.get(), MYSQL_OPT_READ_TIMEOUT, &readTimeout);
+			mysql_options(handle.get(), MYSQL_OPT_WRITE_TIMEOUT, &writeTimeout);
+		}
 
-	// Disable SSL enforcement and verification
+		// Disable SSL enforcement and verification
 #if defined(_WIN32)
-	{
-		bool ssl_enforce = false;
-		bool ssl_verify = false;
-		mysql_options(handle.get(), MYSQL_OPT_SSL_ENFORCE, &ssl_enforce);
-		mysql_options(handle.get(), MYSQL_OPT_SSL_VERIFY_SERVER_CERT, &ssl_verify);
-	}
+		{
+			bool ssl_enforce = false;
+			bool ssl_verify = false;
+			mysql_options(handle.get(), MYSQL_OPT_SSL_ENFORCE, &ssl_enforce);
+			mysql_options(handle.get(), MYSQL_OPT_SSL_VERIFY_SERVER_CERT, &ssl_verify);
+		}
 #else
-	{
-		unsigned int ssl_mode = SSL_MODE_DISABLED;
-		mysql_options(handle.get(), MYSQL_OPT_SSL_MODE, &ssl_mode);
-	}
+		{
+			unsigned int ssl_mode = SSL_MODE_DISABLED;
+			mysql_options(handle.get(), MYSQL_OPT_SSL_MODE, &ssl_mode);
+		}
 #endif
 
-	// connects to database
-	if (!mysql_real_connect(handle.get(), getString(ConfigManager::MYSQL_HOST).data(),
-	                        getString(ConfigManager::MYSQL_USER).data(), getString(ConfigManager::MYSQL_PASS).data(),
-	                        getString(ConfigManager::MYSQL_DB).data(), getInteger(ConfigManager::SQL_PORT),
-	                        getString(ConfigManager::MYSQL_SOCK).data(), 0)) {
-		LOG_ERROR(fmt::format("MySQL Error Message: {}", mysql_error(handle.get())));
-		goto error;
+		// connects to database
+		if (!mysql_real_connect(handle.get(), getString(ConfigManager::MYSQL_HOST).data(),
+		                        getString(ConfigManager::MYSQL_USER).data(), getString(ConfigManager::MYSQL_PASS).data(),
+		                        getString(ConfigManager::MYSQL_DB).data(), getInteger(ConfigManager::SQL_PORT),
+		                        getString(ConfigManager::MYSQL_SOCK).data(), 0)) {
+			LOG_ERROR(fmt::format("MySQL Error Message: {}", mysql_error(handle.get())));
+			continue;
+		}
+		return handle;
 	}
-	return handle;
-
-error:
-	if (retryIfError) {
-		goto retry;
-	}
-	return nullptr;
 }
 
 static bool isLostConnectionError(const unsigned error)

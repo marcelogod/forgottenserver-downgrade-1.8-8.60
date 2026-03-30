@@ -8,7 +8,7 @@
 #include "configmanager.h"
 
 #include <chrono>
-
+#include <fstream>
 #include <iomanip>
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
@@ -19,7 +19,7 @@ void printXMLError(std::string_view where, std::string_view fileName, const pugi
 {
 	LOG_ERROR(fmt::format("[{}] Failed to load {}: {}", where, fileName, result.description()));
 
-	FILE* file = fopen(fileName.data(), "rb");
+	std::ifstream file(std::string{fileName}, std::ios::binary);
 	if (!file) {
 		return;
 	}
@@ -31,14 +31,15 @@ void printXMLError(std::string_view where, std::string_view fileName, const pugi
 	auto offset = static_cast<size_t>(result.offset);
 	size_t lineOffsetPosition = 0;
 	size_t index = 0;
-	size_t bytes;
+	std::streamsize bytes;
 	do {
-		bytes = fread(buffer, 1, 32768, file);
-		for (size_t i = 0; i < bytes; ++i) {
+		file.read(buffer, sizeof(buffer));
+		bytes = file.gcount();
+		for (std::streamsize i = 0; i < bytes; ++i) {
 			char ch = buffer[i];
 			if (ch == '\n') {
-				if ((index + i) >= offset) {
-					lineOffsetPosition = line.length() - ((index + i) - offset);
+				if ((index + static_cast<size_t>(i)) >= offset) {
+					lineOffsetPosition = line.length() - ((index + static_cast<size_t>(i)) - offset);
 					bytes = 0;
 					break;
 				}
@@ -48,9 +49,8 @@ void printXMLError(std::string_view where, std::string_view fileName, const pugi
 				line.push_back(ch);
 			}
 		}
-		index += bytes;
-	} while (bytes == 32768);
-	fclose(file);
+		index += static_cast<size_t>(bytes);
+	} while (bytes == sizeof(buffer));
 
 	LOG_ERROR(fmt::format("Line {}:\n{}\n{}^", currentLine, line, std::string(lineOffsetPosition, ' ')));
 }
@@ -440,14 +440,7 @@ bool boolean_random(double probability /* = 0.5*/)
 
 std::string convertIPToString(uint32_t ip)
 {
-	char buffer[17];
-
-	int res = sprintf(buffer, "%u.%u.%u.%u", ip & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24));
-	if (res < 0) {
-		return {};
-	}
-
-	return buffer;
+	return fmt::format("{}.{}.{}.{}", ip & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24) & 0xFF);
 }
 
 std::string formatDateShort(time_t time)

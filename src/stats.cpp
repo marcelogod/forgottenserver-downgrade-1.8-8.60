@@ -62,16 +62,17 @@ void Stats::threadMain() {
 				continue;
 			}
 			if (dispatcher.lastDump + DUMP_INTERVAL < OTSYS_TIME() || last_iteration) {
-				std::stringstream ss;
 				float execution_time = 0;
 				for (auto &it : dispatcher.stats)
 					execution_time += it.second.executionTime;
-				ss << "Thread: " << ++threadId << " Cpu usage: " << (execution_time / 10000.) / ((float) DUMP_INTERVAL) << "%" <<
-				   " Idle: " << (dispatcher.waitTime / 10000.) / ((float) DUMP_INTERVAL) << "%" <<
-				   " Other: " << 100. - (((execution_time + dispatcher.waitTime) / 10000.) / ((float) DUMP_INTERVAL)) << "%";
-				ss << " Players online: " << playersOnline << "\n";
+				auto msg = fmt::format("Thread: {} Cpu usage: {}% Idle: {}% Other: {}% Players online: {}\n",
+					++threadId,
+					(execution_time / 10000.) / static_cast<float>(DUMP_INTERVAL),
+					(dispatcher.waitTime / 10000.) / static_cast<float>(DUMP_INTERVAL),
+					100. - (((execution_time + dispatcher.waitTime) / 10000.) / static_cast<float>(DUMP_INTERVAL)),
+					playersOnline);
 				if(dispatcher.waitTime > 0)
-					writeStats("dispatcher.log", dispatcher.stats, ss.str());
+					writeStats("dispatcher.log", dispatcher.stats, msg);
 				dispatcher.stats.clear();
 				dispatcher.waitTime = 0;
 				dispatcher.lastDump = OTSYS_TIME();
@@ -227,7 +228,7 @@ void Stats::writeStats(const std::string& file, const statsMap& stats, const std
 	for (auto& it : stats)
 		pairs.emplace_back(it);
 
-	sort(pairs.begin(), pairs.end(), [](const std::pair<std::string, statsData>& a, const std::pair<std::string, statsData>& b) {
+	std::ranges::sort(pairs, [](const auto& a, const auto& b) {
 		return a.second.executionTime > b.second.executionTime;
 	});
 
