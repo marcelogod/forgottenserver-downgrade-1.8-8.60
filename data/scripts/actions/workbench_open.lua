@@ -1,4 +1,4 @@
-local WORKBENCH_ID = 25334
+local WORKBENCH_ID = 27547
 
 local action = Action()
 function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)

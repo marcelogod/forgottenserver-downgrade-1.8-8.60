@@ -15,8 +15,7 @@ local FORGE_STORAGE = {
 }
 
 local FORGE_POSITIONS = {
-    container = Position(1118, 1202, 7),
-    lever = Position(1119, 1201, 7),
+    container = Position(95, 111, 7),
 }
 
 
@@ -210,7 +209,18 @@ function forgeFusion.onUse(player, item, fromPosition, target, toPosition, isHot
     if roll <= successChance then
         item1:setTier(tier1 + 1)
         item2:remove(1)
-
+        local chest = Game.createItem(37561, 1)
+        if chest and chest:isContainer() then
+            local container = Container(chest:getUniqueId() or chest.uid)
+            if container then
+                item1:moveTo(container)
+            else
+                item1:moveTo(player)
+            end
+            chest:moveTo(player)
+        else
+            item1:moveTo(player)
+        end
 
         containerPos:sendMagicEffect(244)
         player:sendTextMessage(MESSAGE_EVENT_ORANGE,

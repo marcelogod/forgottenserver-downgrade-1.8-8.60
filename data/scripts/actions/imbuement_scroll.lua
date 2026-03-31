@@ -1,5 +1,5 @@
 local ETCHER_ID = 51443
-local WORKBENCH_ID = 25334
+local WORKBENCH_ID = 27547
 
 local SCROLL_IDS = {
     -- Powerful (tier 3)
@@ -278,6 +278,7 @@ function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
         end
 
         item:remove(1)
+        equipment:moveTo(player)
 
         local totalImb = equipment:getImbuements()
         local totalSlots = equipment:getImbuementSlots()
@@ -291,7 +292,7 @@ function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
                 totalSlots,
                 totalCost))
 
-        toPosition:sendMagicEffect(199)
+        toPosition:sendMagicEffect(302)
         return true
     end
 
@@ -373,6 +374,7 @@ function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
     end
 
     item:remove(1)
+    equipment:moveTo(player)
 
     local totalImb = equipment:getImbuements()
     local totalSlots = equipment:getImbuementSlots()
@@ -386,7 +388,7 @@ function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
             totalSlots,
             totalCost))
 
-    toPosition:sendMagicEffect(199)
+    toPosition:sendMagicEffect(302)
     return true
 end
 

@@ -1386,4 +1386,7 @@
 		<monster name="Demon" x="-2" y="-2" z="15" spawntime="60" />
 		<monster name="Demon" x="2" y="1" z="15" spawntime="60" />
 	</spawn>
+        <spawn centerx="92" centery="115" centerz="7" radius="1">
+                <npc name="Imbuement Master" x="0" y="0" z="7" spawntime="60" />
+        </spawn>
 </spawns>
