@@ -1,13 +1,14 @@
-# 🌺 𝓜𝓲𝓵𝓵𝓱𝓲𝓸𝓻𝓮 𝓣𝓕𝓢 𝓓𝓸𝔀𝓷𝓰𝓻𝓪𝓭𝓮 🌺
+# ⚔️ TFS 1.8 Downgrade — Protocol 8.60
 
 [![Build status](https://ci.appveyor.com/api/projects/status/github/Mateuzkl/forgottenserver-downgrade?branch=official&svg=true)](https://ci.appveyor.com/project/Mateuzkl/forgottenserver-downgrade)
 
-### 🐱 [Based nekiro downgrade.](https://github.com/nekiro/TFS-1.5-Downgrades)
+**Engine:** TFS 1.8 | **Protocol:** 8.60  
+**Developed & Optimized by** [Mateuzkl](https://github.com/Mateuzkl)
 
-**Version: TFS 1.8 | Protocol: 8.60**  
-_Developed by MillhioreBT & Mateuzkl_
+> Based on [Nekiro's TFS 1.5 Downgrades](https://github.com/nekiro/TFS-1.5-Downgrades), forked from [MillhioreBT's downgrade](https://github.com/MillhioreBT/forgottenserver-downgrade).  
+> Fully reworked — all systems, optimizations, and custom features by Mateuzkl.
 
-> TFS 1.8 for 8.60 client — full DAT system, ClientID only, no ServerID mapping, reads assets.dat directly like Canary/Crystal/Black Tek.
+TFS 1.8 for 8.60 client — full DAT system, ClientID only, no ServerID mapping, reads assets.dat directly like Canary/Crystal/Black Tek.
 
 ---
 
