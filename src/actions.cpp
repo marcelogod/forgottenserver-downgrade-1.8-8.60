@@ -383,7 +383,6 @@ static void showUseHotkeyMessage(Player* player, const Item* item, uint32_t coun
 bool Actions::useItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey)
 {
 	if (player->hasCondition(CONDITION_EXHAUST_WEAPON, EXHAUST_OPENCONTAINER)) {
-		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
 		return false;
 	}
 	if (!player->hasFlag(PlayerFlag_HasNoExhaustion)) {
@@ -442,12 +441,9 @@ bool Actions::useItemEx(Player* player, const Position& fromPos, const Position&
 {
 	// Check exhaust per type: EXHAUST_POTION is applied by Lua potion scripts
 	if (player->hasCondition(CONDITION_EXHAUST_WEAPON, EXHAUST_POTION)) {
-		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF, player->getInstanceID());
 		return false;
 	}
 	if (player->hasCondition(CONDITION_EXHAUST_WEAPON, EXHAUST_USEITEM)) {
-		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
 		return false;
 	}
 
