@@ -34,9 +34,9 @@ This custom version includes several enhanced systems and fully integrated featu
 - **Commands**: `/war invite, guildname`, `/war accept, guildname`.
 - **Emblems**: Ally, Member, and Enemy emblems update in real-time.
 
-### ⚔️ Tier & Classification System
+### ⚔️ Forge & Classification System
 - Items can have **Tier** and **Classification** attributes.
-- **Upgrades**: Tier system allows for item upgrades and strong progression.
+- **Forge**: Tier system allows for item upgrades via fusion and strong progression.
 - **Classification**: System for categorizing items by rarity or power.
 - Fully integrated with Lua scripting API for custom RPG systems.
 
@@ -79,6 +79,33 @@ This custom version includes several enhanced systems and fully integrated featu
 - **Bonus**: Configurable EXP bonus for active casters.
 - **Spectators**: Can chat in the Live Cast channel.
 - **Commands**: `/spectators`, `/kick`, `/mute`, `/ban` (for broadcasters).
+
+### 🔥 Forge System (Item Fusion)
+- **Tier Upgrading**: Fuse two identical items — one is consumed, the other gains +1 tier.
+- **Tier Range**: 0 → 9, capped by item classification.
+- **Success Rates**: 50% (T0) down to 5% (T9), with scaling gold and dust costs.
+- **Materials**: Forge Dust, Silver Tokens, and Exalted Cores (required from T5+).
+- **On Success**: Upgraded item is placed inside an Exaltation Chest and delivered to the player's inventory.
+- **Commands**: `/forge info`, `/forge dust`, `/forge silver`.
+
+### 🧿 Imbuement System
+- **Two Methods**: Apply directly via **Imbuement Scrolls** or craft from **raw materials** using an Etcher tool.
+- **Workbench**: 4-slot station — 1 equipment + up to 3 scrolls or materials.
+- **27 Imbuement Types**: Skill boosts, Magic Level, Life/Mana Leech, Critical Hit, Elemental Damage & Protection, Speed, Capacity, and more.
+- **3 Tiers**: Flawed → Intricate → Powerful, with increasing costs and power.
+- **Owner Lock**: Only the item's owner can imbue it.
+
+### 🏰 Instance System
+- **Isolated Areas**: Create private dungeon instances — monsters, effects, and items are only visible to players in the same instance.
+- **Lua API**: `player:setInstanceId()`, `Game.registerInstanceArea()`, `Game.createMonster()` with instance parameter.
+- **C++ Core**: Spectator filtering, item visibility, and interaction checks all respect instance boundaries.
+- **Use Case**: Solo/party dungeons, boss rooms, quests — without interfering with the main world.
+
+### 🧘 Harmony System (Monk Vocation)
+- **Exclusive to Monks** (vocations 9-10): gain Harmony points by hitting enemies.
+- **Virtues**: Rotating states — Justice, Harmony, Sustain — each with unique bonuses.
+- **Scaling Bonuses**: XP and damage increase with accumulated Harmony.
+- **Command**: `!harmony`.
 
 ---
 
