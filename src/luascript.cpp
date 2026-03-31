@@ -69,6 +69,17 @@ void ScriptEnvironment::resetEnv()
 	}
 }
 
+void ScriptEnvironment::clearTempItems()
+{
+	for (auto it = tempItems.begin(); it != tempItems.end();) {
+		Item* item = it->second;
+		if (item && item->getParent() == VirtualCylinder::virtualCylinder) {
+			g_game.ReleaseItem(item);
+		}
+		it = tempItems.erase(it);
+	}
+}
+
 bool ScriptEnvironment::setCallbackId(int32_t callbackId, LuaScriptInterface* scriptInterface)
 {
 	if (this->callbackId != 0) {

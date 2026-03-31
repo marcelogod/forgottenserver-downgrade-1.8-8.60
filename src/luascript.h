@@ -248,6 +248,9 @@ private:
 	// temporary item list
 	static std::multimap<ScriptEnvironment*, Item*> tempItems;
 
+public:
+	static void clearTempItems();
+
 	// local item map
 	std::unordered_map<uint32_t, Item*> localMap;
 	uint32_t lastUID = std::numeric_limits<uint16_t>::max();

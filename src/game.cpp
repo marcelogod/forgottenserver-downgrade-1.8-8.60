@@ -5232,6 +5232,9 @@ void Game::shutdown()
 		}
 	}
 
+	ScriptEnvironment::clearTempItems();
+	cleanup();
+
 	g_luaEnvironment.shutdown();
 
 	for (auto& checkCreatureList : checkCreatureLists) {
@@ -5264,6 +5267,8 @@ void Game::shutdown()
 	}
 
 	ConnectionManager::getInstance().closeAll();
+
+	Item::clearGlobalRegistry();
 
 	LOG_INFO(">> Shutdown complete.");
 }

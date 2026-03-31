@@ -194,6 +194,11 @@ bool isValidItemPointer(Item* item)
 	return item && g_validItems.count(item) > 0;
 }
 
+void Item::clearGlobalRegistry()
+{
+	g_validItems.clear();
+}
+
 Item* Item::clone() const
 {
 	Item* item = Item::CreateItem(id, count);
