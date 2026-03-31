@@ -16,7 +16,6 @@ enum Boolean
 	REMOVE_WEAPON_AMMO,
 	REMOVE_WEAPON_CHARGES,
 	REMOVE_POTION_CHARGES,
-	FAST_POTIONS_ENABLED,
 	EXPERIENCE_FROM_PLAYERS,
 	FREE_PREMIUM,
 	REPLACE_KICK_ON_LOGIN,
@@ -104,7 +103,6 @@ enum String
 
 enum StringList
 {
-	FAST_POTION_IDS,
 	BLOCKED_TELEPORT_IDS,
 
 	LAST_STRING_LIST /* this must be the last one */
@@ -256,7 +254,6 @@ float getFloat(float_config_t what);
 float getExperienceStage(uint32_t level);
 float getSkillStage(uint32_t level);
 float getMagicLevelStage(uint32_t level);
-const std::vector<uint16_t>& getFastPotionIds();
 const std::vector<uint16_t>& getBlockedTeleportIds();
 const std::vector<uint16_t>& getTokenProtectionExceptions();
 
