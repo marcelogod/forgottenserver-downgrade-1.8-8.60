@@ -584,7 +584,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	}
 
 	// load depot locker items
-	itemMap.clear();
+	cleanupItemMap(itemMap);
 
 	if ((result = db.storeQuery(fmt::format(
 	         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_depotlockeritems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
@@ -621,7 +621,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	}
 
 	// load depot items
-	itemMap.clear();
+	cleanupItemMap(itemMap);
 
 	if ((result = db.storeQuery(fmt::format(
 	         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_depotitems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
@@ -653,7 +653,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	}
 
 	// load inbox items
-	itemMap.clear();
+	cleanupItemMap(itemMap);
 
 	if ((result = db.storeQuery(fmt::format(
 	         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_inboxitems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
@@ -698,7 +698,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	}
 
 	// Load reward items
-	itemMap.clear();
+	cleanupItemMap(itemMap);
 
 	if ((result = db.storeQuery(fmt::format("SELECT `sid`, `pid`, `itemtype`, `count`, `attributes` FROM `player_rewarditems` WHERE `player_id` = {:d} ORDER BY `sid` DESC", player->getGUID())))) {
 		loadItems(itemMap, result);
@@ -1462,6 +1462,18 @@ void IOLoginData::loadItems(ItemMap& itemMap, DBResult_ptr result)
 			itemMap[sid] = pair;
 		}
 	} while (result->next());
+}
+
+void IOLoginData::cleanupItemMap(ItemMap& itemMap)
+{
+	for (auto& [sid, pair] : itemMap) {
+		Item* item = pair.first;
+		if (item && item->getParent() == nullptr) {
+			delete item;
+			pair.first = nullptr;
+		}
+	}
+	itemMap.clear();
 }
 
 void IOLoginData::increaseBankBalance(uint32_t guid, uint64_t bankBalance)

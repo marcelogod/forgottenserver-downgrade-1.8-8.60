@@ -108,9 +108,6 @@ void ServiceManager::die()
 	// Without this, Connection destructors run after io_context is destroyed.
 	ConnectionManager::getInstance().closeAll();
 	io_context.stop();
-
-	// Wait for all I/O threads to finish (jthread join is automatic, but be explicit)
-	ioThreads.clear();
 }
 
 void ServiceManager::run()
@@ -131,6 +128,11 @@ void ServiceManager::run()
 	}
 
 	io_context.run();
+
+	// After io_context.stop() is called in die(), all io_context.run() calls return.
+	// Now we are back on the main thread (startServer → serviceManager.run()),
+	// so it is safe to join the I/O threads without risk of self-join deadlock.
+	ioThreads.clear();
 }
 
 void ServiceManager::stop()
