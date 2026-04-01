@@ -1,5 +1,5 @@
 local FORGE_LEVER_AID = 7755
-local FORGE_CONTAINER_ID = 39531
+local FORGE_CONTAINER_ID = 37122
 local FORGE_CONTAINER_SLOTS = 2
 local RESET_STONE_ID = 8302
 
@@ -15,7 +15,7 @@ local FORGE_STORAGE = {
 }
 
 local FORGE_POSITIONS = {
-    container = Position(95, 111, 7),
+    container = Position(1054, 974, 7),
 }
 
 

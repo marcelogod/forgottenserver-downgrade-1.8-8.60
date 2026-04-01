@@ -165,8 +165,8 @@ RANGE_ROTATE_ITEM_INTERVAL = 250
 
 -- Map
 -- NOTE: set mapName WITHOUT .otbm at the end
-mapName = "forgotten"
-mapAuthor = "Komic"
+mapName = "world"
+mapAuthor = "Skyyzyy"
 
 -- Market
 marketOfferDuration = 30 * 24 * 60 * 60
