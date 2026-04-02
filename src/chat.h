@@ -10,8 +10,8 @@
 class Party;
 class Player;
 
-using UsersMap = std::unordered_map<uint32_t, Player*>;
-using InvitedMap = std::unordered_map<uint32_t, const Player*>;
+using UsersMap = std::unordered_map<uint32_t, uint32_t>;
+using InvitedMap = std::unordered_map<uint32_t, uint32_t>;
 
 class ChatChannel
 {
@@ -26,7 +26,7 @@ public:
 	bool hasUser(const Player& player);
 
 	bool talk(const Player& fromPlayer, SpeakClasses type, std::string_view text);
-	void sendToAll(std::string_view message, SpeakClasses type) const;
+	void sendToAll(std::string_view message, SpeakClasses type);
 
 	const std::string& getName() const { return name; }
 	uint16_t getId() const { return id; }
@@ -75,7 +75,7 @@ public:
 
 	bool removeInvite(uint32_t guid);
 
-	void closeChannel() const;
+	void closeChannel();
 
 	const InvitedMap* getInvitedUsers() const override { return &invites; }
 
@@ -118,6 +118,7 @@ public:
 private:
 	std::unordered_map<uint16_t, ChatChannel> normalChannels;
 	std::unordered_map<uint16_t, PrivateChatChannel> privateChannels;
+	// Party has no stable id. We keep Party* as observer key but aggressively clean empty channels.
 	std::unordered_map<Party*, ChatChannel> partyChannels;
 	std::unordered_map<uint32_t, ChatChannel> guildChannels;
 

@@ -14,6 +14,10 @@
 
 extern Game g_game;
 
+namespace {
+Player* getOnlinePlayer(uint32_t id) { return g_game.getPlayerByID(id); }
+}
+
 bool PrivateChatChannel::isInvited(uint32_t guid) const
 {
 	if (guid == getOwner()) {
@@ -26,7 +30,7 @@ bool PrivateChatChannel::removeInvite(uint32_t guid) { return invites.erase(guid
 
 void PrivateChatChannel::invitePlayer(const Player& player, Player& invitePlayer)
 {
-	auto result = invites.emplace(invitePlayer.getGUID(), &invitePlayer);
+	auto result = invites.emplace(invitePlayer.getGUID(), invitePlayer.getGUID());
 	if (!result.second) {
 		return;
 	}
@@ -51,10 +55,15 @@ void PrivateChatChannel::excludePlayer(const Player& player, Player& excludePlay
 	excludePlayer.sendClosePrivate(id);
 }
 
-void PrivateChatChannel::closeChannel() const
+void PrivateChatChannel::closeChannel()
 {
-	for (const auto& it : users) {
-		it.second->sendClosePrivate(id);
+	for (auto it = users.begin(); it != users.end();) {
+		if (Player* target = getOnlinePlayer(it->first)) {
+			target->sendClosePrivate(id);
+			++it;
+		} else {
+			it = users.erase(it);
+		}
 	}
 }
 
@@ -76,7 +85,7 @@ bool ChatChannel::addUser(Player& player)
 		}
 	}
 
-	users[player.getID()] = &player;
+	users[player.getID()] = player.getID();
 	return true;
 }
 
@@ -95,10 +104,15 @@ bool ChatChannel::removeUser(const Player& player)
 
 bool ChatChannel::hasUser(const Player& player) { return users.contains(player.getID()); }
 
-void ChatChannel::sendToAll(std::string_view message, SpeakClasses type) const
+void ChatChannel::sendToAll(std::string_view message, SpeakClasses type)
 {
-	for (const auto& it : users) {
-		it.second->sendChannelMessage("", message, type, id);
+	for (auto it = users.begin(); it != users.end();) {
+		if (Player* target = getOnlinePlayer(it->first)) {
+			target->sendChannelMessage("", message, type, id);
+			++it;
+		} else {
+			it = users.erase(it);
+		}
 	}
 }
 
@@ -108,8 +122,13 @@ bool ChatChannel::talk(const Player& fromPlayer, SpeakClasses type, std::string_
 		return false;
 	}
 
-	for (const auto& it : users) {
-		it.second->sendToChannel(&fromPlayer, type, text, id);
+	for (auto it = users.begin(); it != users.end();) {
+		if (Player* target = getOnlinePlayer(it->first)) {
+			target->sendToChannel(&fromPlayer, type, text, id);
+			++it;
+		} else {
+			it = users.erase(it);
+		}
 	}
 	return true;
 }
@@ -276,7 +295,9 @@ bool Chat::load()
 
 			UsersMap tempUserMap = std::move(channel.users);
 			for (const auto& pair : tempUserMap) {
-				channel.addUser(*pair.second);
+				if (Player* player = getOnlinePlayer(pair.first)) {
+					channel.addUser(*player);
+				}
 			}
 			continue;
 		}
@@ -411,6 +432,15 @@ bool Chat::removeUserFromChannel(const Player& player, uint16_t channelId)
 	ChatChannel* channel = getChannel(player, channelId);
 	if (!channel || !channel->removeUser(player)) {
 		return false;
+	}
+
+	if (channelId == CHANNEL_PARTY && channel->users.empty()) {
+		for (auto it = partyChannels.begin(); it != partyChannels.end(); ++it) {
+			if (&it->second == channel) {
+				partyChannels.erase(it);
+				break;
+			}
+		}
 	}
 
 	if (channel->getOwner() == player.getGUID()) {
