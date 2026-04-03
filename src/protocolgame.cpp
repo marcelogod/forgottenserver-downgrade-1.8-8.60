@@ -489,6 +489,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 			msg.get<uint16_t>();
 		}
 	}
+
 	// mehah detect
 	if (operatingSystem == CLIENTOS_OTCLIENT_WINDOWS) {
 		isMehah = true;
@@ -2491,16 +2492,7 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	sendStats();
 	sendSkills();
 
-	// World Light (Missing in FS, present in Baiak)
-	// Default to Daylight (250, 215) if no system exists.
-	LightInfo worldLight;
-	worldLight.level = 250;
-	worldLight.color = 215; // White/Sun
-	NetworkMessage lightMsg;
-	AddWorldLight(lightMsg, worldLight);
-	writeToOutputBuffer(lightMsg);
-
-	// player light level
+	sendWorldLight(g_game.getWorldLightInfo());
 	sendCreatureLight(creature);
 
 	const std::forward_list<VIPEntry>& vipEntries = IOLoginData::getVIPEntries(player->getAccount());
@@ -2894,7 +2886,11 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 	}
 
 	LightInfo lightInfo = creature->getCreatureLight();
-	msg.addByte(player->isAccessPlayer() ? 0xFF : lightInfo.level);
+	if (getBoolean(ConfigManager::DEFAULT_WORLD_LIGHT)) {
+		msg.addByte(player->isAccessPlayer() ? 0xFF : lightInfo.level);
+	} else {
+		msg.addByte(lightInfo.level);
+	}
 	msg.addByte(lightInfo.color);
 
 	msg.add<uint16_t>(static_cast<uint16_t>(creature->getStepSpeed()));
@@ -3012,7 +3008,11 @@ void ProtocolGame::AddOutfit(NetworkMessage& msg, const Outfit_t& outfit)
 void ProtocolGame::AddWorldLight(NetworkMessage& msg, LightInfo lightInfo)
 {
 	msg.addByte(0x82);
-	msg.addByte((player->isAccessPlayer() ? 0xFF : lightInfo.level));
+	if (getBoolean(ConfigManager::DEFAULT_WORLD_LIGHT)) {
+		msg.addByte(player->isAccessPlayer() ? 0xFF : lightInfo.level);
+	} else {
+		msg.addByte(lightInfo.level);
+	}
 	msg.addByte(lightInfo.color);
 }
 
@@ -3022,7 +3022,11 @@ void ProtocolGame::AddCreatureLight(NetworkMessage& msg, const Creature* creatur
 
 	msg.addByte(0x8D);
 	msg.add<uint32_t>(creature->getID());
-	msg.addByte((player->isAccessPlayer() ? 0xFF : lightInfo.level));
+	if (getBoolean(ConfigManager::DEFAULT_WORLD_LIGHT)) {
+		msg.addByte(player->isAccessPlayer() ? 0xFF : lightInfo.level);
+	} else {
+		msg.addByte(lightInfo.level);
+	}
 	msg.addByte(lightInfo.color);
 }
 
@@ -3329,7 +3333,6 @@ void ProtocolGame::spectatorSay(const std::string text, uint16_t channelId)
 
 void ProtocolGame::sendCastChannel()
 {
-	
 	sendChannel(CHANNEL_CAST, "Cast Channel");
 }
 
