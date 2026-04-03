@@ -1594,6 +1594,12 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 					ReleaseItem(remainderItem);
 					remainderCount = count;
 				}
+
+				// The original stackable item only served as the merge source.
+				// Once any remainder is handled, the core must retire it so callers
+				// do not leak or keep using a consumed object.
+				item->onRemoved();
+				ReleaseItem(item);
 			} else {
 				toCylinder->addThing(index, item);
 

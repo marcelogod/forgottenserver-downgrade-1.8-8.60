@@ -15,6 +15,13 @@
 
 extern Game g_game;
 
+namespace {
+bool mapSerializeCylinderOwnsThing(const Cylinder* cylinder, const Thing* thing)
+{
+	return cylinder && thing && thing->getParent() == cylinder && cylinder->getThingIndex(thing) != -1;
+}
+} // namespace
+
 void IOMapSerialize::loadHouseItems(Map* map)
 {
     AutoStat stat("loadHouseItems", "full");
@@ -164,9 +171,14 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent)
 					return false;
 				}
 
-				Item* raw = item.release();
+				Item* raw = item.get();
 				parent->internalAddThing(raw);
+				if (!mapSerializeCylinderOwnsThing(parent, raw)) {
+					return false;
+				}
+
 				raw->startDecaying();
+				item.release();
 			} else {
 				LOG_WARN(fmt::format("WARNING: Unserialization error in IOMapSerialize::loadItem() {}", id));
 				return false;

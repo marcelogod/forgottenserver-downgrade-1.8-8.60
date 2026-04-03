@@ -1899,10 +1899,7 @@ void Monster::death(Creature*)
 						}
 						lootString += (*lootIt)->getNameDescription();
 					}
-					// internalAddThing increments refcount. Decrement creator's ref so
-					// the reward chest becomes the sole owner.
 					player->getRewardChest().internalAddThing(rewardContainer);
-					rewardContainer->decrementReferenceCounter();
 					player->sendTextMessage(MESSAGE_STATUS_DEFAULT,
 					                        "The following items dropped by " + getMonster()->getName() +
 					                            " are available in your reward chest: Reward Container (" + lootString +
@@ -2044,9 +2041,6 @@ void Monster::dropLoot(Container* corpse, Creature*)
 		rewardContainer->setIntAttr(ITEM_ATTRIBUTE_DATE, currentTime);
 		rewardContainer->setIntAttr(ITEM_ATTRIBUTE_REWARDID, getMonster()->getID());
 		corpse->internalAddThing(rewardContainer);
-		// Fix: CreateItem sets refcount=1 (creator's ref). After handing ownership to the corpse
-		// container, we release our ref so the container becomes the sole owner.
-		rewardContainer->decrementReferenceCounter();
 	} else if (lootDrop) {
 		g_events->eventMonsterOnDropLoot(this, corpse);
 	}

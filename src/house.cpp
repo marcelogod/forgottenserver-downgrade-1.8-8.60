@@ -17,6 +17,13 @@ extern Game g_game;
 
 House::House(uint32_t houseId) : id(houseId) {}
 
+House::~House()
+{
+	for (Door* door : doorSet) {
+		door->decrementReferenceCounter();
+	}
+}
+
 void House::addTile(HouseTile* tile)
 {
 	tile->setFlag(TILESTATE_PROTECTIONZONE);
@@ -877,13 +884,16 @@ void Houses::payHouses(RentPeriod_t rentPeriod) const
 				if (house->getPayRentWarnings() < 7) {
 					int32_t daysLeft = 7 - house->getPayRentWarnings();
 
-					Item* letter = Item::CreateItem(ITEM_LETTER_STAMPED).release();
+					auto letterPtr = Item::CreateItem(ITEM_LETTER_STAMPED);
 				std::string period = getRentPeriod(rentPeriod);
 
-				letter->setText(fmt::format(
+				letterPtr->setText(fmt::format(
 				    "Warning! \nThe {:s} rent of {:d} gold for your house \"{:s}\" is payable. Have it within {:d} days or you will lose this house.",
 				    period, house->getRent(), house->getName(), daysLeft));
-				g_game.internalAddItem(player.getInbox(), letter, INDEX_WHEREEVER, FLAG_NOLIMIT);
+				Item* rawLetter = letterPtr.get();
+				if (g_game.internalAddItem(player.getInbox(), rawLetter, INDEX_WHEREEVER, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
+					letterPtr.release();
+				}
 				house->setPayRentWarnings(house->getPayRentWarnings() + 1);
 				} else {
 					house->setOwner(0, true, &player);
@@ -927,15 +937,18 @@ void Houses::payHouses(RentPeriod_t rentPeriod) const
 				if (house->getPayRentWarnings() < 7) {
 					int32_t daysLeft = 7 - house->getPayRentWarnings();
 
-					Item* letter = Item::CreateItem(ITEM_LETTER_STAMPED).release();
+					auto letterPtr = Item::CreateItem(ITEM_LETTER_STAMPED);
 				std::string period = getRentPeriod(rentPeriod);
 
-				letter->setText(fmt::format(
+				letterPtr->setText(fmt::format(
 				    "Warning! \nThe {:s} rent of {:d} gold for your guildhall \"{:s}\" is payable. Have it within {:d} days or you will lose this guildhall.",
 				    period, house->getRent(), house->getName(), daysLeft));
 				DepotLocker* depot = player.getDepotLocker(town->getID());
 				if (depot) {
-					g_game.internalAddItem(depot, letter, INDEX_WHEREEVER, FLAG_NOLIMIT);
+					Item* rawLetter = letterPtr.get();
+					if (g_game.internalAddItem(depot, rawLetter, INDEX_WHEREEVER, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
+						letterPtr.release();
+					}
 				}
 				house->setPayRentWarnings(house->getPayRentWarnings() + 1);
 				} else {

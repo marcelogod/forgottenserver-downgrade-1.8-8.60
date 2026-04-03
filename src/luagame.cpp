@@ -437,6 +437,7 @@ int luaGameCreateItem(lua_State* L)
 		itemPtr->setInstanceID(instanceId);
 	}
 
+	Item* item = itemPtr.get();
 	if (lua_gettop(L) >= 3) {
 		const Position& position = getPosition(L, 3);
 		Tile* tile = g_game.map.getTile(position);
@@ -445,13 +446,36 @@ int luaGameCreateItem(lua_State* L)
 			return 1;
 		}
 
-		g_game.internalAddItem(tile, itemPtr.get(), INDEX_WHEREEVER, FLAG_NOLIMIT);
+		Item* mergedItem = nullptr;
+		if (item->isStackable()) {
+			int32_t destinationIndex = INDEX_WHEREEVER;
+			uint32_t addFlags = FLAG_NOLIMIT;
+			tile->queryDestination(destinationIndex, *item, &mergedItem, addFlags);
+			if (!(mergedItem && mergedItem->equals(item) && mergedItem->getItemCount() < mergedItem->getStackSize())) {
+				mergedItem = nullptr;
+			}
+		}
+
+		ReturnValue ret = g_game.internalAddItem(tile, itemPtr.get(), INDEX_WHEREEVER, FLAG_NOLIMIT);
+		if (ret != RETURNVALUE_NOERROR) {
+			lua_pushnil(L);
+			return 1;
+		}
+
+		itemPtr.release();
+		if (item->getParent() == nullptr) {
+			if (!mergedItem || mergedItem->isRemoved()) {
+				lua_pushnil(L);
+				return 1;
+			}
+			item = mergedItem;
+		}
 	} else {
-		LuaScriptInterface::getScriptEnv()->addTempItem(itemPtr.get());
-		itemPtr->setParent(VirtualCylinder::virtualCylinder);
+		LuaScriptInterface::getScriptEnv()->addTempItem(item);
+		item->setParent(VirtualCylinder::virtualCylinder);
+		itemPtr.release();
 	}
 
-	Item* item = itemPtr.release();
 	pushUserdata<Item>(L, item);
 	setItemMetatable(L, -1, item);
 	return 1;
@@ -483,6 +507,7 @@ int luaGameCreateContainer(lua_State* L)
 		containerPtr->setInstanceID(instanceId);
 	}
 
+	Container* container = containerPtr.get();
 	if (lua_gettop(L) >= 3) {
 		const Position& position = getPosition(L, 3);
 		Tile* tile = g_game.map.getTile(position);
@@ -491,13 +516,24 @@ int luaGameCreateContainer(lua_State* L)
 			return 1;
 		}
 
-		g_game.internalAddItem(tile, containerPtr.get(), INDEX_WHEREEVER, FLAG_NOLIMIT);
+		ReturnValue ret = g_game.internalAddItem(tile, containerPtr.get(), INDEX_WHEREEVER, FLAG_NOLIMIT);
+		if (ret != RETURNVALUE_NOERROR) {
+			lua_pushnil(L);
+			return 1;
+		}
+
+		if (container->getParent() == nullptr) {
+			lua_pushnil(L);
+			return 1;
+		}
+
+		containerPtr.release();
 	} else {
-		LuaScriptInterface::getScriptEnv()->addTempItem(containerPtr.get());
-		containerPtr->setParent(VirtualCylinder::virtualCylinder);
+		LuaScriptInterface::getScriptEnv()->addTempItem(container);
+		container->setParent(VirtualCylinder::virtualCylinder);
+		containerPtr.release();
 	}
 
-	Container* container = containerPtr.release();
 	pushUserdata<Container>(L, container);
 	setMetatable(L, -1, "Container");
 	return 1;

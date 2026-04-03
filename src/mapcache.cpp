@@ -161,6 +161,33 @@ size_t MapCache::getTileCacheSize() {
 
 // Helper functions for parsing
 namespace {
+    bool cacheCylinderOwnsThing(const Cylinder* cylinder, const Thing* thing) {
+        return cylinder && thing && thing->getParent() == cylinder && cylinder->getThingIndex(thing) != -1;
+    }
+
+    bool placeCachedMapItem(Cylinder* cylinder, Item* item) {
+        if (!cylinder || !item) {
+            return false;
+        }
+
+        cylinder->internalAddThing(item);
+        if (!cacheCylinderOwnsThing(cylinder, item)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    void destroyUnownedMapItem(Item* item) {
+        if (!item) {
+            return;
+        }
+
+        item->stopDecaying();
+        item->setParent(nullptr);
+        delete item;
+    }
+
     void applyItemIdSubstitutions(uint16_t& id) {
         switch (id) {
             case ITEM_FIREFIELD_PVP_FULL: id = ITEM_FIREFIELD_PERSISTENT_FULL; break;
@@ -569,7 +596,10 @@ Item* createItemFromBasic(const std::shared_ptr<BasicItem>& basicItem, const Pos
     if (Container* container = item->getContainer()) {
         for (const auto& childBasicItem : basicItem->items) {
             if (Item* childItem = createItemFromBasic(childBasicItem, pos)) {
-                container->internalAddThing(childItem);
+                if (!placeCachedMapItem(container, childItem)) {
+                    LOG_WARN(fmt::format("[MapCache] Failed to attach child item {} at {}", childItem->getID(), pos));
+                    destroyUnownedMapItem(childItem);
+                }
             }
         }
     }
@@ -614,14 +644,20 @@ std::unique_ptr<Tile> createTileFromBasic(const std::shared_ptr<BasicTile>& basi
     // Add ground
     if (basicTile->ground) {
         if (Item* groundItem = createItemFromBasic(basicTile->ground, pos)) {
-            tile->internalAddThing(groundItem);
+            if (!placeCachedMapItem(tile.get(), groundItem)) {
+                LOG_WARN(fmt::format("[MapCache] Failed to attach ground item {} at {}", groundItem->getID(), pos));
+                destroyUnownedMapItem(groundItem);
+            }
         }
     }
     
     // Add items
     for (const auto& basicItem : basicTile->items) {
         if (Item* item = createItemFromBasic(basicItem, pos)) {
-            tile->internalAddThing(item);
+            if (!placeCachedMapItem(tile.get(), item)) {
+                LOG_WARN(fmt::format("[MapCache] Failed to attach item {} at {}", item->getID(), pos));
+                destroyUnownedMapItem(item);
+            }
         }
     }
     

@@ -860,6 +860,7 @@ DepotChest* Player::getDepotChest(uint32_t depotId, bool autoCreate)
 	}
 
 	it = depotChests.emplace(depotId, new DepotChest(ITEM_DEPOT)).first;
+	it->second->incrementReferenceCounter();
 	it->second->setMaxDepotItems(getMaxDepotItems());
 	return it->second;
 }
@@ -885,7 +886,14 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 	}
 
 	if (!hasInbox) {
-		it->second->internalAddThing(Item::CreateItem(ITEM_INBOX).release());
+		auto inbox = Item::CreateItem(ITEM_INBOX);
+		if (inbox) {
+			Item* rawInbox = inbox.get();
+			it->second->internalAddThing(rawInbox);
+			if (rawInbox->getParent() == it->second.get() && it->second->getThingIndex(rawInbox) != -1) {
+				inbox.release();
+			}
+		}
 	}
 
 	return it->second.get();

@@ -175,10 +175,28 @@ int luaContainerAddItem(lua_State* L)
 
 	int32_t index = getInteger<int32_t>(L, 4, INDEX_WHEREEVER);
 	uint32_t flags = getInteger<uint32_t>(L, 5, 0);
+	Item* item = itemPtr.get();
+	Item* mergedItem = nullptr;
+	if (item->isStackable()) {
+		int32_t destinationIndex = index;
+		uint32_t destinationFlags = flags;
+		container->queryDestination(destinationIndex, *item, &mergedItem, destinationFlags);
+		if (!(mergedItem && mergedItem->equals(item) && mergedItem->getItemCount() < mergedItem->getStackSize())) {
+			mergedItem = nullptr;
+		}
+	}
 
 	ReturnValue ret = g_game.internalAddItem(container, itemPtr.get(), index, flags);
 	if (ret == RETURNVALUE_NOERROR) {
-		Item* item = itemPtr.release();
+		itemPtr.release();
+		if (item->getParent() == nullptr) {
+			if (!mergedItem || mergedItem->isRemoved()) {
+				lua_pushnil(L);
+				return 1;
+			}
+			item = mergedItem;
+		}
+
 		pushUserdata<Item>(L, item);
 		setItemMetatable(L, -1, item);
 	} else {

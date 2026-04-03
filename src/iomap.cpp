@@ -29,6 +29,31 @@ OTBM_ROOTV1
     |--- OTBM_ITEM_DEF (not implemented)
 */
 
+namespace {
+bool mapCylinderOwnsThing(const Cylinder* cylinder, const Thing* thing)
+{
+	return cylinder && thing && thing->getParent() == cylinder && cylinder->getThingIndex(thing) != -1;
+}
+
+bool transferMapItem(Cylinder* cylinder, std::unique_ptr<Item>& item)
+{
+	if (!cylinder || !item) {
+		return false;
+	}
+
+	Item* rawItem = item.get();
+	cylinder->internalAddThing(rawItem);
+	if (!mapCylinderOwnsThing(cylinder, rawItem)) {
+		return false;
+	}
+
+	rawItem->startDecaying();
+	rawItem->setLoadedFromMap(true);
+	item.release();
+	return true;
+}
+} // namespace
+
 std::unique_ptr<Tile> IOMap::createTile(std::unique_ptr<Item>& ground, Item* item, uint16_t x, uint16_t y, uint8_t z) {
     std::unique_ptr<Tile> tile;
     if (!ground) {
@@ -41,9 +66,7 @@ std::unique_ptr<Tile> IOMap::createTile(std::unique_ptr<Item>& ground, Item* ite
         tile = std::make_unique<DynamicTile>(x, y, z);
     }
 
-    tile->internalAddThing(ground.get());
-    ground->startDecaying();
-    ground.release();
+    transferMapItem(tile.get(), ground);
     return tile;
 }
 
@@ -293,19 +316,13 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
                             }
 
                             if (tile) {
-                                tile->internalAddThing(item.get());
-                                item->startDecaying();
-                                item->setLoadedFromMap(true);
-                                item.release();
+                                transferMapItem(tile, item);
                             } else if (item->isGroundTile()) {
-                                ground_item.reset(item.release());
+                                ground_item = std::move(item);
                             } else {
                                 tilePtr = createTile(ground_item, item.get(), x, y, z);
                                 tile = tilePtr.get();
-                                tile->internalAddThing(item.get());
-                                item->startDecaying();
-                                item->setLoadedFromMap(true);
-                                item.release();
+                                transferMapItem(tile, item);
                             }
                         }
                         break;
@@ -350,19 +367,13 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
                     }
 
                     if (tile) {
-                        tile->internalAddThing(item.get());
-                        item->startDecaying();
-                        item->setLoadedFromMap(true);
-                        item.release();
+                        transferMapItem(tile, item);
                     } else if (item->isGroundTile()) {
-                        ground_item.reset(item.release());
+                        ground_item = std::move(item);
                     } else {
                         tilePtr = createTile(ground_item, item.get(), x, y, z);
                         tile = tilePtr.get();
-                        tile->internalAddThing(item.get());
-                        item->startDecaying();
-                        item->setLoadedFromMap(true);
-                        item.release();
+                        transferMapItem(tile, item);
                     }
                 }
             }

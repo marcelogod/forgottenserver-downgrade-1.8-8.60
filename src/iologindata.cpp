@@ -554,120 +554,179 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 		} while (result->next());
 	}
 
+	struct ItemMapGuard {
+		ItemMap& itemMap;
+
+		~ItemMapGuard()
+		{
+			for (auto& entry : itemMap) {
+				Item*& item = entry.second.first;
+				Item* orphan = item;
+				item = nullptr;
+				std::unique_ptr<Item>{orphan};
+			}
+		}
+	};
+
+	const auto transferLoadedItem = [](Cylinder* cylinder, std::unique_ptr<Item>& item) {
+		if (!cylinder || !item) {
+			return false;
+		}
+
+		Item* rawItem = item.get();
+		cylinder->internalAddThing(rawItem);
+		if (rawItem->getParent() != cylinder || cylinder->getThingIndex(rawItem) == -1) {
+			return false;
+		}
+
+		item.release();
+		return true;
+	};
+
+	const auto transferLoadedItemAt = [](Cylinder* cylinder, uint32_t index, std::unique_ptr<Item>& item) {
+		if (!cylinder || !item) {
+			return false;
+		}
+
+		Item* rawItem = item.get();
+		cylinder->internalAddThing(index, rawItem);
+		if (rawItem->getParent() != cylinder || cylinder->getThingIndex(rawItem) == -1) {
+			return false;
+		}
+
+		item.release();
+		return true;
+	};
+
 	// load inventory items
-	ItemMap itemMap;
+	{
+		ItemMap itemMap;
+		[[maybe_unused]] ItemMapGuard itemMapGuard{itemMap};
 
-	if ((result = db.storeQuery(fmt::format(
-	         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_items` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
-	         player->getGUID())))) {
-		loadItems(itemMap, result);
+		if ((result = db.storeQuery(fmt::format(
+		         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_items` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
+		         player->getGUID())))) {
+			loadItems(itemMap, result);
 
-		for (ItemMap::const_reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
-			const std::pair<Item*, int32_t>& pair = it->second;
-			Item* item = pair.first;
-			int32_t pid = pair.second;
-			if (pid >= CONST_SLOT_FIRST && pid <= CONST_SLOT_LAST) {
-				player->internalAddThing(pid, item);
-				player->postAddNotification(item, nullptr, pid);
-			} else {
-				ItemMap::const_iterator it2 = itemMap.find(pid);
-				if (it2 == itemMap.end()) {
+			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
+				auto item = std::unique_ptr<Item>(it->second.first);
+				it->second.first = nullptr;
+				if (!item) {
 					continue;
 				}
 
-				Container* container = it2->second.first->getContainer();
-				if (container) {
-					container->internalAddThing(item);
+				Item* rawItem = item.get();
+				int32_t pid = it->second.second;
+				if (pid >= CONST_SLOT_FIRST && pid <= CONST_SLOT_LAST) {
+					if (transferLoadedItemAt(player, pid, item)) {
+						player->postAddNotification(rawItem, nullptr, pid);
+					}
+					continue;
 				}
+
+				ItemMap::const_iterator parentIt = itemMap.find(pid);
+				if (parentIt == itemMap.end() || !parentIt->second.first) {
+					continue;
+				}
+
+				Container* container = parentIt->second.first->getContainer();
+				transferLoadedItem(container, item);
 			}
 		}
 	}
 
 	// load depot locker items
-	cleanupItemMap(itemMap);
+	{
+		ItemMap itemMap;
+		[[maybe_unused]] ItemMapGuard itemMapGuard{itemMap};
 
-	if ((result = db.storeQuery(fmt::format(
-	         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_depotlockeritems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
-	         player->getGUID())))) {
-		loadItems(itemMap, result);
+		if ((result = db.storeQuery(fmt::format(
+		         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_depotlockeritems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
+		         player->getGUID())))) {
+			loadItems(itemMap, result);
 
-		for (ItemMap::const_reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
-			const std::pair<Item*, int32_t>& pair = it->second;
-			Item* item = pair.first;
-
-			if (item->getID() == ITEM_INBOX) {
-				delete item;
-				continue;
-			}
-
-			int32_t pid = pair.second;
-			if (pid >= 0 && pid < 100) {
-				DepotLocker* depotLocker = player->getDepotLocker(pid);
-				if (depotLocker) {
-					depotLocker->internalAddThing(item);
-				}
-			} else {
-				ItemMap::const_iterator it2 = itemMap.find(pid);
-				if (it2 == itemMap.end()) {
+			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
+				auto item = std::unique_ptr<Item>(it->second.first);
+				it->second.first = nullptr;
+				if (!item || item->getID() == ITEM_INBOX) {
 					continue;
 				}
 
-				Container* container = it2->second.first->getContainer();
-				if (container) {
-					container->internalAddThing(item);
+				int32_t pid = it->second.second;
+				if (pid >= 0 && pid < 100) {
+					transferLoadedItem(player->getDepotLocker(pid), item);
+					continue;
 				}
+
+				ItemMap::const_iterator parentIt = itemMap.find(pid);
+				if (parentIt == itemMap.end() || !parentIt->second.first) {
+					continue;
+				}
+
+				Container* container = parentIt->second.first->getContainer();
+				transferLoadedItem(container, item);
 			}
 		}
 	}
 
 	// load depot items
-	cleanupItemMap(itemMap);
+	{
+		ItemMap itemMap;
+		[[maybe_unused]] ItemMapGuard itemMapGuard{itemMap};
 
-	if ((result = db.storeQuery(fmt::format(
-	         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_depotitems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
-	         player->getGUID())))) {
-		loadItems(itemMap, result);
+		if ((result = db.storeQuery(fmt::format(
+		         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_depotitems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
+		         player->getGUID())))) {
+			loadItems(itemMap, result);
 
-		for (ItemMap::const_reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
-			const std::pair<Item*, int32_t>& pair = it->second;
-			Item* item = pair.first;
-
-			int32_t pid = pair.second;
-			if (pid >= 0 && pid < 100) {
-				DepotChest* depotChest = player->getDepotChest(pid, true);
-				if (depotChest) {
-					depotChest->internalAddThing(item);
-				}
-			} else {
-				ItemMap::const_iterator it2 = itemMap.find(pid);
-				if (it2 == itemMap.end()) {
+			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
+				auto item = std::unique_ptr<Item>(it->second.first);
+				it->second.first = nullptr;
+				if (!item) {
 					continue;
 				}
 
-				Container* container = it2->second.first->getContainer();
-				if (container) {
-					container->internalAddThing(item);
+				int32_t pid = it->second.second;
+				if (pid >= 0 && pid < 100) {
+					transferLoadedItem(player->getDepotChest(pid, true), item);
+					continue;
 				}
+
+				ItemMap::const_iterator parentIt = itemMap.find(pid);
+				if (parentIt == itemMap.end() || !parentIt->second.first) {
+					continue;
+				}
+
+				Container* container = parentIt->second.first->getContainer();
+				transferLoadedItem(container, item);
 			}
 		}
 	}
 
 	// load inbox items
-	cleanupItemMap(itemMap);
+	{
+		ItemMap itemMap;
+		[[maybe_unused]] ItemMapGuard itemMapGuard{itemMap};
 
-	if ((result = db.storeQuery(fmt::format(
-	         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_inboxitems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
-	         player->getGUID())))) {
-		loadItems(itemMap, result);
+		if ((result = db.storeQuery(fmt::format(
+		         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_inboxitems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
+		         player->getGUID())))) {
+			loadItems(itemMap, result);
 
-		for (ItemMap::const_reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
-			const std::pair<Item*, int32_t>& pair = it->second;
-			Item* item = pair.first;
+			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
+				auto item = std::unique_ptr<Item>(it->second.first);
+				it->second.first = nullptr;
+				if (!item) {
+					continue;
+				}
 
-			int32_t pid = pair.second;
-			if (pid >= 0 && pid < 100) {
-				DepotLocker* depotLocker = player->getDepotLocker(pid);
-				if (depotLocker) {
+				int32_t pid = it->second.second;
+				if (pid >= 0 && pid < 100) {
+					DepotLocker* depotLocker = player->getDepotLocker(pid);
+					if (!depotLocker) {
+						continue;
+					}
+
 					Item* inbox = nullptr;
 					for (Item* depotItem : depotLocker->getItemList()) {
 						if (depotItem->getID() == ITEM_INBOX) {
@@ -676,83 +735,76 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 						}
 					}
 
-					if (inbox) {
-						Container* inboxContainer = inbox->getContainer();
-						if (inboxContainer) {
-							inboxContainer->internalAddThing(item);
-						}
-					}
-				}
-			} else {
-				ItemMap::const_iterator it2 = itemMap.find(pid);
-				if (it2 == itemMap.end()) {
+					Container* inboxContainer = inbox ? inbox->getContainer() : nullptr;
+					transferLoadedItem(inboxContainer, item);
 					continue;
 				}
 
-				Container* container = it2->second.first->getContainer();
-				if (container) {
-					container->internalAddThing(item);
+				ItemMap::const_iterator parentIt = itemMap.find(pid);
+				if (parentIt == itemMap.end() || !parentIt->second.first) {
+					continue;
 				}
+
+				Container* container = parentIt->second.first->getContainer();
+				transferLoadedItem(container, item);
 			}
 		}
 	}
 
 	// Load reward items
-	cleanupItemMap(itemMap);
+	{
+		ItemMap itemMap;
+		[[maybe_unused]] ItemMapGuard itemMapGuard{itemMap};
 
-	if ((result = db.storeQuery(fmt::format("SELECT `sid`, `pid`, `itemtype`, `count`, `attributes` FROM `player_rewarditems` WHERE `player_id` = {:d} ORDER BY `sid` DESC", player->getGUID())))) {
-		loadItems(itemMap, result);
+		if ((result = db.storeQuery(fmt::format(
+		         "SELECT `sid`, `pid`, `itemtype`, `count`, `attributes` FROM `player_rewarditems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
+		         player->getGUID())))) {
+			loadItems(itemMap, result);
 
-		// Map to store containers (bags) for each unique DATE attribute
-		std::unordered_map<int64_t, Container*> dateContainers;
+			std::unordered_map<int64_t, std::unique_ptr<Item>> rewardContainers;
 
-		// Get the current time and calculate the time 7 days ago
-		time_t now = std::time(nullptr);
-		time_t seven_days_ago = now - (7 * 24 * 60 * 60); // 7 days in seconds
-		
+			time_t now = std::time(nullptr);
+			time_t seven_days_ago = now - (7 * 24 * 60 * 60);
 
-		for (ItemMap::const_reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
-			const std::pair<Item*, uint32_t>& pair = it->second;
-			Item* item = pair.first;
-
-			int64_t rewardDate = item->getIntAttr(ITEM_ATTRIBUTE_DATE);
-
-			// Skip items older than 7 days
-			if (rewardDate < static_cast<int64_t>(seven_days_ago)) {
-				delete item; // Fix: Delete the item if it is ignored, because loadItems allocated memory for it
-				continue;
-			}
-
-			// Create or get existing container for the given DATE attribute
-			Container* container = nullptr;
-			auto containerIt = dateContainers.find(rewardDate);
-			if (containerIt != dateContainers.end()) {
-				container = containerIt->second;
-			}
-			else {
-				auto containerItem = Item::CreateItem(ITEM_REWARD_CONTAINER);
-				if (!containerItem) {
-					delete item;
+			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
+				auto item = std::unique_ptr<Item>(it->second.first);
+				it->second.first = nullptr;
+				if (!item) {
 					continue;
 				}
 
-				container = containerItem->getContainer();
-				if (!container) {
-					delete item;
+				int64_t rewardDate = item->getIntAttr(ITEM_ATTRIBUTE_DATE);
+				if (rewardDate < static_cast<int64_t>(seven_days_ago)) {
 					continue;
 				}
 
-				container->setIntAttr(ITEM_ATTRIBUTE_DATE, rewardDate); // Set the DATE attribute on the container
-				container->setIntAttr(ITEM_ATTRIBUTE_REWARDID, item->getIntAttr(ITEM_ATTRIBUTE_REWARDID));
-				containerItem.release(); // transfer ownership to dateContainers map
-				dateContainers[rewardDate] = container;
+				Container* container = nullptr;
+				auto rewardContainerIt = rewardContainers.find(rewardDate);
+				if (rewardContainerIt != rewardContainers.end()) {
+					container = rewardContainerIt->second->getContainer();
+				} else {
+					auto containerItem = Item::CreateItem(ITEM_REWARD_CONTAINER);
+					if (!containerItem) {
+						continue;
+					}
+
+					container = containerItem->getContainer();
+					if (!container) {
+						continue;
+					}
+
+					container->setIntAttr(ITEM_ATTRIBUTE_DATE, rewardDate);
+					container->setIntAttr(ITEM_ATTRIBUTE_REWARDID, item->getIntAttr(ITEM_ATTRIBUTE_REWARDID));
+					rewardContainers.emplace(rewardDate, std::move(containerItem));
+				}
+
+				transferLoadedItem(container, item);
 			}
 
-			container->internalAddThing(item);
-		}
-
-		for (auto& pair : dateContainers) {
-			player->getRewardChest().internalAddThing(pair.second);
+			for (auto& [rewardDate, containerItem] : rewardContainers) {
+				(void)rewardDate;
+				transferLoadedItem(&player->getRewardChest(), containerItem);
+			}
 		}
 	}
 
@@ -1458,6 +1510,14 @@ void IOLoginData::loadItems(ItemMap& itemMap, DBResult_ptr result)
 				LOG_WARN("WARNING: Serialize error in IOLoginData::loadItems");
 			}
 
+			auto it = itemMap.find(sid);
+			if (it != itemMap.end()) {
+				LOG_WARN(fmt::format("WARNING: Duplicate sid {} found in IOLoginData::loadItems. Replacing earlier item.", sid));
+				Item* replacedItem = it->second.first;
+				it->second.first = nullptr;
+				std::unique_ptr<Item>{replacedItem};
+			}
+
 			std::pair<Item*, uint32_t> pair(item.release(), pid);
 			itemMap[sid] = pair;
 		}
@@ -1466,12 +1526,15 @@ void IOLoginData::loadItems(ItemMap& itemMap, DBResult_ptr result)
 
 void IOLoginData::cleanupItemMap(ItemMap& itemMap)
 {
-	for (auto& [sid, pair] : itemMap) {
-		Item* item = pair.first;
-		if (item && item->getParent() == nullptr) {
-			delete item;
-			pair.first = nullptr;
+	for (auto& entry : itemMap) {
+		Item*& item = entry.second.first;
+		if (!item || item->getParent() != nullptr) {
+			continue;
 		}
+
+		Item* orphan = item;
+		item = nullptr;
+		std::unique_ptr<Item>{orphan};
 	}
 	itemMap.clear();
 }

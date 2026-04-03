@@ -111,6 +111,7 @@ class House
 {
 public:
 	explicit House(uint32_t houseId);
+	~House();
 
 	void addTile(HouseTile* tile);
 
