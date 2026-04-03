@@ -12,8 +12,6 @@
 #include "position.h"
 #include "tile.h"
 
-#include <unordered_set>
-
 using ConditionList = std::list<Condition_ptr>;
 using CreatureEventList = std::list<CreatureEvent*>;
 

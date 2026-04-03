@@ -964,6 +964,7 @@ Item* Player::getWriteItem(uint32_t& windowTextId, uint16_t& maxWriteLen)
 	maxWriteLen = this->maxWriteLen;
 	return writeItem;
 }
+
 void Player::setWriteItem(Item* item, uint16_t maxWriteLen /*= 0*/)
 {
 	windowTextId++;
@@ -6298,9 +6299,6 @@ bool Player::addOfflineTrainingTries(skills_t skill, uint64_t tries)
 	return sendUpdate;
 }
 
-
-
-
 void Player::addReset(uint32_t count /*= 1*/)
 {
 	reset += count;
@@ -6323,6 +6321,7 @@ double Player::getResetExpReduction() const
 	double multiplier = 1.0 - (static_cast<double>(reset * reductionPerReset) / 100.0);
 	return std::max<double>(0.1, multiplier);
 }
+
 void Player::applyOfflineTraining(uint32_t trainingTime)
 {
 	float efficiency = ConfigManager::getFloat(ConfigManager::OFFLINE_TRAINING_EFFICIENCY);

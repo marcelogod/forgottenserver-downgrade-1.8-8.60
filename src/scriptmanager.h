@@ -4,8 +4,6 @@
 #ifndef FS_SCRIPTMANAGER_H
 #define FS_SCRIPTMANAGER_H
 
-#include <memory>
-
 // Forward declarations
 class Actions;
 class Chat;

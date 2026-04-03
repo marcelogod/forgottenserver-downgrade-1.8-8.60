@@ -4,8 +4,6 @@
 #ifndef FS_PARTY_H
 #define FS_PARTY_H
 
-#include <memory>
-
 #include "monsters.h"
 #include "player.h"
 

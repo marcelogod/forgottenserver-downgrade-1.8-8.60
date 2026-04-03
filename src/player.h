@@ -21,8 +21,6 @@
 #include "town.h"
 #include "vocation.h"
 
-#include <bitset>
-
 enum VirtueMonk_t : uint8_t {
 	VIRTUE_NONE = 0,
 	VIRTUE_HARMONY = 1,
@@ -1156,8 +1154,6 @@ public:
 	void setAccountManagerMode(AccountManagerMode mode) { accountManager = mode; }
 	void setAccountManagerData(uint32_t accId) { managerData.accountId = accId; }
 
-
-
 	// for lua module
 	void setAccountType(AccountType_t newType) { accountType = newType; }
 
@@ -1199,7 +1195,7 @@ public:
 	auto getFightMode() const { return fightMode; }
 
 	bool hasDebugAssertSent() const { return client ? client->debugAssertSent : false; }
-	
+
 	bool isOTCv8() const { return client ? client->isOTCv8 : false; }
 	bool isMehah() const { return client ? client->isMehah : false; }
 	bool isOTC() const { return client ? (client->isOTCv8 || client->isMehah) : false; }

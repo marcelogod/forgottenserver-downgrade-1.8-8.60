@@ -7,11 +7,10 @@
 
 #include "bed.h"
 #include "game.h"
+#include "tools.h"
 #include "logger.h"
 #include <fmt/format.h>
 #include "stats.h"
-
-#include "tools.h"
 
 extern Game g_game;
 
@@ -71,7 +70,7 @@ void IOMapSerialize::loadHouseItems(Map* map)
         } while (result->next());
     }
     
-    LOG_INFO(fmt::format(">> Loaded house items in: [\033[1;33m{:.3f}\033[0m] s ([\033[1;33m{}\033[0m] tiles, [\033[1;33m{}\033[0m] items)", 
+    LOG_INFO(fmt::format(">> Loaded house items in: [\033[1;33m{:.3f}\033[0m] s ([\033[1;33m{}\033[0m] tiles, [\033[1;33m{}\033[0m] items)",
                          (OTSYS_TIME() - start) / 1000., tileCount, itemCount));
 }
 
@@ -322,7 +321,7 @@ bool IOMapSerialize::loadHouseInfo()
 			house->setPaidUntil(result->getNumber<time_t>("paid"));
 			house->setPayRentWarnings(result->getNumber<uint32_t>("warnings"));
 		}
-		} while (result->next());
+	} while (result->next());
 
 	result = db.storeQuery("SELECT `house_id`, `listid`, `list` FROM `house_lists`");
 	if (result) {
@@ -394,7 +393,7 @@ bool IOMapSerialize::saveHouseInfo()
 		}
 	}
 
-	DBInsert stmt("INSERT INTO `house_lists` (`house_id` , `listid` , `list`) VALUES ");
+	DBInsert stmt("INSERT INTO `house_lists` (`house_id`, `listid` , `list`) VALUES ");
 
 	for (const auto& it : g_game.map.houses.getHouses()) {
 		House* house = it.second.get();

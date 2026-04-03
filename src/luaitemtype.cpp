@@ -921,6 +921,7 @@ int luaItemTypeHasSubType(lua_State* L)
 	}
 	return 1;
 }
+
 int luaItemTypeGetClassification(lua_State* L)
 {
 	// itemType:getClassification()
@@ -944,7 +945,6 @@ int luaItemTypeGetTier(lua_State* L)
 	}
 	return 1;
 }
-
 
 int luaItemTypeGetElementalBond(lua_State* L)
 {

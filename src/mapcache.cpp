@@ -13,8 +13,6 @@
 #include "game.h"
 #include "iomap.h"
 #include "fileloader.h"
-#include <mutex>
-#include <iostream>
 #include "logger.h"
 
 // Static cache storage with weak_ptr for automatic cleanup

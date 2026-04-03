@@ -14,7 +14,6 @@ extern Game g_game;
 
 Party::Party(Player* leader) : leader(leader) { leader->setParty(this); }
 
-
 std::shared_ptr<Party> Party::create(Player* leader)
 {
 	auto party = std::shared_ptr<Party>(new Party(leader));

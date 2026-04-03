@@ -74,10 +74,10 @@ inline constexpr int32_t RANGE_REQUEST_TRADE_INTERVAL = 400;
 class Game
 {
 public:
-	struct InstanceArea {
-		Position fromPos;
-		Position toPos;
-	};
+struct InstanceArea {
+	Position fromPos;
+	Position toPos;
+};
 
 	Game() = default;
 

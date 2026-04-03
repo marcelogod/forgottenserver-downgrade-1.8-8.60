@@ -7,10 +7,6 @@
 #include "position.h"
 #include "tile.h"
 
-#include <memory>
-#include <utility>
-#include <vector>
-
 class Monster;
 class MonsterType;
 class Npc;

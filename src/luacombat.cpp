@@ -209,7 +209,7 @@ int luaCombatSetCallback(lua_State* L)
 	}
 
 	auto key = getInteger<CallBackParam>(L, 2);
-	
+
 	if (!combat->setCallback(key)) {
 		reportErrorFunc(L, "Invalid callback parameter");
 		pushBoolean(L, false);
@@ -253,7 +253,6 @@ int luaCombatSetCallback(lua_State* L)
 	pushBoolean(L, true);
 	return 1;
 }
-
 
 int luaCombatSetOrigin(lua_State* L)
 {

@@ -530,7 +530,7 @@ bool Spell::playerRuneSpellCheck(Player* player, const Position& toPos)
 
 void Spell::postCastSpell(Player* player, bool finishedCast /*= true*/, bool payCost /*= true*/) const
 {
-    if (finishedCast) {
+	if (finishedCast) {
         if (!player->hasFlag(PlayerFlag_HasNoExhaustion)) {
             int32_t momentumReduction = 0;
 
@@ -581,7 +581,7 @@ void Spell::postCastSpell(Player* player, bool finishedCast /*= true*/, bool pay
 		Spell::postCastSpell(player, getManaCost(player), getSoulCost());
 	}
 
-    if (harmony) {
+	if (harmony) {
 		player->setHarmony(0);
 	}
 }

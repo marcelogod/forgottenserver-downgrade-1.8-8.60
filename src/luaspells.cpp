@@ -578,6 +578,7 @@ int luaSpellAllowOnSelf(lua_State* L)
 	}
 	return 1;
 }
+
 int luaSpellVocation(lua_State* L)
 {
 	// spell:vocation(vocation)

@@ -4,15 +4,6 @@
 #ifndef FS_MAPCACHE_H
 #define FS_MAPCACHE_H
 
-#include <memory>
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include <functional>
-#include <atomic>
-
-#include <mutex>
-
 class Item;
 class Tile;
 class House;

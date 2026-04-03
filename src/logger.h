@@ -6,7 +6,6 @@
 
 #include "position.h"
 
-#include <chrono>
 #include <fmt/format.h>
 
 enum class LogLevel

@@ -995,7 +995,7 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 
 						if (avatarLookType != 0) {
 							auto outfitCondPtr = Condition::createCondition(CONDITIONID_COMBAT,
-																						 CONDITION_OUTFIT, avatarDuration);
+								CONDITION_OUTFIT, avatarDuration);
 							Outfit_t avatarOutfit;
 							avatarOutfit.lookType = avatarLookType;
 							static_cast<ConditionOutfit*>(outfitCondPtr.get())->setOutfit(avatarOutfit);

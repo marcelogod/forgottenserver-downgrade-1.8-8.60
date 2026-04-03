@@ -8,7 +8,6 @@
 #include "configmanager.h"
 #include "pugicast.h"
 #include "scheduler.h"
-#include "scheduler.h"
 #include "tools.h"
 #include "logger.h"
 #include <fmt/format.h>

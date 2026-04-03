@@ -8,9 +8,6 @@
 #include "housetile.h"
 #include "position.h"
 
-#include <set>
-#include <unordered_set>
-
 class House;
 class BedItem;
 class Player;

@@ -5,8 +5,6 @@
 
 #include "xtea.h"
 
-#include <cstring>
-
 namespace xtea {
 
 round_keys expand_key(const key& k)

@@ -7,9 +7,6 @@
 
 #include "configmanager.h"
 
-#include <chrono>
-#include <fstream>
-#include <iomanip>
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
 #include <openssl/rand.h>
@@ -1389,7 +1386,7 @@ std::string_view getReturnMessage(ReturnValue value)
 
 		case RETURNVALUE_CANNOTMOVEITEMISPROTECTED:
 			return "You cannot move this item. Only the house owner or authorized guests can move items in this protected house.";
-		
+
 		case RETURNVALUE_NOTENOUGHRESET:
 			return "You do not have enough resets";
 
@@ -1401,7 +1398,7 @@ std::string_view getReturnMessage(ReturnValue value)
 
 		case RETURNVALUE_QUIVERAMMOONLY:
 			return "This quiver only holds arrows and bolts.";
-		
+
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";
 	}

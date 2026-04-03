@@ -26,7 +26,6 @@
 
 #include <fmt/format.h>
 #include <fmt/color.h>
-#include <fstream>
 #if __has_include("gitmetadata.h")
 #include "gitmetadata.h"
 #endif
@@ -203,7 +202,7 @@ void mainLoader(ServiceManager* services)
 	}
 
 	LOG_INFO(fmt::format(">> Loading monsters... [\033[1;33m{}\033[0m]", g_monsters.monsters.size()));
-	
+
 	LOG_INFO(">> Loading outfits");
 	if (!Outfits::getInstance().loadFromXml()) {
 		startupErrorMessage("Unable to load outfits!");
@@ -316,7 +315,7 @@ void startServer()
 	g_loaderSignal.wait(g_loaderUniqueLock);
 
 	if (serviceManager.is_running()) {
-		LOG_INFO(">> Version TFS: {} | Protocol: {} | Ports: {} / {} | IP: {}", 
+		LOG_INFO(">> Version TFS: {} | Protocol: {} | Ports: {} / {} | IP: {}",
 			fmt::format(fg(fmt::color::lime_green), "{}", STATUS_SERVER_VERSION),
 			fmt::format(fg(fmt::color::lime_green), "{}", CLIENT_VERSION_STR),
 			fmt::format(fg(fmt::color::lime_green), "{}", getInteger(ConfigManager::LOGIN_PORT)),

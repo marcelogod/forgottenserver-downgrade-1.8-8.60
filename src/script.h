@@ -7,9 +7,6 @@
 #include "enums.h"
 #include "luascript.h"
 
-#include <set>
-#include <string>
-
 class Scripts
 {
 public:

@@ -15,7 +15,6 @@
 #include "logger.h"
 #include "tools.h"
 #include <fmt/format.h>
-#include <utility>
 
 extern Game g_game;
 extern Vocations g_vocations;
@@ -71,7 +70,6 @@ bool IOLoginData::loginserverAuthentication(std::string_view name, std::string_v
 {
     Database& db = Database::getInstance();
 
-
     DBResult_ptr result = db.storeQuery(fmt::format(
         "SELECT `id`, `name`, `password`, `secret`, `type`, `premium_ends_at`, `tibia_coins` FROM `accounts` WHERE LOWER(`name`) = LOWER({:s})",
         db.escapeString(name)));
@@ -115,7 +113,6 @@ std::pair<uint32_t, uint32_t> IOLoginData::gameworldAuthentication(std::string_v
                                                                    std::string_view password,
                                                                    std::string_view characterName, bool& cast)
 {
-
 	if (accountName.empty()) {
 		cast = true;
 		return {0, 0};
@@ -421,7 +418,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	}
 
 	player->manaSpent = manaSpent;
-	
+
 	player->magLevelPercent = Player::getBasisPointLevel(player->manaSpent, nextManaCount) / 100;
 
 	player->health = result->getNumber<int32_t>("health");
@@ -499,7 +496,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 
 		player->skills[i].level = skillLevel;
 		player->skills[i].tries = skillTries;
-		
+
 		player->skills[i].percent = Player::getBasisPointLevel(skillTries, nextSkillTries) / 100;
 	}
 
@@ -962,7 +959,7 @@ bool IOLoginData::addRewardItems(uint32_t playerId, const ItemBlockList& itemLis
 bool IOLoginData::savePlayer(Player* player)
 {
 	AutoStat stat("savePlayer", "full");
-	
+
 	if (player->isDead()) {
 		player->changeHealth(1);
 	}

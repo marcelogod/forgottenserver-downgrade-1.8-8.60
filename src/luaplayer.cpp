@@ -64,7 +64,6 @@ int luaPlayerIsPlayer(lua_State* L)
 	return 1;
 }
 
-
 int luaPlayerGetGuid(lua_State* L)
 {
 	// player:getGuid()
@@ -246,7 +245,7 @@ int luaPlayerGetRewardChest(lua_State* L)
 	}
 
 	RewardChest& rewardChest = player->getRewardChest();
-	
+
 	pushUserdata<Item>(L, &rewardChest);
 	setItemMetatable(L, -1, &rewardChest);
 
@@ -1195,6 +1194,7 @@ int luaPlayerClearSpellCooldowns(lua_State* L)
 	}
 	return 1;
 }
+
 int luaPlayerGetMaxSoul(lua_State* L)
 {
 	// player:getMaxSoul()
@@ -3571,5 +3571,3 @@ void LuaScriptInterface::registerPlayer()
 	registerMetaMethod("OfflinePlayer", "__gc", luaOfflinePlayerRemove);
 	registerMetaMethod("OfflinePlayer", "__close", luaOfflinePlayerRemove);
 }
-
-

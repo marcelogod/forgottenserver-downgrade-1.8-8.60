@@ -1,4 +1,3 @@
-#include <fstream>
 #include <fmt/color.h>
 
 #include "otpch.h"

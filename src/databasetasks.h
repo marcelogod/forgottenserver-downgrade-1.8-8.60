@@ -8,9 +8,6 @@
 #include "enums.h"
 #include "thread_holder_base.h"
 
-#include <condition_variable>
-#include <deque>
-
 struct DatabaseTask
 {
 	DatabaseTask(std::string_view query, std::function<void(DBResult_ptr, bool)>&& callback, bool store) :

@@ -6,9 +6,6 @@
 
 #include "protocol.h"
 
-#include <map>
-#include <mutex>
-
 class NetworkMessage;
 class OutputMessage;
 

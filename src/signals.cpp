@@ -21,7 +21,6 @@
 #include "scriptmanager.h"
 #include "weapons.h"
 
-#include <csignal>
 #include <fmt/format.h>
 #include "logger.h"
 

@@ -7,8 +7,6 @@
 #include "game.h"
 #include "tools.h"
 
-#include <boost/algorithm/string.hpp>
-
 extern Game g_game;
 
 namespace {
@@ -106,7 +104,7 @@ Guild_ptr IOGuild::loadGuild(uint32_t guildId)
 	}
 
 	const auto& guild = std::make_shared<Guild>(guildId, result->getString("name"));
-	
+
 	guild->loadBankBalance(result->getNumber<uint64_t>("balance"));
 
 	if (auto ranksResult = db.storeQuery(

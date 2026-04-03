@@ -746,7 +746,7 @@ ContainerIterator Container::iterator() const
 bool Container::isRewardCorpse() const
 {
 	for (Item* subItem : getItemList()) {
-		                		if (subItem->getID() == ITEM_REWARD_CONTAINER) {
+		if (subItem->getID() == ITEM_REWARD_CONTAINER) {
 			return true;
 		}
 	}

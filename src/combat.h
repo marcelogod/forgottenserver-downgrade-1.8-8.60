@@ -9,9 +9,6 @@
 #include "map.h"
 #include "thing.h"
 
-#include <utility>
-#include <valarray>
-
 class Condition;
 class Creature;
 class MatrixArea;

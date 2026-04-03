@@ -28,6 +28,7 @@ uint32_t Scheduler::addEvent(std::unique_ptr<SchedulerTask> task)
 			if (!inserted) {
       			return;
     		}
+
 		auto& timer = it->second;
 
 		timer.expires_after(std::chrono::milliseconds(holder->task->getDelay()));

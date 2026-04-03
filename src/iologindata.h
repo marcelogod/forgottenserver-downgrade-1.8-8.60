@@ -1,7 +1,6 @@
 // Copyright 2023 The Forgotten Server Authors. All rights reserved.
 // Use of this source code is governed by the GPL-2.0 License that can be found in the LICENSE file.
 
-
 #ifndef FS_IOLOGINDATA_H
 #define FS_IOLOGINDATA_H
 
@@ -41,7 +40,7 @@ public:
 	static std::string_view getNameByGuid(uint32_t guid);
 	static bool formatPlayerName(std::string& name);
 	static void increaseBankBalance(uint32_t guid, uint64_t bankBalance);
-	static 	bool hasBiddedOnHouse(uint32_t guid_guild);
+	static bool hasBiddedOnHouse(uint32_t guid_guild);
 
 	static std::forward_list<VIPEntry> getVIPEntries(uint32_t accountId);
 	static void addVIPEntry(uint32_t accountId, uint32_t guid);

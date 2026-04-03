@@ -13,9 +13,7 @@
 #include "tasks.h"
 #include "tools.h"
 
-#include <iomanip>
 #include <fmt/format.h>
-#include <utility>
 
 extern Game g_game;
 
@@ -123,7 +121,7 @@ void ProtocolLogin::getCharacterList(std::string_view accountName, std::string_v
 	auto IP = getIP(getString(ConfigManager::IP));
 	auto serverName = getString(ConfigManager::SERVER_NAME);
 	auto gamePort = getInteger(ConfigManager::GAME_PORT);
-	
+
 	output->addByte(size);
 	if ((hasAccountManager && account.id != 1) || hasNamelock) {
 		output->addString("Account Manager");
@@ -229,6 +227,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	key[1] = msg.get<uint32_t>();
 	key[2] = msg.get<uint32_t>();
 	key[3] = msg.get<uint32_t>();
+
 	enableXTEAEncryption();
 	setXTEAKey(std::move(key));
 

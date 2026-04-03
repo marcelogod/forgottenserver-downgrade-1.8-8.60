@@ -759,8 +759,6 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
-
-
 		// Teleport class
 		case ATTR_TELE_DEST: {
 			if (!propStream.skip(5)) {
@@ -1066,8 +1064,6 @@ std::string Item::getNameDescription() const
 	const ItemType& it = items[id];
 	return getNameDescription(it, this);
 }
-
-
 
 std::string Item::getWeightDescription(const ItemType& it, uint32_t weight, uint32_t count /*= 1*/)
 {

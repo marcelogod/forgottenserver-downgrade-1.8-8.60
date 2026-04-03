@@ -678,7 +678,6 @@ int luaHouseGetRequiredReset(lua_State* L)
 	return 1;
 }
 
-
 int luaHouseClearProtectionGuests(lua_State* L)
 {
 	// house:clearProtectionGuests()

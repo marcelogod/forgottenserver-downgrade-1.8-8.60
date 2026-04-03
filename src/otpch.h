@@ -10,6 +10,7 @@
 // System headers required in headers should be included here.
 #include "lua.hpp"
 
+#include <absl/container/flat_hash_map.h>
 #include <algorithm>
 #include <array>
 #include <atomic>
@@ -19,6 +20,7 @@
 #include <boost/iostreams/device/mapped_file.hpp>
 #include <boost/lockfree/stack.hpp>
 #include <boost/variant.hpp>
+#include <boost/range/adaptor/reversed.hpp>
 #include <cassert>
 #include <concepts>
 #include <condition_variable>
@@ -59,5 +61,10 @@
 #include <ranges>
 #include <semaphore>
 #include <chrono>
+#include <cstring>
+#include <iomanip>
+#include <fstream>
+#include <future>
+#include <csignal>
 
 #endif // FS_OTPCH_H

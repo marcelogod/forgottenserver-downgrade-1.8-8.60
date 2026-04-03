@@ -5,8 +5,6 @@
 
 #include "logger.h"
 
-#include <csignal>
-#include <iomanip>
 #include <spdlog/logger.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 #ifdef _WIN32

@@ -10,8 +10,6 @@
 #include "databasetasks.h"
 #include "tools.h"
 
-
-
 bool IOBan::isAccountBanned(uint32_t accountId, BanInfo& banInfo)
 {
 	Database& db = Database::getInstance();

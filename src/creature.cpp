@@ -13,8 +13,6 @@
 #include "scriptmanager.h"
 #include "instance_utils.h"
 
-#include <cstring>
-
 extern Game g_game;
 
 std::unordered_set<const Creature*> Creature::liveCreatures;

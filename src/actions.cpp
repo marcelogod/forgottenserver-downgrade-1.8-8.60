@@ -3,11 +3,8 @@
 
 #include "otpch.h"
 
-#include <algorithm>
-
 #include "actions.h"
 
-#include <sstream>
 #include "logger.h"
 #include <fmt/format.h>
 
@@ -23,7 +20,6 @@
 #include "scriptmanager.h"
 
 extern Game g_game;
-
 
 Actions::Actions() : scriptInterface("Action Interface") { scriptInterface.initState(); }
 
@@ -287,11 +283,11 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		if (container->isRewardCorpse()) {
 			RewardChest& myRewardChest = player->getRewardChest();
 			for (Item* subItem : container->getItemList()) {
-				                                		if (subItem->getID() == ITEM_REWARD_CONTAINER) {
+				if (subItem->getID() == ITEM_REWARD_CONTAINER) {
 					int64_t rewardDate = subItem->getIntAttr(ITEM_ATTRIBUTE_DATE);
 					bool foundMatch = false;
 					for (Item* rewardItem : myRewardChest.getItemList()) {
-						                                		if (rewardItem->getID() == ITEM_REWARD_CONTAINER && rewardItem->getIntAttr(ITEM_ATTRIBUTE_DATE) == rewardDate) {
+						if (rewardItem->getID() == ITEM_REWARD_CONTAINER && rewardItem->getIntAttr(ITEM_ATTRIBUTE_DATE) == rewardDate) {
 							foundMatch = true;
 							break;
 						}
@@ -314,7 +310,7 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 				return RETURNVALUE_REWARDCHESTEMPTY;
 			}
 			for (Item* rewardItem : myRewardChest.getItemList()) {
-				                                		if (rewardItem->getID() == ITEM_REWARD_CONTAINER) {
+				if (rewardItem->getID() == ITEM_REWARD_CONTAINER) {
 					Container* rewardContainer = rewardItem->getContainer();
 					if (rewardContainer) {
 						rewardContainer->setParent(&myRewardChest);
@@ -323,12 +319,12 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			}
 			openContainer = &myRewardChest;
 		}
-		                	else if (item->getID() == ITEM_REWARD_CONTAINER)  {				
+		else if (item->getID() == ITEM_REWARD_CONTAINER) {
 			RewardChest& myRewardChest = player->getRewardChest();
 			int64_t rewardDate = item->getIntAttr(ITEM_ATTRIBUTE_DATE);
 			for (Item* rewardItem : myRewardChest.getItemList()) {
-				                        		if (rewardItem->getID() == ITEM_REWARD_CONTAINER && rewardItem->getIntAttr(ITEM_ATTRIBUTE_DATE) == rewardDate && rewardItem->getIntAttr(ITEM_ATTRIBUTE_REWARDID) == item->getIntAttr(ITEM_ATTRIBUTE_REWARDID)) {
-				  Container* rewardContainer = rewardItem->getContainer();
+				if (rewardItem->getID() == ITEM_REWARD_CONTAINER && rewardItem->getIntAttr(ITEM_ATTRIBUTE_DATE) == rewardDate && rewardItem->getIntAttr(ITEM_ATTRIBUTE_REWARDID) == item->getIntAttr(ITEM_ATTRIBUTE_REWARDID)) {
+					Container* rewardContainer = rewardItem->getContainer();
 					if (rewardContainer) {
 						rewardContainer->setParent(container->getRealParent());
 						openContainer = rewardContainer;
