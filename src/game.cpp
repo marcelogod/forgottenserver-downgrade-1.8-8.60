@@ -824,6 +824,28 @@ void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Po
 	}
 
 	if (player != movingCreature) {
+		if (getBoolean(ConfigManager::PUSH_CREATURE_ZONE)) {
+			if (player->getZone() == ZONE_PROTECTION && movingCreature->getPlayer()) {
+				player->sendCancelMessage("You cannot move players who are in a Protection Zone.");
+				return;
+			}
+
+			if (player->getZone() == ZONE_NOPVP && movingCreature->getPlayer()) {
+				player->sendCancelMessage("You cannot move players who are in a Zone No-PvP.");
+				return;
+			}
+
+			if (movingCreature->getZone() == ZONE_PROTECTION && movingCreature->getPlayer()) {
+				player->sendCancelMessage("You cannot move players who are in a Protection Zone.");
+				return;
+			}
+
+			if (movingCreature->getZone() == ZONE_NOPVP && movingCreature->getPlayer()) {
+				player->sendCancelMessage("You cannot move players who are in a Zone No-PvP.");
+				return;
+			}
+		}
+
 		if (toTile->hasFlag(TILESTATE_BLOCKPATH)) {
 			player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
 			return;

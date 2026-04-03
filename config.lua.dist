@@ -213,6 +213,10 @@ offlineTrainingThreshold = 600
 checkDuplicateStorageKeys = false
 npcsUsingBankMoney = true
 
+-- Protection Zone and No-PvP pushing restrictions
+-- true = restricted (cannot push), false = unrestricted (standard behavior)
+pushCreatureZone = true
+
 -- VIP and Depot limits
 -- NOTE: you can set custom limits per group in data/XML/groups.xml
 vipFreeLimit = 20
