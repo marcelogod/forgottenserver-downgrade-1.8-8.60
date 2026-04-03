@@ -74,10 +74,14 @@ do
 		local defaultPosition = self + Position.directionOffset[DIRECTION_SOUTH]
 		local toTile = Tile(defaultPosition)
 		if not toTile or not toTile:isWalkable() then
+			local currentDirection
 			for direction = DIRECTION_NORTH, DIRECTION_NORTHEAST do
-				if direction == DIRECTION_SOUTH then direction = DIRECTION_WEST end
+				currentDirection = direction
+				if currentDirection == DIRECTION_SOUTH then
+					currentDirection = DIRECTION_WEST
+				end
 
-				local position = self + Position.directionOffset[direction]
+				local position = self + Position.directionOffset[currentDirection]
 				toTile = Tile(position)
 				if toTile and toTile:isWalkable() then
 					swap(self, position)
