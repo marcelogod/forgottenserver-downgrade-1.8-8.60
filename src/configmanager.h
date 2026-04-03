@@ -97,6 +97,7 @@ enum String
 	ADMIN_ENCRYPTION,
 	ADMIN_ENCRYPTION_DATA,
 	STAMINATRAINER_NAMES,
+	ASSETS_DAT_PATH,
 
 	LAST_STRING /* this must be the last one */
 };

@@ -414,7 +414,7 @@ public:
 	bool pickupable = false;
 	bool rotatable = false;
 	bool useable = false;
-	bool moveable = false;
+	bool moveable = true;
 	bool alwaysOnTop = false;
 	bool canReadText = false;
 	bool canWriteText = false;
@@ -450,7 +450,7 @@ public:
 	bool reload();
 	void clear();
 
-	bool loadFromOtb(const std::string& file);
+	bool loadFromDat(std::string_view file);
 
 	const ItemType& operator[](size_t id) const { return getItemType(id); }
 	const ItemType& getItemType(size_t id) const;
@@ -459,9 +459,6 @@ public:
 
 	uint16_t getItemIdByName(const std::string& name);
 
-	uint32_t majorVersion = 0;
-	uint32_t minorVersion = 0;
-	uint32_t buildNumber = 0;
 
 	bool loadFromXml();
 	void parseItemNode(const pugi::xml_node& itemNode, uint16_t id);
@@ -478,34 +475,6 @@ public:
 private:
 	std::vector<ItemType> items;
 	InventoryVector inventory;
-	class ClientIdToServerIdMap
-	{
-	public:
-		ClientIdToServerIdMap() { vec.reserve(30000); }
-
-		void emplace(uint16_t clientId, uint16_t serverId)
-		{
-			if (clientId >= vec.size()) {
-				vec.resize(clientId + 1, 0);
-			}
-			if (vec[clientId] == 0) {
-				vec[clientId] = serverId;
-			}
-		}
-
-		uint16_t getServerId(uint16_t clientId) const
-		{
-			uint16_t serverId = 0;
-			if (clientId < vec.size()) {
-				serverId = vec[clientId];
-			}
-			return serverId;
-		}
-
-		void clear() { vec.clear(); }
-
-	private:
-		std::vector<uint16_t> vec;
-	} clientIdToServerIdMap;
+	bool unserializeDatItem(ItemType& itemType, const uint8_t* buf, size_t& pos, size_t bufSize, bool extendedSprites);
 };
 #endif
