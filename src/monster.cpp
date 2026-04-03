@@ -1941,7 +1941,6 @@ void Monster::death(Creature*)
 
 	clearTargetList();
 	clearFriendList();
-	onIdleStatus();
 }
 
 Item* Monster::getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature)

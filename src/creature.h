@@ -111,6 +111,8 @@ public:
 	{
 		isInternalRemoved = true;
 		removedTime = OTSYS_TIME();
+		attackedCreature = nullptr;
+		followCreature = nullptr;
 	}
 	int64_t getRemovedTime() const { return removedTime; }
 
@@ -351,6 +353,7 @@ public:
 	void decrementReferenceCounter()
 	{
 		if (referenceCounter == 0) {
+			assert(false && "Creature::decrementReferenceCounter called with refcount already at 0");
 			return;
 		}
 		if (--referenceCounter == 0) {

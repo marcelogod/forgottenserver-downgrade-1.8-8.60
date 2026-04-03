@@ -601,10 +601,11 @@ bool Game::removeCreature(Creature* creature, bool isLogout /* = true*/)
 
 	Tile* tile = creature->getTile();
 
-	std::vector<int32_t> oldStackPosVector;
-
 	SpectatorVec spectators;
 	map.getSpectators(spectators, tile->getPosition(), true);
+
+	std::vector<int32_t> oldStackPosVector;
+	oldStackPosVector.reserve(spectators.size());
 	for (Creature* spectator : spectators) {
 		if (Player* player = spectator->getPlayer()) {
 			oldStackPosVector.push_back(
