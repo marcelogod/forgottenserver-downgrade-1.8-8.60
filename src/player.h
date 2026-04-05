@@ -205,9 +205,6 @@ public:
 	bool isInWar(const Player* player) const;
 	bool isInWarList(uint32_t guildId) const;
 
-	void setLastWalkthroughAttempt(int64_t walkthroughAttempt) { lastWalkthroughAttempt = walkthroughAttempt; }
-	void setLastWalkthroughPosition(Position walkthroughPosition) { lastWalkthroughPosition = walkthroughPosition; }
-
 	uint16_t getClientIcons() const;
 
 	const GuildWarVector& getGuildWarVector() const { return guildWarVector; }
@@ -1281,7 +1278,6 @@ private:
 	Skill skills[SKILL_LAST + 1];
 	LightInfo itemsLight;
 	Position loginPosition;
-	Position lastWalkthroughPosition;
 	AutoLootConfig autolootConfig;
 
 	time_t lastLoginSaved = 0;
@@ -1294,7 +1290,6 @@ private:
 	uint64_t bankBalance = 0;
 	int64_t lastFailedFollow = 0;
 	int64_t skullTicks = 0;
-	int64_t lastWalkthroughAttempt = 0;
 	int64_t lastToggleMount = 0;
 	int64_t lastPing;
 	int64_t lastPong;
