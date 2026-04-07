@@ -60,6 +60,7 @@ public:
 	static const char* protocol_name() { return "gameworld protocol"; }
 
 	explicit ProtocolGame(Connection_ptr connection) : Protocol(connection) {}
+	~ProtocolGame() override;
 
 	void login(uint32_t characterId, uint32_t accountId, OperatingSystem_t operatingSystem);
 	void spectate(const std::string& name, const std::string& password);
@@ -290,7 +291,7 @@ private:
 	std::string spectator_name = "";
 
 	std::unordered_set<uint32_t> knownCreatureSet;
-	Player* player = nullptr;
+	CreatureRef<Player> player;
 
 	uint32_t eventConnect = 0;
 	uint32_t challengeTimestamp = 0;

@@ -478,4 +478,43 @@ private:
 	static std::unordered_set<const Creature*> liveCreatures;
 };
 
+template <typename T>
+class CreatureRef
+{
+public:
+	CreatureRef() = default;
+	~CreatureRef() { reset(); }
+
+	// Non-copyable — explicit acquire() required for clarity
+	CreatureRef(const CreatureRef&) = delete;
+	CreatureRef& operator=(const CreatureRef&) = delete;
+
+	CreatureRef(CreatureRef&& o) noexcept : ptr(o.ptr) { o.ptr = nullptr; }
+	CreatureRef& operator=(CreatureRef&& o) noexcept {
+		if (this != &o) { reset(); ptr = o.ptr; o.ptr = nullptr; }
+		return *this;
+	}
+
+	// Acquire a new target (increment new, decrement old)
+	void acquire(T* p) {
+		if (p == ptr) return;
+		if (p) p->incrementReferenceCounter();
+		if (ptr) ptr->decrementReferenceCounter();
+		ptr = p;
+	}
+
+	// Release without returning (decrement + nullify)
+	void reset() {
+		if (ptr) { ptr->decrementReferenceCounter(); ptr = nullptr; }
+	}
+
+	T* operator->() const { return ptr; }
+	T& operator*() const { return *ptr; }
+	explicit operator bool() const { return ptr != nullptr; }
+	operator T*() const { return ptr; } // implicit conversion for backward compat
+
+private:
+	T* ptr = nullptr;
+};
+
 #endif

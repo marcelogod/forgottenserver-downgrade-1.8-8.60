@@ -104,6 +104,8 @@ std::size_t clientLogin(const Player& player)
 
 } // namespace
 
+ProtocolGame::~ProtocolGame() = default;
+
 void ProtocolGame::release()
 {
 	// dispatcher thread
@@ -123,8 +125,7 @@ void ProtocolGame::release()
 				}
 			}
 		}
-		player->decrementReferenceCounter();
-		player = nullptr;
+		player.reset();
 	}
 
 	OutputMessagePool::getInstance().removeProtocolFromAutosend(shared_from_this());
@@ -150,10 +151,8 @@ void ProtocolGame::login(uint32_t characterId, uint32_t accountId, OperatingSyst
 		name = foundPlayer->getName();
 	}
 	if (!foundPlayer || name == "Account Manager" || getBoolean(ConfigManager::ALLOW_CLONES)) {
-		player = new Player(getThis());
+		player.acquire(new Player(getThis()));
 		player->setGUID(characterId);
-
-		player->incrementReferenceCounter();
 		player->setID();
 
 		if (!IOLoginData::preloadPlayer(player)) {
@@ -338,8 +337,7 @@ void ProtocolGame::spectate(const std::string& name, const std::string& password
 		return;
 	}
 
-	player = foundPlayer;
-	player->incrementReferenceCounter();
+	player.acquire(foundPlayer);
 	isSpectator = true;
 
 	do {
@@ -382,8 +380,7 @@ void ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem)
 		return;
 	}
 
-	player = foundPlayer;
-	player->incrementReferenceCounter();
+	player.acquire(foundPlayer);
 
 	player->clearModalWindows();
 	g_chat->removeUserFromAllChannels(*player);
@@ -3290,10 +3287,7 @@ void ProtocolGame::spectatorTurn(uint8_t direction)
 	}
 
 	player->client->removeSpectator(getThis());
-	player->decrementReferenceCounter();
-
-	player = _player;
-	player->incrementReferenceCounter();
+	player.acquire(_player);
 
 	knownCreatureSet.clear();
 	sendAddCreature(player, player->getPosition(), 0, CONST_ME_NONE);
@@ -3389,10 +3383,8 @@ void ProtocolGame::parseSwitchCast(uint8_t direction)
 			if (newCaster && newCaster != player) {
 				player->client->removeSpectator(getThis());
 				player->client->sendCastMessage(spectator_name, spectator_name + " has left the cast.", TALKTYPE_CHANNEL_O);
-				knownCreatureSet.clear();
-				player->decrementReferenceCounter();
-				player = newCaster;
-				player->incrementReferenceCounter();
+					knownCreatureSet.clear();
+				player.acquire(newCaster);
 				player->client->addSpectator(getThis());
 				sendAddCreature(player, player->getPosition(), 0, CONST_ME_NONE);
 				syncOpenContainers();
@@ -3424,9 +3416,7 @@ void ProtocolGame::parseSwitchCast(uint8_t direction)
 	player->client->removeSpectator(getThis());
 	player->client->sendCastMessage(spectator_name, spectator_name + " has left the cast.", TALKTYPE_CHANNEL_O);
 	knownCreatureSet.clear();
-	player->decrementReferenceCounter();
-	player = newCaster;
-	player->incrementReferenceCounter();
+	player.acquire(newCaster);
 	player->client->addSpectator(getThis());
 	sendAddCreature(player, player->getPosition(), 0, CONST_ME_NONE);
 	syncOpenContainers();
