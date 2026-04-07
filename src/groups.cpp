@@ -82,17 +82,16 @@ bool Groups::load()
 			}
 		}
 
-		groups.push_back(group);
+		groupsMap[group.id] = group;
 	}
 	return true;
 }
 
 Group* Groups::getGroup(uint16_t id)
 {
-	for (Group& group : groups) {
-		if (group.id == id) {
-			return &group;
-		}
+	auto it = groupsMap.find(id);
+	if (it != groupsMap.end()) {
+		return &it->second;
 	}
 	return nullptr;
 }

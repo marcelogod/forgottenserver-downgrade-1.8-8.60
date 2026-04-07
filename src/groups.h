@@ -21,7 +21,7 @@ public:
 	Group* getGroup(uint16_t id);
 
 private:
-	std::vector<Group> groups;
+	std::map<uint16_t, Group> groupsMap;
 };
 
 #endif
