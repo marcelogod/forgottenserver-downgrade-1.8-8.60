@@ -1164,7 +1164,7 @@ void Monster::onThinkDefense(uint32_t interval)
 
 	if (!isSummon() && summons.size() < mType->info.maxSummons && hasFollowPath) {
 		std::unordered_map<std::string, uint32_t> summonCounts;
-		for (Creature* summon : summons) {
+		for (const auto& summon : summons) {
 			++summonCounts[summon->getName()];
 		}
 
@@ -1943,7 +1943,7 @@ void Monster::death(Creature*)
 
 	setAttackedCreature(nullptr);
 
-	for (Creature* summon : summons) {
+	for (const auto& summon : summons) {
 		summon->changeHealth(-summon->getHealth());
 		summon->removeMaster();
 	}

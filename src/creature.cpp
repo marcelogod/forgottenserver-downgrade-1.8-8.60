@@ -27,7 +27,7 @@ Creature::~Creature()
 {
 	liveCreatures.erase(this);
 
-	for (Creature* summon : summons) {
+	for (const auto& summon : summons) {
 		summon->setAttackedCreature(nullptr);
 		summon->removeMaster();
 	}
@@ -411,10 +411,10 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 		if (!summons.empty()) {
 			// check if any of our summons is out of range (+/- 2 floors or 30 tiles away)
 			std::forward_list<Creature*> despawnList;
-			for (Creature* summon : summons) {
+			for (const auto& summon : summons) {
 				const Position& pos = summon->getPosition();
 				if (newPos.getDistanceZ(pos) > 2 || std::max(newPos.getDistanceX(pos), newPos.getDistanceY(pos)) > 30) {
-					despawnList.push_front(summon);
+					despawnList.push_front(summon.get());
 				}
 			}
 
@@ -787,7 +787,7 @@ bool Creature::setAttackedCreature(Creature* creature)
 		attackedCreature.reset();
 	}
 
-	for (Creature* summon : summons) {
+	for (const auto& summon : summons) {
 		summon->setAttackedCreature(creature);
 	}
 	return true;
@@ -1029,16 +1029,17 @@ bool Creature::setMaster(Creature* newMaster)
 
 	if (newMaster) {
 		incrementReferenceCounter();
-		newMaster->summons.push_back(this);
+		newMaster->summons.push_back(shared_from_this());
 	}
 
 	Creature* oldMaster = master.lock().get();
 	master = newMaster ? newMaster->shared_from_this() : std::shared_ptr<Creature>();
 
 	if (oldMaster) {
-		auto summon = std::find(oldMaster->summons.begin(), oldMaster->summons.end(), this);
-		if (summon != oldMaster->summons.end()) {
-			oldMaster->summons.erase(summon);
+		auto it = std::find_if(oldMaster->summons.begin(), oldMaster->summons.end(),
+			[this](const std::shared_ptr<Creature>& sp) { return sp.get() == this; });
+		if (it != oldMaster->summons.end()) {
+			oldMaster->summons.erase(it);
 			decrementReferenceCounter();
 		}
 	}

@@ -176,15 +176,16 @@ namespace {
         return true;
     }
 
-    void destroyUnownedMapItem(Item* item) {
-        if (!item) {
-            return;
+    struct UnownedMapItemDeleter {
+        void operator()(Item* item) const {
+            if (item) {
+                item->stopDecaying();
+                item->setParent(nullptr);
+                delete item;
+            }
         }
-
-        item->stopDecaying();
-        item->setParent(nullptr);
-        delete item;
-    }
+    };
+    using UnownedMapItemPtr = std::unique_ptr<Item, UnownedMapItemDeleter>;
 
     void applyItemIdSubstitutions(uint16_t& id) {
         switch (id) {
@@ -593,10 +594,11 @@ Item* createItemFromBasic(const std::shared_ptr<BasicItem>& basicItem, const Pos
     // Handle container items recursively
     if (Container* container = item->getContainer()) {
         for (const auto& childBasicItem : basicItem->items) {
-            if (Item* childItem = createItemFromBasic(childBasicItem, pos)) {
-                if (!placeCachedMapItem(container, childItem)) {
+            if (UnownedMapItemPtr childItem{createItemFromBasic(childBasicItem, pos)}) {
+                if (placeCachedMapItem(container, childItem.get())) {
+                    childItem.release();
+                } else {
                     LOG_WARN(fmt::format("[MapCache] Failed to attach child item {} at {}", childItem->getID(), pos));
-                    destroyUnownedMapItem(childItem);
                 }
             }
         }
@@ -641,20 +643,22 @@ std::unique_ptr<Tile> createTileFromBasic(const std::shared_ptr<BasicTile>& basi
     
     // Add ground
     if (basicTile->ground) {
-        if (Item* groundItem = createItemFromBasic(basicTile->ground, pos)) {
-            if (!placeCachedMapItem(tile.get(), groundItem)) {
+        if (UnownedMapItemPtr groundItem{createItemFromBasic(basicTile->ground, pos)}) {
+            if (placeCachedMapItem(tile.get(), groundItem.get())) {
+                groundItem.release();
+            } else {
                 LOG_WARN(fmt::format("[MapCache] Failed to attach ground item {} at {}", groundItem->getID(), pos));
-                destroyUnownedMapItem(groundItem);
             }
         }
     }
     
     // Add items
     for (const auto& basicItem : basicTile->items) {
-        if (Item* item = createItemFromBasic(basicItem, pos)) {
-            if (!placeCachedMapItem(tile.get(), item)) {
+        if (UnownedMapItemPtr item{createItemFromBasic(basicItem, pos)}) {
+            if (placeCachedMapItem(tile.get(), item.get())) {
+                item.release();
+            } else {
                 LOG_WARN(fmt::format("[MapCache] Failed to attach item {} at {}", item->getID(), pos));
-                destroyUnownedMapItem(item);
             }
         }
     }

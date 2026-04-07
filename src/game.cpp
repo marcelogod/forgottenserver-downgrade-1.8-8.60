@@ -659,12 +659,12 @@ bool Game::removeCreature(Creature* creature, bool isLogout /* = true*/)
 	// removeCreature(summon) would skip setMaster(nullptr) because 'creature'
 	// is already marked removed. Clearing here avoids relying on destructor
 	// ordering for the master ref decrement.
-	for (Creature* summon : creature->summons) {
+	for (const auto& summon : creature->summons) {
 		summon->setSkillLoss(false);
 		if (summon->getMaster() == creature) {
 			summon->removeMaster();
 		}
-		removeCreature(summon);
+		removeCreature(summon.get());
 	}
 
 	// Drop the shared_ptr anchor – all outstanding weak_ptrs now expire.

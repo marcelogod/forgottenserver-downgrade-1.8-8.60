@@ -963,9 +963,9 @@ int luaCreatureGetSummons(lua_State* L)
 	lua_createtable(L, creature->getSummonCount(), 0);
 
 	int index = 0;
-	for (Creature* summon : creature->getSummons()) {
-		pushUserdata<Creature>(L, summon);
-		setCreatureMetatable(L, -1, summon);
+	for (const auto& summon : creature->getSummons()) {
+		pushUserdata<Creature>(L, summon.get());
+		setCreatureMetatable(L, -1, summon.get());
 		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
