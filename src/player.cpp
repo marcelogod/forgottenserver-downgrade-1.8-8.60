@@ -11,6 +11,7 @@
 #include "database.h"
 #include "events.h"
 #include "game.h"
+#include "house.h"
 #include "iologindata.h"
 #include "instance_utils.h"
 #include "inbox.h"
@@ -978,13 +979,17 @@ House* Player::getEditHouse(uint32_t& windowTextId, uint32_t& listId)
 {
 	windowTextId = this->windowTextId;
 	listId = this->editListId;
-	return editHouse;
+	return editHouse.lock().get();
 }
 
 void Player::setEditHouse(House* house, uint32_t listId /*= 0*/)
 {
 	windowTextId++;
-	editHouse = house;
+	if (house) {
+		editHouse = house->shared_from_this();
+	} else {
+		editHouse.reset();
+	}
 	editListId = listId;
 }
 

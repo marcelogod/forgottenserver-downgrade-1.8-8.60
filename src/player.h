@@ -1302,7 +1302,7 @@ private:
 	Item* tradeItem = nullptr;
 	Item* inventory[CONST_SLOT_LAST + 1] = {};
 	Item* writeItem = nullptr;
-	House* editHouse = nullptr;
+	std::weak_ptr<House> editHouse;
 	std::weak_ptr<Npc> shopOwner;
 	std::weak_ptr<Party> party;
 	std::weak_ptr<Player> tradePartner;

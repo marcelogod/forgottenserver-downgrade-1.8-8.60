@@ -6,6 +6,7 @@
 #include "bed.h"
 
 #include "game.h"
+#include "house.h"
 #include "iologindata.h"
 #include "scheduler.h"
 
@@ -18,6 +19,15 @@ static constexpr uint32_t REGEN_TICKS_PER_INTERVAL = 30000;
 static constexpr uint32_t SOUL_REGEN_INTERVAL_SECONDS = 60 * 15;
 
 BedItem::BedItem(uint16_t id) : Item(id) { internalRemoveSleeper(); }
+
+void BedItem::setHouse(House* h) noexcept
+{
+	if (h) {
+		house = h->shared_from_this();
+	} else {
+		house.reset();
+	}
+}
 
 Attr_ReadValue BedItem::readAttr(AttrTypes_t attr, PropStream& propStream)
 {
@@ -82,7 +92,7 @@ BedItem* BedItem::getNextBedItem() const
 
 bool BedItem::canUse(Player* player)
 {
-	if (!player || !house || !player->isPremium() || player->getZone() != ZONE_PROTECTION) {
+	if (!player || house.expired() || !player->isPremium() || player->getZone() != ZONE_PROTECTION) {
 		return false;
 	}
 
@@ -90,7 +100,7 @@ bool BedItem::canUse(Player* player)
 		return true;
 	}
 
-	if (house->getHouseAccessLevel(player) == HOUSE_OWNER) {
+	if (getHouse()->getHouseAccessLevel(player) == HOUSE_OWNER) {
 		return true;
 	}
 
@@ -99,18 +109,18 @@ bool BedItem::canUse(Player* player)
 		return false;
 	}
 
-	return house->getHouseAccessLevel(&sleeper) <= house->getHouseAccessLevel(player);
+	return getHouse()->getHouseAccessLevel(&sleeper) <= getHouse()->getHouseAccessLevel(player);
 }
 
 bool BedItem::trySleep(Player* player)
 {
-	if (!house || player->isRemoved()) {
+	if (house.expired() || player->isRemoved()) {
 		return false;
 	}
 
 	if (sleeperGUID != 0) {
 		const auto& itemType = Item::items[id];
-		if (itemType.transformToFree != 0 && house->getOwner() == player->getGUID()) {
+		if (itemType.transformToFree != 0 && getHouse()->getOwner() == player->getGUID()) {
 			wakeUp(nullptr);
 		}
 
@@ -122,7 +132,7 @@ bool BedItem::trySleep(Player* player)
 
 bool BedItem::sleep(Player* player)
 {
-	if (!house || sleeperGUID != 0) {
+	if (house.expired() || sleeperGUID != 0) {
 		return false;
 	}
 
@@ -159,7 +169,7 @@ bool BedItem::sleep(Player* player)
 
 void BedItem::wakeUp(Player* player)
 {
-	if (!house) {
+	if (house.expired()) {
 		return;
 	}
 

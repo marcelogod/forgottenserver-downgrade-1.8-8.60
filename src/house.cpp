@@ -496,6 +496,8 @@ void House::resetTransferItem()
 	}
 }
 
+HouseTransferItem::HouseTransferItem(House* house) : Item(0), house(house->shared_from_this()) {}
+
 HouseTransferItem* HouseTransferItem::createHouseTransferItem(House* house)
 {
 	auto transferItem = std::make_unique<HouseTransferItem>(house);
@@ -509,14 +511,14 @@ HouseTransferItem* HouseTransferItem::createHouseTransferItem(House* house)
 void HouseTransferItem::onTradeEvent(TradeEvents_t event, Player* owner)
 {
 	if (event == ON_TRADE_TRANSFER) {
-		if (house) {
-			house->executeTransfer(this, owner);
+		if (auto h = house.lock()) {
+			h->executeTransfer(this, owner);
 		}
 
 		g_game.internalRemoveItem(this, 1);
 	} else if (event == ON_TRADE_CANCEL) {
-		if (house) {
-			house->resetTransferItem();
+		if (auto h = house.lock()) {
+			h->resetTransferItem();
 		}
 	}
 }
@@ -664,11 +666,11 @@ Attr_ReadValue Door::readAttr(AttrTypes_t attr, PropStream& propStream)
 
 void Door::setHouse(House* house)
 {
-	if (this->house != nullptr) {
+	if (!this->house.expired()) {
 		return;
 	}
 
-	this->house = house;
+	this->house = house->shared_from_this();
 
 	if (!accessList) {
 		accessList = std::make_unique<AccessList>();
@@ -677,16 +679,17 @@ void Door::setHouse(House* house)
 
 bool Door::canUse(const Player* player)
 {
-    if (!house) {
+    auto h = house.lock();
+    if (!h) {
         return true;
     }
 
-    if (house->getType() == HOUSE_TYPE_GUILDHALL) {
-        if (house->getHouseAccessLevel(player) >= HOUSE_GUEST) {
+    if (h->getType() == HOUSE_TYPE_GUILDHALL) {
+        if (h->getHouseAccessLevel(player) >= HOUSE_GUEST) {
             return true;
         }
     } else {
-        if (house->getHouseAccessLevel(player) >= HOUSE_SUBOWNER) {
+        if (h->getHouseAccessLevel(player) >= HOUSE_SUBOWNER) {
             return true;
         }
     }
@@ -705,7 +708,7 @@ void Door::setAccessList(std::string_view textlist)
 
 std::optional<std::string_view> Door::getAccessList() const
 {
-	if (!house) {
+	if (house.expired()) {
 		return std::nullopt;
 	}
 
@@ -716,8 +719,8 @@ void Door::onRemoved()
 {
 	Item::onRemoved();
 
-	if (house) {
-		house->removeDoor(this);
+	if (auto h = house.lock()) {
+		h->removeDoor(this);
 	}
 }
 

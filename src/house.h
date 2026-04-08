@@ -8,6 +8,8 @@
 #include "housetile.h"
 #include "position.h"
 
+#include <memory>
+
 class House;
 class BedItem;
 class Player;
@@ -43,7 +45,7 @@ public:
 	Door* getDoor() override { return this; }
 	const Door* getDoor() const override { return this; }
 
-	House* getHouse() { return house; }
+	House* getHouse() { return house.lock().get(); }
 
 	// serialization
 	Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream) override;
@@ -62,7 +64,7 @@ public:
 private:
 	void setHouse(House* house);
 
-	House* house = nullptr;
+	std::weak_ptr<House> house;
 	std::unique_ptr<AccessList> accessList;
 	friend class House;
 };
@@ -95,16 +97,16 @@ class HouseTransferItem final : public Item
 public:
 	[[nodiscard]] static HouseTransferItem* createHouseTransferItem(House* house);
 
-	explicit HouseTransferItem(House* house) : Item(0), house(house) {}
+	explicit HouseTransferItem(House* house);
 
 	void onTradeEvent(TradeEvents_t event, Player* owner) override;
 	bool canTransform() const override { return false; }
 
 private:
-	House* house;
+	std::weak_ptr<House> house;
 };
 
-class House
+class House : public std::enable_shared_from_this<House>
 {
 public:
 	explicit House(uint32_t houseId);
@@ -234,7 +236,7 @@ private:
 	HouseType_t type = HOUSE_TYPE_NORMAL;
 };
 
-using HouseMap = std::map<uint32_t, std::unique_ptr<House>>;
+using HouseMap = std::map<uint32_t, std::shared_ptr<House>>;
 
 enum RentPeriod_t
 {
@@ -262,7 +264,7 @@ public:
 			return it->second.get();
 		}
 
-		auto [ins, ok] = houseMap.emplace(id, std::make_unique<House>(id));
+		auto [ins, ok] = houseMap.emplace(id, std::make_shared<House>(id));
 		return ins->second.get();
 	}
 

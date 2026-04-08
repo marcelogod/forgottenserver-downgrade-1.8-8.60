@@ -6,6 +6,8 @@
 
 #include "tile.h"
 
+#include <memory>
+
 class House;
 
 class HouseTile final : public DynamicTile
@@ -30,12 +32,12 @@ public:
 	void addThing(int32_t index, Thing* thing) override;
 	void internalAddThing(uint32_t index, Thing* thing) override;
 
-	House* getHouse() const { return house; }
+	House* getHouse() const { return house.lock().get(); }
 
 private:
 	void updateHouse(Item* item);
 
-	House* house;
+	std::weak_ptr<House> house;
 };
 
 #endif

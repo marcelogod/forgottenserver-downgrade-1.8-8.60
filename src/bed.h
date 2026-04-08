@@ -6,6 +6,8 @@
 
 #include "item.h"
 
+#include <memory>
+
 class House;
 class Player;
 
@@ -20,12 +22,12 @@ public:
 	Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream) override;
 	void serializeAttr(PropWriteStream& propWriteStream) const override;
 
-	[[nodiscard]] bool canRemove() const override { return house == nullptr; }
+	[[nodiscard]] bool canRemove() const override { return house.expired(); }
 
 	[[nodiscard]] uint32_t getSleeper() const noexcept { return sleeperGUID; }
 
-	[[nodiscard]] House* getHouse() const noexcept { return house; }
-	void setHouse(House* h) noexcept { house = h; }
+	[[nodiscard]] House* getHouse() const noexcept { return house.lock().get(); }
+	void setHouse(House* h) noexcept;
 
 	[[nodiscard]] bool canUse(Player* player);
 
@@ -41,7 +43,7 @@ private:
 	void internalSetSleeper(const Player* player);
 	void internalRemoveSleeper() noexcept;
 
-	House* house = nullptr;
+	std::weak_ptr<House> house;
 	uint64_t sleepStart = 0;
 	uint32_t sleeperGUID = 0;
 };
