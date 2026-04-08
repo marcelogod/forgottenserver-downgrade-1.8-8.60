@@ -3942,7 +3942,10 @@ bool Game::internalCreatureTurn(Creature* creature, Direction dir)
 	SpectatorVec spectators;
 	map.getSpectators(spectators, creature->getPosition(), true, true);
 	for (const auto& spectator : spectators.players()) {
-		static_cast<Player*>(spectator.get())->sendCreatureTurn(creature);
+		Player* tmpPlayer = static_cast<Player*>(spectator.get());
+		if (tmpPlayer->canSeeCreature(creature)) {
+			tmpPlayer->sendCreatureTurn(creature);
+		}
 	}
 	return true;
 }
@@ -4079,9 +4082,11 @@ void Game::checkCreatures(size_t index)
 		if (creature->creatureCheck) {
 			if (!creature->isDead() && !creature->isRemoved()) {
 				creature->onThink(EVENT_CREATURE_THINK_INTERVAL);
-
 				creature->onAttacking(EVENT_CREATURE_THINK_INTERVAL);
 				creature->executeConditions(EVENT_CREATURE_THINK_INTERVAL);
+			} else {
+				// Dead/removed creatures sitting idle — mark for removal next cycle
+				creature->creatureCheck = false;
 			}
 			++i;
 		} else {
@@ -4092,7 +4097,9 @@ void Game::checkCreatures(size_t index)
 		}
 	}
 
-	cleanup();
+	if (!ToReleaseCreatures.empty() || !ToReleaseItems.empty()) {
+		cleanup();
+	}
 
 #ifdef STATS_ENABLED
 	g_stats.playersOnline = getPlayersOnline();

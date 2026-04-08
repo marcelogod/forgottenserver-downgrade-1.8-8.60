@@ -20,16 +20,16 @@ class Task;
 #endif
 
 struct Stat {
-	Stat(uint64_t _executionTime, const std::string& _description, const std::string& _extraDescription) :
-			executionTime(_executionTime), description(_description), extraDescription(_extraDescription) {};
+	Stat(uint64_t _executionTime, std::string _description, std::string _extraDescription) :
+			executionTime(_executionTime), description(std::move(_description)), extraDescription(std::move(_extraDescription)) {}
 	uint64_t executionTime = 0;
 	std::string description;
 	std::string extraDescription;
 };
 
 struct statsData {
-	statsData(uint32_t _calls, uint64_t _executionTime, const std::string& _extraInfo) :
-			calls(_calls), executionTime(_executionTime), extraInfo(_extraInfo) {}
+	statsData(uint32_t _calls, uint64_t _executionTime, std::string _extraInfo) :
+			calls(_calls), executionTime(_executionTime), extraInfo(std::move(_extraInfo)) {}
 	uint32_t calls = 0;
 	uint64_t executionTime = 0;
 	std::string extraInfo;
@@ -106,9 +106,15 @@ public:
 	}
 
 	~AutoStat() {
-		if (!stat) return;
-			stat->executionTime = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
+		if (!stat) {
+			return;
+		}
+		stat->executionTime = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
+		if (stat->executionTime > minusTime) {
 			stat->executionTime -= minusTime;
+		} else {
+			stat->executionTime = 0;
+		}
 
 		if (g_stats.isEnabled() && g_stats.isRunning()) {
 			g_stats.addSpecialStats(std::move(stat));
@@ -130,18 +136,15 @@ public:
 		activeStat = this;
 	}
 	~AutoStatRecursive() {
-		try {
-			assert(activeStat == this);
-			activeStat = parent;
-			if(activeStat)
-				activeStat->minusTime += std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
-		} catch (...) {
+		activeStat = parent;
+		if (parent) {
+			parent->minusTime += std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
 		}
 	}
 
 private:
-	static AutoStatRecursive* activeStat;
-	AutoStatRecursive* parent;
+	static thread_local AutoStatRecursive* activeStat;
+	AutoStatRecursive* parent = nullptr;
 };
 
 #endif

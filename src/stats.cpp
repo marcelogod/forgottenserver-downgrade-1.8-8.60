@@ -16,7 +16,7 @@ uint32_t Stats::VERY_SLOW_EXECUTION_TIME = 50000000; // 50 ms
 
 Stats::~Stats() = default;
 
-AutoStatRecursive* AutoStatRecursive::activeStat = nullptr;
+thread_local AutoStatRecursive* AutoStatRecursive::activeStat = nullptr;
 
 void Stats::threadMain() {
 	std::unique_lock<std::mutex> taskLockUnique(statsLock, std::defer_lock);
