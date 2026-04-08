@@ -435,18 +435,22 @@ bool Actions::useItem(Player* player, const Position& pos, uint8_t index, Item* 
 bool Actions::useItemEx(Player* player, const Position& fromPos, const Position& toPos, uint8_t toStackPos, Item* item,
                         bool isHotkey, Creature* creature /* = nullptr*/)
 {
-	// Check exhaust per type: EXHAUST_POTION is applied by Lua potion scripts
-	if (player->hasCondition(CONDITION_EXHAUST_WEAPON, EXHAUST_POTION)) {
+	// Determine exhaust channel: runes use their own, potions/items use theirs
+	bool isRune = g_spells->getRuneSpell(item->getID()) != nullptr;
+	Exhaust_t exhaustType = isRune ? EXHAUST_RUNE : EXHAUST_USEITEM;
+
+	// Check exhaust per type: potion, rune, and generic item use are independent
+	if (player->hasCondition(CONDITION_EXHAUST_WEAPON, exhaustType)) {
 		return false;
 	}
-	if (player->hasCondition(CONDITION_EXHAUST_WEAPON, EXHAUST_USEITEM)) {
+	if (!isRune && player->hasCondition(CONDITION_EXHAUST_WEAPON, EXHAUST_POTION)) {
 		return false;
 	}
 
 	// Set exhaust condition
 	if (!player->hasFlag(PlayerFlag_HasNoExhaustion)) {
 		int32_t cooldown = getInteger(ConfigManager::EX_ACTIONS_DELAY_INTERVAL);
-		if (auto condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST_WEAPON, cooldown, 0, false, EXHAUST_USEITEM)) {
+		if (auto condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST_WEAPON, cooldown, 0, false, exhaustType)) {
 			player->addCondition(std::move(condition));
 		}
 		player->sendUseItemCooldown(cooldown);
