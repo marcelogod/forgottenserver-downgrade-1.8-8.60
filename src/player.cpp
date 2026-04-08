@@ -1393,7 +1393,7 @@ void Player::onRemoveCreature(Creature* creature, bool isLogout)
 			setFollowCreature(nullptr);
 		}
 
-		if (tradePartner) {
+		if (!tradePartner.expired()) {
 			g_game.internalCloseTrade(this);
 		}
 
@@ -1497,8 +1497,10 @@ void Player::onCreatureMove(Creature* creature, const Tile* newTile, const Posit
 			g_game.internalCloseTrade(this);
 		}
 
-		if (tradePartner && !tradePartner->getPosition().isInRange(getPosition(), 2, 2, 0)) {
-			g_game.internalCloseTrade(this);
+		if (auto tp = tradePartner.lock()) {
+			if (!tp->getPosition().isInRange(getPosition(), 2, 2, 0)) {
+				g_game.internalCloseTrade(this);
+			}
 		}
 	}
 

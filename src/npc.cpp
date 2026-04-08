@@ -93,7 +93,7 @@ void Npc::reload()
 	g_game.map.getSpectators(players, getPosition(), true, true);
 	for (const auto& player : players) {
 		assert(dynamic_cast<Player*>(player) != nullptr);
-		spectators.insert(static_cast<Player*>(player));
+		spectators.insert(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 	}
 
 	const bool hasSpectators = !spectators.empty();
@@ -238,7 +238,7 @@ void Npc::onCreatureAppear(Creature* creature, bool isLogin)
 		g_game.map.getSpectators(players, getPosition(), true, true);
 		for (const auto& player : players) {
 			assert(dynamic_cast<Player*>(player) != nullptr);
-			spectators.insert(static_cast<Player*>(player));
+			spectators.insert(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 		}
 
 		const bool hasSpectators = !spectators.empty();
@@ -256,7 +256,7 @@ void Npc::onCreatureAppear(Creature* creature, bool isLogin)
 			npcEventHandler->onCreatureAppear(creature);
 		}
 
-		spectators.insert(player);
+		spectators.insert(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 		setIdle(false);
 	}
 }
@@ -275,7 +275,7 @@ void Npc::onRemoveCreature(Creature* creature, bool isLogout)
 			npcEventHandler->onCreatureDisappear(creature);
 		}
 
-		spectators.erase(player);
+		spectators.erase(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 		setIdle(spectators.empty());
 	}
 }
@@ -295,9 +295,9 @@ void Npc::onCreatureMove(Creature* creature, const Tile* newTile, const Position
 
 			// if player is now in range, add to spectators list, otherwise erase
 			if (player->canSee(position)) {
-				spectators.insert(player);
+				spectators.insert(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 			} else {
-				spectators.erase(player);
+				spectators.erase(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 			}
 
 			setIdle(spectators.empty());
@@ -371,7 +371,7 @@ void Npc::onPlayerEndTrade(Player* player, int32_t buyCallback, int32_t sellCall
 		luaL_unref(L, LUA_REGISTRYINDEX, sellCallback);
 	}
 
-	removeShopPlayer(player);
+	removeShopPlayer(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 
 	if (npcEventHandler) {
 		npcEventHandler->onPlayerEndTrade(player);
@@ -507,14 +507,14 @@ void Npc::setCreatureFocus(Creature* creature)
 	}
 }
 
-void Npc::addShopPlayer(Player* player) { shopPlayerSet.insert(player); }
+void Npc::addShopPlayer(const std::shared_ptr<Player>& player) { shopPlayerSet.insert(player); }
 
-void Npc::removeShopPlayer(Player* player) { shopPlayerSet.erase(player); }
+void Npc::removeShopPlayer(const std::shared_ptr<Player>& player) { shopPlayerSet.erase(player); }
 
 void Npc::closeAllShopWindows()
 {
 	while (!shopPlayerSet.empty()) {
-		Player* player = *shopPlayerSet.begin();
+		auto player = *shopPlayerSet.begin();
 		if (!player->closeShopWindow()) {
 			removeShopPlayer(player);
 		}
@@ -802,7 +802,7 @@ int NpcScriptInterface::luaOpenShopWindow(lua_State* L)
 		return 1;
 	}
 
-	npc->addShopPlayer(player);
+	npc->addShopPlayer(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 	player->setShopOwner(npc, buyCallback, sellCallback);
 	player->openShopWindow(items);
 
@@ -845,7 +845,7 @@ int NpcScriptInterface::luaCloseShopWindow(lua_State* L)
 		}
 
 		player->setShopOwner(nullptr, -1, -1);
-		npc->removeShopPlayer(player);
+		npc->removeShopPlayer(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 	}
 
 	Lua::pushBoolean(L, true);
@@ -1006,7 +1006,7 @@ int NpcScriptInterface::luaNpcOpenShopWindow(lua_State* L)
 	lua_pop(L, 1);
 
 	player->closeShopWindow(false);
-	npc->addShopPlayer(player);
+	npc->addShopPlayer(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 
 	player->setShopOwner(npc, buyCallback, sellCallback);
 	player->openShopWindow(items);
@@ -1047,7 +1047,7 @@ int NpcScriptInterface::luaNpcCloseShopWindow(lua_State* L)
 		}
 
 		player->setShopOwner(nullptr, -1, -1);
-		npc->removeShopPlayer(player);
+		npc->removeShopPlayer(std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player)));
 	}
 
 	Lua::pushBoolean(L, true);

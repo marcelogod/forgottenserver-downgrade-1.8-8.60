@@ -558,6 +558,13 @@ struct InstanceArea {
 		return {};
 	}
 
+	std::shared_ptr<Creature> getCreatureSharedRef(const Creature* creature) const {
+		if (!creature) return {};
+		auto it = creatureSharedRefs.find(creature->getID());
+		if (it != creatureSharedRefs.end()) return it->second;
+		return {};
+	}
+
 private:
 	std::unordered_map<uint32_t, int64_t> storageMap;
 

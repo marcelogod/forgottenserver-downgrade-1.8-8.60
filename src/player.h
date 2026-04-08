@@ -470,6 +470,8 @@ public:
 	void setTradeState(tradestate_t state) { tradeState = state; }
 	tradestate_t getTradeState() const { return tradeState; }
 	Item* getTradeItem() { return tradeItem; }
+	void setTradePartner(const std::shared_ptr<Player>& partner) { tradePartner = partner; }
+	std::shared_ptr<Player> getTradePartner() { return tradePartner.lock(); }
 
 	// shop functions
 	void setShopOwner(Npc* owner, int32_t onBuy, int32_t onSell);
@@ -1303,7 +1305,7 @@ private:
 	House* editHouse = nullptr;
 	std::weak_ptr<Npc> shopOwner;
 	std::weak_ptr<Party> party;
-	Player* tradePartner = nullptr;
+	std::weak_ptr<Player> tradePartner;
 	std::unique_ptr<SchedulerTask> walkTask;
 	Town* town = nullptr;
 	Vocation* vocation = nullptr;

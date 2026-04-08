@@ -180,14 +180,14 @@ private:
 	void reset();
 	bool loadFromXml();
 
-	void addShopPlayer(Player* player);
-	void removeShopPlayer(Player* player);
+	void addShopPlayer(const std::shared_ptr<Player>& player);
+	void removeShopPlayer(const std::shared_ptr<Player>& player);
 	void closeAllShopWindows();
 
 	std::map<std::string, std::string> parameters;
 
-	std::set<Player*> shopPlayerSet;
-	std::set<Player*> spectators;
+	std::set<std::shared_ptr<Player>> shopPlayerSet;
+	std::set<std::shared_ptr<Player>> spectators;
 
 	std::string name;
 	std::string filename;
