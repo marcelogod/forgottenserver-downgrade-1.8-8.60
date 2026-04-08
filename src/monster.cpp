@@ -810,12 +810,22 @@ void Monster::updateIdleStatus()
 			// OPTIMIZATION: Throttle getSpectators check to every 5th call
 			// to avoid expensive spectator scans on every single think cycle.
 			if (++idleCheckCounter % 5 == 0) {
+				bool playersNearby = false;
 				SpectatorVec spectators;
 				g_game.map.getSpectators(spectators, position, false, true);
-				if (spectators.players().empty()) {
+				for (const auto& spectator : spectators) {
+					if (spectator->getPlayer()) {
+						playersNearby = true;
+						break;
+					}
+				}
+
+				if (!playersNearby) {
 					idle = true;
 					walkingToSpawn = false;
 					listWalkDir.clear();
+				} else {
+					idle = false;
 				}
 			}
 		} else {
