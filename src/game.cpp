@@ -5286,6 +5286,17 @@ void Game::shutdown()
 	for (auto& checkCreatureList : checkCreatureLists) {
 		for (Creature* creature : checkCreatureList) {
 			if (Creature::isAlive(creature)) {
+				creature->attackedCreature.reset();
+				creature->followCreature.reset();
+				creature->master.reset();
+				creature->summons.clear();
+			}
+		}
+	}
+
+	for (auto& checkCreatureList : checkCreatureLists) {
+		for (Creature* creature : checkCreatureList) {
+			if (Creature::isAlive(creature)) {
 				creature->inCheckCreaturesVector = false;
 				creature->decrementReferenceCounter();
 			}
