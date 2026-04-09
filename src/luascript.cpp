@@ -2445,6 +2445,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::MAX_ALLOWED_ON_A_DUMMY);
 	registerEnumIn("configKeys", ConfigManager::RATE_EXERCISE_TRAINING_SPEED);
 	registerEnumIn("configKeys", ConfigManager::NPCS_USING_BANK_MONEY);
+	registerEnumIn("configKeys", ConfigManager::BOOSTED_EXP_MULTIPLIER);
+	registerEnumIn("configKeys", ConfigManager::BOOSTED_LOOT_MULTIPLIER);
+	registerEnumIn("configKeys", ConfigManager::BOOSTED_SPAWN_MULTIPLIER);
 
 	// os
 	registerMethod("os", "mtime", LuaScriptInterface::luaSystemTime);
@@ -3371,6 +3374,7 @@ const luaL_Reg LuaScriptInterface::luaConfigManagerTable[] = {
     {"getString", LuaScriptInterface::luaConfigManagerGetString},
     {"getNumber", LuaScriptInterface::luaConfigManagerGetNumber},
     {"getBoolean", LuaScriptInterface::luaConfigManagerGetBoolean},
+    {"getFloat", LuaScriptInterface::luaConfigManagerGetFloat},
     {nullptr, nullptr}};
 
 int LuaScriptInterface::luaConfigManagerGetString(lua_State* L)
@@ -3388,6 +3392,12 @@ int LuaScriptInterface::luaConfigManagerGetNumber(lua_State* L)
 int LuaScriptInterface::luaConfigManagerGetBoolean(lua_State* L)
 {
 	Lua::pushBoolean(L, getBoolean(Lua::getInteger<ConfigManager::Boolean>(L, -1)));
+	return 1;
+}
+
+int LuaScriptInterface::luaConfigManagerGetFloat(lua_State* L)
+{
+	lua_pushnumber(L, ConfigManager::getFloat(Lua::getInteger<ConfigManager::float_config_t>(L, -1)));
 	return 1;
 }
 

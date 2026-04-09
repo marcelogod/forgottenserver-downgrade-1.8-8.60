@@ -450,6 +450,9 @@ bool ConfigManager::load()
 	floats[FORGE_TRANSCENDENCE_A] = getGlobalFloat(L, "forgeTranscendenceA", 0.0127f);
 	floats[FORGE_TRANSCENDENCE_B] = getGlobalFloat(L, "forgeTranscendenceB", 0.1070f);
 	floats[FORGE_TRANSCENDENCE_C] = getGlobalFloat(L, "forgeTranscendenceC", 0.0073f);
+	floats[BOOSTED_EXP_MULTIPLIER] = getGlobalFloat(L, "boostedExpMultiplier", 2.0f);
+	floats[BOOSTED_LOOT_MULTIPLIER] = getGlobalFloat(L, "boostedLootMultiplier", 2.0f);
+	floats[BOOSTED_SPAWN_MULTIPLIER] = getGlobalFloat(L, "boostedSpawnMultiplier", 0.5f);
 
 	integers[Integer::NEW_PLAYER_SPAWN_POS_X] = getGlobalInteger(L, "newPlayerSpawnPosX", 0);
 	integers[Integer::NEW_PLAYER_SPAWN_POS_Y] = getGlobalInteger(L, "newPlayerSpawnPosY", 0);

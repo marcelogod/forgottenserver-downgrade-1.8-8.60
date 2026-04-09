@@ -436,7 +436,10 @@ void Spawn::checkSpawn()
 		uint32_t currentRate = static_cast<uint32_t>(rate * std::max<int64_t>(1, g_game.getSpawnRate()));
 		for (const auto& pair : sb.mTypes) {
 			if (caseInsensitiveEqual(pair.first->name, g_game.getBoostedCreature())) {
-				currentRate *= 2;
+				float spawnMult = ConfigManager::getFloat(ConfigManager::BOOSTED_SPAWN_MULTIPLIER);
+				if (spawnMult > 0.0f) {
+					currentRate = std::max(1u, static_cast<uint32_t>(currentRate / spawnMult));
+				}
 				break;
 			}
 		}

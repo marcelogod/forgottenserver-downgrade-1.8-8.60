@@ -22,7 +22,7 @@ event.onDropLoot = function(self, corpse)
 		
 		local boostedCreature = Game.getBoostedCreature()
 		if boostedCreature and boostedCreature:lower() == mType:getName():lower() then
-			rolls = 2
+			rolls = math.max(1, math.floor(configManager.getFloat(configKeys.BOOSTED_LOOT_MULTIPLIER)))
 		end
 
 		for roll = 1, rolls do

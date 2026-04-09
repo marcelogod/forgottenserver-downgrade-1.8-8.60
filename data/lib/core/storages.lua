@@ -37,6 +37,8 @@ PlayerStorageKeys = {
 GlobalStorageKeys = {
     workbench = 30050,
     workbenchOwner = 30051,
+    boostedCreatureIndex = 90001,
+    boostedCreatureDay = 90002,
 }
 
 AccountStorageKeys = {}

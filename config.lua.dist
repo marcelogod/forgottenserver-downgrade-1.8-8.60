@@ -19,6 +19,11 @@ AutoLoot_MoneyIDs = "3031;3035;3043;9058"
 AutoLoot_MaxItemFree = 5
 AutoLoot_MaxItemPremium = 10
 
+-- Boosted Creature
+boostedExpMultiplier = 2.0       -- XP multiplier for boosted creature
+boostedLootMultiplier = 2.0      -- Loot rolls for boosted creature
+boostedSpawnMultiplier = 0.5     -- Spawn interval factor (0.5 = half the time)
+
 -- Account Manager
 accountManager = true
 namelockManager = true

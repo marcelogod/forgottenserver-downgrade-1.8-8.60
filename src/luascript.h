@@ -338,7 +338,7 @@ public:
 
 	static std::string escapeString(std::string string);
 
-	static const luaL_Reg luaConfigManagerTable[4];
+	static const luaL_Reg luaConfigManagerTable[5];
 	static const luaL_Reg luaDatabaseTable[9];
 	static const luaL_Reg luaResultTable[6];
 
@@ -466,6 +466,7 @@ private:
 	static int luaConfigManagerGetString(lua_State* L);
 	static int luaConfigManagerGetNumber(lua_State* L);
 	static int luaConfigManagerGetBoolean(lua_State* L);
+	static int luaConfigManagerGetFloat(lua_State* L);
 
 	static int luaDatabaseExecute(lua_State* L);
 	static int luaDatabaseAsyncExecute(lua_State* L);

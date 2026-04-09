@@ -79,7 +79,8 @@ uint64_t Monster::getLostExperience() const
 	}
 	uint64_t xp = mType->info.experience;
 	if (caseInsensitiveEqual(mType->name, g_game.getBoostedCreature())) {
-		xp *= 2;
+		float mult = ConfigManager::getFloat(ConfigManager::BOOSTED_EXP_MULTIPLIER);
+		xp = static_cast<uint64_t>(xp * mult);
 	}
 	return xp;
 }
