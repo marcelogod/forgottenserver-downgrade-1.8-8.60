@@ -247,7 +247,7 @@ namespace MapCacheUtils {
     /**
      * Create a real Item from a BasicItem
      */
-    Item* createItemFromBasic(const std::shared_ptr<BasicItem>& basicItem, const Position& pos);
+    std::shared_ptr<Item> createItemFromBasic(const std::shared_ptr<BasicItem>& basicItem, const Position& pos);
     
     /**
      * Create a real Tile from a BasicTile

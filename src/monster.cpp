@@ -1284,7 +1284,7 @@ void Monster::pushItems(Tile* tile)
 
 		int32_t downItemSize = tile->getDownItemCount();
 		for (int32_t i = downItemSize; --i >= 0;) {
-			Item* item = items->at(i);
+			Item* item = items->at(i).get();
 			if (item && item->hasProperty(CONST_PROP_MOVEABLE) &&
 			    (item->hasProperty(CONST_PROP_BLOCKPATH) || item->hasProperty(CONST_PROP_BLOCKSOLID))) {
 				if (moveCount < 20 && Monster::pushItem(item)) {
@@ -1839,7 +1839,6 @@ void Monster::death(Creature*)
 			if (!rewardContainer) {
 				return;
 			}
-			rewardItem.release(); // transfer to manual ref-count management
 			rewardContainer->setIntAttr(ITEM_ATTRIBUTE_DATE, currentTime);
 			rewardContainer->setIntAttr(ITEM_ATTRIBUTE_REWARDID, getMonster()->getID());
 			bool hasLoot = false;
@@ -1861,7 +1860,7 @@ void Monster::death(Creature*)
 						lootItem->setIntAttr(ITEM_ATTRIBUTE_DATE, currentTime);
 						lootItem->setIntAttr(ITEM_ATTRIBUTE_REWARDID, getMonster()->getID());
 					}
-					Item* rawLoot = lootItem.release();
+					Item* rawLoot = lootItem.get();
 					rewardContainer->internalAddThing(rawLoot);
 					hasLoot = true;
 				} else if (!lootBlock.unique) {
@@ -1876,7 +1875,7 @@ void Monster::death(Creature*)
 							lootItem->setIntAttr(ITEM_ATTRIBUTE_DATE, currentTime);
 							lootItem->setIntAttr(ITEM_ATTRIBUTE_REWARDID, getMonster()->getID());
 						}
-						Item* rawLoot = lootItem.release();
+						Item* rawLoot = lootItem.get();
 						rewardContainer->internalAddThing(rawLoot);
 						hasLoot = true;
 					}
@@ -1903,18 +1902,12 @@ void Monster::death(Creature*)
 					PropWriteStream propWriteStream;
 					ItemBlockList itemList;
 					int32_t currentPid = 1;
-					for (Item* subItem : rewardContainer->getItemList()) {
-						itemList.emplace_back(currentPid, subItem);
+					for (const auto& subItem : rewardContainer->getItemList()) {
+						itemList.emplace_back(currentPid, subItem.get());
 					}
 					IOLoginData::addRewardItems(playerId, itemList, rewardQuery, propWriteStream);
-					// Offline path: rewardContainer is not added to any in-game container,
-					// so we are the sole owner and must release our ref to avoid a leak.
-					// The destructor will properly free all child loot items.
-					rewardContainer->decrementReferenceCounter();
 				}
 			} else {
-				// No loot was generated — release the unused container to avoid a memory leak.
-				rewardContainer->decrementReferenceCounter();
 				if (player) {
 					player->sendTextMessage(MESSAGE_STATUS_DEFAULT, "You did not receive any loot.");
 				}
@@ -1936,9 +1929,9 @@ void Monster::death(Creature*)
 	clearFriendList();
 }
 
-Item* Monster::getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature)
+std::shared_ptr<Item> Monster::getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature)
 {
-	Item* corpse = Creature::getCorpse(lastHitCreature, mostDamageCreature);
+	auto corpse = Creature::getCorpse(lastHitCreature, mostDamageCreature);
 	if (corpse) {
 		if (mostDamageCreature) {
 			if (mostDamageCreature->getPlayer()) {
@@ -2036,13 +2029,13 @@ void Monster::dropLoot(Container* corpse, Creature*)
 
 	if (getMonster()->isRewardBoss()) {
 		int64_t currentTime = std::time(nullptr);
-		Item* rewardContainer = Item::CreateItem(ITEM_REWARD_CONTAINER).release();
+		auto rewardContainer = Item::CreateItem(ITEM_REWARD_CONTAINER);
 		if (!rewardContainer) {
 			return;
 		}
 		rewardContainer->setIntAttr(ITEM_ATTRIBUTE_DATE, currentTime);
 		rewardContainer->setIntAttr(ITEM_ATTRIBUTE_REWARDID, getMonster()->getID());
-		corpse->internalAddThing(rewardContainer);
+		corpse->internalAddThing(rewardContainer.get());
 	} else if (lootDrop) {
 		g_events->eventMonsterOnDropLoot(this, corpse);
 	}

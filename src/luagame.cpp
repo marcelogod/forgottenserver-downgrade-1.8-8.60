@@ -463,7 +463,6 @@ int luaGameCreateItem(lua_State* L)
 			return 1;
 		}
 
-		itemPtr.release();
 		if (item->getParent() == nullptr) {
 			if (!mergedItem || mergedItem->isRemoved()) {
 				lua_pushnil(L);
@@ -472,12 +471,11 @@ int luaGameCreateItem(lua_State* L)
 			item = mergedItem;
 		}
 	} else {
-		LuaScriptInterface::getScriptEnv()->addTempItem(item);
+		LuaScriptInterface::getScriptEnv()->addTempItem(item->shared_from_this());
 		item->setParent(VirtualCylinder::virtualCylinder);
-		itemPtr.release();
 	}
 
-	pushUserdata<Item>(L, item);
+	pushSharedPtr(L, item->shared_from_this());
 	setItemMetatable(L, -1, item);
 	return 1;
 }
@@ -527,15 +525,12 @@ int luaGameCreateContainer(lua_State* L)
 			lua_pushnil(L);
 			return 1;
 		}
-
-		containerPtr.release();
 	} else {
-		LuaScriptInterface::getScriptEnv()->addTempItem(container);
+		LuaScriptInterface::getScriptEnv()->addTempItem(container->shared_from_this());
 		container->setParent(VirtualCylinder::virtualCylinder);
-		containerPtr.release();
 	}
 
-	pushUserdata<Container>(L, container);
+	pushSharedPtr(L, container->shared_from_this());
 	setMetatable(L, -1, "Container");
 	return 1;
 }

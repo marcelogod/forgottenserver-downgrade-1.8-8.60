@@ -62,7 +62,7 @@ uint32_t Admin::getOptions() const
 	return ret;
 }
 
-Item* Admin::createMail(const std::string& xmlData, std::string& name, uint32_t& depotId)
+std::shared_ptr<Item> Admin::createMail(const std::string& xmlData, std::string& name, uint32_t& depotId)
 {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_string(xmlData.c_str());
@@ -89,7 +89,7 @@ Item* Admin::createMail(const std::string& xmlData, std::string& name, uint32_t&
 	}
 
 	uint16_t itemId = root.attribute("id").as_uint(ITEM_PARCEL);
-	Item* mailItem = Item::CreateItem(itemId).release();
+	auto mailItem = Item::CreateItem(itemId);
 	if (!mailItem) {
 		return nullptr;
 	}

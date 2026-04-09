@@ -135,7 +135,7 @@ void Map::setTile(uint16_t x, uint16_t y, uint8_t z, std::unique_ptr<Tile> newTi
 		TileItemVector* items = newTile->getItemList();
 		if (items) {
 			for (auto it = items->rbegin(), end = items->rend(); it != end; ++it) {
-				tile->addThing(*it);
+				tile->addThing(it->get());
 			}
 			items->clear();
 		}
@@ -184,7 +184,7 @@ void Map::removeTile(uint16_t x, uint16_t y, uint8_t z)
 
 		if (TileItemVector* items = tile->getItemList()) {
 			for (auto it = items->begin(), end = items->end(); it != end; ++it) {
-				g_game.internalRemoveItem(*it);
+				g_game.internalRemoveItem(it->get());
 			}
 		}
 
@@ -1239,7 +1239,7 @@ uint32_t Map::clean() const
 			++tiles;
 			for (auto item : *items) {
 				if (item->isCleanable()) {
-					toRemove.emplace_back(item);
+					toRemove.emplace_back(item.get());
 				}
 			}
 		}

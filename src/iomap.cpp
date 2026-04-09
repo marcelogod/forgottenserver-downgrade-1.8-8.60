@@ -35,7 +35,7 @@ bool mapCylinderOwnsThing(const Cylinder* cylinder, const Thing* thing)
 	return cylinder && thing && thing->getParent() == cylinder && cylinder->getThingIndex(thing) != -1;
 }
 
-bool transferMapItem(Cylinder* cylinder, std::unique_ptr<Item>& item)
+bool transferMapItem(Cylinder* cylinder, std::shared_ptr<Item>& item)
 {
 	if (!cylinder || !item) {
 		return false;
@@ -49,12 +49,12 @@ bool transferMapItem(Cylinder* cylinder, std::unique_ptr<Item>& item)
 
 	rawItem->startDecaying();
 	rawItem->setLoadedFromMap(true);
-	item.release();
+	item.reset();
 	return true;
 }
 } // namespace
 
-std::unique_ptr<Tile> IOMap::createTile(std::unique_ptr<Item>& ground, Item* item, uint16_t x, uint16_t y, uint8_t z) {
+std::unique_ptr<Tile> IOMap::createTile(std::shared_ptr<Item>& ground, Item* item, uint16_t x, uint16_t y, uint8_t z) {
     std::unique_ptr<Tile> tile;
     if (!ground) {
         return std::make_unique<DynamicTile>(x, y, z);
@@ -257,7 +257,7 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
             House* house = nullptr;
             std::unique_ptr<Tile> tilePtr;
             Tile* tile = nullptr;
-            std::unique_ptr<Item> ground_item;
+            std::shared_ptr<Item> ground_item;
             uint32_t tileflags = TILESTATE_NONE;
 
             uint32_t houseId;

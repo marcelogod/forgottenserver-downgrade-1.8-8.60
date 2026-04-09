@@ -107,8 +107,8 @@ bool Mailbox::getReceiver(Item* item, std::string& name) const
 {
 	const Container* container = item->getContainer();
 	if (container) {
-		for (Item* containerItem : container->getItemList()) {
-			if (containerItem->getID() == ITEM_LABEL && getReceiver(containerItem, name)) {
+		for (const auto& containerItem : container->getItemList()) {
+			if (containerItem->getID() == ITEM_LABEL && getReceiver(containerItem.get(), name)) {
 				return true;
 			}
 		}

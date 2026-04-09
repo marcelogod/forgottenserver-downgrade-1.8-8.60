@@ -25,12 +25,12 @@ int luaContainerCreate(lua_State* L)
 	} else if (isUserdata(L, 2)) {
 		switch (getUserdataType(L, 2)) {
 			case LuaData_Item: {
-				Item* item = getUserdata<Item>(L, 2);
+				Item* item = getItemUserdata<Item>(L, 2);
 				container = item ? item->getContainer() : nullptr;
 				break;
 			}
 			case LuaData_Container:
-				container = getUserdata<Container>(L, 2);
+				container = getItemUserdata<Container>(L, 2);
 				break;
 			default:
 				break;
@@ -42,7 +42,7 @@ int luaContainerCreate(lua_State* L)
 		return 1;
 	}
 
-	pushUserdata(L, container);
+	pushSharedPtr(L, container->shared_from_this());
 	setMetatable(L, -1, "Container");
 	return 1;
 }
@@ -50,7 +50,7 @@ int luaContainerCreate(lua_State* L)
 int luaContainerGetSize(lua_State* L)
 {
 	// container:getSize([recursive = false])
-	const Container* container = getUserdata<const Container>(L, 1);
+	const Container* container = getItemUserdata<const Container>(L, 1);
 	if (container) {
 		lua_pushinteger(L, container->size(getBoolean(L, 2, false)));
 	} else {
@@ -62,7 +62,7 @@ int luaContainerGetSize(lua_State* L)
 int luaContainerGetCapacity(lua_State* L)
 {
 	// container:getCapacity()
-	const Container* container = getUserdata<const Container>(L, 1);
+	const Container* container = getItemUserdata<const Container>(L, 1);
 	if (container) {
 		lua_pushinteger(L, container->capacity());
 	} else {
@@ -74,7 +74,7 @@ int luaContainerGetCapacity(lua_State* L)
 int luaContainerGetEmptySlots(lua_State* L)
 {
 	// container:getEmptySlots([recursive = false])
-	const Container* container = getUserdata<const Container>(L, 1);
+	const Container* container = getItemUserdata<const Container>(L, 1);
 	if (!container) {
 		lua_pushnil(L);
 		return 1;
@@ -96,7 +96,7 @@ int luaContainerGetEmptySlots(lua_State* L)
 int luaContainerGetItemHoldingCount(lua_State* L)
 {
 	// container:getItemHoldingCount()
-	const Container* container = getUserdata<const Container>(L, 1);
+	const Container* container = getItemUserdata<const Container>(L, 1);
 	if (container) {
 		lua_pushinteger(L, container->getItemHoldingCount());
 	} else {
@@ -108,7 +108,7 @@ int luaContainerGetItemHoldingCount(lua_State* L)
 int luaContainerGetItem(lua_State* L)
 {
 	// container:getItem(index)
-	const Container* container = getUserdata<const Container>(L, 1);
+	const Container* container = getItemUserdata<const Container>(L, 1);
 	if (!container) {
 		lua_pushnil(L);
 		return 1;
@@ -117,7 +117,7 @@ int luaContainerGetItem(lua_State* L)
 	uint32_t index = getInteger<uint32_t>(L, 2);
 	Item* item = container->getItemByIndex(index);
 	if (item) {
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -128,9 +128,9 @@ int luaContainerGetItem(lua_State* L)
 int luaContainerHasItem(lua_State* L)
 {
 	// container:hasItem(item)
-	const Container* container = getUserdata<const Container>(L, 1);
+	const Container* container = getItemUserdata<const Container>(L, 1);
 	if (container) {
-		if (const Item* item = getUserdata<const Item>(L, 2)) {
+		if (const Item* item = getItemUserdata<const Item>(L, 2)) {
 			pushBoolean(L, container->isHoldingItem(item));
 		} else {
 			lua_pushnil(L);
@@ -144,7 +144,7 @@ int luaContainerHasItem(lua_State* L)
 int luaContainerAddItem(lua_State* L)
 {
 	// container:addItem(itemId[, count/subType = 1[, index = INDEX_WHEREEVER[, flags = 0]]])
-	Container* container = getUserdata<Container>(L, 1);
+	Container* container = getItemUserdata<Container>(L, 1);
 	if (!container) {
 		lua_pushnil(L);
 		return 1;
@@ -188,7 +188,6 @@ int luaContainerAddItem(lua_State* L)
 
 	ReturnValue ret = g_game.internalAddItem(container, itemPtr.get(), index, flags);
 	if (ret == RETURNVALUE_NOERROR) {
-		itemPtr.release();
 		if (item->getParent() == nullptr) {
 			if (!mergedItem || mergedItem->isRemoved()) {
 				lua_pushnil(L);
@@ -197,7 +196,7 @@ int luaContainerAddItem(lua_State* L)
 			item = mergedItem;
 		}
 
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -208,13 +207,13 @@ int luaContainerAddItem(lua_State* L)
 int luaContainerAddItemEx(lua_State* L)
 {
 	// container:addItemEx(item[, index = INDEX_WHEREEVER[, flags = 0]])
-	Item* item = getUserdata<Item>(L, 2);
+	Item* item = getItemUserdata<Item>(L, 2);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
 	}
 
-	Container* container = getUserdata<Container>(L, 1);
+	Container* container = getItemUserdata<Container>(L, 1);
 	if (!container) {
 		lua_pushnil(L);
 		return 1;
@@ -239,7 +238,7 @@ int luaContainerAddItemEx(lua_State* L)
 int luaContainerGetCorpseOwner(lua_State* L)
 {
 	// container:getCorpseOwner()
-	const Container* container = getUserdata<const Container>(L, 1);
+	const Container* container = getItemUserdata<const Container>(L, 1);
 	if (container) {
 		lua_pushinteger(L, container->getCorpseOwner());
 	} else {
@@ -251,7 +250,7 @@ int luaContainerGetCorpseOwner(lua_State* L)
 int luaContainerGetItemCountById(lua_State* L)
 {
 	// container:getItemCountById(itemId[, subType = -1])
-	const Container* container = getUserdata<const Container>(L, 1);
+	const Container* container = getItemUserdata<const Container>(L, 1);
 	if (!container) {
 		lua_pushnil(L);
 		return 1;
@@ -276,21 +275,21 @@ int luaContainerGetItemCountById(lua_State* L)
 int luaContainerGetItems(lua_State* L)
 {
 	// container:getItems([recursive = false])
-	const Container* container = getUserdata<const Container>(L, 1);
+	const Container* container = getItemUserdata<const Container>(L, 1);
 	if (!container) {
 		lua_pushnil(L);
 		return 1;
 	}
 
 	bool recursive = getBoolean(L, 2, false);
-	const std::vector<Item*> items = container->getItems(recursive);
+	auto items = container->getItems(recursive);
 
 	lua_createtable(L, items.size(), 0);
 
 	int index = 0;
-	for (Item* item : items) {
-		pushUserdata(L, item);
-		setItemMetatable(L, -1, item);
+	for (const auto& item : items) {
+		pushSharedPtr(L, item);
+		setItemMetatable(L, -1, item.get());
 		lua_rawseti(L, -2, ++index);
 	}
 	return 1;

@@ -573,22 +573,21 @@ bool Creature::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreatur
 
 		InstanceUtils::sendMagicEffectToInstance(getPosition(), getInstanceID(), CONST_ME_POFF);
 	} else {
-		Item* splash;
+		std::shared_ptr<Item> splash;
 		switch (getRace()) {
 			case RACE_VENOM:
-				splash = Item::CreateItem(ITEM_FULLSPLASH, FLUID_SLIME).release();
+				splash = Item::CreateItem(ITEM_FULLSPLASH, FLUID_SLIME);
 				break;
 
 			case RACE_BLOOD:
-				splash = Item::CreateItem(ITEM_FULLSPLASH, FLUID_BLOOD).release();
+				splash = Item::CreateItem(ITEM_FULLSPLASH, FLUID_BLOOD);
 				break;
 
 			case RACE_INK:
-				splash = Item::CreateItem(ITEM_FULLSPLASH, FLUID_INK).release();
+				splash = Item::CreateItem(ITEM_FULLSPLASH, FLUID_INK);
 				break;
 
 			default:
-				splash = nullptr;
 				break;
 		}
 
@@ -596,28 +595,26 @@ bool Creature::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreatur
 
 		if (splash) {
 			splash->setInstanceID(getInstanceID());
-			if (!tile || g_game.internalAddItem(tile, splash, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-				g_game.ReleaseItem(splash);
-				splash = nullptr;
+			if (!tile || g_game.internalAddItem(tile, splash.get(), INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+				splash.reset();
 			} else {
-				g_game.startDecay(splash);
+				g_game.startDecay(splash.get());
 			}
 		}
 
-		Item* corpse = getCorpse(lastHitCreature, mostDamageCreature);
+		auto corpse = getCorpse(lastHitCreature, mostDamageCreature);
 		if (corpse) {
 			corpse->setInstanceID(getInstanceID());
-			if (!tile || g_game.internalAddItem(tile, corpse, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-				g_game.ReleaseItem(corpse);
-				corpse = nullptr;
+			if (!tile || g_game.internalAddItem(tile, corpse.get(), INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+				corpse.reset();
 			} else {
-				g_game.startDecay(corpse);
+				g_game.startDecay(corpse.get());
 			}
 		}
 
 		// scripting event - onDeath
 		for (CreatureEvent* deathEvent : getCreatureEvents(CREATURE_EVENT_DEATH)) {
-			deathEvent->executeOnDeath(this, corpse, lastHitCreature, mostDamageCreature, lastHitUnjustified,
+			deathEvent->executeOnDeath(this, corpse.get(), lastHitCreature, mostDamageCreature, lastHitUnjustified,
 			                           mostDamageUnjustified);
 		}
 
@@ -647,7 +644,7 @@ bool Creature::hasBeenAttacked(uint32_t attackerId)
 	return (OTSYS_TIME() - it->second.ticks) <= getInteger(ConfigManager::PZ_LOCKED);
 }
 
-Item* Creature::getCorpse(Creature*, Creature*) { return Item::CreateItem(getLookCorpse()).release(); }
+std::shared_ptr<Item> Creature::getCorpse(Creature*, Creature*) { return Item::CreateItem(getLookCorpse()); }
 
 void Creature::changeHealth(int32_t healthChange, bool sendHealthChange /* = true*/)
 {

@@ -1335,7 +1335,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 			// Check all items on the tile for teleports
 			const TileItemVector* items = toTile->getItemList();
 			if (items) {
-				for (const Item* tileItem : *items) {
+				for (const auto& tileItem : *items) {
 					if (tileItem) {
 						const uint16_t itemId = tileItem->getID();
 						if (std::find(blockedIds.begin(), blockedIds.end(), itemId) != blockedIds.end()) {
@@ -1411,6 +1411,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 
 			if (toCylinder->queryRemove(*toItem, toItem->getItemCount(), flags, actor) == RETURNVALUE_NOERROR) {
 				int32_t oldToItemIndex = toCylinder->getThingIndex(toItem);
+				auto toItemRef = toItem->shared_from_this(); // keep alive during exchange
 				toCylinder->removeThing(toItem, toItem->getItemCount());
 				fromCylinder->addThing(toItem);
 
@@ -1479,6 +1480,8 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 	// remove the item
 	int32_t itemIndex = fromCylinder->getThingIndex(item);
 	Item* updateItem = nullptr;
+	std::shared_ptr<Item> clonedMoveItem;
+	auto itemRef = item->shared_from_this();
 	fromCylinder->removeThing(item, m);
 
 	// update item(s)
@@ -1498,7 +1501,8 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 
 		int32_t newCount = m - n;
 		if (newCount > 0) {
-			moveItem = item->clone();
+			clonedMoveItem = item->clone();
+			moveItem = clonedMoveItem.get();
 			moveItem->setItemCount(static_cast<uint8_t>(newCount));
 		} else {
 			moveItem = nullptr;
@@ -1613,9 +1617,11 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 		toCylinder->updateThing(toItem, toItem->getID(), toItem->getItemCount() + n);
 
 		int32_t count = m - n;
+		std::shared_ptr<Item> clonedRemainderItem;
 		if (count > 0) {
 			if (item->getItemCount() != count) {
-				Item* remainderItem = item->clone();
+				clonedRemainderItem = item->clone();
+				Item* remainderItem = clonedRemainderItem.get();
 				remainderItem->setItemCount(static_cast<uint8_t>(count));
 				if (internalAddItem(destCylinder, remainderItem, INDEX_WHEREEVER, flags, false) !=
 				    RETURNVALUE_NOERROR) {
@@ -1687,6 +1693,8 @@ ReturnValue Game::internalRemoveItem(Item* item, int32_t count /*= -1*/, bool te
 	if (!test) {
 		int32_t index = cylinder->getThingIndex(item);
 
+		auto itemRef = item->shared_from_this();
+
 		// remove the item
 		cylinder->removeThing(item, count);
 
@@ -1694,7 +1702,7 @@ ReturnValue Game::internalRemoveItem(Item* item, int32_t count /*= -1*/, bool te
 			item->onRemoved();
 			item->stopDecaying();
 			if (item->canDecay()) {
-				toDecayItems.remove(item);
+				toDecayItems.remove_if([item](const std::shared_ptr<Item>& i) { return i.get() == item; });
 			}
 			ReleaseItem(item);
 		}
@@ -1712,10 +1720,7 @@ ReturnValue Game::internalPlayerAddItem(Player* player, Item* item, bool dropOnM
 	ReturnValue ret = internalAddItem(player, item, static_cast<int32_t>(slot), 0, false, remainderCount);
 	if (remainderCount != 0) {
 		auto remainderItem = Item::CreateItem(item->getID(), static_cast<uint16_t>(remainderCount));
-		ReturnValue remaindRet = internalAddItem(player->getTile(), remainderItem.get(), INDEX_WHEREEVER, FLAG_NOLIMIT);
-		if (remaindRet == RETURNVALUE_NOERROR) {
-			remainderItem.release();
-		}
+		internalAddItem(player->getTile(), remainderItem.get(), INDEX_WHEREEVER, FLAG_NOLIMIT);
 	}
 
 	if (ret != RETURNVALUE_NOERROR && dropOnMap) {
@@ -1759,9 +1764,9 @@ Item* Game::findItemOfType(Cylinder* cylinder, uint16_t itemId, bool depthSearch
 	size_t i = 0;
 	while (i < containers.size()) {
 		Container* container = containers[i++];
-		for (Item* item : container->getItemList()) {
+		for (const auto& item : container->getItemList()) {
 			if (item->getID() == itemId && (subType == -1 || subType == item->getSubType())) {
-				return item;
+				return item.get();
 			}
 
 			Container* subContainer = item->getContainer();
@@ -1814,7 +1819,7 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 	size_t i = 0;
 	while (i < containers.size()) {
 		Container* container = containers[i++];
-		for (Item* item : container->getItemList()) {
+		for (const auto& item : container->getItemList()) {
 			Container* tmpContainer = item->getContainer();
 			if (tmpContainer) {
 				containers.push_back(tmpContainer);
@@ -1822,7 +1827,7 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 				const uint32_t worth = item->getWorth();
 				if (worth != 0) {
 					moneyCount += worth;
-					moneyMap.emplace(worth, item);
+					moneyMap.emplace(worth, item.get());
 				}
 			}
 		}
@@ -1870,11 +1875,11 @@ void Game::addMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*/)
 		while (currencyCoins > 0) {
 			const uint16_t count = std::min<uint16_t>(100, static_cast<uint16_t>(currencyCoins));
 
-			Item* remaindItem = Item::CreateItem(it.second, count).release();
+			auto remaindItem = Item::CreateItem(it.second, count);
 
-			ReturnValue ret = internalAddItem(cylinder, remaindItem, INDEX_WHEREEVER, flags);
+			ReturnValue ret = internalAddItem(cylinder, remaindItem.get(), INDEX_WHEREEVER, flags);
 			if (ret != RETURNVALUE_NOERROR) {
-				internalAddItem(cylinder->getTile(), remaindItem, INDEX_WHEREEVER, FLAG_NOLIMIT);
+				internalAddItem(cylinder->getTile(), remaindItem.get(), INDEX_WHEREEVER, FLAG_NOLIMIT);
 			}
 
 			currencyCoins -= count;
@@ -1907,6 +1912,8 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 	if (newType.id == 0) {
 		return item;
 	}
+
+	auto itemRef = item->shared_from_this();
 
 	const ItemType& curType = Item::items[item->getID()];
 	if (curType.alwaysOnTop != newType.alwaysOnTop) {
@@ -1957,13 +1964,13 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 					return nullptr;
 				} else if (newItemId != newId) {
 					// Replacing the the old item with the new while maintaining the old position
-					Item* newItem = Item::CreateItem(static_cast<uint16_t>(newItemId), 1).release();
-					if (newItem == nullptr) {
+					auto newItem = Item::CreateItem(static_cast<uint16_t>(newItemId), 1);
+					if (!newItem) {
 						return nullptr;
 					}
 
-					cylinder->replaceThing(itemIndex, newItem);
-					cylinder->postAddNotification(newItem, cylinder, itemIndex);
+					cylinder->replaceThing(itemIndex, newItem.get());
+					cylinder->postAddNotification(newItem.get(), cylinder, itemIndex);
 
 					item->setParent(nullptr);
 					cylinder->postRemoveNotification(item, cylinder, itemIndex);
@@ -1971,17 +1978,17 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 					ReleaseItem(item);
 					// replaceThing may not accept newItem — guard before startDecaying
 					// and release the orphaned allocation if it was not added.
-					if (cylinder->getThingIndex(newItem) != -1) {
+					if (cylinder->getThingIndex(newItem.get()) != -1) {
 						if (!newItem->isRemoved()) {
 							if (newItem->getContainer()) {
-								g_game.startDecay(newItem);
+								g_game.startDecay(newItem.get());
 							} else {
 								newItem->startDecaying();
 							}
 						}
-						return newItem;
+						return newItem.get();
 					}
-					ReleaseItem(newItem);
+					ReleaseItem(newItem.get());
 					return nullptr;
 				}
 				return transformItem(item, static_cast<uint16_t>(newItemId));
@@ -2006,18 +2013,6 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 			cylinder->updateThing(item, itemId, count);
 			cylinder->postAddNotification(item, cylinder, itemIndex);
 			if (!item->isRemoved()) {
-				// For Container items, postRemoveNotification and postAddNotification
-				// fire Lua scripts (g_moveEvents->onItemMove) that can remove items
-				// from inside the container (auto-loot etc.), causing itemlist's
-				// std::deque to reallocate and free its old internal chunk array.
-				// Container::startDecaying() then iterates with a dangling end()
-				// iterator → SIGSEGV.
-				//
-				// g_game.startDecay(item) is correct and sufficient: it restarts
-				// only the container's own decay timer with the new item type's
-				// duration. Children's timers are already registered individually
-				// from when the container was first placed — re-registering them
-				// via startDecaying() would also incorrectly reset their timers.
 				if (item->getContainer()) {
 					g_game.startDecay(item);
 				} else {
@@ -2029,19 +2024,19 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 	}
 
 	// Replacing the old item with the new while maintaining the old position
-	Item* newItem;
+	std::shared_ptr<Item> newItem;
 	if (newCount == -1) {
-		newItem = Item::CreateItem(newId).release();
+		newItem = Item::CreateItem(newId);
 	} else {
-		newItem = Item::CreateItem(newId, static_cast<uint16_t>(newCount)).release();
+		newItem = Item::CreateItem(newId, static_cast<uint16_t>(newCount));
 	}
 
-	if (newItem == nullptr) {
+	if (!newItem) {
 		return nullptr;
 	}
 
-	cylinder->replaceThing(itemIndex, newItem);
-	cylinder->postAddNotification(newItem, cylinder, itemIndex);
+	cylinder->replaceThing(itemIndex, newItem.get());
+	cylinder->postAddNotification(newItem.get(), cylinder, itemIndex);
 
 	item->setParent(nullptr);
 	cylinder->postRemoveNotification(item, cylinder, itemIndex);
@@ -2052,19 +2047,19 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 	// tile rejects the item type).  When that happens getThingIndex() returns
 	// -1, meaning newItem was never adopted by the cylinder and has no owner.
 	// Without this guard the allocation leaks — Valgrid loss record 2,117.
-	if (cylinder->getThingIndex(newItem) != -1) {
+	if (cylinder->getThingIndex(newItem.get()) != -1) {
 		if (!newItem->isRemoved()) {
 			if (newItem->getContainer()) {
-				g_game.startDecay(newItem);
+				g_game.startDecay(newItem.get());
 			} else {
 				newItem->startDecaying();
 			}
 		}
-		return newItem;
+		return newItem.get();
 	}
 
 	// newItem was not accepted — release it to avoid a definite memory leak.
-	ReleaseItem(newItem);
+	ReleaseItem(newItem.get());
 	return nullptr;
 }
 
@@ -2980,9 +2975,8 @@ bool Game::internalStartTrade(Player* player, Player* tradePartner, Item* tradeI
 	}
 
 	player->setTradePartner(std::static_pointer_cast<Player>(getCreatureSharedRef(tradePartner)));
-	player->tradeItem = tradeItem;
+	player->tradeItem = tradeItem->shared_from_this();
 	player->tradeState = TRADE_INITIATED;
-	tradeItem->incrementReferenceCounter();
 	tradeItems[tradeItem] = player->getID();
 
 	player->sendTradeItemRequest(player->getName(), tradeItem, true);
@@ -2993,7 +2987,7 @@ bool Game::internalStartTrade(Player* player, Player* tradePartner, Item* tradeI
 		tradePartner->tradeState = TRADE_ACKNOWLEDGE;
 		tradePartner->setTradePartner(std::static_pointer_cast<Player>(getCreatureSharedRef(player)));
 	} else {
-		Item* counterOfferItem = tradePartner->tradeItem;
+		Item* counterOfferItem = tradePartner->getTradeItem();
 		player->sendTradeItemRequest(tradePartner->getName(), counterOfferItem, false);
 		tradePartner->sendTradeItemRequest(player->getName(), tradeItem, false);
 	}
@@ -3035,8 +3029,8 @@ void Game::playerAcceptTrade(uint32_t playerId)
 			return;
 		}
 
-		Item* playerTradeItem = player->tradeItem;
-		Item* partnerTradeItem = tradePartner->tradeItem;
+		Item* playerTradeItem = player->getTradeItem();
+		Item* partnerTradeItem = tradePartner->getTradeItem();
 
 		if (!g_events->eventPlayerOnTradeAccept(player, tradePartner, playerTradeItem, partnerTradeItem)) {
 			internalCloseTrade(player, false);
@@ -3106,28 +3100,28 @@ void Game::playerAcceptTrade(uint32_t playerId)
 		if (!isSuccess) {
 			std::string errorDescription;
 
-			if (tradePartner->tradeItem) {
+			if (tradePartner->getTradeItem()) {
 				errorDescription = getTradeErrorDescription(tradePartnerRet, playerTradeItem);
 				tradePartner->sendTextMessage(MESSAGE_EVENT_ADVANCE, errorDescription);
-				tradePartner->tradeItem->onTradeEvent(ON_TRADE_CANCEL, tradePartner);
+				tradePartner->getTradeItem()->onTradeEvent(ON_TRADE_CANCEL, tradePartner);
 			}
 
-			if (player->tradeItem) {
+			if (player->getTradeItem()) {
 				errorDescription = getTradeErrorDescription(playerRet, partnerTradeItem);
 				player->sendTextMessage(MESSAGE_EVENT_ADVANCE, errorDescription);
-				player->tradeItem->onTradeEvent(ON_TRADE_CANCEL, player);
+				player->getTradeItem()->onTradeEvent(ON_TRADE_CANCEL, player);
 			}
 		}
 
 		g_events->eventPlayerOnTradeCompleted(player, tradePartner, playerTradeItem, partnerTradeItem, isSuccess);
 
 		player->setTradeState(TRADE_NONE);
-		player->tradeItem = nullptr;
+		player->tradeItem.reset();
 		player->setTradePartner(nullptr);
 		player->sendTradeClose();
 
 		tradePartner->setTradeState(TRADE_NONE);
-		tradePartner->tradeItem = nullptr;
+		tradePartner->tradeItem.reset();
 		tradePartner->setTradePartner(nullptr);
 		tradePartner->sendTradeClose();
 	}
@@ -3191,14 +3185,14 @@ void Game::playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, uint8_t
 	size_t i = 0;
 	while (i < containers.size()) {
 		const Container* container = containers[i++];
-		for (Item* item : container->getItemList()) {
+		for (const auto& item : container->getItemList()) {
 			Container* tmpContainer = item->getContainer();
 			if (tmpContainer) {
 				containers.push_back(tmpContainer);
 			}
 
 			if (--index == 0) {
-				g_events->eventPlayerOnLookInTrade(player, tradePartner, item, lookDistance);
+				g_events->eventPlayerOnLookInTrade(player, tradePartner, item.get(), lookDistance);
 				return;
 			}
 		}
@@ -3226,9 +3220,9 @@ void Game::internalCloseTrade(Player* player, bool sendCancel /* = true*/)
 
 	// Cache and clear player's trade item before calling Lua callbacks
 	// to prevent reentrancy issues if onTradeEvent modifies trade state.
-	Item* playerTradeItem = player->tradeItem;
+	Item* playerTradeItem = player->getTradeItem();
 	if (playerTradeItem) {
-		player->tradeItem = nullptr;
+		player->tradeItem.reset();
 
 		auto it = tradeItems.find(playerTradeItem);
 		if (it != tradeItems.end()) {
@@ -3248,9 +3242,9 @@ void Game::internalCloseTrade(Player* player, bool sendCancel /* = true*/)
 	player->sendTradeClose();
 
 	if (tradePartner) {
-		Item* partnerTradeItem = tradePartner->tradeItem;
+		Item* partnerTradeItem = tradePartner->getTradeItem();
 		if (partnerTradeItem) {
-			tradePartner->tradeItem = nullptr;
+			tradePartner->tradeItem.reset();
 
 			auto it = tradeItems.find(partnerTradeItem);
 			if (it != tradeItems.end()) {
@@ -4376,7 +4370,7 @@ void Game::combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColo
 {
 	switch (combatType) {
 		case COMBAT_PHYSICALDAMAGE: {
-			Item* splash = nullptr;
+			std::shared_ptr<Item> splash;
 			// Capture tile once — target may be removed between two getTile()
 			// calls, leaving a created splash with nowhere to go (definite leak).
 			Tile* targetTile = target->getTile();
@@ -4385,14 +4379,14 @@ void Game::combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColo
 					color = TEXTCOLOR_LIGHTGREEN;
 					effect = CONST_ME_HITBYPOISON;
 					if (targetTile) {
-						splash = Item::CreateItem(ITEM_SMALLSPLASH, FLUID_SLIME).release();
+						splash = Item::CreateItem(ITEM_SMALLSPLASH, FLUID_SLIME);
 					}
 					break;
 				case RACE_BLOOD:
 					color = TEXTCOLOR_RED;
 					effect = CONST_ME_DRAWBLOOD;
 					if (targetTile && !targetTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
-						splash = Item::CreateItem(ITEM_SMALLSPLASH, FLUID_BLOOD).release();
+						splash = Item::CreateItem(ITEM_SMALLSPLASH, FLUID_BLOOD);
 					}
 					break;
 				case RACE_UNDEAD:
@@ -4412,7 +4406,7 @@ void Game::combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColo
 					effect = CONST_ME_BLACK_BLOOD;
 					if (const Tile* tile = target->getTile()) {
 						if (tile && !tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
-							splash = Item::CreateItem(ITEM_SMALLSPLASH, FLUID_INK).release();
+							splash = Item::CreateItem(ITEM_SMALLSPLASH, FLUID_INK);
 						}
 					}
 					break;
@@ -4426,10 +4420,10 @@ void Game::combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColo
 				splash->setInstanceID(target->getInstanceID());
 				// targetTile is captured once and reused — same tile where the
 				// PZ check was made; splash is only created when tile != nullptr.
-				if (internalAddItem(targetTile, splash, INDEX_WHEREEVER, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
+				if (internalAddItem(targetTile, splash.get(), INDEX_WHEREEVER, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
 					splash->startDecaying();
 				} else {
-					ReleaseItem(splash);
+					ReleaseItem(splash.get());
 				}
 			}
 
@@ -5366,15 +5360,14 @@ void Game::cleanup()
 	}
 	ToReleaseCreatures.clear();
 
-	for (auto item : ToReleaseItems) {
-		item->decrementReferenceCounter();
-	}
-	ToReleaseItems.clear();
+	ToReleaseItems.clear(); // shared_ptrs destroyed, items freed
 }
 
 void Game::ReleaseCreature(Creature* creature) { ToReleaseCreatures.push_back(creature); }
 
-void Game::ReleaseItem(Item* item) { ToReleaseItems.push_back(item); }
+void Game::ReleaseItem(Item* item) { ToReleaseItems.push_back(item->shared_from_this()); }
+
+void Game::ReleaseItem(std::shared_ptr<Item> item) { ToReleaseItems.push_back(std::move(item)); }
 
 void Game::broadcastMessage(std::string_view text, MessageClasses type) const
 {

@@ -71,7 +71,7 @@ int luaTileGetGround(lua_State* L)
 	// tile:getGround()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if (tile && tile->getGround()) {
-		pushUserdata<Item>(L, tile->getGround());
+		pushSharedPtr(L, tile->getGround()->shared_from_this());
 		setItemMetatable(L, -1, tile->getGround());
 	} else {
 		lua_pushnil(L);
@@ -99,7 +99,7 @@ int luaTileGetThing(lua_State* L)
 		pushUserdata<Creature>(L, creature);
 		setCreatureMetatable(L, -1, creature);
 	} else if (Item* item = thing->getItem()) {
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -139,7 +139,7 @@ int luaTileGetTopVisibleThing(lua_State* L)
 		pushUserdata<Creature>(L, visibleCreature);
 		setCreatureMetatable(L, -1, visibleCreature);
 	} else if (Item* visibleItem = thing->getItem()) {
-		pushUserdata<Item>(L, visibleItem);
+		pushSharedPtr(L, visibleItem->shared_from_this());
 		setItemMetatable(L, -1, visibleItem);
 	} else {
 		lua_pushnil(L);
@@ -158,7 +158,7 @@ int luaTileGetTopTopItem(lua_State* L)
 
 	Item* item = tile->getTopTopItem();
 	if (item) {
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -177,7 +177,7 @@ int luaTileGetTopDownItem(lua_State* L)
 
 	Item* item = tile->getTopDownItem();
 	if (item) {
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -196,7 +196,7 @@ int luaTileGetFieldItem(lua_State* L)
 
 	Item* item = tile->getFieldItem();
 	if (item) {
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -227,7 +227,7 @@ int luaTileGetItemById(lua_State* L)
 
 	Item* item = g_game.findItemOfType(tile, itemId, false, subType);
 	if (item) {
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -279,18 +279,18 @@ int luaTileGetItemByType(lua_State* L)
 	if (Item* item = tile->getGround()) {
 		const ItemType& it = Item::items[item->getID()];
 		if (it.type == itemType) {
-			pushUserdata<Item>(L, item);
+			pushSharedPtr(L, item->shared_from_this());
 			setItemMetatable(L, -1, item);
 			return 1;
 		}
 	}
 
 	if (const TileItemVector* items = tile->getItemList()) {
-		for (Item* item : *items) {
+		for (const auto& item : *items) {
 			const ItemType& it = Item::items[item->getID()];
 			if (it.type == itemType) {
-				pushUserdata<Item>(L, item);
-				setItemMetatable(L, -1, item);
+				pushSharedPtr(L, item);
+				setItemMetatable(L, -1, item.get());
 				return 1;
 			}
 		}
@@ -317,7 +317,7 @@ int luaTileGetItemByTopOrder(lua_State* L)
 		return 1;
 	}
 
-	pushUserdata<Item>(L, item);
+	pushSharedPtr(L, item->shared_from_this());
 	setItemMetatable(L, -1, item);
 	return 1;
 }
@@ -456,9 +456,9 @@ int luaTileGetItems(lua_State* L)
 	lua_createtable(L, itemVector->size(), 0);
 
 	int index = 0;
-	for (Item* item : *itemVector) {
-		pushUserdata<Item>(L, item);
-		setItemMetatable(L, -1, item);
+	for (const auto& item : *itemVector) {
+		pushSharedPtr(L, item);
+		setItemMetatable(L, -1, item.get());
 		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
@@ -552,7 +552,7 @@ int luaTileHasProperty(lua_State* L)
 
 	Item* item;
 	if (lua_gettop(L) >= 3) {
-		item = getUserdata<Item>(L, 3);
+		item = getItemUserdata<Item>(L, 3);
 	} else {
 		item = nullptr;
 	}
@@ -663,7 +663,6 @@ int luaTileAddItem(lua_State* L)
 
 	ReturnValue ret = g_game.internalAddItem(tile, itemPtr.get(), INDEX_WHEREEVER, flags);
 	if (ret == RETURNVALUE_NOERROR) {
-		itemPtr.release();
 		if (item->getParent() == nullptr) {
 			if (!mergedItem || mergedItem->isRemoved()) {
 				lua_pushnil(L);
@@ -672,7 +671,7 @@ int luaTileAddItem(lua_State* L)
 			item = mergedItem;
 		}
 
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -683,7 +682,7 @@ int luaTileAddItem(lua_State* L)
 int luaTileAddItemEx(lua_State* L)
 {
 	// tile:addItemEx(item[, flags = 0])
-	Item* item = getUserdata<Item>(L, 2);
+	Item* item = getItemUserdata<Item>(L, 2);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;

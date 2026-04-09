@@ -446,20 +446,20 @@ public:
 	friend class Item;
 };
 
-class Item : virtual public Thing
+class Item : virtual public Thing, public std::enable_shared_from_this<Item>
 {
 public:
 	// Factory member to create item of right type based on type
-	[[nodiscard]] static std::unique_ptr<Item> CreateItem(const uint16_t type, uint16_t count = 0);
+	[[nodiscard]] static std::shared_ptr<Item> CreateItem(const uint16_t type, uint16_t count = 0);
 	static void clearGlobalRegistry();
-	[[nodiscard]] static std::unique_ptr<Container> CreateItemAsContainer(const uint16_t type, uint16_t size);
-	[[nodiscard]] static std::unique_ptr<Item> CreateItem(PropStream& propStream);
+	[[nodiscard]] static std::shared_ptr<Container> CreateItemAsContainer(const uint16_t type, uint16_t size);
+	[[nodiscard]] static std::shared_ptr<Item> CreateItem(PropStream& propStream);
 	static Items items;
 
 	// Constructor for items
 	Item(const uint16_t type, uint16_t count = 0);
 	Item(const Item& i);
-	[[nodiscard]] virtual Item* clone() const;
+	[[nodiscard]] virtual std::shared_ptr<Item> clone() const;
 
 	virtual ~Item();
 
@@ -908,16 +908,10 @@ public:
 		return attributes;
 	}
 
-	void incrementReferenceCounter() { ++referenceCounter; }
-	void decrementReferenceCounter()
-	{
-		if (referenceCounter == 0) {
-			return;
-		}
-		if (--referenceCounter == 0) {
-			delete this;
-		}
-	}
+	// Legacy ref-counting stubs — shared_ptr handles lifetime now.
+	// Kept as no-ops until all call sites are cleaned up.
+	void incrementReferenceCounter() {}
+	void decrementReferenceCounter() {}
 
 
 	Cylinder* getParent() const override { return parent; }
@@ -954,8 +948,6 @@ private:
 	uint16_t imbuementSlots = 0;
 	std::vector<std::shared_ptr<Imbuement>> imbuements;
 
-	uint32_t referenceCounter = 0;
-
 	uint8_t count = 1; // number of stacked items
 
 	bool loadedFromMap = false;
@@ -964,7 +956,7 @@ private:
 	friend class Decay;
 };
 
-using ItemList = std::list<Item*>;
-using ItemDeque = std::deque<Item*>;
+using ItemList = std::list<std::shared_ptr<Item>>;
+using ItemDeque = std::deque<std::shared_ptr<Item>>;
 
 #endif

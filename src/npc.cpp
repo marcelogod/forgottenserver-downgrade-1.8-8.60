@@ -889,7 +889,6 @@ int NpcScriptInterface::luaDoSellItem(lua_State* L)
 				lua_pushinteger(L, sellCount);
 				return 1;
 			}
-			itemPtr.release();
 
 			amount -= stackCount;
 			sellCount += stackCount;
@@ -905,7 +904,6 @@ int NpcScriptInterface::luaDoSellItem(lua_State* L)
 				lua_pushinteger(L, sellCount);
 				return 1;
 			}
-			itemPtr.release();
 
 			++sellCount;
 		}

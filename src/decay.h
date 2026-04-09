@@ -39,8 +39,8 @@ class Decay
 
 	private:
 		using DecayTimestamp = int64_t;
-		using ItemRef = Item*;
-		using DecayBucket = std::vector<ItemRef>;
+	using ItemRef = std::shared_ptr<Item>;
+	using DecayBucket = std::vector<ItemRef>;
 
 		void checkDecay() noexcept;
 		void processDecayBatch(std::span<ItemRef const> items) noexcept;

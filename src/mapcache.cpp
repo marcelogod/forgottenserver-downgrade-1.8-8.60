@@ -176,17 +176,6 @@ namespace {
         return true;
     }
 
-    struct UnownedMapItemDeleter {
-        void operator()(Item* item) const {
-            if (item) {
-                item->stopDecaying();
-                item->setParent(nullptr);
-                delete item;
-            }
-        }
-    };
-    using UnownedMapItemPtr = std::unique_ptr<Item, UnownedMapItemDeleter>;
-
     void applyItemIdSubstitutions(uint16_t& id) {
         switch (id) {
             case ITEM_FIREFIELD_PVP_FULL: id = ITEM_FIREFIELD_PERSISTENT_FULL; break;
@@ -548,12 +537,12 @@ std::shared_ptr<BasicTile> MapCache::parseBasicTile(void* loaderptr, const void*
  */
 namespace MapCacheUtils {
 
-Item* createItemFromBasic(const std::shared_ptr<BasicItem>& basicItem, const Position& pos) {
+std::shared_ptr<Item> createItemFromBasic(const std::shared_ptr<BasicItem>& basicItem, const Position& pos) {
     if (!basicItem) {
         return nullptr;
     }
     
-    Item* item = Item::CreateItem(basicItem->id, basicItem->charges).release();
+    auto item = Item::CreateItem(basicItem->id, basicItem->charges);
     if (!item) {
         LOG_ERROR(fmt::format("[MapCache] Failed to create item with ID {}", basicItem->id));
         return nullptr;
@@ -594,10 +583,8 @@ Item* createItemFromBasic(const std::shared_ptr<BasicItem>& basicItem, const Pos
     // Handle container items recursively
     if (Container* container = item->getContainer()) {
         for (const auto& childBasicItem : basicItem->items) {
-            if (UnownedMapItemPtr childItem{createItemFromBasic(childBasicItem, pos)}) {
-                if (placeCachedMapItem(container, childItem.get())) {
-                    childItem.release();
-                } else {
+            if (auto childItem = createItemFromBasic(childBasicItem, pos)) {
+                if (!placeCachedMapItem(container, childItem.get())) {
                     LOG_WARN(fmt::format("[MapCache] Failed to attach child item {} at {}", childItem->getID(), pos));
                 }
             }
@@ -643,10 +630,8 @@ std::unique_ptr<Tile> createTileFromBasic(const std::shared_ptr<BasicTile>& basi
     
     // Add ground
     if (basicTile->ground) {
-        if (UnownedMapItemPtr groundItem{createItemFromBasic(basicTile->ground, pos)}) {
-            if (placeCachedMapItem(tile.get(), groundItem.get())) {
-                groundItem.release();
-            } else {
+        if (auto groundItem = createItemFromBasic(basicTile->ground, pos)) {
+            if (!placeCachedMapItem(tile.get(), groundItem.get())) {
                 LOG_WARN(fmt::format("[MapCache] Failed to attach ground item {} at {}", groundItem->getID(), pos));
             }
         }
@@ -654,10 +639,8 @@ std::unique_ptr<Tile> createTileFromBasic(const std::shared_ptr<BasicTile>& basi
     
     // Add items
     for (const auto& basicItem : basicTile->items) {
-        if (UnownedMapItemPtr item{createItemFromBasic(basicItem, pos)}) {
-            if (placeCachedMapItem(tile.get(), item.get())) {
-                item.release();
-            } else {
+        if (auto item = createItemFromBasic(basicItem, pos)) {
+            if (!placeCachedMapItem(tile.get(), item.get())) {
                 LOG_WARN(fmt::format("[MapCache] Failed to attach item {} at {}", item->getID(), pos));
             }
         }

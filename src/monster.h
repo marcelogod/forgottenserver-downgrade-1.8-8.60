@@ -199,7 +199,7 @@ private:
 	void clearFriendList();
 
 	void death(Creature* lastHitCreature) override;
-	Item* getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature) override;
+	std::shared_ptr<Item> getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature) override;
 
 	void updateIdleStatus();
 

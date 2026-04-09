@@ -21,7 +21,7 @@ int luaItemCreate(lua_State* L)
 
 	Item* item = LuaScriptInterface::getScriptEnv()->getItemByUID(id);
 	if (item) {
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -32,14 +32,14 @@ int luaItemCreate(lua_State* L)
 int luaItemIsItem(lua_State* L)
 {
 	// item:isItem()
-	pushBoolean(L, getUserdata<const Item>(L, 1) != nullptr);
+	pushBoolean(L, getItemUserdata<const Item>(L, 1) != nullptr);
 	return 1;
 }
 
 int luaItemGetParent(lua_State* L)
 {
 	// item:getParent()
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -58,7 +58,7 @@ int luaItemGetParent(lua_State* L)
 int luaItemGetTopParent(lua_State* L)
 {
 	// item:getTopParent()
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -77,7 +77,7 @@ int luaItemGetTopParent(lua_State* L)
 int luaItemGetId(lua_State* L)
 {
 	// item:getId()
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getID());
 	} else {
@@ -89,13 +89,13 @@ int luaItemGetId(lua_State* L)
 int luaItemClone(lua_State* L)
 {
 	// item:clone()
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
 	}
 
-	Item* clone = item->clone();
+	auto clone = item->clone();
 	if (!clone) {
 		lua_pushnil(L);
 		return 1;
@@ -104,22 +104,22 @@ int luaItemClone(lua_State* L)
 	LuaScriptInterface::getScriptEnv()->addTempItem(clone);
 	clone->setParent(VirtualCylinder::virtualCylinder);
 
-	pushUserdata<Item>(L, clone);
-	setItemMetatable(L, -1, clone);
+	pushSharedPtr(L, clone);
+	setItemMetatable(L, -1, clone.get());
 	return 1;
 }
 
 int luaItemSplit(lua_State* L)
 {
 	// item:split([count = 1])
-	Item** itemPtr = getRawUserdata<Item>(L, 1);
+	auto& itemPtr = getSharedPtr<Item>(L, 1);
 	if (!itemPtr) {
 		lua_pushnil(L);
 		return 1;
 	}
 
-	Item* item = *itemPtr;
-	if (!item || !item->isStackable()) {
+	Item* item = itemPtr.get();
+	if (!item->isStackable()) {
 		lua_pushnil(L);
 		return 1;
 	}
@@ -127,7 +127,7 @@ int luaItemSplit(lua_State* L)
 	uint16_t count = std::min<uint16_t>(getInteger<uint16_t>(L, 2, 1), item->getItemCount());
 	uint16_t diff = item->getItemCount() - count;
 
-	Item* splitItem = item->clone();
+	auto splitItem = item->clone();
 	if (!splitItem) {
 		lua_pushnil(L);
 		return 1;
@@ -147,29 +147,29 @@ int luaItemSplit(lua_State* L)
 		env->insertItem(uid, newItem);
 	}
 
-	*itemPtr = newItem;
+	itemPtr = newItem ? newItem->shared_from_this() : nullptr;
 
 	splitItem->setParent(VirtualCylinder::virtualCylinder);
 	env->addTempItem(splitItem);
 
-	pushUserdata<Item>(L, splitItem);
-	setItemMetatable(L, -1, splitItem);
+	pushSharedPtr(L, splitItem);
+	setItemMetatable(L, -1, splitItem.get());
 	return 1;
 }
 
 int luaItemRemove(lua_State* L)
 {
 	// item:remove([count = -1])
-	Item** itemPtr = getRawUserdata<Item>(L, 1);
-	if (!itemPtr || !*itemPtr) {
+	auto& itemPtr = getSharedPtr<Item>(L, 1);
+	if (!itemPtr) {
 		lua_pushnil(L);
 		return 1;
 	}
 
-	Item* item = *itemPtr;
+	Item* item = itemPtr.get();
 
 	if (item->isRemoved()) {
-		*itemPtr = nullptr;
+		itemPtr.reset();
 		pushBoolean(L, false);
 		return 1;
 	}
@@ -178,7 +178,7 @@ int luaItemRemove(lua_State* L)
 	ReturnValue ret = g_game.internalRemoveItem(item, count);
 
 	if (ret != RETURNVALUE_NOERROR) {
-		*itemPtr = nullptr;
+		itemPtr.reset();
 		pushBoolean(L, false);
 	} else {
 		pushBoolean(L, true);
@@ -189,7 +189,7 @@ int luaItemRemove(lua_State* L)
 int luaItemGetUniqueId(lua_State* L)
 {
 	// item:getUniqueId()
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		uint32_t uniqueId = item->getUniqueId();
 		if (uniqueId == 0) {
@@ -205,7 +205,7 @@ int luaItemGetUniqueId(lua_State* L)
 int luaItemGetActionId(lua_State* L)
 {
 	// item:getActionId()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getActionId());
 	} else {
@@ -218,7 +218,7 @@ int luaItemSetActionId(lua_State* L)
 {
 	// item:setActionId(actionId)
 	uint16_t actionId = getInteger<uint16_t>(L, 2);
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		item->setActionId(actionId);
 		pushBoolean(L, true);
@@ -231,7 +231,7 @@ int luaItemSetActionId(lua_State* L)
 int luaItemGetCount(lua_State* L)
 {
 	// item:getCount()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getItemCount());
 	} else {
@@ -243,7 +243,7 @@ int luaItemGetCount(lua_State* L)
 int luaItemGetCharges(lua_State* L)
 {
 	// item:getCharges()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getCharges());
 	} else {
@@ -255,7 +255,7 @@ int luaItemGetCharges(lua_State* L)
 int luaItemGetFluidType(lua_State* L)
 {
 	// item:getFluidType()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getFluidType());
 	} else {
@@ -267,7 +267,7 @@ int luaItemGetFluidType(lua_State* L)
 int luaItemGetWeight(lua_State* L)
 {
 	// item:getWeight()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getWeight());
 	} else {
@@ -279,7 +279,7 @@ int luaItemGetWeight(lua_State* L)
 int luaItemGetWorth(lua_State* L)
 {
 	// item:getWorth()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getWorth());
 	} else {
@@ -291,7 +291,7 @@ int luaItemGetWorth(lua_State* L)
 int luaItemGetSubType(lua_State* L)
 {
 	// item:getSubType()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getSubType());
 	} else {
@@ -303,7 +303,7 @@ int luaItemGetSubType(lua_State* L)
 int luaItemGetName(lua_State* L)
 {
 	// item:getName()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		pushString(L, item->getName());
 	} else {
@@ -315,7 +315,7 @@ int luaItemGetName(lua_State* L)
 int luaItemGetPluralName(lua_State* L)
 {
 	// item:getPluralName()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		pushString(L, item->getPluralName());
 	} else {
@@ -327,7 +327,7 @@ int luaItemGetPluralName(lua_State* L)
 int luaItemGetArticle(lua_State* L)
 {
 	// item:getArticle()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		pushString(L, item->getArticle());
 	} else {
@@ -339,7 +339,7 @@ int luaItemGetArticle(lua_State* L)
 int luaItemGetPosition(lua_State* L)
 {
 	// item:getPosition()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		pushPosition(L, item->getPosition());
 	} else {
@@ -351,7 +351,7 @@ int luaItemGetPosition(lua_State* L)
 int luaItemGetTile(lua_State* L)
 {
 	// item:getTile()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -370,7 +370,7 @@ int luaItemGetTile(lua_State* L)
 int luaItemHasAttribute(lua_State* L)
 {
 	// item:hasAttribute(key)
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -392,7 +392,7 @@ int luaItemHasAttribute(lua_State* L)
 int luaItemGetAttribute(lua_State* L)
 {
 	// item:getAttribute(key)
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -424,7 +424,7 @@ int luaItemGetAttribute(lua_State* L)
 int luaItemSetAttribute(lua_State* L)
 {
 	// item:setAttribute(key, value)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -485,7 +485,7 @@ int luaItemSetAttribute(lua_State* L)
 int luaItemRemoveAttribute(lua_State* L)
 {
 	// item:removeAttribute(key)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -518,7 +518,7 @@ int luaItemRemoveAttribute(lua_State* L)
 int luaItemGetCustomAttribute(lua_State* L)
 {
 	// item:getCustomAttribute(key)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -545,7 +545,7 @@ int luaItemGetCustomAttribute(lua_State* L)
 int luaItemSetCustomAttribute(lua_State* L)
 {
 	// item:setCustomAttribute(key, value)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -586,7 +586,7 @@ int luaItemSetCustomAttribute(lua_State* L)
 int luaItemRemoveCustomAttribute(lua_State* L)
 {
 	// item:removeCustomAttribute(key)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -605,14 +605,14 @@ int luaItemRemoveCustomAttribute(lua_State* L)
 int luaItemMoveTo(lua_State* L)
 {
 	// item:moveTo(position or cylinder[, flags])
-	Item** itemPtr = getRawUserdata<Item>(L, 1);
+	auto& itemPtr = getSharedPtr<Item>(L, 1);
 	if (!itemPtr) {
 		lua_pushnil(L);
 		return 1;
 	}
 
-	Item* item = *itemPtr;
-	if (!item || item->isRemoved()) {
+	Item* item = itemPtr.get();
+	if (item->isRemoved()) {
 		lua_pushnil(L);
 		return 1;
 	}
@@ -622,7 +622,7 @@ int luaItemMoveTo(lua_State* L)
 		const LuaDataType type = getUserdataType(L, 2);
 		switch (type) {
 			case LuaData_Container:
-				toCylinder = getUserdata<Container>(L, 2);
+				toCylinder = getItemUserdata<Container>(L, 2);
 				break;
 			case LuaData_Player:
 				toCylinder = getUserdata<Player>(L, 2);
@@ -658,7 +658,7 @@ int luaItemMoveTo(lua_State* L)
 		ReturnValue ret = g_game.internalMoveItem(item->getParent(), toCylinder, INDEX_WHEREEVER, item,
 		                                          item->getItemCount(), &moveItem, flags);
 		if (moveItem) {
-			*itemPtr = moveItem;
+			itemPtr = moveItem->shared_from_this();
 		}
 		pushBoolean(L, ret == RETURNVALUE_NOERROR);
 	}
@@ -668,13 +668,13 @@ int luaItemMoveTo(lua_State* L)
 int luaItemTransform(lua_State* L)
 {
 	// item:transform(itemId[, count/subType = -1])
-	Item** itemPtr = getRawUserdata<Item>(L, 1);
+	auto& itemPtr = getSharedPtr<Item>(L, 1);
 	if (!itemPtr) {
 		lua_pushnil(L);
 		return 1;
 	}
 
-	Item*& item = *itemPtr;
+	Item* item = itemPtr.get();
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -714,7 +714,7 @@ int luaItemTransform(lua_State* L)
 		env->insertItem(uid, newItem);
 	}
 
-	item = newItem;
+	itemPtr = newItem ? newItem->shared_from_this() : nullptr;
 	pushBoolean(L, true);
 	return 1;
 }
@@ -722,7 +722,7 @@ int luaItemTransform(lua_State* L)
 int luaItemDecay(lua_State* L)
 {
 	// item:decay(decayId)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		if (isInteger(L, 2)) {
 			ItemType& it = Item::items.getItemType(item->getID());
@@ -740,7 +740,7 @@ int luaItemDecay(lua_State* L)
 int luaItemGetSpecialDescription(lua_State* L)
 {
 	// item:getSpecialDescription()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		pushString(L, item->getSpecialDescription());
 	} else {
@@ -752,7 +752,7 @@ int luaItemGetSpecialDescription(lua_State* L)
 int luaItemHasProperty(lua_State* L)
 {
 	// item:hasProperty(property)
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		ITEMPROPERTY property = getInteger<ITEMPROPERTY>(L, 2);
 		pushBoolean(L, item->hasProperty(property));
@@ -765,7 +765,7 @@ int luaItemHasProperty(lua_State* L)
 int luaItemIsLoadedFromMap(lua_State* L)
 {
 	// item:isLoadedFromMap()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		pushBoolean(L, item->isLoadedFromMap());
 	} else {
@@ -777,7 +777,7 @@ int luaItemIsLoadedFromMap(lua_State* L)
 int luaItemSetReflect(lua_State* L)
 {
 	// item:setReflect(combatType, reflect)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -791,7 +791,7 @@ int luaItemSetReflect(lua_State* L)
 int luaItemGetReflect(lua_State* L)
 {
 	// item:getReflect(combatType[, total = true])
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		pushReflect(L, item->getReflect(getInteger<CombatType_t>(L, 2), getBoolean(L, 3, true)));
 	} else {
@@ -803,7 +803,7 @@ int luaItemGetReflect(lua_State* L)
 int luaItemSetBoostPercent(lua_State* L)
 {
 	// item:setBoostPercent(combatType, percent)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -817,7 +817,7 @@ int luaItemSetBoostPercent(lua_State* L)
 int luaItemGetBoostPercent(lua_State* L)
 {
 	// item:getBoostPercent(combatType[, total = true])
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getBoostPercent(getInteger<CombatType_t>(L, 2), getBoolean(L, 3, true)));
 	} else {
@@ -829,7 +829,7 @@ int luaItemGetBoostPercent(lua_State* L)
 int luaItemIsMagicField(lua_State* L)
 {
 	// item:isMagicField()
-	const Item* item = getUserdata<const Item>(L, 1);
+	const Item* item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		pushBoolean(L, item->getMagicField() != nullptr);
 	} else {
@@ -841,11 +841,11 @@ int luaItemIsMagicField(lua_State* L)
 int luaItemGetMagicField(lua_State* L)
 {
 	// item:getMagicField()
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		MagicField* field = item->getMagicField();
 		if (field) {
-			pushUserdata<Item>(L, field);
+			pushSharedPtr(L, field->shared_from_this());
 			setItemMetatable(L, -1, field);
 		} else {
 			lua_pushnil(L);
@@ -859,7 +859,7 @@ int luaItemGetMagicField(lua_State* L)
 int luaItemOnStepInField(lua_State* L)
 {
 	// item:onStepInField(creature)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	Creature* creature = getCreature(L, 2);
 	if (item && creature) {
 		MagicField* field = item->getMagicField();
@@ -878,7 +878,7 @@ int luaItemOnStepInField(lua_State* L)
 int luaItemGetInstanceId(lua_State *L)
 {
 	// item:getInstanceId()
-	const Item *item = getUserdata<const Item>(L, 1);
+	const Item *item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getInstanceID());
 	} else {
@@ -890,7 +890,7 @@ int luaItemGetInstanceId(lua_State *L)
 int luaItemSetInstanceId(lua_State *L)
 {
 	// item:setInstanceId(id)
-	Item *item = getUserdata<Item>(L, 1);
+	Item *item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		item->setInstanceID(getInteger<uint32_t>(L, 2));
 		lua_pushboolean(L, true);
@@ -905,7 +905,7 @@ int luaItemSetInstanceId(lua_State *L)
 int LuaScriptInterface::luaItemGetTier(lua_State *L)
 {
 	// item:getTier()
-	const Item *item = getUserdata<const Item>(L, 1);
+	const Item *item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getTier());
 	} else {
@@ -917,7 +917,7 @@ int LuaScriptInterface::luaItemGetTier(lua_State *L)
 int LuaScriptInterface::luaItemSetTier(lua_State *L)
 {
 	// item:setTier(tier)
-	Item *item = getUserdata<Item>(L, 1);
+	Item *item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		item->setTier(getInteger<uint8_t>(L, 2));
 		pushBoolean(L, true);
@@ -930,7 +930,7 @@ int LuaScriptInterface::luaItemSetTier(lua_State *L)
 int LuaScriptInterface::luaItemGetClassification(lua_State *L)
 {
 	// item:getClassification()
-	const Item *item = getUserdata<const Item>(L, 1);
+	const Item *item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushinteger(L, item->getClassification());
 	} else {
@@ -942,7 +942,7 @@ int LuaScriptInterface::luaItemGetClassification(lua_State *L)
 int LuaScriptInterface::luaItemSetClassification(lua_State *L)
 {
 	// item:setClassification(classification)
-	Item *item = getUserdata<Item>(L, 1);
+	Item *item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		item->setClassification(getInteger<uint8_t>(L, 2));
 		pushBoolean(L, true);
@@ -955,7 +955,7 @@ int LuaScriptInterface::luaItemSetClassification(lua_State *L)
 int LuaScriptInterface::luaItemGetFatalChance(lua_State *L)
 {
 	// item:getFatalChance()
-	const Item *item = getUserdata<const Item>(L, 1);
+	const Item *item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushnumber(L, item->getFatalChance());
 	} else {
@@ -967,7 +967,7 @@ int LuaScriptInterface::luaItemGetFatalChance(lua_State *L)
 int LuaScriptInterface::luaItemGetDodgeChance(lua_State *L)
 {
 	// item:getDodgeChance()
-	const Item *item = getUserdata<const Item>(L, 1);
+	const Item *item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushnumber(L, item->getDodgeChance());
 	} else {
@@ -979,7 +979,7 @@ int LuaScriptInterface::luaItemGetDodgeChance(lua_State *L)
 int LuaScriptInterface::luaItemGetMomentumChance(lua_State *L)
 {
 	// item:getMomentumChance()
-	const Item *item = getUserdata<const Item>(L, 1);
+	const Item *item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushnumber(L, item->getMomentumChance());
 	} else {
@@ -991,7 +991,7 @@ int LuaScriptInterface::luaItemGetMomentumChance(lua_State *L)
 int LuaScriptInterface::luaItemGetTranscendenceChance(lua_State *L)
 {
 	// item:getTranscendenceChance()
-	const Item *item = getUserdata<const Item>(L, 1);
+	const Item *item = getItemUserdata<const Item>(L, 1);
 	if (item) {
 		lua_pushnumber(L, item->getTranscendenceChance());
 	} else {
@@ -1002,9 +1002,9 @@ int LuaScriptInterface::luaItemGetTranscendenceChance(lua_State *L)
 
 int LuaScriptInterface::luaItemGC(lua_State* L)
 {
-	Item** itemPtr = getRawUserdata<Item>(L, 1);
-	if (itemPtr && *itemPtr) {
-		*itemPtr = nullptr;
+	auto* ptr = static_cast<std::shared_ptr<Item>*>(lua_touserdata(L, 1));
+	if (ptr) {
+		std::destroy_at(ptr);
 	}
 	return 0;
 }

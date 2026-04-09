@@ -17,7 +17,7 @@ int luaTeleportCreate(lua_State* L)
 
 	Item* item = LuaScriptInterface::getScriptEnv()->getItemByUID(id);
 	if (item && item->getTeleport()) {
-		pushUserdata(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setMetatable(L, -1, "Teleport");
 	} else {
 		lua_pushnil(L);

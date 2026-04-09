@@ -615,7 +615,7 @@ void Combat::combatTileEffects(const SpectatorVec& spectators, Creature* caster,
 
 		ReturnValue ret = g_game.internalAddItem(tile, itemPtr.get());
 		if (ret == RETURNVALUE_NOERROR) {
-			g_game.startDecay(itemPtr.release());
+			g_game.startDecay(itemPtr.get());
 		}
 	}
 

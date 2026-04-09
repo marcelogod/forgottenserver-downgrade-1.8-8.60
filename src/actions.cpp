@@ -278,11 +278,11 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		uint32_t corpseOwner = container->getCorpseOwner();
 		if (container->isRewardCorpse()) {
 			RewardChest& myRewardChest = player->getRewardChest();
-			for (Item* subItem : container->getItemList()) {
+			for (const auto& subItem : container->getItemList()) {
 				if (subItem->getID() == ITEM_REWARD_CONTAINER) {
 					int64_t rewardDate = subItem->getIntAttr(ITEM_ATTRIBUTE_DATE);
 					bool foundMatch = false;
-					for (Item* rewardItem : myRewardChest.getItemList()) {
+					for (const auto& rewardItem : myRewardChest.getItemList()) {
 						if (rewardItem->getID() == ITEM_REWARD_CONTAINER && rewardItem->getIntAttr(ITEM_ATTRIBUTE_DATE) == rewardDate) {
 							foundMatch = true;
 							break;
@@ -305,7 +305,7 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			if (myRewardChest.getItemList().empty()) {
 				return RETURNVALUE_REWARDCHESTEMPTY;
 			}
-			for (Item* rewardItem : myRewardChest.getItemList()) {
+			for (const auto& rewardItem : myRewardChest.getItemList()) {
 				if (rewardItem->getID() == ITEM_REWARD_CONTAINER) {
 					Container* rewardContainer = rewardItem->getContainer();
 					if (rewardContainer) {
@@ -318,7 +318,7 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		else if (item->getID() == ITEM_REWARD_CONTAINER) {
 			RewardChest& myRewardChest = player->getRewardChest();
 			int64_t rewardDate = item->getIntAttr(ITEM_ATTRIBUTE_DATE);
-			for (Item* rewardItem : myRewardChest.getItemList()) {
+			for (const auto& rewardItem : myRewardChest.getItemList()) {
 				if (rewardItem->getID() == ITEM_REWARD_CONTAINER && rewardItem->getIntAttr(ITEM_ATTRIBUTE_DATE) == rewardDate && rewardItem->getIntAttr(ITEM_ATTRIBUTE_REWARDID) == item->getIntAttr(ITEM_ATTRIBUTE_REWARDID)) {
 					Container* rewardContainer = rewardItem->getContainer();
 					if (rewardContainer) {
@@ -346,7 +346,7 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 	const ItemType& it = Item::items[item->getID()];
 	if (it.canReadText) {
 		if (it.canWriteText) {
-			player->setWriteItem(item, it.maxTextLen);
+			player->setWriteItem(item->shared_from_this(), it.maxTextLen);
 			player->sendTextWindow(item, it.maxTextLen, true);
 		} else {
 			player->setWriteItem(nullptr);

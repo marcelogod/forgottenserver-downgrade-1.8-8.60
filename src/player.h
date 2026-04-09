@@ -466,7 +466,8 @@ public:
 	// safe-trade functions
 	void setTradeState(tradestate_t state) { tradeState = state; }
 	tradestate_t getTradeState() const { return tradeState; }
-	Item* getTradeItem() { return tradeItem; }
+	Item* getTradeItem() { return tradeItem.lock().get(); }
+	void setTradeItem(const std::shared_ptr<Item>& item) { tradeItem = item; }
 	void setTradePartner(const std::shared_ptr<Player>& partner) { tradePartner = partner; }
 	std::shared_ptr<Player> getTradePartner() { return tradePartner.lock(); }
 
@@ -858,12 +859,12 @@ public:
 	void sendQuiverUpdate(bool sendAll = false)
 	{
 		if (client) {
-			Item* rightItem = inventory[CONST_SLOT_RIGHT];
+			Item* rightItem = inventory[CONST_SLOT_RIGHT].get();
 			if (rightItem && rightItem->getWeaponType() == WEAPON_QUIVER) {
 				client->sendInventoryItem(CONST_SLOT_RIGHT, rightItem);
 			}
 			if (sendAll) {
-				Item* ammoItem = inventory[CONST_SLOT_AMMO];
+				Item* ammoItem = inventory[CONST_SLOT_AMMO].get();
 				if (ammoItem) {
 					client->sendInventoryItem(CONST_SLOT_AMMO, ammoItem);
 				}
@@ -1109,7 +1110,7 @@ public:
 	uint32_t getNextActionTime() const;
 
 	Item* getWriteItem(uint32_t& windowTextId, uint16_t& maxWriteLen);
-	void setWriteItem(Item* item, uint16_t maxWriteLen = 0);
+	void setWriteItem(const std::shared_ptr<Item>& item, uint16_t maxWriteLen = 0);
 
 	House* getEditHouse(uint32_t& windowTextId, uint32_t& listId);
 	void setEditHouse(House* house, uint32_t listId = 0);
@@ -1171,7 +1172,6 @@ public:
 	bool isTrainerTarget(Creature* creature) const;
 
 	void incrementWindowTextId() { windowTextId++; }
-	void setRawWriteItem(Item* item) { writeItem = item; }
 	void setMaxWriteLen(uint16_t len) { maxWriteLen = len; }
 	uint32_t getWindowTextId() const { return windowTextId; }
 
@@ -1219,7 +1219,7 @@ private:
 	void death(Creature* lastHitCreature) override;
 	bool dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified,
 	                bool mostDamageUnjustified) override;
-	Item* getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature) override;
+	std::shared_ptr<Item> getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature) override;
 
 	// cylinder implementations
 	ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count, uint32_t flags,
@@ -1251,7 +1251,7 @@ private:
 
 	std::unordered_map<uint8_t, OpenContainer> openContainers;
 	std::unordered_map<uint32_t, DepotLocker_ptr> depotLockerMap;
-	std::unordered_map<uint32_t, DepotChest*> depotChests;
+	std::unordered_map<uint32_t, std::shared_ptr<DepotChest>> depotChests;
 
 	std::unordered_map<uint16_t, uint8_t> outfits;
 	std::unordered_set<uint16_t> mounts;
@@ -1295,9 +1295,9 @@ private:
 	Guild_ptr guild = nullptr;
 	GuildRank_ptr guildRank = nullptr;
 	std::shared_ptr<Group> group;
-	Item* tradeItem = nullptr;
-	Item* inventory[CONST_SLOT_LAST + 1] = {};
-	Item* writeItem = nullptr;
+	std::weak_ptr<Item> tradeItem;
+	std::shared_ptr<Item> inventory[CONST_SLOT_LAST + 1] = {};
+	std::weak_ptr<Item> writeItem;
 	std::weak_ptr<House> editHouse;
 	std::weak_ptr<Npc> shopOwner;
 	std::weak_ptr<Party> party;

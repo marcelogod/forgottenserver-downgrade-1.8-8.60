@@ -473,7 +473,7 @@ protected:
 	virtual void death(Creature*) {}
 	virtual bool dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified,
 	                        bool mostDamageUnjustified);
-	virtual Item* getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature);
+	virtual std::shared_ptr<Item> getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature);
 
 	friend class Game;
 	friend class Map;

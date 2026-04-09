@@ -177,7 +177,7 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent)
 				}
 
 				raw->startDecaying();
-				item.release();
+				item.reset();
 			} else {
 				LOG_WARN(fmt::format("WARNING: Unserialization error in IOMapSerialize::loadItem() {}", id));
 				return false;
@@ -187,15 +187,15 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent)
 		// Stationary items like doors/beds/blackboards/bookcases
 		Item* item = nullptr;
 		if (const TileItemVector* items = tile->getItemList()) {
-			for (Item* findItem : *items) {
+			for (const auto& findItem : *items) {
 				if (findItem->getID() == id) {
-					item = findItem;
+					item = findItem.get();
 					break;
 				} else if (iType.isDoor() && findItem->getDoor()) {
-					item = findItem;
+					item = findItem.get();
 					break;
 				} else if (iType.isBed() && findItem->getBed()) {
-					item = findItem;
+					item = findItem.get();
 					break;
 				}
 			}
@@ -247,7 +247,7 @@ void IOMapSerialize::saveItem(PropWriteStream& stream, const Item* item)
 		stream.write<uint8_t>(ATTR_CONTAINER_ITEMS);
 		stream.write<uint32_t>(container->size());
 		for (auto it = container->getReversedItems(), end = container->getReversedEnd(); it != end; ++it) {
-			saveItem(stream, *it);
+			saveItem(stream, it->get());
 		}
 	}
 
@@ -263,7 +263,7 @@ void IOMapSerialize::saveTile(PropWriteStream& stream, const Tile* tile)
 
 	std::forward_list<Item*> items;
 	uint16_t count = 0;
-	for (Item* item : *tileItems) {
+	for (const auto& item : *tileItems) {
 		const ItemType& it = Item::items[item->getID()];
 
 		// Note that these are NEGATED, ie. these are the items that will be saved.
@@ -272,7 +272,7 @@ void IOMapSerialize::saveTile(PropWriteStream& stream, const Tile* tile)
 			continue;
 		}
 
-		items.push_front(item);
+		items.push_front(item.get());
 		++count;
 	}
 

@@ -219,7 +219,7 @@ public:
 	void getEventInfo(int32_t& scriptId, LuaScriptInterface*& scriptInterface, int32_t& callbackId,
 	                  bool& timerEvent) const;
 
-	void addTempItem(Item* item);
+	void addTempItem(const std::shared_ptr<Item>& item);
 	static void removeTempItem(Item* item);
 	uint32_t addThing(Thing* thing);
 	void insertItem(uint32_t uid, Item* item);
@@ -246,7 +246,7 @@ private:
 	Npc* curNpc = nullptr;
 
 	// temporary item list
-	static std::multimap<ScriptEnvironment*, Item*> tempItems;
+	static std::multimap<ScriptEnvironment*, std::shared_ptr<Item>> tempItems;
 
 public:
 	static void clearTempItems();
@@ -756,6 +756,9 @@ inline std::shared_ptr<T>& getSharedPtr(lua_State* L, int32_t arg)
 {
 	return *static_cast<std::shared_ptr<T>*>(lua_touserdata(L, arg));
 }
+
+template <class T>
+T* getItemUserdata(lua_State* L, int32_t arg);
 
 bool getBoolean(lua_State* L, int32_t arg);
 bool getBoolean(lua_State* L, int32_t arg, bool defaultValue);

@@ -207,7 +207,7 @@ int luaNetworkMessageAddDouble(lua_State* L)
 int luaNetworkMessageAddItem(lua_State* L)
 {
 	// networkMessage:addItem(item)
-	Item* item = getUserdata<Item>(L, 2);
+	Item* item = getItemUserdata<Item>(L, 2);
 	if (!item) {
 		reportErrorFunc(L, LuaScriptInterface::getErrorDesc(LuaErrorCode::ITEM_NOT_FOUND));
 		lua_pushnil(L);

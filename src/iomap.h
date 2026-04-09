@@ -83,7 +83,7 @@ struct OTBM_Tile_coords {
 #pragma pack()
 
 class IOMap {
-    static std::unique_ptr<Tile> createTile(std::unique_ptr<Item>& ground, Item* item, uint16_t x, uint16_t y, uint8_t z);
+    static std::unique_ptr<Tile> createTile(std::shared_ptr<Item>& ground, Item* item, uint16_t x, uint16_t y, uint8_t z);
 
 public:
     bool loadMap(Map* map, const std::filesystem::path& fileName);

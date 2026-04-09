@@ -16,7 +16,7 @@ using namespace Lua;
 int LuaScriptInterface::luaItemGetImbuementSlots(lua_State* L)
 {
 	// item:getImbuementSlots() -- returns how many total slots
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		lua_pushnumber(L, item->getImbuementSlots());
 	} else {
@@ -28,7 +28,7 @@ int LuaScriptInterface::luaItemGetImbuementSlots(lua_State* L)
 int LuaScriptInterface::luaItemGetFreeImbuementSlots(lua_State* L)
 {
 	// item:getFreeImbuementSlots() -- returns how many slots are available for use
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		lua_pushnumber(L, item->getFreeImbuementSlots());
 	} else {
@@ -40,7 +40,7 @@ int LuaScriptInterface::luaItemGetFreeImbuementSlots(lua_State* L)
 int LuaScriptInterface::luaItemCanImbue(lua_State* L)
 {
 	// item:canImbue() -- returns true if item has slots that are free
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		pushBoolean(L, item->canImbue());
 	} else {
@@ -52,7 +52,7 @@ int LuaScriptInterface::luaItemCanImbue(lua_State* L)
 int LuaScriptInterface::luaItemAddImbuementSlots(lua_State* L)
 {
 	// item:addImbuementSlots(amount) -- tries to add imbuement slot(s), returns true if successful
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		pushBoolean(L, item->addImbuementSlots(getNumber<uint32_t>(L, 2)));
 	} else {
@@ -64,7 +64,7 @@ int LuaScriptInterface::luaItemAddImbuementSlots(lua_State* L)
 int LuaScriptInterface::luaItemRemoveImbuementSlots(lua_State* L)
 {
 	// item:removeImbuementSlots(amount, destroy) -- tries to remove imbuement slot(s), returns true if successful
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		pushBoolean(L, item->removeImbuementSlots(getNumber<uint32_t>(L, 2), getBoolean(L, 3, false)));
 	} else {
@@ -76,7 +76,7 @@ int LuaScriptInterface::luaItemRemoveImbuementSlots(lua_State* L)
 int LuaScriptInterface::luaItemHasImbuementType(lua_State* L)
 {
 	// item:hasImbuementType(type)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		pushBoolean(L, item->hasImbuementType(getNumber<ImbuementType>(L, 2, IMBUEMENT_TYPE_NONE)));
 	} else {
@@ -88,7 +88,7 @@ int LuaScriptInterface::luaItemHasImbuementType(lua_State* L)
 int LuaScriptInterface::luaItemHasImbuement(lua_State* L)
 {
 	// item:hasImbuement(imbuement)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		std::shared_ptr<Imbuement> imbue = getSharedPtr<Imbuement>(L, 2);
 		if (imbue) {
@@ -105,7 +105,7 @@ int LuaScriptInterface::luaItemHasImbuement(lua_State* L)
 int LuaScriptInterface::luaItemHasImbuements(lua_State* L)
 {
 	// item:hasImbuements() -- returns true if item has any imbuements
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		pushBoolean(L, item->hasImbuements());
 	} else {
@@ -117,7 +117,7 @@ int LuaScriptInterface::luaItemHasImbuements(lua_State* L)
 int LuaScriptInterface::luaItemAddImbuement(lua_State* L)
 {
 	// item:addImbuement(imbuement) -- returns true if it successfully adds the imbuement
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		std::shared_ptr<Imbuement> imbue = getSharedPtr<Imbuement>(L, 2);
 		if (imbue) {
@@ -132,7 +132,7 @@ int LuaScriptInterface::luaItemAddImbuement(lua_State* L)
 int LuaScriptInterface::luaItemRemoveImbuement(lua_State* L)
 {
 	// item:removeImbuement(imbuement)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (item) {
 		std::shared_ptr<Imbuement> imbue = getSharedPtr<Imbuement>(L, 2);
 		if (imbue) {
@@ -147,7 +147,7 @@ int LuaScriptInterface::luaItemRemoveImbuement(lua_State* L)
 int LuaScriptInterface::luaItemGetImbuements(lua_State* L)
 {
 	// item:getImbuements() -- returns a table that contains imbuement userdata
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -168,7 +168,7 @@ int LuaScriptInterface::luaItemGetImbuements(lua_State* L)
 int LuaScriptInterface::luaItemCanApplyImbuement(lua_State* L)
 {
 	// item:canApplyImbuement(categoryId, tier)
-	Item* item = getUserdata<Item>(L, 1);
+	Item* item = getItemUserdata<Item>(L, 1);
 	if (!item) {
 		pushBoolean(L, false);
 		return 1;

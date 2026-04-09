@@ -435,6 +435,7 @@ struct InstanceArea {
 	void shutdown();
 	void ReleaseCreature(Creature* creature);
 	void ReleaseItem(Item* item);
+	void ReleaseItem(std::shared_ptr<Item> item);
 
 	bool canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight = true,
 	                      bool sameFloor = false, int32_t rangex = Map::maxClientViewportX,
@@ -543,7 +544,7 @@ struct InstanceArea {
 	Raids raids;
 	Mounts mounts;
 
-	std::forward_list<Item*> toDecayItems;
+	std::forward_list<std::shared_ptr<Item>> toDecayItems;
 
 	std::unordered_set<Tile*> getTilesToClean() const { return tilesToClean; }
 	bool isTileInCleanList(Tile* tile) { return tilesToClean.contains(tile); }
@@ -594,7 +595,7 @@ private:
 	std::vector<Creature*> checkCreatureLists[EVENT_CREATURECOUNT];
 
 	std::vector<Creature*> ToReleaseCreatures;
-	std::vector<Item*> ToReleaseItems;
+	std::vector<std::shared_ptr<Item>> ToReleaseItems;
 
 	size_t lastBucket = 0;
 

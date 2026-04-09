@@ -31,10 +31,8 @@ Items Item::items;
 // The OS reclaims the memory when the process exits.
 static auto &g_validItems = *new std::unordered_set<Item*>();
 
-std::unique_ptr<Item> Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
+std::shared_ptr<Item> Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 {
-	Item* newItem = nullptr;
-
 	const ItemType& it = Item::items[type];
 	if (it.group == ITEM_GROUP_DEPRECATED) {
 		return nullptr;
@@ -44,46 +42,43 @@ std::unique_ptr<Item> Item::CreateItem(const uint16_t type, uint16_t count /*= 0
 		count = 1;
 	}
 
-	if (it.id != 0) {
-		if (it.isDepot()) {
-			newItem = new DepotLocker(type);
-		} else if (it.isRewardChest()) {
-			newItem = new RewardChest(type);
-		} else if (it.isContainer()) {
-			newItem = new Container(type);
-		} else if (it.isTeleport()) {
-			newItem = new Teleport(type);
-		} else if (it.isMagicField()) {
-			newItem = new MagicField(type);
-		} else if (it.isDoor()) {
-			newItem = new Door(type);
-		} else if (it.isTrashHolder()) {
-			newItem = new TrashHolder(type);
-		} else if (it.isMailbox()) {
-			newItem = new Mailbox(type);
-		} else if (it.isBed()) {
-			newItem = new BedItem(type);
-		} else if (it.id >= 2210 && it.id <= 2212) { // magic rings
-			newItem = new Item(type - 3, count);
-		} else if (it.id == 2215 || it.id == 2216) { // magic rings
-			newItem = new Item(type - 2, count);
-		} else if (it.id >= 2202 && it.id <= 2206) { // magic rings
-			newItem = new Item(type - 37, count);
-		} else if (it.id == 2640) { // soft boots
-			newItem = new Item(6132, count);
-		} else if (it.id == 6301) { // death ring
-			newItem = new Item(6300, count);
-		} else {
-			newItem = new Item(type, count);
-		}
-
-		newItem->incrementReferenceCounter();
+	if (it.id == 0) {
+		return nullptr;
 	}
 
-	return std::unique_ptr<Item>(newItem);
+	if (it.isDepot()) {
+		return std::make_shared<DepotLocker>(type);
+	} else if (it.isRewardChest()) {
+		return std::make_shared<RewardChest>(type);
+	} else if (it.isContainer()) {
+		return std::make_shared<Container>(type);
+	} else if (it.isTeleport()) {
+		return std::make_shared<Teleport>(type);
+	} else if (it.isMagicField()) {
+		return std::make_shared<MagicField>(type);
+	} else if (it.isDoor()) {
+		return std::make_shared<Door>(type);
+	} else if (it.isTrashHolder()) {
+		return std::make_shared<TrashHolder>(type);
+	} else if (it.isMailbox()) {
+		return std::make_shared<Mailbox>(type);
+	} else if (it.isBed()) {
+		return std::make_shared<BedItem>(type);
+	} else if (it.id >= 2210 && it.id <= 2212) { // magic rings
+		return std::make_shared<Item>(type - 3, count);
+	} else if (it.id == 2215 || it.id == 2216) { // magic rings
+		return std::make_shared<Item>(type - 2, count);
+	} else if (it.id >= 2202 && it.id <= 2206) { // magic rings
+		return std::make_shared<Item>(type - 37, count);
+	} else if (it.id == 2640) { // soft boots
+		return std::make_shared<Item>(6132, count);
+	} else if (it.id == 6301) { // death ring
+		return std::make_shared<Item>(6300, count);
+	}
+	return std::make_shared<Item>(type, count);
 }
 
-std::unique_ptr<Container> Item::CreateItemAsContainer(const uint16_t type, uint16_t size)
+std::shared_ptr<Container> Item::CreateItemAsContainer(const uint16_t type, uint16_t size)
 {
 	const ItemType& it = Item::items[type];
 	if (it.id == 0 || it.group == ITEM_GROUP_DEPRECATED || it.stackable || it.useable || it.moveable || it.pickupable ||
@@ -91,12 +86,10 @@ std::unique_ptr<Container> Item::CreateItemAsContainer(const uint16_t type, uint
 		return nullptr;
 	}
 
-	auto newItem = std::make_unique<Container>(type, size);
-	newItem->incrementReferenceCounter();
-	return newItem;
+	return std::make_shared<Container>(type, size);
 }
 
-std::unique_ptr<Item> Item::CreateItem(PropStream& propStream)
+std::shared_ptr<Item> Item::CreateItem(PropStream& propStream)
 {
 	uint16_t id;
 	if (!propStream.read<uint16_t>(id)) {
@@ -168,7 +161,7 @@ Item::Item(const uint16_t type, uint16_t count /*= 0*/) : id(type)
 	setDefaultDuration();
 }
 
-Item::Item(const Item& i) : Thing(), id(i.id), count(i.count), loadedFromMap(i.loadedFromMap)
+Item::Item(const Item& i) : Thing(), std::enable_shared_from_this<Item>(), id(i.id), count(i.count), loadedFromMap(i.loadedFromMap)
 {
 	g_validItems.insert(this);
 	if (i.attributes) {
@@ -191,20 +184,17 @@ void Item::clearGlobalRegistry()
 	g_validItems.clear();
 }
 
-Item* Item::clone() const
+std::shared_ptr<Item> Item::clone() const
 {
 	auto item = Item::CreateItem(id, count);
 	if (item && attributes) {
 		item->attributes.reset(new ItemAttributes(*attributes));
 		if (item->getDuration() > 0) {
-			Item* raw = item.release();
-			raw->incrementReferenceCounter();
-			raw->setDecaying(DECAYING_TRUE);
-			g_game.toDecayItems.push_front(raw);
-			return raw;
+			item->setDecaying(DECAYING_TRUE);
+			g_game.toDecayItems.push_front(item);
 		}
 	}
-	return item.release();
+	return item;
 }
 
 bool Item::equals(const Item* otherItem) const

@@ -558,15 +558,12 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 		~ItemMapGuard()
 		{
 			for (auto& entry : itemMap) {
-				Item*& item = entry.second.first;
-				Item* orphan = item;
-				item = nullptr;
-				std::unique_ptr<Item>{orphan};
+				entry.second.first.reset();
 			}
 		}
 	};
 
-	const auto transferLoadedItem = [](Cylinder* cylinder, std::unique_ptr<Item>& item) {
+	const auto transferLoadedItem = [](Cylinder* cylinder, std::shared_ptr<Item>& item) {
 		if (!cylinder || !item) {
 			return false;
 		}
@@ -577,11 +574,11 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			return false;
 		}
 
-		item.release();
+		item.reset();
 		return true;
 	};
 
-	const auto transferLoadedItemAt = [](Cylinder* cylinder, uint32_t index, std::unique_ptr<Item>& item) {
+	const auto transferLoadedItemAt = [](Cylinder* cylinder, uint32_t index, std::shared_ptr<Item>& item) {
 		if (!cylinder || !item) {
 			return false;
 		}
@@ -592,7 +589,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			return false;
 		}
 
-		item.release();
+		item.reset();
 		return true;
 	};
 
@@ -607,8 +604,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			loadItems(itemMap, result);
 
 			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
-				auto item = std::unique_ptr<Item>(it->second.first);
-				it->second.first = nullptr;
+				auto item = std::move(it->second.first);
 				if (!item) {
 					continue;
 				}
@@ -644,8 +640,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			loadItems(itemMap, result);
 
 			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
-				auto item = std::unique_ptr<Item>(it->second.first);
-				it->second.first = nullptr;
+				auto item = std::move(it->second.first);
 				if (!item || item->getID() == ITEM_INBOX) {
 					continue;
 				}
@@ -678,8 +673,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			loadItems(itemMap, result);
 
 			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
-				auto item = std::unique_ptr<Item>(it->second.first);
-				it->second.first = nullptr;
+				auto item = std::move(it->second.first);
 				if (!item) {
 					continue;
 				}
@@ -712,8 +706,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			loadItems(itemMap, result);
 
 			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
-				auto item = std::unique_ptr<Item>(it->second.first);
-				it->second.first = nullptr;
+				auto item = std::move(it->second.first);
 				if (!item) {
 					continue;
 				}
@@ -726,9 +719,9 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 					}
 
 					Item* inbox = nullptr;
-					for (Item* depotItem : depotLocker->getItemList()) {
+					for (const auto& depotItem : depotLocker->getItemList()) {
 						if (depotItem->getID() == ITEM_INBOX) {
-							inbox = depotItem;
+							inbox = depotItem.get();
 							break;
 						}
 					}
@@ -759,14 +752,13 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 		         player->getGUID())))) {
 			loadItems(itemMap, result);
 
-			std::unordered_map<int64_t, std::unique_ptr<Item>> rewardContainers;
+			std::unordered_map<int64_t, std::shared_ptr<Item>> rewardContainers;
 
 			time_t now = std::time(nullptr);
 			time_t seven_days_ago = now - (7 * 24 * 60 * 60);
 
 			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
-				auto item = std::unique_ptr<Item>(it->second.first);
-				it->second.first = nullptr;
+				auto item = std::move(it->second.first);
 				if (!item) {
 					continue;
 				}
@@ -885,7 +877,7 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 		Container* container = cb.first;
 		int32_t parentId = cb.second;
 
-		for (Item* item : container->getItemList()) {
+		for (const auto& item : container->getItemList()) {
 			++runningId;
 
 			Container* subContainer = item->getContainer();
@@ -939,7 +931,7 @@ bool IOLoginData::addRewardItems(uint32_t playerId, const ItemBlockList& itemLis
         Container* container = cb.first;
         int32_t parentId = cb.second;
         queue.pop_front();
-        for (Item* item : container->getItemList()) {
+        for (const auto& item : container->getItemList()) {
             propWriteStream.clear();
             item->serializeAttr(propWriteStream);
 
@@ -1120,7 +1112,7 @@ bool IOLoginData::savePlayer(Player* player)
 
 		ItemBlockList itemList;
 		for (int32_t slotId = CONST_SLOT_FIRST; slotId <= CONST_SLOT_LAST; ++slotId) {
-			Item* item = player->inventory[slotId];
+			Item* item = player->inventory[slotId].get();
 			if (item) {
 				itemList.emplace_back(slotId, item);
 			}
@@ -1153,9 +1145,9 @@ bool IOLoginData::savePlayer(Player* player)
 		ItemBlockList itemList;
 
 		for (const auto& it : player->depotLockerMap) {
-			for (Item* item : it.second->getItemList()) {
+			for (const auto& item : it.second->getItemList()) {
 				if (item->getID() != ITEM_DEPOT && item->getID() != ITEM_INBOX) {
-					itemList.emplace_back(it.first, item);
+					itemList.emplace_back(it.first, item.get());
 				}
 			}
 		}
@@ -1176,8 +1168,8 @@ bool IOLoginData::savePlayer(Player* player)
 			itemList.clear();
 
 			for (const auto& it : player->depotChests) {
-				for (Item* item : it.second->getItemList()) {
-					itemList.emplace_back(it.first, item);
+				for (const auto& item : it.second->getItemList()) {
+					itemList.emplace_back(it.first, item.get());
 				}
 			}
 
@@ -1200,14 +1192,14 @@ bool IOLoginData::savePlayer(Player* player)
 
 		int inboxItemsCount = 0;
 		for (const auto& it : player->depotLockerMap) {
-			for (Item* item : it.second->getItemList()) {
+			for (const auto& item : it.second->getItemList()) {
 				if (item->getID() == ITEM_INBOX) {
 					if (Container* container = item->getContainer()) {
-						for (Item* subItem : container->getItemList()) {
+						for (const auto& subItem : container->getItemList()) {
 							if (++inboxItemsCount > 100) {
 								continue;
 							}
-							itemList.emplace_back(it.first, subItem);
+							itemList.emplace_back(it.first, subItem.get());
 						}
 					}
 				}
@@ -1235,21 +1227,21 @@ bool IOLoginData::savePlayer(Player* player)
 		// (auto-loot, reward events) can modify the reward chest's
 		// itemlist deque, invalidating the range-for end() iterator
 		// and causing SIGSEGV (__for_end points to freed memory).
-		const std::deque<Item*>& rewardItems = player->getRewardChest().getItemList();
-		const std::vector<Item*> rewardSnapshot(rewardItems.begin(), rewardItems.end());
+		const auto& rewardItems = player->getRewardChest().getItemList();
+		const std::vector<std::shared_ptr<Item>> rewardSnapshot(rewardItems.begin(), rewardItems.end());
 
-		for (Item* item : rewardSnapshot) {
+		for (const auto& item : rewardSnapshot) {
 			if (Container* container = item->getContainer()) {
 				int32_t currentPid = pidCounter++;
 				// Snapshot inner container — same re-entrancy risk.
-				const std::deque<Item*>& subItems = container->getItemList();
-				const std::vector<Item*> subSnapshot(subItems.begin(), subItems.end());
-				for (Item* subItem : subSnapshot) {
-					itemList.emplace_back(currentPid, subItem);
+				const auto& subItems = container->getItemList();
+				const std::vector<std::shared_ptr<Item>> subSnapshot(subItems.begin(), subItems.end());
+				for (const auto& subItem : subSnapshot) {
+					itemList.emplace_back(currentPid, subItem.get());
 				}
 			}
 			else {
-				itemList.emplace_back(0, item);
+				itemList.emplace_back(0, item.get());
 			}
 		}
 
@@ -1511,13 +1503,9 @@ void IOLoginData::loadItems(ItemMap& itemMap, DBResult_ptr result)
 			auto it = itemMap.find(sid);
 			if (it != itemMap.end()) {
 				LOG_WARN(fmt::format("WARNING: Duplicate sid {} found in IOLoginData::loadItems. Replacing earlier item.", sid));
-				Item* replacedItem = it->second.first;
-				it->second.first = nullptr;
-				std::unique_ptr<Item>{replacedItem};
 			}
 
-			std::pair<Item*, uint32_t> pair(item.release(), pid);
-			itemMap[sid] = pair;
+			itemMap[sid] = std::pair<std::shared_ptr<Item>, uint32_t>(std::move(item), pid);
 		}
 	} while (result->next());
 }
@@ -1525,14 +1513,12 @@ void IOLoginData::loadItems(ItemMap& itemMap, DBResult_ptr result)
 void IOLoginData::cleanupItemMap(ItemMap& itemMap)
 {
 	for (auto& entry : itemMap) {
-		Item*& item = entry.second.first;
+		auto& item = entry.second.first;
 		if (!item || item->getParent() != nullptr) {
 			continue;
 		}
 
-		Item* orphan = item;
-		item = nullptr;
-		std::unique_ptr<Item>{orphan};
+		item.reset();
 	}
 	itemMap.clear();
 }

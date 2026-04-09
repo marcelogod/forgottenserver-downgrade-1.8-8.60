@@ -46,7 +46,7 @@ void Decay::scheduleNextCheck(DecayTimestamp nextTimestamp) noexcept
 
 void Decay::processDecayBatch(std::span<ItemRef const> items) noexcept
 {
-	for (auto* item : items) {
+	for (const auto& item : items) {
 		if (!item) [[unlikely]] {
 			continue;
 		}
@@ -56,10 +56,8 @@ void Decay::processDecayBatch(std::span<ItemRef const> items) noexcept
 			item->setDecaying(DECAYING_FALSE);
 		} else {
 			item->setDecaying(DECAYING_FALSE);
-			g_game.internalDecayItem(item);
+			g_game.internalDecayItem(item.get());
 		}
-
-		g_game.ReleaseItem(item);
 	}
 }
 
@@ -95,10 +93,9 @@ void Decay::startDecay(Item* item, int32_t duration)
 		eventId = g_scheduler.addEvent(createSchedulerTask(schedulerDuration, [this] { checkDecay(); }));
 	}
 
-	item->incrementReferenceCounter();
 	item->setDecaying(DECAYING_TRUE);
 	item->setDurationTimestamp(timestamp);
-	decayMap[timestamp].push_back(item);
+	decayMap[timestamp].push_back(item->shared_from_this());
 }
 
 void Decay::stopDecay(Item* item, int64_t timestamp) noexcept
@@ -114,13 +111,12 @@ void Decay::stopDecay(Item* item, int64_t timestamp) noexcept
 
 	auto& decayItems = it->second;
 
-	if (const auto itemIt = std::ranges::find(decayItems, item); itemIt != decayItems.end()) {
+	if (const auto itemIt = std::ranges::find_if(decayItems, [item](const auto& ref) { return ref.get() == item; }); itemIt != decayItems.end()) {
 		if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION)) {
 			item->setDuration(item->getDuration());
 		}
 
 		item->removeAttribute(ITEM_ATTRIBUTE_DECAYSTATE);
-		g_game.ReleaseItem(item);
 
 		if (decayItems.size() == 1) {
 			decayMap.erase(it);
@@ -139,12 +135,11 @@ void Decay::clear() noexcept
 	}
 
 	for (auto& [timestamp, items] : decayMap) {
-		for (Item* item : items) {
+		for (const auto& item : items) {
 			if (!item) [[unlikely]] {
 				continue;
 			}
 			item->removeAttribute(ITEM_ATTRIBUTE_DECAYSTATE);
-			g_game.ReleaseItem(item);
 		}
 	}
 	decayMap.clear();
@@ -154,7 +149,7 @@ void Decay::checkDecay() noexcept
 {
 	const auto timestamp = OTSYS_TIME();
 
-	std::vector<Item*> expiredItems;
+	std::vector<ItemRef> expiredItems;
 	expiredItems.reserve(DEFAULT_RESERVE_SIZE);
 
 	auto it = decayMap.begin();

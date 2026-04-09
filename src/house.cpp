@@ -19,9 +19,6 @@ House::House(uint32_t houseId) : id(houseId) {}
 
 House::~House()
 {
-	for (Door* door : doorSet) {
-		door->decrementReferenceCounter();
-	}
 }
 
 void House::addTile(HouseTile* tile)
@@ -339,40 +336,40 @@ bool House::transferToDepot(Player* player) const
 			continue;
 		}
 
-		std::vector<Item*> toProcess;
-		for (Item* item : *items) {
+		std::vector<std::shared_ptr<Item>> toProcess;
+		for (const auto& item : *items) {
 			toProcess.push_back(item);
 		}
 
-		for (Item* item : toProcess) {
+		for (const auto& item : toProcess) {
 			if (Container* container = item->getContainer()) {
 				std::vector<Container*> subContainers = {container};
 				size_t idx = 0;
 				while (idx < subContainers.size()) {
 					Container* current = subContainers[idx++];
-					std::vector<Item*> children;
-					for (Item* child : current->getItemList()) {
+					std::vector<std::shared_ptr<Item>> children;
+					for (const auto& child : current->getItemList()) {
 						children.push_back(child);
 					}
 
-					for (Item* child : children) {
+					for (const auto& child : children) {
 						if (child->hasAttribute(ITEM_ATTRIBUTE_WRAPID)) {
 							uint16_t wrapId = static_cast<uint16_t>(child->getIntAttr(ITEM_ATTRIBUTE_WRAPID));
 							if (wrapId != 0) {
-								g_game.transformItem(child, wrapId);
+								g_game.transformItem(child.get(), wrapId);
 							}
 						}
 
 						if (Container* sub = child->getContainer()) {
 							subContainers.push_back(sub);
 						} else if (child->isPickupable()) {
-							g_game.internalMoveItem(child->getParent(), player->getInbox(), INDEX_WHEREEVER, child, child->getItemCount(), nullptr, FLAG_NOLIMIT);
+							g_game.internalMoveItem(child->getParent(), player->getInbox(), INDEX_WHEREEVER, child.get(), child->getItemCount(), nullptr, FLAG_NOLIMIT);
 						}
 					}
 				}
 			}
 
-			Item* processedItem = item;
+			Item* processedItem = item.get();
 			if (processedItem->hasAttribute(ITEM_ATTRIBUTE_WRAPID)) {
 				uint16_t wrapId = static_cast<uint16_t>(processedItem->getIntAttr(ITEM_ATTRIBUTE_WRAPID));
 				if (wrapId != 0) {
@@ -385,12 +382,12 @@ bool House::transferToDepot(Player* player) const
 			if (processedItem->isPickupable()) {
 				g_game.internalMoveItem(processedItem->getParent(), player->getInbox(), INDEX_WHEREEVER, processedItem, processedItem->getItemCount(), nullptr, FLAG_NOLIMIT);
 			} else if (Container* container = processedItem->getContainer()) {
-				std::vector<Item*> contents;
-				for (Item* content : container->getItemList()) {
+				std::vector<std::shared_ptr<Item>> contents;
+				for (const auto& content : container->getItemList()) {
 					contents.push_back(content);
 				}
-				for (Item* content : contents) {
-					g_game.internalMoveItem(content->getParent(), player->getInbox(), INDEX_WHEREEVER, content, content->getItemCount(), nullptr, FLAG_NOLIMIT);
+				for (const auto& content : contents) {
+					g_game.internalMoveItem(content->getParent(), player->getInbox(), INDEX_WHEREEVER, content.get(), content->getItemCount(), nullptr, FLAG_NOLIMIT);
 				}
 			}
 		}
@@ -418,7 +415,6 @@ bool House::isInvited(const Player* player) const { return getHouseAccessLevel(p
 
 void House::addDoor(Door* door)
 {
-	door->incrementReferenceCounter();
 	doorSet.insert(door);
 	door->setHouse(this);
 }
@@ -427,7 +423,6 @@ void House::removeDoor(Door* door)
 {
 	auto it = doorSet.find(door);
 	if (it != doorSet.end()) {
-		door->decrementReferenceCounter();
 		doorSet.erase(it);
 	}
 }
@@ -492,7 +487,6 @@ void House::resetTransferItem()
 		transfer_container.setParent(nullptr);
 
 		transfer_container.removeThing(tmpItem, tmpItem->getItemCount());
-		g_game.ReleaseItem(tmpItem);
 	}
 }
 
@@ -501,7 +495,6 @@ HouseTransferItem::HouseTransferItem(House* house) : Item(0), house(house->share
 HouseTransferItem* HouseTransferItem::createHouseTransferItem(House* house)
 {
 	auto transferItem = std::make_unique<HouseTransferItem>(house);
-	transferItem->incrementReferenceCounter();
 	transferItem->setID(ITEM_DOCUMENT_RO);
 	transferItem->setSubType(1);
 	transferItem->setSpecialDescription(fmt::format("It is a house transfer document for '{:s}'.", house->getName()));
@@ -893,10 +886,7 @@ void Houses::payHouses(RentPeriod_t rentPeriod) const
 				letterPtr->setText(fmt::format(
 				    "Warning! \nThe {:s} rent of {:d} gold for your house \"{:s}\" is payable. Have it within {:d} days or you will lose this house.",
 				    period, house->getRent(), house->getName(), daysLeft));
-				Item* rawLetter = letterPtr.get();
-				if (g_game.internalAddItem(player.getInbox(), rawLetter, INDEX_WHEREEVER, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
-					letterPtr.release();
-				}
+				g_game.internalAddItem(player.getInbox(), letterPtr.get(), INDEX_WHEREEVER, FLAG_NOLIMIT);
 				house->setPayRentWarnings(house->getPayRentWarnings() + 1);
 				} else {
 					house->setOwner(0, true, &player);
@@ -948,10 +938,7 @@ void Houses::payHouses(RentPeriod_t rentPeriod) const
 				    period, house->getRent(), house->getName(), daysLeft));
 				DepotLocker* depot = player.getDepotLocker(town->getID());
 				if (depot) {
-					Item* rawLetter = letterPtr.get();
-					if (g_game.internalAddItem(depot, rawLetter, INDEX_WHEREEVER, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
-						letterPtr.release();
-					}
+					g_game.internalAddItem(depot, letterPtr.get(), INDEX_WHEREEVER, FLAG_NOLIMIT);
 				}
 				house->setPayRentWarnings(house->getPayRentWarnings() + 1);
 				} else {

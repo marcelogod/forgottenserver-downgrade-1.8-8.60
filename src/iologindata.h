@@ -64,7 +64,7 @@ public:
 	static std::vector<std::pair<std::string, std::string>> getCastList(const std::string& password);
 
 private:
-	using ItemMap = std::map<uint32_t, std::pair<Item*, uint32_t>>;
+	using ItemMap = std::map<uint32_t, std::pair<std::shared_ptr<Item>, uint32_t>>;
 
 	static void loadItems(ItemMap& itemMap, DBResult_ptr result);
 	static void cleanupItemMap(ItemMap& itemMap);

@@ -371,7 +371,7 @@ int luaHouseGetBeds(lua_State* L)
 
 	int index = 0;
 	for (BedItem* bedItem : beds) {
-		pushUserdata<Item>(L, bedItem);
+		pushSharedPtr(L, bedItem->shared_from_this());
 		setItemMetatable(L, -1, bedItem);
 		lua_rawseti(L, -2, ++index);
 	}
@@ -404,7 +404,7 @@ int luaHouseGetDoors(lua_State* L)
 
 	int index = 0;
 	for (Door* door : doors) {
-		pushUserdata<Item>(L, door);
+		pushSharedPtr(L, door->shared_from_this());
 		setItemMetatable(L, -1, door);
 		lua_rawseti(L, -2, ++index);
 	}
@@ -478,9 +478,9 @@ int luaHouseGetItems(lua_State* L)
 	for (Tile* tile : tiles) {
 		TileItemVector* itemVector = tile->getItemList();
 		if (itemVector) {
-			for (Item* item : *itemVector) {
-				pushUserdata<Item>(L, item);
-				setItemMetatable(L, -1, item);
+			for (const auto& item : *itemVector) {
+				pushSharedPtr(L, item);
+				setItemMetatable(L, -1, item.get());
 				lua_rawseti(L, -2, ++index);
 			}
 		}

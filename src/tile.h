@@ -19,7 +19,7 @@ class BedItem;
 class HouseTile;
 
 using CreatureVector = std::vector<std::shared_ptr<Creature>>;
-using ItemVector = std::vector<Item*>;
+using ItemVector = std::vector<std::shared_ptr<Item>>;
 
 inline constexpr int32_t MAX_STACKPOS_THINGS = 10;
 
@@ -102,14 +102,14 @@ public:
 		if (getTopItemCount() == 0) {
 			return nullptr;
 		}
-		return *(getEndTopItem() - 1);
+		return (getEndTopItem() - 1)->get();
 	}
 	inline Item* getTopDownItem() const
 	{
 		if (downItemCount == 0) {
 			return nullptr;
 		}
-		return *getBeginDownItem();
+		return getBeginDownItem()->get();
 	}
 	void addDownItemCount(int16_t increment) { downItemCount += increment; }
 
@@ -247,7 +247,7 @@ public:
 	Item* getUseItem(int32_t index) const;
 
 	Item* getGround() const { return ground.get(); }
-	void setGround(Item* item) { ground.reset(item); }
+	void setGround(const std::shared_ptr<Item>& item) { ground = item; }
 
 private:
 	void onAddTileItem(Item* item);
@@ -257,7 +257,7 @@ private:
 	void setTileFlags(const Item* item);
 	void resetTileFlags(const Item* item);
 
-	std::unique_ptr<Item> ground;
+	std::shared_ptr<Item> ground;
 	Position tilePos;
 	uint32_t flags = 0;
 };
@@ -272,12 +272,7 @@ class DynamicTile : public Tile
 
 public:
 	DynamicTile(uint16_t x, uint16_t y, uint8_t z) : Tile(x, y, z) {}
-	~DynamicTile()
-	{
-		for (Item* item : items) {
-			item->decrementReferenceCounter();
-		}
-	}
+	~DynamicTile() = default;
 
 	using Tile::internalAddThing;
 
@@ -303,14 +298,7 @@ class StaticTile final : public Tile
 
 public:
 	StaticTile(uint16_t x, uint16_t y, uint8_t z) : Tile(x, y, z) {}
-	~StaticTile()
-	{
-		if (items) {
-			for (Item* item : *items) {
-				item->decrementReferenceCounter();
-			}
-		}
-	}
+	~StaticTile() = default;
 
 	using Tile::internalAddThing;
 

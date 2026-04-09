@@ -30,13 +30,39 @@
 #include <fmt/format.h>
 #include "globalevent.h"
 
+// getItemUserdata template — definition here to avoid circular item.h ↔ luascript.h include
+namespace Lua {
+template <class T>
+T* getItemUserdata(lua_State* L, int32_t arg)
+{
+	auto& ptr = getSharedPtr<Item>(L, arg);
+	if (!ptr) {
+		return nullptr;
+	}
+	using BaseT = std::remove_const_t<T>;
+	if constexpr (std::is_same_v<BaseT, Item>) {
+		return ptr.get();
+	} else if constexpr (std::is_same_v<BaseT, Container>) {
+		return ptr->getContainer();
+	} else if constexpr (std::is_same_v<BaseT, Teleport>) {
+		return ptr->getTeleport();
+	} else {
+		return static_cast<T*>(ptr.get());
+	}
+}
+template Item* getItemUserdata<Item>(lua_State*, int32_t);
+template const Item* getItemUserdata<const Item>(lua_State*, int32_t);
+template Container* getItemUserdata<Container>(lua_State*, int32_t);
+template const Container* getItemUserdata<const Container>(lua_State*, int32_t);
+} // namespace Lua
+
 extern Game g_game;
 extern Vocations g_vocations;
 
 ScriptEnvironment::DBResultMap ScriptEnvironment::tempResults;
 uint32_t ScriptEnvironment::lastResultId = 0;
 
-std::multimap<ScriptEnvironment*, Item*> ScriptEnvironment::tempItems;
+std::multimap<ScriptEnvironment*, std::shared_ptr<Item>> ScriptEnvironment::tempItems;
 
 LuaEnvironment g_luaEnvironment;
 
@@ -56,9 +82,9 @@ void ScriptEnvironment::resetEnv()
 	auto pair = tempItems.equal_range(this);
 	auto it = pair.first;
 	while (it != pair.second) {
-		Item* item = it->second;
-		if (item && item->getParent() == VirtualCylinder::virtualCylinder) {
-			g_game.ReleaseItem(item);
+		auto& itemSp = it->second;
+		if (itemSp && itemSp->getParent() == VirtualCylinder::virtualCylinder) {
+			g_game.ReleaseItem(std::move(itemSp));
 		}
 		it = tempItems.erase(it);
 	}
@@ -67,9 +93,9 @@ void ScriptEnvironment::resetEnv()
 void ScriptEnvironment::clearTempItems()
 {
 	for (auto it = tempItems.begin(); it != tempItems.end();) {
-		Item* item = it->second;
-		if (item && item->getParent() == VirtualCylinder::virtualCylinder) {
-			g_game.ReleaseItem(item);
+		auto& itemSp = it->second;
+		if (itemSp && itemSp->getParent() == VirtualCylinder::virtualCylinder) {
+			g_game.ReleaseItem(std::move(itemSp));
 		}
 		it = tempItems.erase(it);
 	}
@@ -188,12 +214,12 @@ void ScriptEnvironment::removeItemByUID(uint32_t uid)
 	}
 }
 
-void ScriptEnvironment::addTempItem(Item* item) { tempItems.emplace(this, item); }
+void ScriptEnvironment::addTempItem(const std::shared_ptr<Item>& item) { tempItems.emplace(this, item); }
 
 void ScriptEnvironment::removeTempItem(Item* item)
 {
 	for (auto it = tempItems.begin(), end = tempItems.end(); it != end; ++it) {
-		if (it->second == item) {
+		if (it->second.get() == item) {
 			tempItems.erase(it);
 			break;
 		}
@@ -667,7 +693,7 @@ void Lua::pushThing(lua_State* L, Thing* thing)
 	}
 
 	if (Item* item = thing->getItem()) {
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else if (Creature* creature = thing->getCreature()) {
 		pushUserdata<Creature>(L, creature);
@@ -683,7 +709,7 @@ void Lua::pushCylinder(lua_State* L, Cylinder* cylinder)
 		pushUserdata<Creature>(L, creature);
 		setCreatureMetatable(L, -1, creature);
 	} else if (Item* parentItem = cylinder->getItem()) {
-		pushUserdata<Item>(L, parentItem);
+		pushSharedPtr(L, parentItem->shared_from_this());
 		setItemMetatable(L, -1, parentItem);
 	} else if (Tile* tile = cylinder->getTile()) {
 		pushUserdata<Tile>(L, tile);
@@ -936,13 +962,13 @@ Thing* Lua::getThing(lua_State* L, int32_t arg)
 		lua_rawgeti(L, -1, 't');
 		switch (getInteger<uint32_t>(L, -1)) {
 			case LuaData_Item:
-				thing = getUserdata<Item>(L, arg);
+				thing = getSharedPtr<Item>(L, arg).get();
 				break;
 			case LuaData_Container:
-				thing = getUserdata<Container>(L, arg);
+				thing = getSharedPtr<Item>(L, arg)->getContainer();
 				break;
 			case LuaData_Teleport:
-				thing = getUserdata<Teleport>(L, arg);
+				thing = getSharedPtr<Item>(L, arg)->getTeleport();
 				break;
 			case LuaData_Player:
 				thing = getUserdata<Player>(L, arg);
@@ -2722,7 +2748,7 @@ int LuaScriptInterface::luaDoPlayerAddItem(lua_State* L)
 			return 1;
 		}
 
-		Item* newItem = itemPtr.release();
+		Item* newItem = itemPtr.get();
 		if (--itemCount == 0) {
 			if (newItem->getParent()) {
 				uint32_t uid = getScriptEnv()->addThing(newItem);
@@ -3062,7 +3088,7 @@ int LuaScriptInterface::luaDoAddContainerItem(lua_State* L)
 			return 1;
 		}
 
-		Item* newItem = itemPtr.release();
+		Item* newItem = itemPtr.get();
 		if (--itemCount == 0) {
 			if (newItem->getParent()) {
 				lua_pushinteger(L, env->addThing(newItem));

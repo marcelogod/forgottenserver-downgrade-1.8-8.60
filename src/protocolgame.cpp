@@ -934,10 +934,10 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 	const TileItemVector* items = tile->getItemList();
 	if (items) {
 		for (auto it = items->getBeginTopItem(), end = items->getEndTopItem(); it != end; ++it) {
-			if (!InstanceUtils::canSeeItemInInstance(playerInstanceId, *it)) {
+			if (!InstanceUtils::canSeeItemInInstance(playerInstanceId, it->get())) {
 				continue;
 			}
-			msg.addItem(*it);
+			msg.addItem(it->get());
 			count++;
 			if (count == 9 && tile->getPosition() == player->getPosition()) {
 				break;
@@ -979,10 +979,10 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 
 	if (items && count < MAX_STACKPOS_THINGS) {
 		for (auto it = items->getBeginDownItem(), end = items->getEndDownItem(); it != end; ++it) {
-			if (!InstanceUtils::canSeeItemInInstance(playerInstanceId, *it)) {
+			if (!InstanceUtils::canSeeItemInInstance(playerInstanceId, it->get())) {
 				continue;
 			}
-			msg.addItem(*it);
+			msg.addItem(it->get());
 			if (++count == MAX_STACKPOS_THINGS) {
 				return;
 			}
@@ -1880,7 +1880,7 @@ void ProtocolGame::sendContainer(uint8_t cid, const Container* container, bool h
 	const ItemDeque& itemList = container->getItemList();
 	for (ItemDeque::const_iterator cit = itemList.begin() + firstIndex, end = itemList.end(); i < 0xFF && cit != end;
 	     ++cit, ++i) {
-		msg.addItem(*cit);
+		msg.addItem(cit->get());
 	}
 	writeToOutputBuffer(msg);
 }
@@ -2026,12 +2026,12 @@ void ProtocolGame::sendTradeItemRequest(std::string_view traderName, const Item*
 			const Container* container = listContainer.front();
 			listContainer.pop_front();
 
-			for (Item* containerItem : container->getItemList()) {
+			for (const auto& containerItem : container->getItemList()) {
 				Container* tmpContainer = containerItem->getContainer();
 				if (tmpContainer) {
 					listContainer.push_back(tmpContainer);
 				}
-				itemList.push_back(containerItem);
+				itemList.push_back(containerItem.get());
 			}
 		}
 

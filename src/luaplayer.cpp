@@ -227,7 +227,7 @@ int luaPlayerGetDepotChest(lua_State* L)
 	DepotChest* depotChest = player->getDepotChest(depotId, autoCreate);
 	if (depotChest) {
 		player->setLastDepotId(static_cast<uint16_t>(depotId)); // FIXME: workaround for #2251
-		pushUserdata<Item>(L, depotChest);
+		pushSharedPtr(L, depotChest->shared_from_this());
 		setItemMetatable(L, -1, depotChest);
 	} else {
 		pushBoolean(L, false);
@@ -246,7 +246,7 @@ int luaPlayerGetRewardChest(lua_State* L)
 
 	RewardChest& rewardChest = player->getRewardChest();
 
-	pushUserdata<Item>(L, &rewardChest);
+	pushSharedPtr(L, rewardChest.shared_from_this());
 	setItemMetatable(L, -1, &rewardChest);
 
 	return 1;
@@ -263,7 +263,7 @@ int luaPlayerGetInbox(lua_State* L)
 
 	Inbox* inbox = player->getInbox();
 	if (inbox) {
-		pushUserdata<Item>(L, inbox);
+		pushSharedPtr(L, inbox->shared_from_this());
 		setItemMetatable(L, -1, inbox);
 	} else {
 		pushBoolean(L, false);
@@ -720,7 +720,7 @@ int luaPlayerGetItemById(lua_State* L)
 
 	Item* item = g_game.findItemOfType(player, itemId, deepSearch, subType);
 	if (item) {
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -1318,14 +1318,14 @@ int luaPlayerAddItem(lua_State* L)
 			return 1;
 		}
 
-		Item* item = itemPtr.release();
+		Item* item = itemPtr.get();
 		if (hasTable) {
 			lua_pushinteger(L, i);
-			pushUserdata<Item>(L, item);
+			pushSharedPtr(L, item->shared_from_this());
 			setItemMetatable(L, -1, item);
 			lua_settable(L, -3);
 		} else {
-			pushUserdata<Item>(L, item);
+			pushSharedPtr(L, item->shared_from_this());
 			setItemMetatable(L, -1, item);
 		}
 	}
@@ -1336,7 +1336,7 @@ int luaPlayerAddItemEx(lua_State* L)
 {
 	// player:addItemEx(item[, canDropOnMap = false[, index = INDEX_WHEREEVER[, flags = 0]]])
 	// player:addItemEx(item[, canDropOnMap = true[, slot = CONST_SLOT_WHEREEVER]])
-	Item* item = getUserdata<Item>(L, 2);
+	Item* item = getItemUserdata<Item>(L, 2);
 	if (!item) {
 		reportErrorFunc(L, LuaScriptInterface::getErrorDesc(LuaErrorCode::ITEM_NOT_FOUND));
 		pushBoolean(L, false);
@@ -1457,21 +1457,21 @@ int luaPlayerShowTextDialog(lua_State* L)
 		text = getString(L, 3);
 	}
 
+	std::shared_ptr<Item> itemHolder;
 	Item* item;
-	bool fixMemoryLeak = false;
 	if (isInteger(L, 2)) {
-		item = Item::CreateItem(getInteger<uint16_t>(L, 2)).release();
-		fixMemoryLeak = true;
+		itemHolder = Item::CreateItem(getInteger<uint16_t>(L, 2));
+		item = itemHolder.get();
 	} else if (isString(L, 2)) {
-		item = Item::CreateItem(Item::items.getItemIdByName(getString(L, 2))).release();
-		fixMemoryLeak = true;
+		itemHolder = Item::CreateItem(Item::items.getItemIdByName(getString(L, 2)));
+		item = itemHolder.get();
 	} else if (isUserdata(L, 2)) {
 		if (getUserdataType(L, 2) != LuaData_Item) {
 			pushBoolean(L, false);
 			return 1;
 		}
 
-		item = getUserdata<Item>(L, 2);
+		item = getItemUserdata<Item>(L, 2);
 	} else {
 		item = nullptr;
 	}
@@ -1492,16 +1492,8 @@ int luaPlayerShowTextDialog(lua_State* L)
 	}
 
 	item->setParent(player);
-	player->incrementWindowTextId();
-	player->setRawWriteItem(item);
-	player->setMaxWriteLen(static_cast<uint16_t>(length));
+	player->setWriteItem(item->shared_from_this(), static_cast<uint16_t>(length));
 	player->sendTextWindow(item, static_cast<uint16_t>(length), canWrite);
-	if (fixMemoryLeak) {
-		// Player::setWriteItem will add reference so we'll end up with 2 references
-		// and since we'll have 2 references the memory allocated will never be destroyed
-		// to avoid that we decrement one reference here
-	item->decrementReferenceCounter();
-	}
 	lua_pushinteger(L, player->getWindowTextId());
 	return 1;
 }
@@ -1645,7 +1637,7 @@ int luaPlayerGetSlotItem(lua_State* L)
 
 	Item* item = thing->getItem();
 	if (item) {
-		pushUserdata<Item>(L, item);
+		pushSharedPtr(L, item->shared_from_this());
 		setItemMetatable(L, -1, item);
 	} else {
 		lua_pushnil(L);
@@ -2222,7 +2214,7 @@ int luaPlayerGetContainerId(lua_State* L)
 		return 1;
 	}
 
-	Container* container = getUserdata<Container>(L, 2);
+	Container* container = getItemUserdata<Container>(L, 2);
 	if (container) {
 		lua_pushinteger(L, player->getContainerID(container));
 	} else {
@@ -2242,7 +2234,7 @@ int luaPlayerGetContainerById(lua_State* L)
 
 	Container* container = player->getContainerByID(getInteger<uint8_t>(L, 2));
 	if (container) {
-		pushUserdata<Container>(L, container);
+		pushSharedPtr(L, container->shared_from_this());
 		setMetatable(L, -1, "Container");
 	} else {
 		lua_pushnil(L);
@@ -2399,7 +2391,7 @@ int luaPlayerOpenContainer(lua_State* L)
 		return 1;
 	}
 
-	Container* container = getUserdata<Container>(L, 2);
+	Container* container = getItemUserdata<Container>(L, 2);
 	if (!container) {
 		lua_pushnil(L);
 		return 1;
@@ -2425,7 +2417,7 @@ int luaPlayerCloseContainer(lua_State* L)
 		return 1;
 	}
 
-	const Container* container = getUserdata<const Container>(L, 2);
+	const Container* container = getItemUserdata<const Container>(L, 2);
 	if (!container) {
 		lua_pushnil(L);
 		return 1;
