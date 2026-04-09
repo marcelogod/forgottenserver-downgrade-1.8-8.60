@@ -116,6 +116,8 @@ public:
 
 	static void prewarmPool(size_t count);
 
+	static void drainPool();
+
 	void addProtocolToAutosend(Protocol_ptr protocol);
 
 	void removeProtocolFromAutosend(const Protocol_ptr& protocol);

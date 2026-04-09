@@ -25,11 +25,10 @@ extern Vocations g_vocations;
 Items Item::items;
 
 // Global registry to track valid Item pointers.
-// Intentionally leaked (never deleted) to avoid the Static Destruction Order
-// Fiasco: the Map QTree destroys Items after static locals are torn down,
-// causing Item::~Item() to erase() from an already-freed set (UAF).
-// The OS reclaims the memory when the process exits.
-static auto &g_validItems = *new std::unordered_set<Item*>();
+// Heap-allocated to avoid Static Destruction Order Fiasco:
+// the Map QTree destroys Items after static locals are torn down.
+// Freed explicitly in clearGlobalRegistry(); null-checked after that.
+static std::unordered_set<Item*>* g_validItems = new std::unordered_set<Item*>();
 
 std::shared_ptr<Item> Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 {
@@ -135,7 +134,7 @@ std::shared_ptr<Item> Item::CreateItem(PropStream& propStream)
 
 Item::Item(const uint16_t type, uint16_t count /*= 0*/) : id(type)
 {
-	g_validItems.insert(this);
+	if (g_validItems) g_validItems->insert(this);
 	const ItemType& it = items[id];
 
 	if (it.isFluidContainer() || it.isSplash()) {
@@ -163,7 +162,7 @@ Item::Item(const uint16_t type, uint16_t count /*= 0*/) : id(type)
 
 Item::Item(const Item& i) : Thing(), std::enable_shared_from_this<Item>(), id(i.id), count(i.count), loadedFromMap(i.loadedFromMap)
 {
-	g_validItems.insert(this);
+	if (g_validItems) g_validItems->insert(this);
 	if (i.attributes) {
 		attributes.reset(new ItemAttributes(*i.attributes));
 	}
@@ -171,17 +170,18 @@ Item::Item(const Item& i) : Thing(), std::enable_shared_from_this<Item>(), id(i.
 
 Item::~Item()
 {
-	g_validItems.erase(this);
+	if (g_validItems) g_validItems->erase(this);
 }
 
 bool isValidItemPointer(Item* item)
 {
-	return item && g_validItems.count(item) > 0;
+	return item && g_validItems && g_validItems->count(item) > 0;
 }
 
 void Item::clearGlobalRegistry()
 {
-	g_validItems.clear();
+	delete g_validItems;
+	g_validItems = nullptr;
 }
 
 std::shared_ptr<Item> Item::clone() const

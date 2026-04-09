@@ -7,6 +7,25 @@
 
 #include <boost/lockfree/stack.hpp>
 #include <cstddef>
+#include <functional>
+#include <vector>
+
+/**
+ * Registry of pool drain callbacks.
+ * Each LockfreeFreeList instance registers itself here on first use,
+ * so drainAll() can free every pooled block at shutdown.
+ */
+struct LockfreePoolRegistry
+{
+	static std::vector<std::function<void()>>& drains() {
+		static std::vector<std::function<void()>> v;
+		return v;
+	}
+	static void drainAll() {
+		for (auto& fn : drains()) fn();
+		drains().clear();
+	}
+};
 
 /**
  * Lock-free free list wrapper
@@ -24,7 +43,21 @@ struct LockfreeFreeList
 
 	[[nodiscard]] static FreeList& get() noexcept {
 		static FreeList freeList;
+		static const bool registered = [] {
+			LockfreePoolRegistry::drains().emplace_back([] { drain(); });
+			return true;
+		}();
+		(void)registered;
 		return freeList;
+	}
+
+	static void drain() noexcept {
+		// Use a local stack ref to avoid re-entering get()
+		static auto& freeList = get();
+		void* p;
+		while (freeList.pop(p)) {
+			operator delete(p);
+		}
 	}
 };
 

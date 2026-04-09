@@ -126,3 +126,9 @@ void OutputMessagePool::prewarmPool(size_t count)
 	}
 	// All shared_ptrs go out of scope here, returning blocks to the pool
 }
+
+void OutputMessagePool::drainPool()
+{
+	// Free all pooled memory blocks so valgrind reports zero leaks.
+	LockfreePoolRegistry::drainAll();
+}

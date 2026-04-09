@@ -18,6 +18,7 @@
 #include "items.h"
 #include "monster.h"
 #include "movement.h"
+#include "outputmessage.h"
 #include "pugicast.h"
 #include "decay.h"
 #include "scheduler.h"
@@ -5345,6 +5346,8 @@ void Game::shutdown()
 	creatureSharedRefs.clear();
 
 	Item::clearGlobalRegistry();
+
+	OutputMessagePool::drainPool();
 
 	LOG_INFO(">> Shutdown complete.");
 }
