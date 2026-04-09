@@ -245,12 +245,8 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		}
 
 			if (bed->trySleep(player)) {
-				player->setBedItem(bed);
 				player->setOfflineTrainingSkill(Player::SKILL_OFFLINE_AUTO);
-				BedItem* bedItem = player->getBedItem();
-				if (bedItem) {
-					bedItem->sleep(player);
-				}
+				bed->sleep(player);
 			}
 
 		return RETURNVALUE_NOERROR;

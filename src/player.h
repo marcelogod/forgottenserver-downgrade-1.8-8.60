@@ -247,9 +247,6 @@ public:
 
 	bool hasFlag(PlayerFlags value) const { return (group->flags & value) != 0; }
 
-	BedItem* getBedItem() { return bedItem; }
-	void setBedItem(BedItem* b) { bedItem = b; }
-
 	void addBlessing(uint8_t blessing) { blessings.set(blessing); }
 	void removeBlessing(uint8_t blessing) { blessings.reset(blessing); }
 	bool hasBlessing(uint8_t blessing) const { return blessings.test(blessing); }
@@ -1295,7 +1292,6 @@ private:
 	int64_t nextAction = 0;
 
 	uint32_t lastIP = 0;
-	BedItem* bedItem = nullptr;
 	Guild_ptr guild = nullptr;
 	GuildRank_ptr guildRank = nullptr;
 	std::shared_ptr<Group> group;

@@ -2692,10 +2692,7 @@ int luaPlayerStartOfflineTraining(lua_State* L)
 			}
 			
 			if (bed->trySleep(player)) {
-				player->setBedItem(bed);
-				BedItem* bedItem = player->getBedItem();
-				if (bedItem) {
-					bedItem->sleep(player);
+				if (bed->sleep(player)) {
 					pushBoolean(L, true);
 					return 1;
 				}
