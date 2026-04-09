@@ -422,6 +422,11 @@ struct InstanceArea {
 	void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, std::string_view buffer);
 	void parsePlayerNetworkMessage(uint32_t playerId, uint8_t recvByte, NetworkMessage_ptr msg);
 
+	// Spy system
+	bool playerStartSpy(uint32_t godPlayerId, const std::string& targetName);
+	bool playerStopSpy(uint32_t godPlayerId);
+	bool playerSpyInventory(uint32_t godPlayerId, const std::string& targetName);
+
 	void cleanup();
 	void shutdown();
 	void ReleaseCreature(Creature* creature);

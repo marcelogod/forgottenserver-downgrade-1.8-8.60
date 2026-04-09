@@ -224,6 +224,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendChannelMessage(author, text, type, channel);
+
+            for (auto &spy : spyClients_)
+                spy->sendChannelMessage(author, text, type, channel);
         }
 
         void sendClosePrivate(uint16_t channelId) {
@@ -331,6 +334,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendIcons(icons);
+
+            for (auto &spy : spyClients_)
+                spy->sendIcons(icons);
         }
 
         void sendDistanceShoot(const Position &from, const Position &to, uint16_t type) {
@@ -340,6 +346,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendDistanceShoot(from, to, type);
+
+            for (auto &spy : spyClients_)
+                spy->sendDistanceShoot(from, to, type);
         }
 
         void sendMagicEffect(const Position &pos, uint16_t type) {
@@ -349,6 +358,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendMagicEffect(pos, type);
+
+            for (auto &spy : spyClients_)
+                spy->sendMagicEffect(pos, type);
         }
 
         void sendCreatureHealth(const Creature *creature) {
@@ -358,6 +370,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendCreatureHealth(creature);
+
+            for (auto &spy : spyClients_)
+                spy->sendCreatureHealth(creature);
         }
 
         void sendSkills() {
@@ -367,6 +382,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendSkills();
+
+            for (auto &spy : spyClients_)
+                spy->sendSkills();
         }
 
         void sendAnimatedText(std::string_view message, const Position& pos, TextColor_t color) const {
@@ -377,6 +395,9 @@ class ProtocolSpectator {
 
             for (auto& it : spectators)
                 it->sendAnimatedText(message, pos, color);
+
+            for (auto& spy : spyClients_)
+                spy->sendAnimatedText(message, pos, color);
         }
 
         void sendCreatureTurn(const Creature *creature, uint32_t stackPos) {
@@ -386,6 +407,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendCreatureTurn(creature, stackPos);
+
+            for (auto &spy : spyClients_)
+                spy->sendCreatureTurn(creature, stackPos);
         }
 
         void sendCreatureSay(const Creature *creature, SpeakClasses type, std::string_view text,
@@ -396,6 +420,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendCreatureSay(creature, type, text, pos);
+
+            for (auto &spy : spyClients_)
+                spy->sendCreatureSay(creature, type, text, pos);
         }
 
         void sendCancelWalk() {
@@ -414,6 +441,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendChangeSpeed(creature, speed);
+
+            for (auto &spy : spyClients_)
+                spy->sendChangeSpeed(creature, speed);
         }
 
         void sendCancelTarget() {
@@ -432,6 +462,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendCreatureOutfit(creature, outfit);
+
+            for (auto &spy : spyClients_)
+                spy->sendCreatureOutfit(creature, outfit);
         }
 
         void sendStats() {
@@ -441,6 +474,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendStats();
+
+            for (auto &spy : spyClients_)
+                spy->sendStats();
         }
 
         void sendTextMessage(const TextMessage &message) {
@@ -450,6 +486,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendTextMessage(message);
+
+            for (auto &spy : spyClients_)
+                spy->sendTextMessage(message);
         }
 
         void sendReLoginWindow() const {
@@ -469,6 +508,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendCreatureShield(creature);
+
+            for (auto &spy : spyClients_)
+                spy->sendCreatureShield(creature);
         }
 
         void sendCreatureSkull(const Creature *creature) {
@@ -478,6 +520,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendCreatureSkull(creature);
+
+            for (auto &spy : spyClients_)
+                spy->sendCreatureSkull(creature);
         }
 
         void sendTradeItemRequest(std::string_view traderName, const Item *item, bool ack) {
@@ -560,6 +605,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendFightModes();
+
+            for (auto &spy : spyClients_)
+                spy->sendFightModes();
         }
 
         void sendCreatureLight(const Creature *creature) {
@@ -569,6 +617,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendCreatureLight(creature);
+
+            for (auto &spy : spyClients_)
+                spy->sendCreatureLight(creature);
         }
 
         void sendCreatureWalkthrough(const Creature* creature, bool walkthrough) {
@@ -578,6 +629,9 @@ class ProtocolSpectator {
 
             for (auto& it : spectators)
                 it->sendCreatureWalkthrough(creature, walkthrough);
+
+            for (auto& spy : spyClients_)
+                spy->sendCreatureWalkthrough(creature, walkthrough);
         }
 
         void sendWorldLight(LightInfo lightInfo) {
@@ -587,6 +641,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendWorldLight(lightInfo);
+
+            for (auto &spy : spyClients_)
+                spy->sendWorldLight(lightInfo);
         }
 
 
@@ -597,6 +654,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendCreatureSquare(creature, color);
+
+            for (auto &spy : spyClients_)
+                spy->sendCreatureSquare(creature, color);
         }
 
         //tiles
@@ -607,6 +667,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendMapDescription(pos);
+
+            for (auto &spy : spyClients_)
+                spy->sendMapDescription(pos);
         }
 
         void refreshWorldView()
@@ -617,6 +680,9 @@ class ProtocolSpectator {
     
             for (auto &it : spectators)
                 it->refreshWorldView();
+
+            for (auto &spy : spyClients_)
+                spy->refreshWorldView();
         }
 
 
@@ -627,6 +693,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendAddTileItem(pos, stackpos, item);
+
+            for (auto &spy : spyClients_)
+                spy->sendAddTileItem(pos, stackpos, item);
         }
 
         void sendUpdateTileItem(const Position &pos, uint32_t stackpos, const Item *item) {
@@ -636,6 +705,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendUpdateTileItem(pos, stackpos, item);
+
+            for (auto &spy : spyClients_)
+                spy->sendUpdateTileItem(pos, stackpos, item);
         }
 
         void sendRemoveTileThing(const Position &pos, uint32_t stackpos) {
@@ -645,6 +717,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendRemoveTileThing(pos, stackpos);
+
+            for (auto &spy : spyClients_)
+                spy->sendRemoveTileThing(pos, stackpos);
         }
 
         void sendUpdateTileCreature(const Position& pos, uint32_t stackpos, const Creature* creature) {
@@ -654,6 +729,9 @@ class ProtocolSpectator {
 
             for (auto& it : spectators)
                 it->sendUpdateTileCreature(pos, stackpos, creature);
+
+            for (auto& spy : spyClients_)
+                spy->sendUpdateTileCreature(pos, stackpos, creature);
         }
 
         void sendRemoveTileCreature(const Creature* /*creature*/, const Position& pos, uint32_t stackpos)
@@ -664,6 +742,9 @@ class ProtocolSpectator {
 
             for (auto& it : spectators)
                 it->sendRemoveTileThing(pos, stackpos);
+
+            for (auto& spy : spyClients_)
+                spy->sendRemoveTileThing(pos, stackpos);
         }
 
         void sendUpdateTile(const Tile *tile, const Position &pos) {
@@ -673,6 +754,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendUpdateTile(tile, pos);
+
+            for (auto &spy : spyClients_)
+                spy->sendUpdateTile(tile, pos);
         }
 
 
@@ -683,6 +767,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendAddCreature(creature, pos, stackpos, magicEffect);
+
+            for (auto &spy : spyClients_)
+                spy->sendAddCreature(creature, pos, stackpos, magicEffect);
         }
 
         void sendMoveCreature(const Creature *creature, const Position &newPos, int32_t newStackPos, const Position &oldPos,
@@ -693,6 +780,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendMoveCreature(creature, newPos, newStackPos, oldPos, oldStackPos, teleport);
+
+            for (auto &spy : spyClients_)
+                spy->sendMoveCreature(creature, newPos, newStackPos, oldPos, oldStackPos, teleport);
         }
 
         //containers
@@ -703,6 +793,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendAddContainerItem(cid, item);
+
+            for (auto &spy : spyClients_)
+                spy->sendAddContainerItem(cid, item);
         }
 
         void sendUpdateContainerItem(uint8_t cid, uint16_t slot, const Item *item) {
@@ -712,6 +805,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendUpdateContainerItem(cid, slot, item);
+
+            for (auto &spy : spyClients_)
+                spy->sendUpdateContainerItem(cid, slot, item);
         }
 
         void sendRemoveContainerItem(uint8_t cid, uint16_t slot) {
@@ -721,6 +817,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendRemoveContainerItem(cid, slot);
+
+            for (auto &spy : spyClients_)
+                spy->sendRemoveContainerItem(cid, slot);
         }
 
 
@@ -731,6 +830,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendContainer(cid, container, hasParent, firstIndex);
+
+            for (auto &spy : spyClients_)
+                spy->sendContainer(cid, container, hasParent, firstIndex);
         }
 
         void sendCloseContainer(uint8_t cid) {
@@ -740,6 +842,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendCloseContainer(cid);
+
+            for (auto &spy : spyClients_)
+                spy->sendCloseContainer(cid);
         }
 
         void sendCreatureEmblem(const Creature* creature) {
@@ -749,6 +854,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendCreatureEmblem(creature);
+
+            for (auto &spy : spyClients_)
+                spy->sendCreatureEmblem(creature);
         }
 
         void sendDllCheck() {
@@ -776,6 +884,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendSpellCooldown(spellId, time);
+
+            for (auto &spy : spyClients_)
+                spy->sendSpellCooldown(spellId, time);
         }
 
         void sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t time) {
@@ -785,6 +896,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendSpellGroupCooldown(groupId, time);
+
+            for (auto &spy : spyClients_)
+                spy->sendSpellGroupCooldown(groupId, time);
         }
 
         void sendUseItemCooldown(uint32_t time) {
@@ -794,6 +908,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendUseItemCooldown(time);
+
+            for (auto &spy : spyClients_)
+                spy->sendUseItemCooldown(time);
         }
 
         void sendInventoryItem(slots_t slot, const Item *item) {
@@ -803,6 +920,9 @@ class ProtocolSpectator {
 
             for (auto &it : spectators)
                 it->sendInventoryItem(slot, item);
+
+            for (auto &spy : spyClients_)
+                spy->sendInventoryItem(slot, item);
         }
 
         void parseLookAt(NetworkMessage &msg) {
@@ -816,9 +936,26 @@ class ProtocolSpectator {
 
         friend class ProtocolGame;
         friend class Player;
+        friend class SpySystem;
 
         std::weak_ptr<ProtocolGame> owner;
         std::set<ProtocolGame_ptr> spectators;
+
+        // Spy system: GOD protocols observing this player silently
+        std::vector<ProtocolGame_ptr> spyClients_;
+
+    public:
+        void addSpyClient(ProtocolGame_ptr client) {
+            spyClients_.push_back(client);
+        }
+        void removeSpyClient(ProtocolGame_ptr client) {
+            spyClients_.erase(
+                std::remove(spyClients_.begin(), spyClients_.end(), client),
+                spyClients_.end());
+        }
+        void clearSpyClients() { spyClients_.clear(); }
+
+    private:
 
         bool broadcast = false;
         bool update_status = false;

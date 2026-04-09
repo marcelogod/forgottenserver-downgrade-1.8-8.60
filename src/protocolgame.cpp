@@ -625,7 +625,21 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		}
 	}
 
-		if (isSpectator) {
+	// Spy mode: GOD can only talk, ping, and logout while spying
+	if (spyActive_) {
+		switch (recvbyte) {
+			case 0x14: // logout
+			case 0x1E: // ping
+			case 0x40: // extended ping (OTC)
+			case 0x96: // say (allows /unspy)
+				break; // allowed — fall through to normal processing
+			default:
+				sendCancelWalk();
+				return; // block all other actions
+		}
+	}
+
+	if (isSpectator) {
 		switch (recvbyte) {
 			case 0x14: g_dispatcher.addTask([thisPtr = getThis()]() { thisPtr->disconnect(); }); break;
 			case 0x32:
@@ -1067,7 +1081,8 @@ bool ProtocolGame::canSee(const Creature* c) const
 		return false;
 	}
 
-	if (c != player && !player->compareInstance(c->getInstanceID())) {
+	// Spy mode: bypass instance check (GOD sees target's instance)
+	if (!spyActive_ && c != player && !player->compareInstance(c->getInstanceID())) {
 		return false;
 	}
 
@@ -1082,7 +1097,7 @@ bool ProtocolGame::canSee(int32_t x, int32_t y, int32_t z) const
 		return false;
 	}
 
-	const Position& myPos = player->getPosition();
+	const Position& myPos = spyActive_ ? spyViewportPos_ : player->getPosition();
 	if (myPos.z <= 7) {
 		// we are on ground level or above (7 -> 0)
 		// view is from 7 -> 0
@@ -2336,7 +2351,7 @@ void ProtocolGame::sendMapDescription(const Position& pos)
 {
 	NetworkMessage msg;
 	msg.addByte(0x64);
-	msg.addPosition(player->getPosition());
+	msg.addPosition(spyActive_ ? spyViewportPos_ : player->getPosition());
 	GetMapDescription(pos.x - Map::maxClientViewportX, pos.y - Map::maxClientViewportY, pos.z,
 	                  (Map::maxClientViewportX * 2) + 2, (Map::maxClientViewportY * 2) + 2, msg);
 	writeToOutputBuffer(msg);
@@ -2514,6 +2529,53 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 void ProtocolGame::sendMoveCreature(const Creature* creature, const Position& newPos, int32_t newStackPos,
                                     const Position& oldPos, int32_t oldStackPos, bool teleport)
 {
+	if (spyActive_ && creature->getID() == spyTargetCreatureId_) {
+		spyViewportPos_ = newPos;
+
+		if (teleport || oldStackPos >= MAX_STACKPOS_THINGS) {
+			sendRemoveTileThing(oldPos, oldStackPos);
+			sendMapDescription(newPos);
+			return;
+		}
+
+		NetworkMessage msg;
+		if (oldPos.z == 7 && newPos.z >= 8) {
+			RemoveTileThing(msg, oldPos, oldStackPos);
+		} else {
+			msg.addByte(0x6D);
+			msg.addPosition(oldPos);
+			msg.addByte(static_cast<uint8_t>(oldStackPos));
+			msg.addPosition(newPos);
+		}
+
+		if (newPos.z > oldPos.z) {
+			MoveDownCreature(msg, creature, newPos, oldPos);
+		} else if (newPos.z < oldPos.z) {
+			MoveUpCreature(msg, creature, newPos, oldPos);
+		}
+
+		if (oldPos.y > newPos.y) {
+			msg.addByte(0x65);
+			GetMapDescription(oldPos.x - Map::maxClientViewportX, newPos.y - Map::maxClientViewportY, newPos.z,
+			                  (Map::maxClientViewportX * 2) + 2, 1, msg);
+		} else if (oldPos.y < newPos.y) {
+			msg.addByte(0x67);
+			GetMapDescription(oldPos.x - Map::maxClientViewportX, newPos.y + (Map::maxClientViewportY + 1),
+			                  newPos.z, (Map::maxClientViewportX * 2) + 2, 1, msg);
+		}
+		if (oldPos.x < newPos.x) {
+			msg.addByte(0x66);
+			GetMapDescription(newPos.x + (Map::maxClientViewportX + 1), newPos.y - Map::maxClientViewportY,
+			                  newPos.z, 1, (Map::maxClientViewportY * 2) + 2, msg);
+		} else if (oldPos.x > newPos.x) {
+			msg.addByte(0x68);
+			GetMapDescription(newPos.x - Map::maxClientViewportX, newPos.y - Map::maxClientViewportY, newPos.z,
+			                  1, (Map::maxClientViewportY * 2) + 2, msg);
+		}
+		writeToOutputBuffer(msg);
+		return;
+	}
+
 	if (creature == player) {
 		if (teleport || oldStackPos >= MAX_STACKPOS_THINGS) {
 			sendRemoveTileThing(oldPos, oldStackPos);
@@ -3055,7 +3117,7 @@ void ProtocolGame::RemoveTileThing(NetworkMessage& msg, const Position& pos, uin
 void ProtocolGame::MoveUpCreature(NetworkMessage& msg, const Creature* creature, const Position& newPos,
                                   const Position& oldPos)
 {
-	if (creature != player) {
+	if (creature != player && !(spyActive_ && creature->getID() == spyTargetCreatureId_)) {
 		return;
 	}
 
@@ -3108,7 +3170,7 @@ void ProtocolGame::MoveUpCreature(NetworkMessage& msg, const Creature* creature,
 void ProtocolGame::MoveDownCreature(NetworkMessage& msg, const Creature* creature, const Position& newPos,
                                     const Position& oldPos)
 {
-	if (creature != player) {
+	if (creature != player && !(spyActive_ && creature->getID() == spyTargetCreatureId_)) {
 		return;
 	}
 

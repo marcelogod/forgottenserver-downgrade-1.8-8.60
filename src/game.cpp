@@ -25,6 +25,7 @@
 #include "server.h"
 #include "stats.h"
 #include "spells.h"
+#include "spy.h"
 #include "talkaction.h"
 #include "scriptmanager.h"
 #include "weapons.h"
@@ -3898,6 +3899,10 @@ bool Game::playerSpeakTo(Player* player, SpeakClasses type, std::string_view rec
 	toPlayer->sendPrivateMessage(player, type, text);
 	toPlayer->onCreatureSay(player, type, text);
 
+	// Spy: log PMs with suspicious keywords
+	SpySystem::checkAndLogPrivateMessage(
+		std::string(player->getName()), std::string(toPlayer->getName()), text);
+
 	if (toPlayer->isInGhostMode() && !player->canSeeGhostMode(toPlayer)) {
 		player->sendTextMessage(MESSAGE_STATUS_SMALL, "A player with this name is not online.");
 	} else {
@@ -5708,6 +5713,46 @@ void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, std::str
 	}
 }
 
+bool Game::playerStartSpy(uint32_t godPlayerId, const std::string& targetName)
+{
+	Player* god = getPlayerByID(godPlayerId);
+	if (!god || god->getAccountType() < ACCOUNT_TYPE_GOD) {
+		return false;
+	}
+
+	Player* target = getPlayerByName(targetName);
+	if (!target || target == god) {
+		return false;
+	}
+
+	return g_spy.startSpy(god, target);
+}
+
+bool Game::playerStopSpy(uint32_t godPlayerId)
+{
+	Player* god = getPlayerByID(godPlayerId);
+	if (!god) {
+		return false;
+	}
+
+	return g_spy.stopSpy(god);
+}
+
+bool Game::playerSpyInventory(uint32_t godPlayerId, const std::string& targetName)
+{
+	Player* god = getPlayerByID(godPlayerId);
+	if (!god || god->getAccountType() < ACCOUNT_TYPE_GOD) {
+		return false;
+	}
+
+	Player* target = getPlayerByName(targetName);
+	if (!target) {
+		return false;
+	}
+
+	return g_spy.spyInventory(god, target);
+}
+
 void Game::forceAddCondition(uint32_t creatureId, Condition* condition)
 {
 	Condition_ptr condPtr(condition);
@@ -5788,6 +5833,9 @@ void Game::addPlayer(Player* player)
 
 void Game::removePlayer(Player* player)
 {
+	// Spy cleanup: stop any spy sessions involving this player
+	g_spy.onPlayerDisconnect(player->getID());
+
 	const std::string& lowercase_name = boost::algorithm::to_lower_copy<std::string>(player->getName());
 	mappedPlayerNames.erase(lowercase_name);
 	mappedPlayerGuids.erase(player->getGUID());

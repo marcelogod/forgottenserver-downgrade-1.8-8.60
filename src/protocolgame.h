@@ -276,6 +276,7 @@ private:
 
 	friend class Player;
 	friend class ProtocolSpectator;
+	friend class SpySystem;
 
 	//cast
 	void spectatorTurn(uint8_t direction);
@@ -289,6 +290,19 @@ private:
 
 	bool isSpectator = false;
 	std::string spectator_name = "";
+
+	// ─── Spy System ──────────────────────────────────────────────────
+	bool spyActive_ = false;           // GOD is currently spying someone
+	Position spyViewportPos_;           // viewport center while spying
+	uint32_t spyTargetCreatureId_ = 0; // creature ID of the spy target
+
+	void setSpyMode(bool active, const Position& viewport = {}, uint32_t targetCreatureId = 0) {
+		spyActive_ = active;
+		spyViewportPos_ = viewport;
+		spyTargetCreatureId_ = targetCreatureId;
+	}
+
+	bool isSpyActive() const { return spyActive_; }
 
 	std::unordered_set<uint32_t> knownCreatureSet;
 	CreatureRef<Player> player;

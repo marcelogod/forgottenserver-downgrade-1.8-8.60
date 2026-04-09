@@ -106,6 +106,7 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/spawn.cpp
 	${CMAKE_CURRENT_LIST_DIR}/spectators.cpp
 	${CMAKE_CURRENT_LIST_DIR}/spells.cpp
+	${CMAKE_CURRENT_LIST_DIR}/spy.cpp
 	${CMAKE_CURRENT_LIST_DIR}/stats.cpp
 	${CMAKE_CURRENT_LIST_DIR}/talkaction.cpp
 	${CMAKE_CURRENT_LIST_DIR}/tasks.cpp
@@ -200,6 +201,7 @@ set(tfs_HDR
 	${CMAKE_CURRENT_LIST_DIR}/spawn.h
 	${CMAKE_CURRENT_LIST_DIR}/spectators.h
 	${CMAKE_CURRENT_LIST_DIR}/spells.h
+	${CMAKE_CURRENT_LIST_DIR}/spy.h
 	${CMAKE_CURRENT_LIST_DIR}/talkaction.h
 	${CMAKE_CURRENT_LIST_DIR}/tasks.h
 	${CMAKE_CURRENT_LIST_DIR}/teleport.h
