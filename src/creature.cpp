@@ -1082,8 +1082,9 @@ bool Creature::addCondition(Condition_ptr condition, bool force /* = false*/)
 	}
 
 	if (condition->startCondition(this)) {
-		onAddCondition(condition->getType());
+		const ConditionType_t type = condition->getType();
 		conditions.push_back(std::move(condition));
+		onAddCondition(type);
 		return true;
 	}
 
