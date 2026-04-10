@@ -12,8 +12,6 @@ void printXMLError(std::string_view where, std::string_view fileName, const pugi
 
 std::string transformToSHA1(std::string_view input);
 std::string transformToSHA1Hex(std::string_view input);
-std::string hashPasswordSHA256(std::string_view password);
-bool verifyPassword(std::string_view password, std::string_view storedHash);
 std::string generateToken(const std::string& key, uint32_t ticks);
 std::string generateRecoveryKey(int32_t fieldCount, int32_t fieldLength, bool mixCase = false);
 std::string generateSecurePassword(int32_t length = 12);

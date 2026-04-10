@@ -8,7 +8,7 @@
 &nbsp;
 [![License](https://img.shields.io/badge/license-GPL--2.0-blue?style=flat-square)](LICENSE)
 &nbsp;
-[![Commits](https://img.shields.io/badge/commits-~800-6a0dad?style=flat-square)](https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60/commits)
+[![Commits](https://img.shields.io/badge/commits-~828-6a0dad?style=flat-square)](https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60/commits)
 
 </div>
 
@@ -45,7 +45,7 @@
 | 🧬 Core Engine | ⚔️ Combat & RPG | 🌍 World Systems | 🏗️ Infrastructure | 📚 Docs & Support |
 |:-:|:-:|:-:|:-:|:-:|
 | [ClientID .dat](#-clientid-implementation) | [Forge System](#-forge-system-item-fusion) | [Instance System](#-instance-system) | [Compilation](#️-compilation) | [Contributing](#-contributing--issues) |
-| [Overview](#-overview) | [Imbuement System](#-imbuement-system) | [Guild Halls](#-guild-halls-system) | [MyAAC SHA256](#-website-myaac--sha256) | [Memory Safety](#-memory-safety--smart-pointer-roadmap) |
+| [Overview](#-overview) | [Imbuement System](#-imbuement-system) | [Guild Halls](#-guild-halls-system) | | |
 | [Extended Protocol](#-extended-options--modified-860-cip-clients) | [Reward Boss](#-reward-boss-system) | [House Protection](#️-house-protection-system) | [Client Config](#-client-configuration-otcv8--mehah) | [Project Status](#-project-status) |
 | | [Guild Wars](#️-guild-war-system) | [AutoLoot](#️-autoloot-system) | [Linux Tuning](#-linux-server-tuning) | [Downloads](#-downloads--client-updater) |
 | | [Harmony (Monk)](#-harmony-system--monk-vocation) | [Offline Training](#-offline-training-system) | | [Donations](#-support-the-project) |
@@ -78,9 +78,9 @@ This is a **custom modified version** of The Forgotten Server, downgraded to pro
 
 <div align="center">
 
-| 🔢 ~800 Commits | 🧩 13+ Custom Systems | 🧠 132 Files Audited | 🛡️ Valgrind: 0 Leaks |
-|:-:|:-:|:-:|:-:|
-| Actively maintained | Fully integrated in C++ | Complete RAII review | Memory-safe base |
+| 🔢 ~828 Commits | 🧩 13+ Custom Systems |
+|:-:|:-:|
+| Actively maintained | Fully integrated in C++ |
 
 </div>
 
@@ -408,29 +408,6 @@ Recommended: **vcpkg** for dependency management.
 
 ---
 
-## 🌐 Website (MyAAC) — SHA256
-
-> [!IMPORTANT]
-> This TFS 1.8 uses **SHA256 + salt** for password hashing — **not** traditional SHA1.  
-> The standard MyAAC will **not work**. You must use the modified fork below.
-
-**🔗 Modified MyAAC Repository:** [https://github.com/Mateuzkl/myaac](https://github.com/Mateuzkl/myaac)
-
-```bash
-git clone https://github.com/Mateuzkl/myaac.git
-```
-
-| Change | Details |
-|--------|---------|
-| **Password Format** | `$SHA256$<salt>$<hash>` — per-account random salt |
-| **Legacy Support** | Login works with both new SHA256 and old SHA1 |
-| **Auto-Migration** | Old SHA1 passwords are silently upgraded to SHA256 on first login |
-| **Security** | SHA256 + salt is resistant to rainbow tables and brute-force |
-
-> ⚠️ Using Znote, Gesior or another AAC? Adapt your password hashing functions to the `$SHA256$<salt>$<hash>` format.
-
----
-
 ## 📦 Client Configuration (OTCv8 / Mehah)
 
 **1. Update `modules/game_features/game_features.lua`:**
@@ -481,43 +458,6 @@ DLL patches that extend the old Tibia 8.60 client beyond its original protocol l
 
 ---
 
-## 🧠 Memory Safety & Smart Pointer Roadmap
-
-A full ownership and RAII audit of all **132 source files** was completed. Progressive migration toward modern C++ lifetime management without breaking stability.
-
-### ✅ Fixes Applied — Valgrind: 0 leaks, 0 errors
-
-<details>
-<summary><b>Click to see all applied fixes</b></summary>
-
-| File | Fix Applied | Bytes Freed |
-|------|-------------|:-----------:|
-| `container.h/cpp` | Removed erroneous `incrementReferenceCounter` / `decrementReferenceCounter` calls in `addThing`, `removeThing`, `replaceThing`. Eliminated latent UAF. | **176 bytes** |
-| `house.cpp` | Added `House::~House()` to properly decrement refcount of doors in `doorSet` — previously doors were never freed. | **58,351 bytes** |
-| `depotlocker.cpp/depotchest.cpp` | `DepotChest` started with `referenceCounter=0`; destructor returned early without freeing. Fixed by calling `incrementReferenceCounter()` at construction. | **4,152 bytes** |
-| `creature.h/cpp` | `setRemoved()` now clears `attackedCreature` / `followCreature`. `onThink()` checks `isRemoved()` before interacting with targets. Debug assert on over-decrement. | — |
-| `monster.cpp` | Removed dead `onIdleStatus()` call in `death()` — the `!isDead()` guard made it an unreachable no-op. | — |
-| `iologindata.cpp` | Removed conditional `decrementReferenceCounter` compensations in `transferLoadedItem` lambdas — aligned with Container fix. | — |
-
-</details>
-
-### 🗺️ Future Roadmap
-
-| Priority | Target Files |
-|:--------:|-------------|
-| 🔴 **High** | `item.*` · `game.*` · `creature.*` · `iologindata.*` · `container.*` · `player.*` · `monster.*` · `tile.*` · `map.*` |
-| 🟡 **Medium** | `chat.*` · `house.*` · `iomapserialize.*` · `luacreature.cpp` · `luagame.cpp` · `decay.*` · `spawn.*` · `protocolgame.*` · `party.*` |
-| 🟢 **Low** | `combat.*` · `configmanager.*` · `guild.*` · `housetile.*` · Lua layer files |
-
-> 📄 Full interactive audit report available at `tfs-smart-pointer-review-completo.html` in the repo root.
-
-### 📅 Release Schedule
-
-Memory safety improvements ship as **monthly fix releases** (`fix1`, `fix2`, …) — each verified with Valgrind before publishing.  
-→ [View all Releases](https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60/releases)
-
----
-
 ## 🐛 Contributing & Issues
 
 The base is **stable** and all systems are fully working. Found a bug? You're very welcome to help:
@@ -538,15 +478,13 @@ The base is **stable** and all systems are fully working. Found a bug? You're ve
 
 | Metric | Value |
 |:------:|:-----:|
-| 📦 Commits | **~800** |
+| 📦 Commits | **~828** |
 | 🧩 Custom Systems | **13+** |
-| 🧠 Files Audited | **132** |
-| 🛡️ Memory Leaks | **0** (Valgrind verified) |
 | 🔧 Status | **Stable & Active** |
 
 </div>
 
-The focus going forward is on **progressive memory safety** — applying the smart pointer roadmap in monthly fix releases while keeping all exclusive systems fully working.
+
 
 ---
 

@@ -9,7 +9,6 @@
 
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
-#include <openssl/rand.h>
 #include "logger.h"
 
 void printXMLError(std::string_view where, std::string_view fileName, const pugi::xml_parse_result& result)
@@ -92,111 +91,7 @@ std::string transformToSHA1Hex(std::string_view input)
 	return hexStream.str();
 }
 
-std::string hashPasswordSHA256(std::string_view password)
-{
-	// Generate 16-byte random salt
-	unsigned char saltBytes[16];
-	if (RAND_bytes(saltBytes, sizeof(saltBytes)) != 1) {
-		throw std::runtime_error("Failed to generate random salt");
-	}
 
-	std::ostringstream saltHex;
-	saltHex << std::hex << std::setfill('0');
-	for (unsigned char c : saltBytes) {
-		saltHex << std::setw(2) << static_cast<unsigned int>(c);
-	}
-	std::string salt = saltHex.str();
-
-	// Compute SHA256(salt + password)
-	std::string salted = salt + std::string(password);
-
-	std::unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_free)> ctx{EVP_MD_CTX_new(), EVP_MD_CTX_free};
-	if (!ctx) {
-		throw std::runtime_error("Failed to create EVP context");
-	}
-
-	std::unique_ptr<EVP_MD, decltype(&EVP_MD_free)> md{EVP_MD_fetch(nullptr, "SHA256", nullptr), EVP_MD_free};
-	if (!md) {
-		throw std::runtime_error("Failed to fetch SHA256");
-	}
-
-	if (!EVP_DigestInit_ex(ctx.get(), md.get(), nullptr)) {
-		throw std::runtime_error("SHA256 digest init failed");
-	}
-
-	if (!EVP_DigestUpdate(ctx.get(), salted.data(), salted.size())) {
-		throw std::runtime_error("SHA256 digest update failed");
-	}
-
-	unsigned int len = EVP_MD_size(md.get());
-	std::string digest(static_cast<size_t>(len), '\0');
-	if (!EVP_DigestFinal_ex(ctx.get(), reinterpret_cast<unsigned char*>(digest.data()), &len)) {
-		throw std::runtime_error("SHA256 digest finalize failed");
-	}
-
-	std::ostringstream hashHex;
-	hashHex << std::hex << std::setfill('0');
-	for (unsigned char c : digest) {
-		hashHex << std::setw(2) << static_cast<unsigned int>(c);
-	}
-
-	// Format: $SHA256$<salt>$<hash>  (8 + 32 + 1 + 64 = 105 chars)
-	return "$SHA256$" + salt + "$" + hashHex.str();
-}
-
-bool verifyPassword(std::string_view password, std::string_view storedHash)
-{
-	constexpr std::string_view SHA256_PREFIX = "$SHA256$";
-
-	if (storedHash.size() > SHA256_PREFIX.size() && storedHash.substr(0, SHA256_PREFIX.size()) == SHA256_PREFIX) {
-		// New format: $SHA256$<32-hex-salt>$<64-hex-hash>
-		auto rest = storedHash.substr(SHA256_PREFIX.size());
-		auto dollarPos = rest.find('$');
-		if (dollarPos == std::string_view::npos) {
-			return false;
-		}
-
-		std::string salt(rest.substr(0, dollarPos));
-		std::string expectedHash(rest.substr(dollarPos + 1));
-
-		std::string salted = salt + std::string(password);
-
-		std::unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_free)> ctx{EVP_MD_CTX_new(), EVP_MD_CTX_free};
-		if (!ctx) {
-			return false;
-		}
-
-		std::unique_ptr<EVP_MD, decltype(&EVP_MD_free)> md{EVP_MD_fetch(nullptr, "SHA256", nullptr), EVP_MD_free};
-		if (!md) {
-			return false;
-		}
-
-		if (!EVP_DigestInit_ex(ctx.get(), md.get(), nullptr)) {
-			return false;
-		}
-
-		if (!EVP_DigestUpdate(ctx.get(), salted.data(), salted.size())) {
-			return false;
-		}
-
-		unsigned int len = EVP_MD_size(md.get());
-		std::string digest(static_cast<size_t>(len), '\0');
-		if (!EVP_DigestFinal_ex(ctx.get(), reinterpret_cast<unsigned char*>(digest.data()), &len)) {
-			return false;
-		}
-
-		std::ostringstream hashHex;
-		hashHex << std::hex << std::setfill('0');
-		for (unsigned char c : digest) {
-			hashHex << std::setw(2) << static_cast<unsigned int>(c);
-		}
-
-		return hashHex.str() == expectedHash;
-	}
-
-	// Legacy SHA1 format (40-char hex)
-	return storedHash == transformToSHA1Hex(password);
-}
 
 std::string hmac(std::string_view algorithm, std::string_view key, std::string_view message)
 {
