@@ -6,6 +6,8 @@
 #include "luascript.h"
 #include "monsters.h"
 
+extern Monsters g_monsters;
+
 namespace {
 using namespace Lua;
 
@@ -320,6 +322,51 @@ int luaMonsterSpellSetCombatEffect(lua_State* L)
 	}
 	return 1;
 }
+
+int luaMonsterSpellSetOutfit(lua_State* L)
+{
+	// monsterSpell:setOutfit(outfit)
+	MonsterSpell* spell = getUserdata<MonsterSpell>(L, 1);
+	if (spell) {
+		spell->outfit = getOutfit(L, 2);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaMonsterSpellSetOutfitMonster(lua_State* L)
+{
+	// monsterSpell:setOutfitMonster(name)
+	MonsterSpell* spell = getUserdata<MonsterSpell>(L, 1);
+	if (spell) {
+		MonsterType* mType = g_monsters.getMonsterType(getString(L, 2));
+		if (mType) {
+			spell->outfit = mType->info.outfit;
+			pushBoolean(L, true);
+		} else {
+			pushBoolean(L, false);
+		}
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaMonsterSpellSetOutfitItem(lua_State* L)
+{
+	// monsterSpell:setOutfitItem(itemid)
+	MonsterSpell* spell = getUserdata<MonsterSpell>(L, 1);
+	if (spell) {
+		spell->outfit = {};
+		spell->outfit.lookTypeEx = getInteger<uint16_t>(L, 2);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
 } // namespace
 
 void LuaScriptInterface::registerMonsterSpell()
@@ -352,4 +399,7 @@ void LuaScriptInterface::registerMonsterSpell()
 	registerMethod("MonsterSpell", "setConditionTickInterval", luaMonsterSpellSetConditionTickInterval);
 	registerMethod("MonsterSpell", "setCombatShootEffect", luaMonsterSpellSetCombatShootEffect);
 	registerMethod("MonsterSpell", "setCombatEffect", luaMonsterSpellSetCombatEffect);
+	registerMethod("MonsterSpell", "setOutfit", luaMonsterSpellSetOutfit);
+	registerMethod("MonsterSpell", "setOutfitMonster", luaMonsterSpellSetOutfitMonster);
+	registerMethod("MonsterSpell", "setOutfitItem", luaMonsterSpellSetOutfitItem);
 }

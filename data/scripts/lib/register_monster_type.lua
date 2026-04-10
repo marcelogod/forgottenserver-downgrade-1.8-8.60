@@ -286,9 +286,14 @@ local function AbilityTableToSpell(ability)
 				spell:setCombatValue(ability.minDamage, ability.maxDamage)
 			end
 			if ability.effect then spell:setCombatEffect(ability.effect) end
-			local outfit = ability.outfit or ability.monster or ability.item
-			if outfit and spell.setOutfit then
-				spell:setOutfit(outfit)
+			if ability.outfit and spell.setOutfit then
+				spell:setOutfit(ability.outfit)
+			end
+			if (ability.monster or ability.outfitMonster) and spell.setOutfitMonster then
+				spell:setOutfitMonster(ability.monster or ability.outfitMonster)
+			end
+			if ability.item and spell.setOutfitItem then
+				spell:setOutfitItem(ability.item)
 			end
 			if ability.shootEffect then spell:setCombatShootEffect(ability.shootEffect) end
 			if ability.drunkenness then
