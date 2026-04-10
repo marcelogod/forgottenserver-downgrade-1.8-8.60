@@ -589,6 +589,7 @@ public:
 
 	int32_t getArmor() const override;
 	int32_t getDefense() const override;
+	float getMitigation() const override;
 	float getAttackFactor() const override;
 	float getDefenseFactor() const override;
 

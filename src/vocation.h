@@ -60,6 +60,13 @@ public:
 	float armorMultiplier = 1.0f;
 	float wandDamageMultiplier = 1.0f;
 
+	float mitigationMultiplier = 1.0f;
+	float primaryShieldMultiplier = 1.0f;
+	float secondaryShieldMultiplier = 1.0f;
+
+	float pvpDamageReceivedMultiplier = 1.0f;
+	float pvpDamageDealtMultiplier = 1.0f;
+
 private:
 	friend class Vocations;
 

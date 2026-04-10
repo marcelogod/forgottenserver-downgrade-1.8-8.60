@@ -109,6 +109,23 @@ bool Vocations::loadFromXml()
 				if ((attr = childNode.attribute("wandDamage"))) {
 					voc.wandDamageMultiplier = pugi::cast<float>(attr.value());
 				}
+			} else if (caseInsensitiveEqual(childNode.name(), "mitigation")) {
+				if ((attr = childNode.attribute("multiplier"))) {
+					voc.mitigationMultiplier = pugi::cast<float>(attr.value());
+				}
+				if ((attr = childNode.attribute("primaryShield"))) {
+					voc.primaryShieldMultiplier = pugi::cast<float>(attr.value());
+				}
+				if ((attr = childNode.attribute("secondaryShield"))) {
+					voc.secondaryShieldMultiplier = pugi::cast<float>(attr.value());
+				}
+			} else if (caseInsensitiveEqual(childNode.name(), "pvp")) {
+				if ((attr = childNode.attribute("damageReceivedMultiplier"))) {
+					voc.pvpDamageReceivedMultiplier = pugi::cast<float>(attr.value());
+				}
+				if ((attr = childNode.attribute("damageDealtMultiplier"))) {
+					voc.pvpDamageDealtMultiplier = pugi::cast<float>(attr.value());
+				}
 			}
 		}
 	}

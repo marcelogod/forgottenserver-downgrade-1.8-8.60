@@ -372,6 +372,25 @@ int32_t Player::getArmor() const
 	return static_cast<int32_t>(armor * vocation->armorMultiplier);
 }
 
+float Player::getMitigation() const
+{
+	if (!vocation || vocation->getId() == VOCATION_NONE) {
+		return 0.0f;
+	}
+
+	float shieldingSkill = getSkillLevel(SKILL_SHIELD);
+	float armor = getArmor();
+
+	const Item *shield, *weapon;
+	getShieldAndWeapon(shield, weapon);
+
+	if (shield) {
+		return (shieldingSkill * vocation->primaryShieldMultiplier + armor * vocation->mitigationMultiplier) / 100.0f;
+	}
+
+	return (shieldingSkill * vocation->secondaryShieldMultiplier + armor * vocation->mitigationMultiplier) / 100.0f;
+}
+
 void Player::getShieldAndWeapon(const Item*& shield, const Item*& weapon) const
 {
 	shield = nullptr;

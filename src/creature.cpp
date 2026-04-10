@@ -690,6 +690,15 @@ BlockType_t Creature::blockHit(Creature* attacker, CombatType_t combatType, int3
 {
 	BlockType_t blockType = BLOCK_NONE;
 
+	if (attacker && combatType != COMBAT_HEALING) {
+		Player* attackerPlayer = attacker->getPlayer();
+		Player* targetPlayer = getPlayer();
+		if (attackerPlayer && targetPlayer) {
+			damage = std::round(damage * attackerPlayer->getVocation()->pvpDamageDealtMultiplier);
+			damage = std::round(damage * targetPlayer->getVocation()->pvpDamageReceivedMultiplier);
+		}
+	}
+
 	if (isImmune(combatType)) {
 		damage = 0;
 		blockType = BLOCK_IMMUNITY;
