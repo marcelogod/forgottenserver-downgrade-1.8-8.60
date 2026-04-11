@@ -154,6 +154,9 @@ bool Monsters::deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std
 
 			auto condition = getDamageCondition(conditionType, conMaxDamage, conMinDamage, startDamage, tickInterval);
 			combat->addCondition(std::move(condition));
+			if (spell->combatType == COMBAT_UNDEFINEDDAMAGE) {
+				spell->combatType = Combat::ConditionToDamageType(spell->conditionType);
+			}
 		}
 
 		std::string tmpName = boost::algorithm::to_lower_copy<std::string>(spell->name);

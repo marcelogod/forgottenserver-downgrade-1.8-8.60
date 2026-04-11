@@ -13,17 +13,6 @@ MonsterType.register = function(self, mask)
 	return registerMonsterType(self, mask)
 end
 
-local conditionToCombat = {
-	[CONDITION_POISON] = COMBAT_EARTHDAMAGE,
-	[CONDITION_FIRE] = COMBAT_FIREDAMAGE,
-	[CONDITION_ENERGY] = COMBAT_ENERGYDAMAGE,
-	[CONDITION_DROWN] = COMBAT_DROWNDAMAGE,
-	[CONDITION_FREEZING] = COMBAT_ICEDAMAGE,
-	[CONDITION_DAZZLED] = COMBAT_HOLYDAMAGE,
-	[CONDITION_CURSED] = COMBAT_DEATHDAMAGE,
-	[CONDITION_BLEEDING] = COMBAT_PHYSICALDAMAGE,
-}
-
 registerMonsterType.name = function(mtype, mask)
 	if mask.name then mtype:name(mask.name) end
 end
@@ -290,10 +279,6 @@ local function AbilityTableToSpell(ability)
 			if ability.type then
 				if ability.name == "condition" then
 					spell:setConditionType(ability.type)
-					local combatType = conditionToCombat[ability.type]
-					if combatType then
-						spell:setCombatType(combatType)
-					end
 				else
 					spell:setCombatType(ability.type)
 				end
