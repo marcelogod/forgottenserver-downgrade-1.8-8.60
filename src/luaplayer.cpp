@@ -335,6 +335,18 @@ int luaPlayerGetDeathPenalty(lua_State* L)
 	return 1;
 }
 
+int luaPlayerGetDropBonus(lua_State* L)
+{
+	// player:getDropBonus()
+	const Player* player = getUserdata<const Player>(L, 1);
+	if (player) {
+		lua_pushinteger(L, player->totalDropBonus);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int luaPlayerGetExperience(lua_State* L)
 {
 	// player:getExperience()
@@ -3306,6 +3318,7 @@ void LuaScriptInterface::registerPlayer()
 	registerMethod("Player", "getSkullTime", luaPlayerGetSkullTime);
 	registerMethod("Player", "setSkullTime", luaPlayerSetSkullTime);
 	registerMethod("Player", "getDeathPenalty", luaPlayerGetDeathPenalty);
+	registerMethod("Player", "getDropBonus", luaPlayerGetDropBonus);
 
 	registerMethod("Player", "getExperience", luaPlayerGetExperience);
 	registerMethod("Player", "addExperience", luaPlayerAddExperience);

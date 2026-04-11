@@ -4,6 +4,21 @@ local function sendLootMessage(player, text)
 	player:sendChannelMessage("", text, TALKTYPE_CHANNEL_O, CHANNEL_LOOT)
 end
 
+-- Applies the player's drop bonus (equipped items) to the loot chance.
+-- Returns true if the item should be added, false otherwise.
+local function rollWithDropBonus(lootChance, player)
+	local chance = lootChance
+	if player then
+		local bonus = player:getDropBonus()
+		if bonus > 0 then
+			-- ex: bonus=15 → chance * 1.15
+			chance = math.floor(chance * (1 + bonus / 100))
+		end
+	end
+	-- Maximum TFS chance is MAX_LOOTCHANCE (100000)
+	return math.random(1, 100000) <= chance
+end
+
 local event = Event()
 event.onDropLoot = function(self, corpse)
 	if configManager.getNumber(configKeys.RATE_LOOT) == 0 then return end
@@ -27,9 +42,26 @@ event.onDropLoot = function(self, corpse)
 
 		for roll = 1, rolls do
 			for i = 1, #monsterLoot do
-				local item = corpse:createLootItem(monsterLoot[i])
-				if not item then
-					print("[Warning] DropLoot:", "Could not add loot item to corpse.")
+				local lootItem = monsterLoot[i]
+
+				-- Applies the drop bonus.
+				if player and lootItem.chance and lootItem.chance < 100000 then
+					if rollWithDropBonus(lootItem.chance, player) then
+						local boostedItem = {}
+						for k, v in pairs(lootItem) do boostedItem[k] = v end
+						boostedItem.chance = 100000
+
+						local item = corpse:createLootItem(boostedItem)
+						if not item then
+							print("[Warning] DropLoot:", "Could not add loot item to corpse.")
+						end
+					end
+				else
+					-- Items with a 100% chance or no defined chance.
+					local item = corpse:createLootItem(lootItem)
+					if not item then
+						print("[Warning] DropLoot:", "Could not add loot item to corpse.")
+					end
 				end
 			end
 		end

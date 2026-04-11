@@ -594,6 +594,11 @@ ReturnValue MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* ite
 
 	}
 
+	// Apply dropBonus
+	if (it.abilities->dropBonus != 0) {
+		player->totalDropBonus += it.abilities->dropBonus;
+	}
+
 	// experience rates
 	for (uint8_t e = static_cast<uint8_t>(ExperienceRateType::BASE);
 	     e <= static_cast<uint8_t>(ExperienceRateType::STAMINA); ++e) {
@@ -697,6 +702,11 @@ ReturnValue MoveEvent::DeEquipItem(MoveEvent*, Player* player, Item* item, slots
 	if (it.abilities->reduceSkillLoss != 0) {
 		player->totalReduceSkillLoss -= it.abilities->reduceSkillLoss;
 
+	}
+
+	// Remove dropBonus
+	if (it.abilities->dropBonus != 0) {
+		player->totalDropBonus -= it.abilities->dropBonus;
 	}
 
 	// experience rates

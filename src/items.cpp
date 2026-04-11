@@ -216,6 +216,7 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
     {"experienceratebonus", ITEM_PARSE_EXPERIENCERATE_BONUS},
     {"experienceratestamina", ITEM_PARSE_EXPERIENCERATE_STAMINA},
     {"reduceskillloss", ITEM_PARSE_REDUCESKILLLOSS},
+	{"drop", ITEM_PARSE_DROPBONUS},
     {"elementalbond", ITEM_PARSE_ELEMENTALBOND},
     {"script", ITEM_PARSE_SCRIPT},
 };
@@ -1915,6 +1916,17 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 				case ITEM_PARSE_REDUCESKILLLOSS: {
 					it.reduceSkillLoss = pugi::cast<int32_t>(valueAttribute.value());
 					abilities.reduceSkillLoss = pugi::cast<int32_t>(valueAttribute.value());
+					break;
+				}
+
+				case ITEM_PARSE_DROPBONUS: {
+					int32_t value = pugi::cast<int32_t>(valueAttribute.value());
+					if (value < 0 || value > 100) {
+						LOG_WARN(fmt::format("[Warning - Items::parseItemNode] Drop bonus out of range (0-100) for item: {}", it.id));
+						value = std::clamp(value, 0, 100);
+					}
+					it.dropBonus = value;
+					abilities.dropBonus = value;
 					break;
 				}
 

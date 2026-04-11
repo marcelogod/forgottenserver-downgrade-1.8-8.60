@@ -492,6 +492,18 @@ int luaItemTypeGetReduceSkillLoss(lua_State* L)
 	return 1;
 }
 
+int luaItemTypeGetDropBonus(lua_State* L)
+{
+	// itemType:getDropBonus()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType) {
+		lua_pushinteger(L, itemType->dropBonus);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int luaItemTypeGetWeaponType(lua_State* L)
 {
 	// itemType:getWeaponType()
@@ -1027,6 +1039,7 @@ void LuaScriptInterface::registerItemType()
 	registerMethod("ItemType", "getExtraDefense", luaItemTypeGetExtraDefense);
 	registerMethod("ItemType", "getArmor", luaItemTypeGetArmor);
 	registerMethod("ItemType", "getReduceSkillLoss", luaItemTypeGetReduceSkillLoss);
+	registerMethod("ItemType", "getDropBonus", luaItemTypeGetDropBonus);
 	registerMethod("ItemType", "getWeaponType", luaItemTypeGetWeaponType);
 
 	registerMethod("ItemType", "getElementType", luaItemTypeGetElementType);

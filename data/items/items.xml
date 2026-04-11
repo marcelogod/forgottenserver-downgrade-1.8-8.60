@@ -24605,6 +24605,7 @@
 	<item id="10476" article="a" name="lucky clover amulet">
 		<attribute key="description" value="It is rumoured to bring you good luck! Luck sponsored by TibiaLottery" />
 		<attribute key="weight" value="150" />
+		<attribute key="drop" value="100" />
 		<attribute key="script" value="moveevent">
 			<attribute key="slot" value="necklace" />
 		</attribute>

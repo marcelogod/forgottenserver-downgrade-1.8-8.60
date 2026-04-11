@@ -225,6 +225,7 @@ enum ItemParseAttributes_t
 	ITEM_PARSE_EXPERIENCERATE_BONUS,
 	ITEM_PARSE_EXPERIENCERATE_STAMINA,
 	ITEM_PARSE_REDUCESKILLLOSS,
+	ITEM_PARSE_DROPBONUS,
 	ITEM_PARSE_ELEMENTALBOND,
 	ITEM_PARSE_SCRIPT,
 	ITEM_PARSE_IMBUEMENTSLOT,
@@ -272,6 +273,9 @@ struct Abilities
 
 	// skill loss reduction
 	int32_t reduceSkillLoss = 0;
+
+	// drop bonus (percentage, 0-100)
+	int32_t dropBonus = 0;
 
 	bool manaShield = false;
 	bool invisible = false;
@@ -359,6 +363,7 @@ public:
 	int32_t extraDefense = 0;
 	int32_t armor = 0;
 	int32_t reduceSkillLoss = 0;
+	int32_t dropBonus = 0;
 	uint16_t rotateTo = 0;
 	int32_t runeMagLevel = 0;
 	int32_t runeLevel = 0;

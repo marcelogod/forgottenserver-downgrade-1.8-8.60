@@ -669,6 +669,14 @@ do
 			descriptions[#descriptions + 1] = fmt("speed %+d", math.floor(abilities.speed / 2))
 		end
 
+		-- drop bonus
+		do
+   			local dropBonus = itemType:getDropBonus()
+    		if dropBonus ~= 0 then
+        		descriptions[#descriptions + 1] = fmt("drop %+d%%", dropBonus)
+    		end
+		end
+
 		-- collecting attributes finished
 		-- build the output text
 		local response = {itemName}
