@@ -86,8 +86,13 @@ int luaGameGetNpcs(lua_State* L)
 
 	int index = 0;
 	for (const auto& npcEntry : g_game.getNpcs()) {
-		pushUserdata<Npc>(L, npcEntry.second);
-		setCreatureMetatable(L, -1, npcEntry.second);
+		auto npc = npcEntry.second.lock();
+		if (!npc) {
+			continue;
+		}
+
+		pushUserdata<Npc>(L, npc.get());
+		setCreatureMetatable(L, -1, npc.get());
 		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
@@ -100,8 +105,13 @@ int luaGameGetMonsters(lua_State* L)
 
 	int index = 0;
 	for (const auto& monsterEntry : g_game.getMonsters()) {
-		pushUserdata<Monster>(L, monsterEntry.second);
-		setCreatureMetatable(L, -1, monsterEntry.second);
+		auto monster = monsterEntry.second.lock();
+		if (!monster) {
+			continue;
+		}
+
+		pushUserdata<Monster>(L, monster.get());
+		setCreatureMetatable(L, -1, monster.get());
 		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
@@ -939,9 +949,9 @@ int luaGameGetInfluencedCreatures(lua_State* L)
 	lua_createtable(L, 0, 0);
 	int index = 0;
 	for (const auto& [id, monster] : g_game.getMonsters()) {
-		if (monster && monster->isInfluenced()) {
-			pushUserdata<Monster>(L, monster);
-			setCreatureMetatable(L, -1, monster);
+		if (auto monsterRef = monster.lock(); monsterRef && monsterRef->isInfluenced()) {
+			pushUserdata<Monster>(L, monsterRef.get());
+			setCreatureMetatable(L, -1, monsterRef.get());
 			lua_rawseti(L, -2, ++index);
 		}
 	}

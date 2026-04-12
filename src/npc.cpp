@@ -143,7 +143,9 @@ void reload()
 	
 	// 2. Clear shop windows for all NPCs before reloading
 	for (const auto& it : npcs) {
-		it.second->closeAllShopWindows();
+		if (auto npc = it.second.lock()) {
+			npc->closeAllShopWindows();
+		}
 	}
 
 	// 3. Reload NPC Types
@@ -157,7 +159,12 @@ void reload()
 
 	// 4. Refresh all active NPC instances on the map
 	for (const auto& it : npcs) {
-		Npc* npc = it.second;
+		auto npcRef = it.second.lock();
+		if (!npcRef) {
+			continue;
+		}
+
+		Npc* npc = npcRef.get();
 		if (npc->npcType->fromLua) {
 			// For Lua NPCs: Refresh the event handler and info
 			npc->loadNpcTypeInfo();

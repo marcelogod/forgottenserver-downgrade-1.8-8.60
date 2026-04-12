@@ -39,7 +39,7 @@ extern Vocations g_vocations;
 extern Monsters g_monsters;
 extern LuaEnvironment g_luaEnvironment;
 
-void Game::start(ServiceManager* manager)
+void Game::start(const std::shared_ptr<ServiceManager>& manager)
 {
 	serviceManager = manager;
 	updateWorldTime();
@@ -400,7 +400,8 @@ Monster* Game::getMonsterByID(uint32_t id)
 	if (it == monsters.end()) {
 		return nullptr;
 	}
-	return it->second;
+	auto monster = it->second.lock();
+	return monster.get();
 }
 
 Npc* Game::getNpcByID(uint32_t id)
@@ -413,7 +414,8 @@ Npc* Game::getNpcByID(uint32_t id)
 	if (it == npcs.end()) {
 		return nullptr;
 	}
-	return it->second;
+	auto npc = it->second.lock();
+	return npc.get();
 }
 
 Player* Game::getPlayerByID(uint32_t id)
@@ -444,8 +446,13 @@ Creature* Game::getCreatureByName(std::string_view s)
 		}
 	}
 
-	auto equalCreatureName = [&](const std::pair<uint32_t, Creature*>& it) {
-		auto& name = it.second->getName();
+	auto equalCreatureName = [&](const auto& it) {
+		auto creature = it.second.lock();
+		if (!creature) {
+			return false;
+		}
+
+		auto& name = creature->getName();
 		return lowerCaseName.size() == name.size() &&
 		       std::equal(lowerCaseName.begin(), lowerCaseName.end(), name.begin(),
 		                  [](char a, char b) { return a == std::tolower(b); });
@@ -454,14 +461,16 @@ Creature* Game::getCreatureByName(std::string_view s)
 	{
 		auto it = std::find_if(npcs.begin(), npcs.end(), equalCreatureName);
 		if (it != npcs.end()) {
-			return it->second;
+			auto npc = it->second.lock();
+			return npc.get();
 		}
 	}
 
 	{
 		auto it = std::find_if(monsters.begin(), monsters.end(), equalCreatureName);
 		if (it != monsters.end()) {
-			return it->second;
+			auto monster = it->second.lock();
+			return monster.get();
 		}
 	}
 
@@ -475,8 +484,9 @@ Npc* Game::getNpcByName(std::string_view npcName)
 	}
 
 	for (const auto& it : npcs) {
-		if (caseInsensitiveEqual(npcName, it.second->getName())) {
-			return it.second;
+		auto npc = it.second.lock();
+		if (npc && caseInsensitiveEqual(npcName, npc->getName())) {
+			return npc.get();
 		}
 	}
 	return nullptr;
@@ -5267,7 +5277,9 @@ void Game::shutdown()
 		std::vector<Monster*> toRemove;
 		toRemove.reserve(monsters.size());
 		for (auto& [id, monster] : monsters) {
-			toRemove.push_back(monster);
+			if (auto monsterRef = monster.lock()) {
+				toRemove.push_back(monsterRef.get());
+			}
 		}
 		for (Monster* monster : toRemove) {
 			if (!monster->isRemoved()) {
@@ -5280,7 +5292,9 @@ void Game::shutdown()
 		std::vector<Npc*> toRemove;
 		toRemove.reserve(npcs.size());
 		for (auto& [id, npc] : npcs) {
-			toRemove.push_back(npc);
+			if (auto npcRef = npc.lock()) {
+				toRemove.push_back(npcRef.get());
+			}
 		}
 		for (Npc* npc : toRemove) {
 			if (!npc->isRemoved()) {
@@ -5346,8 +5360,8 @@ void Game::shutdown()
 	g_stats.shutdown();
 #endif
 
-	if (serviceManager) {
-		serviceManager->stop();
+	if (auto manager = serviceManager.lock()) {
+		manager->stop();
 	}
 
 	creatureSharedRefs.clear();
@@ -5853,13 +5867,29 @@ void Game::removePlayer(Player* player)
 	playersOnline.store(players.size(), std::memory_order_relaxed);
 }
 
-void Game::addNpc(Npc* npc) { npcs[npc->getID()] = npc; npcsOnline.store(npcs.size(), std::memory_order_relaxed); }
+void Game::addNpc(Npc* npc)
+{
+	npcs[npc->getID()] = std::static_pointer_cast<Npc>(getCreatureSharedRef(npc));
+	npcsOnline.store(npcs.size(), std::memory_order_relaxed);
+}
 
-void Game::removeNpc(Npc* npc) { npcs.erase(npc->getID()); npcsOnline.store(npcs.size(), std::memory_order_relaxed); }
+void Game::removeNpc(Npc* npc)
+{
+	npcs.erase(npc->getID());
+	npcsOnline.store(npcs.size(), std::memory_order_relaxed);
+}
 
-void Game::addMonster(Monster* monster) { monsters[monster->getID()] = monster; monstersOnline.store(monsters.size(), std::memory_order_relaxed); }
+void Game::addMonster(Monster* monster)
+{
+	monsters[monster->getID()] = std::static_pointer_cast<Monster>(getCreatureSharedRef(monster));
+	monstersOnline.store(monsters.size(), std::memory_order_relaxed);
+}
 
-void Game::removeMonster(Monster* monster) { monsters.erase(monster->getID()); monstersOnline.store(monsters.size(), std::memory_order_relaxed); }
+void Game::removeMonster(Monster* monster)
+{
+	monsters.erase(monster->getID());
+	monstersOnline.store(monsters.size(), std::memory_order_relaxed);
+}
 
 Guild_ptr Game::getGuild(uint32_t id) const
 {

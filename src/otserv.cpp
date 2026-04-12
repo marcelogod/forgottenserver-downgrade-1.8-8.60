@@ -51,7 +51,7 @@ void startupErrorMessage(std::string_view errorStr)
 	g_loaderSignal.notify_all();
 }
 
-void mainLoader(ServiceManager* services)
+void mainLoader(const std::shared_ptr<ServiceManager>& services)
 {
 	// dispatcher thread
 	g_game.setGameState(GAME_STATE_STARTUP);
@@ -317,7 +317,7 @@ void startServer()
 {
 	std::set_new_handler(badAllocationHandler);
 
-	ServiceManager serviceManager;
+	auto serviceManager = std::make_shared<ServiceManager>();
 
 	g_dispatcher.start();
 	g_scheduler.start();
@@ -326,14 +326,14 @@ void startServer()
 #endif
 
 	{
-		auto loaderTask = createTaskWithStats([=, services = &serviceManager]() { mainLoader(services); }, "MainLoader", "");
+		auto loaderTask = createTaskWithStats([services = serviceManager]() { mainLoader(services); }, "MainLoader", "");
 		loaderTask->skipSlowDetection = true;
 		g_dispatcher.addTask(std::move(loaderTask));
 	}
 
 	g_loaderSignal.wait(g_loaderUniqueLock);
 
-	if (serviceManager.is_running()) {
+	if (serviceManager->is_running()) {
 		LOG_INFO(">> Version TFS: {} | Protocol: {} | Ports: {} / {} | IP: {}",
 			fmt::format(fg(fmt::color::lime_green), "{}", STATUS_SERVER_VERSION),
 			fmt::format(fg(fmt::color::lime_green), "{}", CLIENT_VERSION_STR),
@@ -348,7 +348,7 @@ void startServer()
 		}
 		LOG_INFO("");
 		LOG_INFO(">> {} Server Online!", getString(ConfigManager::SERVER_NAME));
-	serviceManager.run();
+		serviceManager->run();
 	} else {
 		LOG_INFO(">> No services running. The server is NOT online.");
 		g_threadPool.shutdown();

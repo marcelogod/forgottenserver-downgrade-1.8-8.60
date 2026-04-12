@@ -74,10 +74,13 @@ inline constexpr int32_t RANGE_REQUEST_TRADE_INTERVAL = 400;
 class Game
 {
 public:
-struct InstanceArea {
-	Position fromPos;
-	Position toPos;
-};
+	using NpcRegistry = std::unordered_map<uint32_t, std::weak_ptr<Npc>>;
+	using MonsterRegistry = std::unordered_map<uint32_t, std::weak_ptr<Monster>>;
+
+	struct InstanceArea {
+		Position fromPos;
+		Position toPos;
+	};
 
 	Game() = default;
 
@@ -85,7 +88,7 @@ struct InstanceArea {
 	Game(const Game&) = delete;
 	Game& operator=(const Game&) = delete;
 
-	void start(ServiceManager* manager);
+	void start(const std::shared_ptr<ServiceManager>& manager);
 
 	void forceAddCondition(uint32_t creatureId, Condition* condition);
 	void forceRemoveCondition(uint32_t creatureId, ConditionType_t type);
@@ -510,8 +513,8 @@ struct InstanceArea {
 	void incrementMotdNum() { motdNum++; }
 
 	const std::unordered_map<uint32_t, Player*>& getPlayers() const { return players; }
-	const std::unordered_map<uint32_t, Npc*>& getNpcs() const { return npcs; }
-	const std::unordered_map<uint32_t, Monster*>& getMonsters() const { return monsters; }
+	const NpcRegistry& getNpcs() const { return npcs; }
+	const MonsterRegistry& getMonsters() const { return monsters; }
 
 	void addPlayer(Player* player);
 	void removePlayer(Player* player);
@@ -601,8 +604,8 @@ private:
 
 	WildcardTreeNode wildcardTree{false};
 
-	std::unordered_map<uint32_t, Npc*> npcs;
-	std::unordered_map<uint32_t, Monster*> monsters;
+	NpcRegistry npcs;
+	MonsterRegistry monsters;
 	std::unordered_map<uint32_t, InstanceArea> instanceAreas;
 	
 	std::unordered_map<uint32_t, std::shared_ptr<Creature>> creatureSharedRefs;
@@ -643,7 +646,7 @@ private:
 	std::atomic<size_t> monstersOnline{0};
 	std::atomic<size_t> npcsOnline{0};
 
-	ServiceManager* serviceManager = nullptr;
+	std::weak_ptr<ServiceManager> serviceManager;
 
 	void updatePlayersRecord() const;
 	uint32_t playersRecord = 0;
