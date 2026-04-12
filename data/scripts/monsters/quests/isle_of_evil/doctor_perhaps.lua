@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Doctor Perhaps")
 local monster = {}
 
-monster.name = "Doctor Perhaps"
 monster.description = "Doctor Perhaps"
 monster.experience = 325
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 564,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 475
 monster.maxHealth = 475
 monster.race = "blood"
 monster.corpse = 18158
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -80,13 +91,13 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -43 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_DROWNDAMAGE, minDamage = -17, maxDamage = -55, range = 5, radius = 3, shootEffect = CONST_ANI_SMALLEARTH, effect = CONST_ME_LOSEENERGY, target = true },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -20, maxDamage = -40, range = 7, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -20, maxDamage = -40, range = 7, shootEffect = CONST_ANI_POISON, target = false },
 }
 
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	mitigation = 0.30,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 10, maxDamage = 30, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

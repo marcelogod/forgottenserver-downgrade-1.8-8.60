@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Roaring Water Elemental")
 local monster = {}
 
-monster.name = "Roaring Water Elemental"
 monster.description = "a roaring water elemental"
 monster.experience = 1300
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1750
 monster.maxHealth = 1750
 monster.race = "undead"
 monster.corpse = 8137
-monster.speed = 390
+monster.speed = 195
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 20000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -74,6 +80,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 90, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

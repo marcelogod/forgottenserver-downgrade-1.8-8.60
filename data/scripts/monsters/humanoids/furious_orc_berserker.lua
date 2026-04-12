@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Furious Orc Berserker")
 local monster = {}
 
-monster.name = "Furious Orc Berserker"
 monster.description = "a furious orc berserker"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 210
 monster.maxHealth = 210
 monster.race = "blood"
 monster.corpse = 5980
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

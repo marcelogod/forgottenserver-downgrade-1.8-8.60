@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Nightmare")
 local monster = {}
 
-monster.name = "Nightmare"
 monster.description = "a nightmare"
 monster.experience = 1800
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 299
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Pits of Inferno, Formorgar Mines, Cemetery Quarter, Edron \z
+		(In multiple places during The Inquisition Quest), Alchemist Quarter, Vengoth Castle, Deeper Banuta, Krailos Ruins, Grounds of Deceit.",
+}
 
 monster.health = 2700
 monster.maxHealth = 2700
 monster.race = "blood"
 monster.corpse = 6339
-monster.speed = 464
+monster.speed = 232
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 300,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -93,8 +111,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	mitigation = 0.70,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 60, maxDamage = 100, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 420, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 420, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

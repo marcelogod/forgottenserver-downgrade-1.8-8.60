@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("War Wolf")
 local monster = {}
 
-monster.name = "War Wolf"
 monster.description = "a war wolf"
 monster.experience = 55
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 3
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Orc Fort, the Orc Peninsula, Magician Tower and northwest tower or south underground of Thais, Zao steppe encaged, Vengoth.",
+}
 
 monster.health = 140
 monster.maxHealth = 140
 monster.race = "blood"
 monster.corpse = 6009
-monster.speed = 264
+monster.speed = 132
 monster.manaCost = 420
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -73,6 +87,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 8,
+	mitigation = 0.41,
 }
 
 monster.elements = {

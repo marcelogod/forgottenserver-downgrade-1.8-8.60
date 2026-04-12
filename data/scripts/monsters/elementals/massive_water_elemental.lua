@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Massive Water Elemental")
 local monster = {}
 
-monster.name = "Massive Water Elemental"
 monster.description = "a massive water elemental"
 monster.experience = 1100
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 279
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Calassa, Frozen Trench, Water Elemental Dungeon through the water channels, before Zugurosh in The Inquisition Quest.",
+}
 
 monster.health = 1250
 monster.maxHealth = 1250
 monster.race = "undead"
 monster.corpse = 9582
-monster.speed = 430
+monster.speed = 215
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,13 +94,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_DROWNDAMAGE, minDamage = -330, maxDamage = -450, range = 7, radius = 2, effect = CONST_ME_LOSEENERGY, target = true },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ICEDAMAGE, minDamage = -170, maxDamage = -210, range = 7, shootEffect = CONST_ANI_SMALLICE, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 20, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -355, maxDamage = -420, radius = 5, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 20, minDamage = -355, maxDamage = -420, radius = 5, effect = CONST_ME_POISONAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 45,
+	mitigation = 1.32,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 120, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

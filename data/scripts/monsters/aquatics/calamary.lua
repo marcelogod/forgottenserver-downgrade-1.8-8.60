@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Calamary")
 local monster = {}
 
-monster.name = "Calamary"
 monster.description = "a calamary"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 780
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 1,
+	Locations = "Fiehonja.",
+}
 
 monster.health = 75
 monster.maxHealth = 75
 monster.race = "undead"
 monster.corpse = 13853
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 75,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
 }
 
 monster.light = {
@@ -61,12 +75,13 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "shrimp", chance = 10650, maxCount = 2 },
+	{ name = "shrimp", chance = 12270, maxCount = 2 },
 }
 
 monster.defenses = {
 	defense = 5,
 	armor = 13,
+	mitigation = 0.36,
 }
 
 monster.elements = {

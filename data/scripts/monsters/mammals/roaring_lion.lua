@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Roaring Lion")
 local monster = {}
 
-monster.name = "Roaring Lion"
 monster.description = "a roaring lion"
 monster.experience = 800
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 981
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Lion's Rock a few floors down.",
+}
 
 monster.health = 1000
 monster.maxHealth = 1000
 monster.race = "blood"
 monster.corpse = 19103
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,

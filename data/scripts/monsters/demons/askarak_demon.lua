@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Askarak Demon")
 local monster = {}
 
-monster.name = "Askarak Demon"
 monster.description = "an askarak demon"
 monster.experience = 900
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 727
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Demonwar Crypt teleporter before vampire shield quest.",
+}
 
 monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "venom"
 monster.corpse = 12659
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -85,12 +103,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -20, maxDamage = -60, range = 7, radius = 6, shootEffect = CONST_ANI_POISON, effect = CONST_ME_GREEN_RINGS, target = false },
 	{ name = "askarak wave", interval = 2000, chance = 15, minDamage = -75, maxDamage = -140, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -130, maxDamage = -170, length = 4, spread = 0, effect = CONST_ME_GREEN_RINGS, target = false },
-	{ name = "speed", interval = 2000, chance = 10, speed = -600, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = -600, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 15000 },
 }
 
 monster.defenses = {
 	defense = 15,
 	armor = 35,
+	mitigation = 1.04,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Medusa")
 local monster = {}
 
-monster.name = "Medusa"
 monster.description = "a medusa"
 monster.experience = 4050
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 570
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Vandura Mountain (single spawn), Talahu (Medusa Cave), Deeper Banuta, Medusa Tower.",
+}
 
 monster.health = 4500
 monster.maxHealth = 4500
 monster.race = "blood"
 monster.corpse = 9607
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 600,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -83,13 +100,14 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -450, condition = { type = CONDITION_POISON, totalDamage = 840, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_LIFEDRAIN, minDamage = -21, maxDamage = -350, range = 7, shootEffect = CONST_ANI_EARTH, effect = CONST_ME_CARNIPHILA, target = true },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -250, maxDamage = -500, length = 8, spread = 0, effect = CONST_ME_CARNIPHILA, target = false },
-	{ name = "speed", interval = 2000, chance = 25, speed = -900, radius = 7, effect = CONST_ME_POFF, target = true },
+	{ name = "speed", interval = 2000, chance = 25, minDamage = -0, maxDamage = -390, radius = 7, effect = CONST_ME_POFF, target = true },
 	{ name = "outfit", interval = 2000, chance = 1, range = 7, target = true, duration = 3000, outfitMonster = "clay guardian" },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 45,
+	mitigation = 1.74,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 150, maxDamage = 300, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

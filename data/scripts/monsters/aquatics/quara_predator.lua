@@ -1,9 +1,8 @@
 local mType = Game.createMonsterType("Quara Predator")
 local monster = {}
 
-monster.name = "Quara Predator"
 monster.description = "a quara predator"
-monster.experience = 1850
+monster.experience = 1600
 monster.outfit = {
 	lookType = 20,
 	lookHead = 0,
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 237
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Calassa, Frozen Trench, Sunken Quarter, Alchemist Quarter (unreachable), \z
+		The Inquisition Quest, Seacrest Grounds.",
+}
 
 monster.health = 2200
 monster.maxHealth = 2200
 monster.race = "blood"
 monster.corpse = 6067
-monster.speed = 450
+monster.speed = 225
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -63,19 +78,20 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 78040, maxCount = 154 },
-	{ name = "quara bone", chance = 9940 },
-	{ name = "royal spear", chance = 9320, maxCount = 7 },
-	{ name = "small diamond", chance = 5200, maxCount = 2 },
-	{ name = "shrimp", chance = 5070, maxCount = 5 },
-	{ name = "double axe", chance = 2990 },
-	{ name = "fish fin", chance = 1910 },
+	{ name = "gold coin", chance = 28000, maxCount = 100 },
+	{ name = "gold coin", chance = 50000, maxCount = 54 },
+	{ name = "quara bone", chance = 9860 },
+	{ name = "royal spear", chance = 9240, maxCount = 7 },
+	{ name = "small diamond", chance = 5300, maxCount = 2 },
+	{ name = "shrimp", chance = 4980, maxCount = 5 },
+	{ name = "double axe", chance = 3011 },
+	{ name = "fish fin", chance = 1920, maxCount = 1 },
 	{ name = "great health potion", chance = 1040 },
-	{ name = "relic sword", chance = 640 },
-	{ name = "assassin star", chance = 520 },
-	{ name = "glacier robe", chance = 490 },
-	{ name = "skull helmet", chance = 380 },
-	{ name = "giant shrimp", chance = 20 },
+	{ name = "relic sword", chance = 670 },
+	{ name = "assassin star", chance = 530 },
+	{ name = "glacier robe", chance = 440 },
+	{ name = "skull helmet", chance = 390 },
+	{ name = "giant shrimp", chance = 10 },
 }
 
 monster.attacks = {
@@ -85,7 +101,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 40,
-	{ name = "speed", interval = 2000, chance = 15, speed = 270, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 5000 },
+	mitigation = 1.46,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 270, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 5000 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 25, maxDamage = 75, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

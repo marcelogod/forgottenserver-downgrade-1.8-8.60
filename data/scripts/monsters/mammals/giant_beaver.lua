@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Giant Beaver")
 local monster = {}
 
-monster.name = "Giant Beaver"
 monster.description = "a giant beaver"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 5290
 monster.maxHealth = 5290
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 364
+monster.speed = 182
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -59,6 +62,7 @@ monster.voices = {
 monster.defenses = {
 	defense = 110,
 	armor = 120,
+	--	mitigation = ???,
 }
 
 monster.elements = {

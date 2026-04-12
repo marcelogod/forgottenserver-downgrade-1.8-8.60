@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Furious Troll")
 local monster = {}
 
-monster.name = "Furious Troll"
 monster.description = "a furious troll"
 monster.experience = 185
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 540
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 1,
+	Locations = "Old Beregar mines.",
+}
 
 monster.health = 245
 monster.maxHealth = 245
 monster.race = "blood"
 monster.corpse = 5960
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -81,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	mitigation = 1.02,
 }
 
 monster.elements = {

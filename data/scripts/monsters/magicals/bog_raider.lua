@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bog Raider")
 local monster = {}
 
-monster.name = "Bog Raider"
 monster.description = "a bog raider"
 monster.experience = 800
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 460
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Underneath Malada and Talahu, Edron Bog Raider Cave in Stonehome, \z
+		Edron Earth Elemental Cave, Alchemist Quarter, Vengoth Castle, Robson Isle. Oramond Hydra/Bog Raider Cave.",
+}
 
 monster.health = 1300
 monster.maxHealth = 1300
 monster.race = "venom"
 monster.corpse = 8123
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -77,12 +95,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -90, maxDamage = -140, range = 7, effect = CONST_ME_MAGIC_RED, target = true },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -100, maxDamage = -175, radius = 3, effect = CONST_ME_BUBBLES, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -96, maxDamage = -110, range = 7, shootEffect = CONST_ANI_SMALLEARTH, target = true },
-	{ name = "speed", interval = 2000, chance = 15, speed = -600, range = 7, effect = CONST_ME_SMALLPLANTS, target = true, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -600, range = 7, effect = CONST_ME_SMALLPLANTS, target = true, duration = 15000 },
 }
 
 monster.defenses = {
 	defense = 0,
 	armor = 20,
+	mitigation = 0.78,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 65, maxDamage = 95, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

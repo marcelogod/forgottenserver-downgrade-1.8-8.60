@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ripper Spectre")
 local monster = {}
 
-monster.name = "Ripper Spectre"
 monster.description = "a ripper spectre"
 monster.experience = 3500
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1724
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Haunted Cellar, Buried Cathedral",
+}
 
 monster.health = 3800
 monster.maxHealth = 3800
 monster.race = "blood"
 monster.corpse = 30026
-monster.speed = 380
+monster.speed = 190
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -86,6 +103,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 69,
 	armor = 69,
+	mitigation = 1.91,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 150, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

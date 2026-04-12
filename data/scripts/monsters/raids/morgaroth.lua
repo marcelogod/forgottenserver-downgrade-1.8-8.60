@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Morgaroth")
 local monster = {}
 
-monster.name = "Morgaroth"
 monster.description = "Morgaroth"
 monster.experience = 15000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 229,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 55000
 monster.maxHealth = 55000
 monster.race = "fire"
 monster.corpse = 6068
-monster.speed = 610
+monster.speed = 305
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 10000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 100,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -133,7 +144,7 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_PHYSICALDAMAGE, minDamage = -250, maxDamage = -500, range = 7, radius = 13, effect = CONST_ME_SOUND_RED, target = false },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -200, maxDamage = -450, radius = 14, effect = CONST_ME_LOSEENERGY, target = false },
 	{ name = "combat", interval = 3000, chance = 15, type = COMBAT_PHYSICALDAMAGE, minDamage = -100, maxDamage = -200, range = 7, radius = 3, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -400, range = 7, effect = CONST_ME_SOUND_RED, target = false, duration = 20000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -400, range = 7, effect = CONST_ME_SOUND_RED, target = false, duration = 20000 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_MANADRAIN, minDamage = -70, maxDamage = -320, radius = 3, effect = CONST_ME_HITAREA, target = true },
 	{ name = "dark torturer skill reducer", interval = 2000, chance = 5, target = false },
 }
@@ -141,9 +152,10 @@ monster.attacks = {
 monster.defenses = {
 	defense = 65,
 	armor = 130,
+	--	mitigation = ???,
 	{ name = "combat", interval = 3000, chance = 35, type = COMBAT_HEALING, minDamage = 800, maxDamage = 1100, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "combat", interval = 9000, chance = 15, type = COMBAT_HEALING, minDamage = 3800, maxDamage = 4000, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 4000, chance = 80, speed = 470, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	{ name = "speed", interval = 4000, chance = 80, speedChange = 470, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dipthrah")
 local monster = {}
 
-monster.name = "Dipthrah"
 monster.description = "Dipthrah"
 monster.experience = 2900
 monster.outfit = {
@@ -18,12 +17,22 @@ monster.health = 4200
 monster.maxHealth = 4200
 monster.race = "undead"
 monster.corpse = 6031
-monster.speed = 480
+monster.speed = 240
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.bosstiary = {
+	bossRaceId = 87,
+	bossRace = RARITY_BANE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -40,7 +49,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -85,7 +94,7 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -200, condition = { type = CONDITION_POISON, totalDamage = 65, interval = 4000 } },
 	{ name = "combat", interval = 4000, chance = 20, type = COMBAT_LIFEDRAIN, minDamage = -100, maxDamage = -800, range = 1, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_MANADRAIN, minDamage = -100, maxDamage = -500, range = 7, effect = CONST_ME_MAGIC_RED, target = false },
-	{ name = "speed", interval = 1000, chance = 15, speed = -650, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 50000 },
+	{ name = "speed", interval = 1000, chance = 15, speedChange = -650, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 50000 },
 	{ name = "drunk", interval = 1000, chance = 12, radius = 7, effect = CONST_ME_LOSEENERGY, target = false },
 	{ name = "melee", interval = 3000, chance = 34, minDamage = -50, maxDamage = -600 },
 }

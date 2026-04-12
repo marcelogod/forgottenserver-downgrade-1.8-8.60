@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Wyrm")
 local monster = {}
 
-monster.name = "Wyrm"
 monster.description = "a wyrm"
 monster.experience = 1550
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 461
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Drefia Wyrm Lair (after the Medusa Shield Quest room), Darashia Wyrm Hills, Arena and Zoo Quarter,  \z
+	beneath Fenrock, Deeper Razachai, Lower Spike, Vandura Wyrm Cave and Vandura Mountain in Liberty Bay.",
+}
 
 monster.health = 1825
 monster.maxHealth = 1825
 monster.race = "blood"
 monster.corpse = 8113
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -90,6 +108,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 34,
+	mitigation = 0.83,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 100, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "effect", interval = 2000, chance = 10, radius = 1, effect = CONST_ME_SOUND_YELLOW, target = false },
 }

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Glooth Horror")
 local monster = {}
 
-monster.name = "Glooth Horror"
 monster.description = "glooth horror"
 monster.experience = 900
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 15000
 monster.maxHealth = 15000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 200,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,

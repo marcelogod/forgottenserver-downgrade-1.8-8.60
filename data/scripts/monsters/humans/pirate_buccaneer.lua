@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pirate Buccaneer")
 local monster = {}
 
-monster.name = "Pirate Buccaneer"
 monster.description = "a pirate buccaneer"
 monster.experience = 250
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 249
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Nargor, Tyrsung on the ship, Yalahar Foreign Quarter, Krailos Steppe and The Cave.",
+}
 
 monster.health = 425
 monster.maxHealth = 425
 monster.race = "blood"
 monster.corpse = 18190
-monster.speed = 218
+monster.speed = 109
 monster.manaCost = 595
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -89,6 +103,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 16,
+	mitigation = 1.04,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Exotic Bat")
 local monster = {}
 
-monster.name = "Exotic Bat"
 monster.description = "a exotic bat"
 monster.experience = 1200
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2051
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Exotic cave Spider cave.",
+}
 
 monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "venom"
 monster.corpse = 35690
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 250
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Vampire Bride")
 local monster = {}
 
-monster.name = "Vampire Bride"
 monster.description = "a vampire bride"
 monster.experience = 1050
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 483
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Drefia and Vampire Castle on Vengoth, Edron Vampire Crypt.",
+}
 
 monster.health = 1200
 monster.maxHealth = 1200
 monster.race = "blood"
 monster.corpse = 8744
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	health = 10,
+	damage = 10,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -94,6 +110,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 55,
+	mitigation = 1.18,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 40, maxDamage = 80, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

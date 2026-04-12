@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dark Monk")
 local monster = {}
 
-monster.name = "Dark Monk"
 monster.description = "a dark monk"
 monster.experience = 145
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 225
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Dark Cathedral, Vandura (Cult Cave), Foreigner Quarter.",
+}
 
 monster.health = 190
 monster.maxHealth = 190
 monster.race = "blood"
 monster.corpse = 18281
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 480
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 20,
+	damage = 10,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -86,8 +102,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 22,
+	mitigation = 1.13,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 25, maxDamage = 49, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Renegade Quara Mantassin")
 local monster = {}
 
-monster.name = "Renegade Quara Mantassin"
 monster.description = "a renegade quara mantassin"
 monster.experience = 1000
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1099
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Seacrest Grounds when Seacrest Serpents are not spawning.",
+}
 
 monster.health = 1200
 monster.maxHealth = 1200
 monster.race = "blood"
 monster.corpse = 6064
-monster.speed = 590
+monster.speed = 295
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -59,18 +76,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "mantassin tail", chance = 12780 },
-	{ name = "mind stone", chance = 10270 },
-	{ name = "shrimp", chance = 4470, maxCount = 4 },
-	{ name = "small sapphire", chance = 3430, maxCount = 2 },
-	{ id = 3049, chance = 2860 }, -- stealth ring
-	{ name = "ice rapier", chance = 3130 },
-	{ name = "blue crystal shard", chance = 1420 },
-	{ name = "strange helmet", chance = 1550 },
-	{ name = "two handed sword", chance = 1040 },
-	{ name = "fish fin", chance = 680 },
-	{ name = "blue robe", chance = 710 },
-	{ id = 3051, chance = 820 }, -- energy ring
+	{ name = "mantassin tail", chance = 14490 },
+	{ name = "mind stone", chance = 10370 },
+	{ name = "shrimp", chance = 3950, maxCount = 3 },
+	{ name = "small sapphire", chance = 3540, maxCount = 3 },
+	{ id = 3049, chance = 3290 }, -- stealth ring
+	{ name = "ice rapier", chance = 2060 },
+	{ name = "blue crystal shard", chance = 1890 },
+	{ name = "strange helmet", chance = 1320 },
+	{ name = "two handed sword", chance = 820 },
+	{ name = "fish fin", chance = 740 },
+	{ name = "blue robe", chance = 660 },
+	{ id = 3051, chance = 580 }, -- energy ring
 }
 
 monster.attacks = {
@@ -80,6 +97,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 16,
+	mitigation = 0.70,
 	{ name = "invisible", interval = 2000, chance = 20, effect = CONST_ME_MAGIC_BLUE },
 }
 

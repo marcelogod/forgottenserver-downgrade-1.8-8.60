@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Magic Pillar")
 local monster = {}
 
-monster.name = "Magic Pillar"
 monster.description = "a magic pillar"
 monster.experience = 0
 monster.outfit = {
@@ -20,6 +19,10 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +37,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 100,
 	healthHidden = true,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -62,6 +65,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 1,
 	armor = 1,
+	mitigation = 0.00,
 }
 
 monster.elements = {

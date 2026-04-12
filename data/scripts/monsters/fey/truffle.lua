@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Truffle")
 local monster = {}
 
-monster.name = "Truffle"
 monster.description = "a Truffle"
 monster.experience = 15
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2547
+monster.Bestiary = {
+	class = "Fey",
+	race = BESTY_RACE_FEY,
+	toKill = 25,
+	FirstUnlock = 5,
+	SecondUnlock = 10,
+	CharmsPoints = 1,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Candia",
+}
 
 monster.health = 70
 monster.maxHealth = 70
 monster.race = "undead"
 monster.corpse = 48349
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 70,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -70,6 +85,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 13,
+	mitigation = 0.38,
 }
 
 monster.elements = {

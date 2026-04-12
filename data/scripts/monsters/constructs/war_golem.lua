@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("War Golem")
 local monster = {}
 
-monster.name = "War Golem"
 monster.description = "a war golem"
 monster.experience = 2310
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 533
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Factory Quarter.",
+}
 
 monster.health = 4300
 monster.maxHealth = 4300
 monster.race = "venom"
 monster.corpse = 9092
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -106,7 +123,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 35,
-	{ name = "speed", interval = 2000, chance = 15, speed = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.18,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

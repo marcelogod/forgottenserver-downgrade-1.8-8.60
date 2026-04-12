@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Shaburak Prince")
 local monster = {}
 
-monster.name = "Shaburak Prince"
 monster.description = "a shaburak prince"
 monster.experience = 1700
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 726
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Demonwar Crypt",
+}
 
 monster.health = 2600
 monster.maxHealth = 2600
 monster.race = "fire"
 monster.corpse = 12834
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -86,12 +104,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_FIREDAMAGE, minDamage = -40, maxDamage = -90, range = 7, radius = 6, shootEffect = CONST_ANI_FIRE, effect = CONST_ME_FIREATTACK, target = false },
 	{ name = "shaburak wave", interval = 2000, chance = 15, minDamage = -100, maxDamage = -200, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_FIREDAMAGE, minDamage = -150, maxDamage = -250, length = 4, spread = 0, effect = CONST_ME_HITBYFIRE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -700, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -700, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 15000 },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 45,
+	mitigation = 1.32,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 100, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

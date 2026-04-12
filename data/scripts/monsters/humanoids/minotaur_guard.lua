@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Minotaur Guard")
 local monster = {}
 
-monster.name = "Minotaur Guard"
 monster.description = "a minotaur guard"
 monster.experience = 160
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 29
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Ancient Temple, Mintwallin, Minotaur Pyramid, Maze of Lost Souls, Folda, Cyclopolis, \z
+		Deeper Fibula Dungeon (level 50+ to open the door), Hero Cave, underground of Elvenbane, \z
+		Plains of Havoc, Kazordoon Minotaur Cave, Foreigner Quarter.",
+}
 
 monster.health = 185
 monster.maxHealth = 185
 monster.race = "blood"
 monster.corpse = 5983
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 550
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 20,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -81,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 15,
+	mitigation = 0.83,
 }
 
 monster.elements = {

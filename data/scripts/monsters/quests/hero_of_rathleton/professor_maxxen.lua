@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Professor Maxxen")
 local monster = {}
 
-monster.name = "Professor Maxxen"
 monster.description = "Professor Maxxen"
 monster.experience = 15500
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 90000
 monster.maxHealth = 90000
 monster.race = "venom"
 monster.corpse = 21910
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1093,
+	bossRace = RARITY_BANE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -85,7 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 40,
-	{ name = "speed", interval = 2000, chance = 13, speed = 460, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
+	{ name = "speed", interval = 2000, chance = 13, speedChange = 460, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "generator", interval = 30000, chance = 50, target = false },
 	{ name = "maxxenteleport", interval = 2000, chance = 5, target = false },

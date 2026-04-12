@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orc Spearman")
 local monster = {}
 
-monster.name = "Orc Spearman"
 monster.description = "an orc spearman"
 monster.experience = 38
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 50
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Orc Fortress, Folda Dungeon, Edron Orc Cave and around it, Ancient Temple, \z
+		Venore Orc Cave, below the Point of No Return in Outlaw Camp, Plains of Havoc, \z
+		North of Thais in the Orc Peninsula, Elvenbane and Orc Camp in Foreigner Quarter. \z
+		Also found in Rookgaard West plains, Zao Orc Land.",
+}
 
 monster.health = 105
 monster.maxHealth = 105
 monster.race = "blood"
 monster.corpse = 5996
-monster.speed = 176
+monster.speed = 88
 monster.manaCost = 310
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -79,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 6,
+	mitigation = 0.30,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Shrieking Cry-Stal")
 local monster = {}
 
-monster.name = "Shrieking Cry-Stal"
 monster.description = "a shrieking cry-stal"
 monster.experience = 13560
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2278
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Crystal Enigma",
+}
 
 monster.health = 20650
 monster.maxHealth = 20650
 monster.race = "energy"
 monster.corpse = 39331
-monster.speed = 414
+monster.speed = 207
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 3,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -87,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 110,
 	armor = 95,
+	mitigation = 2.45,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Feral Sphinx")
 local monster = {}
 
-monster.name = "Feral Sphinx"
 monster.description = "a feral sphinx"
 monster.experience = 8800
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1807
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Kilmaresh, south of Issavi.",
+}
 
 monster.health = 9800
 monster.maxHealth = 9800
 monster.race = "blood"
 monster.corpse = 31658
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -91,6 +105,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 90,
 	armor = 90,
+	mitigation = 2.69,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 425, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

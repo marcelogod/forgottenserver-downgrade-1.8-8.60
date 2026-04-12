@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orc Leader")
 local monster = {}
 
-monster.name = "Orc Leader"
 monster.description = "an orc leader"
 monster.experience = 270
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 59
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Orc Fort, Edron Orc Cave, South of the temple in PoH, Maze of Lost Souls, Cyclopolis, Zao Orc Land.",
+}
 
 monster.health = 450
 monster.maxHealth = 450
 monster.race = "blood"
 monster.corpse = 6001
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 640
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 15,
+	damage = 15,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -88,6 +104,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 20,
+	mitigation = 1.18,
 }
 
 monster.elements = {

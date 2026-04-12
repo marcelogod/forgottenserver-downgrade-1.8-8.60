@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ascending Ferumbras")
 local monster = {}
 
-monster.name = "Ascending Ferumbras"
 monster.description = "Ascending Ferumbras"
 monster.experience = 12000
 monster.outfit = {
@@ -26,6 +25,13 @@ monster.changeTarget = {
 	chance = 20,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,6 +74,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

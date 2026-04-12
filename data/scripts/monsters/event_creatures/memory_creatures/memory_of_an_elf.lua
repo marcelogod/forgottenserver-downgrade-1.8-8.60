@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Memory of an Elf")
 local monster = {}
 
-monster.name = "Memory of an Elf"
 monster.description = "a memory of an elf"
 monster.experience = 1440
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 3440
 monster.maxHealth = 3440
 monster.race = "blood"
 monster.corpse = 6011
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,6 +80,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	mitigation = 1.20,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 40, maxDamage = 60, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

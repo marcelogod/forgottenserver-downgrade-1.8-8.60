@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hairman the Huge")
 local monster = {}
 
-monster.name = "Hairman the Huge"
 monster.description = "Hairman the Huge"
 monster.experience = 335
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 425,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 600
 monster.maxHealth = 600
 monster.race = "blood"
 monster.corpse = 6043
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 14,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -60,13 +71,9 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 92310, maxCount = 60 },
+	{ name = "gold coin", chance = 100000, maxCount = 60 },
 	{ id = 3093, chance = 25000 }, -- club ring
-	{ name = "ape fur", chance = 15380 },
-	{ name = "banana", chance = 30770, maxCount = 2 },
-	{ name = "plate armor", chance = 12000 },
-	{ id = 3050, chance = 25000 }, -- club ring
-	{ name = "protection amulet", chance = 10000 },
+	{ name = "banana", chance = 25000, maxCount = 1 },
 }
 
 monster.attacks = {
@@ -76,7 +83,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 20,
-	{ name = "speed", interval = 1000, chance = 7, speed = 260, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 1000, chance = 7, speedChange = 260, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
 }
 
 monster.elements = {
@@ -98,5 +106,19 @@ monster.immunities = {
 	{ type = "invisible", condition = false },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

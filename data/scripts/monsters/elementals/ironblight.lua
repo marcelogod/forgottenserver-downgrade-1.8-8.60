@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ironblight")
 local monster = {}
 
-monster.name = "Ironblight"
 monster.description = "an ironblight"
 monster.experience = 5400
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 890
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 1,
+	Locations = "Warzone 3.",
+}
 
 monster.health = 6600
 monster.maxHealth = 6600
 monster.race = "undead"
 monster.corpse = 16079
-monster.speed = 286
+monster.speed = 143
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 260,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -90,16 +107,16 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -300 },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -460, maxDamage = -480, radius = 6, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -460, maxDamage = -480, radius = 6, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_ICEDAMAGE, minDamage = -260, maxDamage = -350, length = 7, spread = 0, shootEffect = CONST_ANI_ICE, effect = CONST_ME_ICEATTACK, target = false },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -180, maxDamage = -250, radius = 2, shootEffect = CONST_ANI_GREENSTAR, effect = CONST_ME_BIGPLANTS, target = true },
-	{ name = "speed", interval = 2000, chance = 10, speed = -800, length = 5, spread = 0, effect = CONST_ME_BLOCKHIT, target = false, duration = 30000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = -800, length = 5, spread = 0, effect = CONST_ME_BLOCKHIT, target = false, duration = 30000 },
 }
 
 monster.defenses = {
 	defense = 35,
 	armor = 84,
+	mitigation = 2.40,
 	{ name = "invisible", interval = 2000, chance = 20, effect = CONST_ME_MAGIC_BLUE },
 }
 

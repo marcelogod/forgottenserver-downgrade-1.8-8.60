@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Goblin Leader")
 local monster = {}
 
-monster.name = "Goblin Leader"
 monster.description = "a goblin leader"
 monster.experience = 75
 monster.outfit = {
@@ -15,18 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 377
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 30,
+	Stars = 2,
+	Occurrence = 3,
+	Locations = "Way to Beregar, below Femor Hills (Tower Defence Quest), near Femor Hills during Goblin raid.",
+}
 
 monster.health = 50
 monster.maxHealth = 50
 monster.race = "blood"
 monster.corpse = 6002
-monster.speed = 120
+monster.speed = 60
 monster.manaCost = 290
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
 }
+
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
+monster.events = {}
 
 monster.flags = {
 	summonable = true,
@@ -42,10 +58,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -83,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 7,
+	mitigation = 0.33,
 }
 
 monster.elements = {

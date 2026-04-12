@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Novice of the Cult")
 local monster = {}
 
-monster.name = "Novice of the Cult"
 monster.description = "a novice of the cult"
 monster.experience = 100
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 255
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Liberty Bay Cult Cave, Formorgar Mines, Yalahar Magician Quarter, \z
+		in the caves on top of the Hrodmir mountains.",
+}
 
 monster.health = 285
 monster.maxHealth = 285
 monster.race = "blood"
 monster.corpse = 18186
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 40,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -90,6 +108,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	mitigation = 0.62,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 20, maxDamage = 40, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

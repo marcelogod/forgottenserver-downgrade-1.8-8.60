@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Heoni")
 local monster = {}
 
-monster.name = "Heoni"
 monster.description = "Heoni"
 monster.experience = 515
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 671,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 900
 monster.maxHealth = 900
 monster.race = "blood"
 monster.corpse = 11590
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 300,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -57,23 +68,21 @@ monster.voices = {
 	{ text = "Shriiiek", yell = false },
 }
 
-monster.loot = {
-	{ id = 5903, chance = 100000, unique = true }, -- ferumbras' hat
-}
+monster.loot = {}
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 50, attack = 40, condition = { type = CONDITION_POISON, totalDamage = 480, interval = 4000 } },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -20, maxDamage = -240, length = 8, spread = 3, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -20, maxDamage = -240, length = 8, spread = 3, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "drunk", interval = 2000, chance = 13, length = 8, spread = 3, effect = CONST_ME_SOUND_WHITE, target = false, duration = 25000 },
 }
 
 monster.defenses = {
 	defense = 18,
 	armor = 25,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 11, type = COMBAT_HEALING, minDamage = 76, maxDamage = 84, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 10, speed = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {
@@ -95,5 +104,19 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

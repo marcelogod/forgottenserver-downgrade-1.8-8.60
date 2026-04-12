@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Renegade Quara Pincher")
 local monster = {}
 
-monster.name = "Renegade Quara Pincher"
 monster.description = "a renegade quara pincher"
 monster.experience = 2200
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1100
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Seacrest Grounds when Seacrest Serpents are not spawning.",
+}
 
 monster.health = 2800
 monster.maxHealth = 2800
 monster.race = "blood"
 monster.corpse = 6063
-monster.speed = 396
+monster.speed = 198
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -59,35 +76,36 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "platinum coin", chance = 80620, maxCount = 5 },
-	{ name = "quara pincers", chance = 18640, maxCount = 1 },
-	{ name = "great mana potion", chance = 10380, maxCount = 2 },
-	{ name = "great health potion", chance = 9340, maxCount = 2 },
-	{ name = "small ruby", chance = 7920, maxCount = 2 },
-	{ name = "small diamond", chance = 7620, maxCount = 2 },
-	{ name = "mind stone", chance = 6610 },
-	{ id = 3039, chance = 4950 }, -- red gem
-	{ name = "shrimp", chance = 5190 },
-	{ name = "vortex bolt", chance = 3840, maxCount = 5 },
-	{ id = 281, chance = 1720 }, -- giant shimmering pearl (green)
-	{ name = "warrior helmet", chance = 1520 },
-	{ name = "fish fin", chance = 1480 },
-	{ name = "crown armor", chance = 400 },
-	{ id = 3053, chance = 540 }, -- time ring
-	{ name = "talon", chance = 300 },
+	{ name = "platinum coin", chance = 80000, maxCount = 5 },
+	{ name = "quara pincers", chance = 18800, maxCount = 1 },
+	{ name = "great mana potion", chance = 9720, maxCount = 2 },
+	{ name = "great health potion", chance = 9010, maxCount = 2 },
+	{ name = "small ruby", chance = 9010, maxCount = 2 },
+	{ name = "small diamond", chance = 7060, maxCount = 2 },
+	{ name = "mind stone", chance = 6140 },
+	{ id = 3039, chance = 5120 }, -- red gem
+	{ name = "shrimp", chance = 4810, maxCount = 5 },
+	{ name = "vortex bolt", chance = 3790, maxCount = 5 },
+	{ id = 281, chance = 1430 }, -- giant shimmering pearl (green)
+	{ name = "warrior helmet", chance = 1430 },
+	{ name = "fish fin", chance = 920 },
+	{ name = "crown armor", chance = 611 },
+	{ id = 3053, chance = 410 }, -- time ring
+	{ name = "talon", chance = 310 },
 	{ name = "glacier robe", chance = 200 },
 	{ name = "giant shrimp", chance = 100 },
-	{ name = "twiceslicer", chance = 30 },
+	{ name = "twiceslicer", chance = 100 },
 }
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 90, attack = 60, effect = CONST_ME_DRAWBLOOD },
-	{ name = "speed", interval = 2000, chance = 20, speed = -300, range = 1, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -300, range = 1, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
 }
 
 monster.defenses = {
 	defense = 50,
 	armor = 85,
+	mitigation = 1.26,
 }
 
 monster.elements = {

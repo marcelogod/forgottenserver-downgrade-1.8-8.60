@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Shardhead")
 local monster = {}
 
-monster.name = "Shardhead"
 monster.description = "Shardhead"
 monster.experience = 650
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 800
 monster.maxHealth = 800
 monster.race = "undead"
 monster.corpse = 7282
-monster.speed = 194
+monster.speed = 97
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -67,12 +73,13 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = -0, maxDamage = -271 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_ICEDAMAGE, minDamage = 0, maxDamage = -90, range = 7, shootEffect = CONST_ANI_ICE, effect = CONST_ME_ICEATTACK, target = true },
-	{ name = "speed", interval = 2000, chance = 12, speed = -360, length = 8, spread = 3, effect = CONST_ME_ICEAREA, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 12, speedChange = -360, length = 8, spread = 3, effect = CONST_ME_ICEAREA, target = false, duration = 5000 },
 }
 
 monster.defenses = {
 	defense = 26,
 	armor = 25,
+	mitigation = 0.90,
 }
 
 monster.elements = {

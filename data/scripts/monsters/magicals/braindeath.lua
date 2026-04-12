@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Braindeath")
 local monster = {}
 
-monster.name = "Braindeath"
 monster.description = "a braindeath"
 monster.experience = 985
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 321
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Helheim, Demon Forge (The Arcanum), beneath Fenrock, Vandura Bonelord Cave, \z
+		Alchemist Quarter and Cemetery Quarter.",
+}
 
 monster.health = 1225
 monster.maxHealth = 1225
 monster.race = "undead"
 monster.corpse = 7256
-monster.speed = 218
+monster.speed = 109
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -97,8 +115,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 12,
 	armor = 12,
+	mitigation = 0.67,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 150, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 260, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 260, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

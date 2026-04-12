@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Thul")
 local monster = {}
 
-monster.name = "Thul"
 monster.description = "Thul"
 monster.experience = 2700
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 2950
 monster.maxHealth = 2950
 monster.race = "blood"
 monster.corpse = 6065
-monster.speed = 520
+monster.speed = 260
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 40,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -81,12 +87,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 7, type = COMBAT_ICEDAMAGE, minDamage = -108, maxDamage = -137, radius = 4, effect = CONST_ME_ICEAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -170, radius = 3, effect = CONST_ME_HITAREA, target = false },
 	{ name = "poisonfield", interval = 2000, chance = 19, radius = 3, shootEffect = CONST_ANI_POISON, target = false },
-	{ name = "speed", interval = 2000, chance = 18, speed = -360, range = 7, shootEffect = CONST_ANI_SNOWBALL, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 18, speedChange = -360, range = 7, shootEffect = CONST_ANI_SNOWBALL, target = false, duration = 5000 },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	mitigation = 1.46,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 25, maxDamage = 75, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

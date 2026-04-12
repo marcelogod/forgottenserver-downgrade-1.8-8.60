@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Enraged Crystal Golem")
 local monster = {}
 
-monster.name = "Enraged Crystal Golem"
 monster.description = "an enraged crystal golem"
 monster.experience = 550
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 873
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Golem Workshop.",
+}
 
 monster.health = 700
 monster.maxHealth = 700
 monster.race = "venom"
 monster.corpse = 16176
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {

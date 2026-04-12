@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dworc Fleshhunter")
 local monster = {}
 
-monster.name = "Dworc Fleshhunter"
 monster.description = "a dworc fleshhunter"
 monster.experience = 40
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 215
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "South of Port Hope (Trapwood) on ground level and underground.",
+}
 
 monster.health = 85
 monster.maxHealth = 85
 monster.race = "blood"
 monster.corpse = 6058
-monster.speed = 148
+monster.speed = 74
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 8,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -81,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 3,
+	mitigation = 0.20,
 }
 
 monster.elements = {

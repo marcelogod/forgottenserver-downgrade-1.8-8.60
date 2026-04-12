@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Brown Horse")
 local monster = {}
 
 monster.name = "Horse"
-monster.name = "Brown Horse"
 monster.description = "a horse"
 monster.experience = 0
 monster.outfit = {
@@ -16,17 +15,32 @@ monster.outfit = {
 }
 
 monster.raceId = 752
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 1,
+	Locations = "South-east, east and north-east of Thais depending on the Horse Station World Change.",
+}
 
 monster.health = 75
 monster.maxHealth = 75
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 248
+monster.speed = 124
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 75,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

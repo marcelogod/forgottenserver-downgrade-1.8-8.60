@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ogre Rowdy")
 local monster = {}
 
-monster.name = "Ogre Rowdy"
 monster.description = "an ogre rowdy"
 monster.experience = 4200
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1821
+monster.Bestiary = {
+	class = "Giant",
+	race = BESTY_RACE_GIANT,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Kilmaresh Central Steppe, Kilmaresh Southern Steppe, Green Belt, Kilmaresh Mountains underground.",
+}
 
 monster.health = 4500
 monster.maxHealth = 4500
 monster.race = "blood"
 monster.corpse = 31531
-monster.speed = 420
+monster.speed = 210
 monster.manaCost = 0
 
 monster.faction = FACTION_ANUMA
@@ -29,6 +39,11 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_FAFNAR }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -45,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -84,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 98,
 	armor = 98,
+	mitigation = 2.63,
 }
 
 monster.elements = {

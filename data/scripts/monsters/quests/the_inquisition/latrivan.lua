@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Latrivan")
 local monster = {}
 
-monster.name = "Latrivan"
 monster.description = "Latrivan"
 monster.experience = 10000
 monster.outfit = {
@@ -14,16 +13,32 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {
+	"InquisitionBossDeath",
+}
+
 monster.health = 25000
 monster.maxHealth = 25000
 monster.race = "fire"
 monster.corpse = 7893
-monster.speed = 390
+monster.speed = 195
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.bosstiary = {
+	bossRaceId = 417,
+	bossRace = RARITY_BANE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +55,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

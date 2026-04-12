@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Elvira Hammerthrust")
 local monster = {}
 
-monster.name = "Elvira Hammerthrust"
 monster.description = "Elvira Hammerthrust"
 monster.experience = 165
 monster.outfit = {
@@ -14,16 +13,27 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 766,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 245
 monster.maxHealth = 245
 monster.race = "blood"
 monster.corpse = 6013
-monster.speed = 206
+monster.speed = 103
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 20,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +50,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -63,7 +73,7 @@ monster.voices = {
 
 monster.loot = {
 	{ name = "bag with stolen gold", chance = 100000 },
-	{ name = "platinum coin", chance = 100000, maxCount = 100 },
+	{ name = "platinum coin", chance = 75000, maxCount = 100 },
 }
 
 monster.attacks = {
@@ -73,6 +83,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 15,
+	mitigation = 1.02,
 }
 
 monster.elements = {

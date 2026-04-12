@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ogre Sage")
 local monster = {}
 
-monster.name = "Ogre Sage"
 monster.description = "an ogre sage"
 monster.experience = 5500
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1822
+monster.Bestiary = {
+	class = "Giant",
+	race = BESTY_RACE_GIANT,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Kilmaresh Central Steppe, Kilmaresh Southern Steppe, Green Belt, Kilmaresh Mountains underground.",
+}
 
 monster.health = 4800
 monster.maxHealth = 4800
 monster.race = "blood"
 monster.corpse = 31535
-monster.speed = 460
+monster.speed = 230
 monster.manaCost = 0
 
 monster.faction = FACTION_ANUMA
@@ -29,6 +39,11 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_FAFNAR }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -45,7 +60,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -91,7 +106,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 93,
 	armor = 93,
-	{ name = "speed", interval = 2000, chance = 15, speed = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 2.51,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

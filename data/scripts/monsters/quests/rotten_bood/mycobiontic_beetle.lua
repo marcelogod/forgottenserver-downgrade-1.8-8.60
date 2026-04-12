@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mycobiontic Beetle")
 local monster = {}
 
-monster.name = "Mycobiontic Beetle"
 monster.description = "a mycobiontic beetle"
 monster.experience = 21175
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2375
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Jaded roots",
+}
 
 monster.health = 30200
 monster.maxHealth = 30200
 monster.race = "undead"
 monster.corpse = 43555
-monster.speed = 460
+monster.speed = 230
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 0,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -64,11 +81,11 @@ monster.loot = {
 	{ name = "serpent sword", chance = 32253 },
 	{ name = "glacier mask", chance = 21920 },
 	{ name = "small sapphire", chance = 34560, maxCount = 3 },
--- { name = "organic acid", chance = 11678, maxCount = 1 },
+	--{ name = "organic acid", chance = 11678, maxCount = 1 },
 	{ name = "rotten roots", chance = 25920, maxCount = 1 },
 	{ name = "scarab coin", chance = 22920, maxCount = 3 },
 	{ name = "buckle", chance = 22920, maxCount = 1 },
--- { name = "rotten vermin ichor", chance = 22920, maxCount = 1 },
+	--{ name = "rotten vermin ichor", chance = 22920, maxCount = 1 },
 	{ name = "violet gem", chance = 18920 },
 	{ name = "blue gem", chance = 15920 },
 	{ name = "small ruby", chance = 24560, maxCount = 3 },
@@ -86,6 +103,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 116,
 	armor = 116,
+	mitigation = 2.92,
 }
 
 monster.elements = {

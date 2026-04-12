@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Minion of Versperoth")
 local monster = {}
 
-monster.name = "Minion of Versperoth"
 monster.description = "a minion of Versperoth"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,17 @@ monster.health = 9000
 monster.maxHealth = 9000
 monster.race = "fire"
 monster.corpse = 0
-monster.speed = 310
+monster.speed = 155
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	random = 20,
 }
 
 monster.flags = {
@@ -40,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,13 +69,14 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_MANADRAIN, minDamage = -600, maxDamage = -1300, length = 8, spread = 0, effect = CONST_ME_MORTAREA, target = false },
 	{ name = "lava golem soulfire", interval = 2000, chance = 15, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_FIREDAMAGE, minDamage = -220, maxDamage = -350, radius = 4, effect = CONST_ME_FIREAREA, target = true },
-	{ name = "speed", interval = 2000, chance = 10, speed = -300, length = 5, spread = 3, effect = CONST_ME_BLOCKHIT, target = false, duration = 10000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = -300, length = 5, spread = 3, effect = CONST_ME_BLOCKHIT, target = false, duration = 10000 },
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_FIREDAMAGE, minDamage = -280, maxDamage = -350, radius = 3, effect = CONST_ME_HITBYFIRE, target = false },
 }
 
 monster.defenses = {
 	defense = 60,
 	armor = 60,
+	--	mitigation = ???,
 }
 
 monster.elements = {

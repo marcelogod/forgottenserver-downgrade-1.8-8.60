@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Stone Rhino")
 local monster = {}
 
-monster.name = "Stone Rhino"
 monster.description = "a stone rhino"
 monster.experience = 1800
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1395
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Astral Shaper Ruins in two small rooms on the second floor, and to the east.",
+}
 
 monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "blood"
 monster.corpse = 25082
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -73,6 +91,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 72,
+	mitigation = 1.88,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 0, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

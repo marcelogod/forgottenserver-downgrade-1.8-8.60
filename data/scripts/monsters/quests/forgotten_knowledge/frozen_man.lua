@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Frozen Man")
 local monster = {}
 
-monster.name = "Frozen Man"
 monster.description = "a frozen man"
 monster.experience = 0
 monster.outfit = {
@@ -20,6 +19,13 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -59,6 +65,7 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 1,
 	armor = 1,
+	mitigation = 0.00,
 }
 
 monster.elements = {

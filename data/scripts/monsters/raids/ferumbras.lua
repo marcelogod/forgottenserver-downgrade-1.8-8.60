@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ferumbras")
 local monster = {}
 
-monster.name = "Ferumbras"
 monster.description = "Ferumbras"
 monster.experience = 12000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 231,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 90000
 monster.maxHealth = 90000
 monster.race = "venom"
 monster.corpse = 6078
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 2,
 	runHealth = 2500,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -121,20 +132,18 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_LIFEDRAIN, minDamage = -300, maxDamage = -450, length = 8, spread = 0, effect = CONST_ME_HITBYPOISON, target = false },
 	{ name = "combat", interval = 2000, chance = 21, type = COMBAT_LIFEDRAIN, minDamage = -450, maxDamage = -500, radius = 6, effect = CONST_ME_POFF, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -20, maxDamage = -40, range = 7, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -20, maxDamage = -40, range = 7, shootEffect = CONST_ANI_POISON, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_LIFEDRAIN, minDamage = -900, maxDamage = -1000, range = 4, radius = 3, effect = CONST_ME_DRAWBLOOD, target = false },
 	-- energy damage
-	{ name = "condition", interval = 2000, chance = 18, target = false, condition =
-	{ type = CONDITION_ENERGY, minDamage = -300, maxDamage = -400, radius = 6, effect = CONST_ME_ENERGYHIT } },
+	{ name = "condition", type = CONDITION_ENERGY, interval = 2000, chance = 18, minDamage = -300, maxDamage = -400, radius = 6, effect = CONST_ME_ENERGYHIT, target = false },
 	-- fire
-	{ name = "condition", interval = 3000, chance = 20, target = false, condition =
-	{ type = CONDITION_FIRE, minDamage = -500, maxDamage = -600, range = 7, radius = 7, shootEffect = CONST_ANI_FIRE, effect = CONST_ME_FIREAREA } },
+	{ name = "condition", type = CONDITION_FIRE, interval = 3000, chance = 20, minDamage = -500, maxDamage = -600, range = 7, radius = 7, shootEffect = CONST_ANI_FIRE, effect = CONST_ME_FIREAREA, target = true },
 }
 
 monster.defenses = {
 	defense = 120,
 	armor = 100,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 900, maxDamage = 1500, effect = CONST_ME_MAGIC_GREEN, target = false },
 	{ name = "invisible", interval = 4000, chance = 20, effect = CONST_ME_MAGIC_BLUE },
 }

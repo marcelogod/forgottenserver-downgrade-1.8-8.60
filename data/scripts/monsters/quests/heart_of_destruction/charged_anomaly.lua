@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Charged Anomaly")
 local monster = {}
 
-monster.name = "Charged Anomaly"
 monster.description = "a charged anomaly"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 18000
 monster.maxHealth = 18000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 100
+monster.speed = 50
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,11 +46,12 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -70,6 +77,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, radius = 8, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

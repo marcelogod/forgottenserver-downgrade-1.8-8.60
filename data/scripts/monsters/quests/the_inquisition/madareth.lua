@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Madareth")
 local monster = {}
 
-monster.name = "Madareth"
 monster.description = "Madareth"
 monster.experience = 10000
 monster.outfit = {
@@ -14,16 +13,32 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {
+	"InquisitionBossDeath",
+}
+
+monster.bosstiary = {
+	bossRaceId = 414,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 75000
 monster.maxHealth = 75000
 monster.race = "fire"
 monster.corpse = 7893
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +55,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1200,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -116,6 +131,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 46,
 	armor = 48,
+	--	mitigation = ???,
 	{ name = "combat", interval = 3000, chance = 14, type = COMBAT_HEALING, minDamage = 400, maxDamage = 900, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Larva")
 local monster = {}
 
-monster.name = "Larva"
 monster.description = "a larva"
 monster.experience = 44
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 82
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Larva Caves, Ankrahmun Tombs, Lions Rock, Gardens of Night (unreachable)",
+}
 
 monster.health = 70
 monster.maxHealth = 70
 monster.race = "venom"
 monster.corpse = 6023
-monster.speed = 124
+monster.speed = 62
 monster.manaCost = 355
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -70,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 5,
+	mitigation = 0.28,
 }
 
 monster.elements = {

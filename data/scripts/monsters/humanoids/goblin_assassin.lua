@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Goblin Assassin")
 local monster = {}
 
-monster.name = "Goblin Assassin"
 monster.description = "a goblin assassin"
 monster.experience = 52
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 463
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Femor Hills, Edron Goblin Cave and Fenrock.",
+}
 
 monster.health = 75
 monster.maxHealth = 75
 monster.race = "blood"
 monster.corpse = 6002
-monster.speed = 140
+monster.speed = 70
 monster.manaCost = 360
 
 monster.changeTarget = {
 	interval = 10000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -86,8 +100,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 6,
+	mitigation = 0.15,
 	{ name = "invisible", interval = 2000, chance = 10, effect = CONST_ME_MAGIC_BLUE },
-	{ name = "speed", interval = 2000, chance = 15, speed = 100, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 100, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Target Dummy")
 local monster = {}
 
-monster.name = "Target Dummy"
 monster.description = "a target dummy"
 monster.experience = 0
 monster.outfit = {

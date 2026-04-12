@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lizard Snakecharmer")
 local monster = {}
 
-monster.name = "Lizard Snakecharmer"
 monster.description = "a lizard snakecharmer"
 monster.experience = 210
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 115
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Chor, Forbidden Temple.",
+}
 
 monster.health = 325
 monster.maxHealth = 325
 monster.race = "blood"
 monster.corpse = 6041
-monster.speed = 344
+monster.speed = 172
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -85,14 +99,14 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -30 },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -100, maxDamage = -200, range = 7, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -100, maxDamage = -200, range = 7, shootEffect = CONST_ANI_POISON, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -50, maxDamage = -110, range = 7, radius = 1, shootEffect = CONST_ANI_POISON, effect = CONST_ME_GREEN_RINGS, target = true },
 }
 
 monster.defenses = {
 	defense = 15,
 	armor = 22,
+	mitigation = 0.38,
 	{ name = "combat", interval = 2000, chance = 50, type = COMBAT_HEALING, minDamage = 50, maxDamage = 100, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 2000, chance = 10, effect = CONST_ME_MAGIC_BLUE },
 }

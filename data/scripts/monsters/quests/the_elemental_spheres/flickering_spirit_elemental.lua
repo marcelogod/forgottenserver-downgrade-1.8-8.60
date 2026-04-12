@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Flickering Spirit Elemental")
 local monster = {}
 
-monster.name = "Flickering Spirit Elemental"
 monster.description = "a flickering spirit elemental"
 monster.experience = 450
 monster.outfit = {
@@ -18,11 +17,15 @@ monster.health = 600
 monster.maxHealth = 600
 monster.race = "undead"
 monster.corpse = 6003
-monster.speed = 200
+monster.speed = 100
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -39,7 +42,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -63,7 +66,7 @@ monster.voices = {
 monster.loot = {
 	{ name = "gold coin", chance = 44000, maxCount = 120 },
 	{ name = "holy ash", chance = 10800 },
--- { name = "spirited soil", chance = 2100 },
+	--{ name = "spirited soil", chance = 2100 },
 }
 
 monster.attacks = {
@@ -74,6 +77,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 6,
+	mitigation = 0.30,
 }
 
 monster.elements = {

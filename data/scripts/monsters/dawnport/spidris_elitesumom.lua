@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Spidris Elite Summon")
 local monster = {}
 
 monster.name = "Spidris Elite"
-monster.name = "Spidris Elite Summon"
 monster.description = "a spidris elite"
 monster.experience = 4000
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 5000
 monster.maxHealth = 5000
 monster.race = "venom"
 monster.corpse = 13870
-monster.speed = 394
+monster.speed = 197
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

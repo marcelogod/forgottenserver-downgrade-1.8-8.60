@@ -1,23 +1,34 @@
 local mType = Game.createMonsterType("Realityquake")
 local monster = {}
 
-monster.name = "Realityquake"
 monster.description = "Realityquake"
 monster.experience = 20000
 monster.outfit = {
 	lookTypeEx = 1949,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1218,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 110000
 monster.maxHealth = 110000
 monster.race = "venom"
 monster.corpse = 23567
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 3000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -34,12 +45,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -89,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, radius = 8, effect = CONST_ME_POFF, target = false },
 }
 

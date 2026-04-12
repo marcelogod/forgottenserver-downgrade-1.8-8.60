@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bragrumol")
 local monster = {}
 
-monster.name = "Bragrumol"
 monster.description = "Bragrumol"
 monster.experience = 18000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 38000
 monster.maxHealth = 38000
 monster.race = "fire"
 monster.corpse = 12838
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1828,
+	bossRace = RARITY_BANE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

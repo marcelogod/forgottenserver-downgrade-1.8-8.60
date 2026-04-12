@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Swamp Troll")
 local monster = {}
 
-monster.name = "Swamp Troll"
 monster.description = "a swamp troll"
 monster.experience = 25
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 76
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Port Hope Swamp Trolls, Venore Swamp Troll Cave, all around north area of Port Hope, \z
+		small spawn north-west of Venore and in cave south-east of Thais, also one in Foreigner Quarter.",
+}
 
 monster.health = 55
 monster.maxHealth = 55
 monster.race = "venom"
 monster.corpse = 6018
-monster.speed = 128
+monster.speed = 64
 monster.manaCost = 320
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,6 +97,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 6,
+	mitigation = 0.25,
 }
 
 monster.elements = {

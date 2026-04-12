@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("White Lion")
 local monster = {}
 
-monster.name = "White Lion"
 monster.description = "a white lion"
 monster.experience = 2300
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1967
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Lion Sanctum.",
+}
 
 monster.health = 2700
 monster.maxHealth = 2700
 monster.race = "blood"
 monster.corpse = 34245
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -42,7 +52,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 5,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -83,6 +93,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 38,
+	mitigation = 0.91,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 100, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

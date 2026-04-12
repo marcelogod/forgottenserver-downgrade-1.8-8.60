@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Deaththrower")
 local monster = {}
 
-monster.name = "Deaththrower"
 monster.description = "a deaththrower"
 monster.experience = 0
 monster.outfit = {
@@ -20,6 +19,10 @@ monster.changeTarget = {
 	chance = 16,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +37,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = true,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Misguided Shadow")
 local monster = {}
 
-monster.name = "Misguided Shadow"
 monster.description = "a misguided shadow"
 monster.experience = 1500
 monster.outfit = {
@@ -18,13 +17,22 @@ monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "blood"
 monster.corpse = 26125
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
 }
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
+monster.events = {}
 
 monster.flags = {
 	summonable = false,
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,6 +78,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 35,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 450, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

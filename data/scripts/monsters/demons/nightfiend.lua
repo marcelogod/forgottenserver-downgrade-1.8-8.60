@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Nightfiend")
 local monster = {}
 
-monster.name = "Nightfiend"
 monster.description = "a nightfiend"
 monster.experience = 2100
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 973
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 50,
+	Stars = 3,
+	Occurrence = 3,
+	Locations = "Deep under Drefia.",
+}
 
 monster.health = 2700
 monster.maxHealth = 2700
 monster.race = "blood"
 monster.corpse = 18952
-monster.speed = 224
+monster.speed = 112
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	health = 10,
+	damage = 10,
 }
 
 monster.flags = {
@@ -42,10 +58,11 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -81,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 11,
 	armor = 46,
+	mitigation = 1.43,
 }
 
 monster.elements = {

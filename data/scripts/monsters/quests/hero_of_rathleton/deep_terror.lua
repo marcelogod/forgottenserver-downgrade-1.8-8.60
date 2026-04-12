@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Deep Terror")
 local monster = {}
 
-monster.name = "Deep Terror"
 monster.description = "Deep Terror"
 monster.experience = 35000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 1087,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 100000
 monster.maxHealth = 100000
 monster.race = "blood"
 monster.corpse = 21900
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,6 +83,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 22,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 11, type = COMBAT_HEALING, minDamage = 500, maxDamage = 1000, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

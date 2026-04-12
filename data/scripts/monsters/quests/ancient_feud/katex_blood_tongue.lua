@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Katex Blood Tongue")
 local monster = {}
 
-monster.name = "Katex Blood Tongue"
 monster.description = "Katex Blood Tongue"
 monster.experience = 5000
 monster.outfit = {
@@ -18,12 +17,21 @@ monster.health = 6300
 monster.maxHealth = 6300
 monster.race = "blood"
 monster.corpse = 34189
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1981,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

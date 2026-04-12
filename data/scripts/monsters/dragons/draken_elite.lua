@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Draken Elite")
 local monster = {}
 
-monster.name = "Draken Elite"
 monster.description = "a draken elite"
 monster.experience = 4200
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 672
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Razachai, including the Crystal Column chambers in the Inner Sanctum.",
+}
 
 monster.health = 5550
 monster.maxHealth = 5550
 monster.race = "blood"
 monster.corpse = 11653
-monster.speed = 332
+monster.speed = 166
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -92,13 +106,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -280, maxDamage = -410, radius = 4, effect = CONST_ME_POFF, target = true },
 	{ name = "soulfire rune", interval = 2000, chance = 10, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = true, condition =
-	{ type = CONDITION_POISON, minDamage = -250, maxDamage = -320, range = 7, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -250, maxDamage = -320, range = 7, shootEffect = CONST_ANI_POISON, target = true },
 }
 
 monster.defenses = {
 	defense = 60,
 	armor = 60,
+	mitigation = 1.60,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 510, maxDamage = 600, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

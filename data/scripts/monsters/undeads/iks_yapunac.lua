@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Iks Yapunac")
 local monster = {}
 
-monster.name = "Iks Yapunac"
 monster.description = "an iks yapunac"
 monster.experience = 2340
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2437
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 1,
+	Locations = "Iksupan",
+}
 
 monster.health = 3125
 monster.maxHealth = 3125
 monster.race = "blood"
 monster.corpse = 42061
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -67,7 +81,7 @@ monster.loot = {
 	{ name = "small sapphire", chance = 5810, maxCount = 3 },
 	{ name = "spellbook of enlightenment", chance = 1920 },
 	{ name = "opal", chance = 1850 },
--- { name = "gold-brocaded cloth", chance = 1780 },
+	--{ name = "gold-brocaded cloth", chance = 1780 },
 	{ name = "gold ingot", chance = 960 },
 	{ name = "broken iks headpiece", chance = 70 },
 }
@@ -82,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 32,
+	mitigation = 2.18,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 51, maxDamage = 71, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

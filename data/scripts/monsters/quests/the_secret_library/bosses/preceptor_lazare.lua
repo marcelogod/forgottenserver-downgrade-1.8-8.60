@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Preceptor Lazare")
 local monster = {}
 
-monster.name = "Preceptor Lazare"
 monster.description = "Preceptor Lazare"
 monster.experience = 10000
 monster.outfit = {
@@ -14,17 +13,27 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1583,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 16000
 monster.maxHealth = 16000
 monster.race = "blood"
 monster.corpse = 28643
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +50,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -95,6 +104,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 86,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1500, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 800, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

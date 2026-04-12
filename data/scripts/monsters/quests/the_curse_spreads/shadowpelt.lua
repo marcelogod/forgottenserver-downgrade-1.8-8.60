@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Shadowpelt")
 local monster = {}
 
-monster.name = "Shadowpelt"
 monster.description = "Shadowpelt"
 monster.experience = 4600
 monster.outfit = {
@@ -18,12 +17,24 @@ monster.health = 6000
 monster.maxHealth = 6000
 monster.race = "blood"
 monster.corpse = 27722
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 11,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1561,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 300,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -99,8 +110,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 7, type = COMBAT_HEALING, minDamage = 120, maxDamage = 310, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 10, speed = 520, effect = CONST_ME_POFF, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 520, effect = CONST_ME_POFF, target = false, duration = 5000 },
 }
 
 monster.elements = {

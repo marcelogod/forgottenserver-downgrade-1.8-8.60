@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Kraknaknork")
 local monster = {}
 
-monster.name = "Kraknaknork"
 monster.description = "Kraknaknork"
 monster.experience = 300
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 80
 monster.maxHealth = 80
 monster.race = "blood"
 monster.corpse = 5978
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 23,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -77,7 +83,7 @@ monster.attacks = {
 	{ name = "kraknaknork poison wave", interval = 2000, chance = 10, minDamage = -1, maxDamage = -10, target = false },
 	{ name = "kraknaknork explosion wave", interval = 2000, chance = 10, minDamage = 0, maxDamage = -12, target = false },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -8, range = 7, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_MORTAREA, target = false },
-	{ name = "speed", interval = 1000, chance = 6, speed = -100, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000 },
+	{ name = "speed", interval = 1000, chance = 6, speedChange = -100, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000 },
 	{ name = "outfit", interval = 2000, chance = 10, range = 7, target = false, duration = 3000, outfitMonster = "Sheep" },
 }
 
@@ -105,5 +111,15 @@ monster.immunities = {
 	{ type = "invisible", condition = false },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature) end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

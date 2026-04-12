@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Armadile")
 local monster = {}
 
-monster.name = "Armadile"
 monster.description = "an armadile"
 monster.experience = 3200
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 880
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 1,
+	Locations = "Warzone 1.",
+}
 
 monster.health = 3800
 monster.maxHealth = 3800
 monster.race = "undead"
 monster.corpse = 15868
-monster.speed = 440
+monster.speed = 220
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -81,19 +98,18 @@ monster.loot = {
 	{ name = "crystalline spikes", chance = 14540 },
 	{ name = "drill bolt", chance = 7692, maxCount = 5 },
 	{ name = "envenomed arrow", chance = 10230, maxCount = 10 },
-	{ name = "jade conical hat", chance = 1000 },
 }
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -150 },
 	{ name = "drunk", interval = 2000, chance = 10, radius = 4, effect = CONST_ME_FIREAREA, target = true, duration = 5000 },
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -200, maxDamage = -400, radius = 4, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -200, maxDamage = -400, radius = 4, effect = CONST_ME_POISONAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 66,
+	mitigation = 1.96,
 }
 
 monster.elements = {

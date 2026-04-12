@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Zoralurk")
 local monster = {}
 
-monster.name = "Zoralurk"
 monster.description = "Zoralurk"
 monster.experience = 30000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 55000
 monster.maxHealth = 55000
 monster.race = "undead"
 monster.corpse = 6068
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 10000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -89,8 +95,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 65,
 	armor = 55,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 35, type = COMBAT_HEALING, minDamage = 300, maxDamage = 800, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 4000, chance = 80, speed = 440, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	{ name = "speed", interval = 4000, chance = 80, speedChange = 440, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 	{ name = "outfit", interval = 2000, chance = 10, effect = CONST_ME_CRAPS, target = false, duration = 10000, outfitMonster = "behemoth" },
 	{ name = "outfit", interval = 2000, chance = 10, effect = CONST_ME_CRAPS, target = false, duration = 10000, outfitMonster = "fire devil" },
 	{ name = "outfit", interval = 2000, chance = 10, effect = CONST_ME_CRAPS, target = false, duration = 10000, outfitMonster = "giant spider" },
@@ -117,5 +124,19 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

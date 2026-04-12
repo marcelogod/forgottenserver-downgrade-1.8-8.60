@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Party Skeleton")
 local monster = {}
 
-monster.name = "Party Skeleton"
 monster.description = "a party skeleton"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 40
 monster.maxHealth = 40
 monster.race = "undead"
 monster.corpse = 5972
-monster.speed = 154
+monster.speed = 77
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -66,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 9,
 	armor = 2,
+	mitigation = 0.07,
 }
 
 monster.elements = {

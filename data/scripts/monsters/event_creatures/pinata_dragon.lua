@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pinata Dragon")
 local monster = {}
 
-monster.name = "Pinata Dragon"
 monster.description = "a pinata dragon"
 monster.experience = 50
 monster.outfit = {
@@ -20,6 +19,13 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

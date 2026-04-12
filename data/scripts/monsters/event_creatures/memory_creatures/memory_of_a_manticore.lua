@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Memory of a Manticore")
 local monster = {}
 
-monster.name = "Memory of a Manticore"
 monster.description = "a memory of a manticore"
 monster.experience = 1590
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 3730
 monster.maxHealth = 3730
 monster.race = "blood"
 monster.corpse = 31390
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -75,6 +78,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 78,
 	armor = 78,
+	mitigation = 1.20,
 }
 
 monster.elements = {

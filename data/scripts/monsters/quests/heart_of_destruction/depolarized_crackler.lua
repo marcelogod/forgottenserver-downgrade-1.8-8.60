@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Depolarized Crackler")
 local monster = {}
 
-monster.name = "Depolarized Crackler"
 monster.description = "a depolarized crackler"
 monster.experience = 30000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 15000
 monster.maxHealth = 15000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -69,6 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 80,
 	armor = 80,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Skeleton Warrior")
 local monster = {}
 
-monster.name = "Skeleton Warrior"
 monster.description = "a skeleton warrior"
 monster.experience = 45
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 446
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Island of Destiny, Drefia, Ghostland and beneath Fenrock.",
+}
 
 monster.health = 65
 monster.maxHealth = 65
 monster.race = "undead"
 monster.corpse = 5972
-monster.speed = 154
+monster.speed = 77
 monster.manaCost = 350
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -76,6 +90,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 5,
+	mitigation = 0.25,
 }
 
 monster.elements = {

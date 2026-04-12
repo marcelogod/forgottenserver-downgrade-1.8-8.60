@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Minotaur Amazon")
 local monster = {}
 
-monster.name = "Minotaur Amazon"
 monster.description = "a minotaur amazon"
 monster.experience = 2200
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1045
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Underground Glooth Factory, Oramond Minotaur Camp, Oramond Dungeon",
+}
 
 monster.health = 2600
 monster.maxHealth = 2600
 monster.race = "blood"
 monster.corpse = 21000
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 11,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 240,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -94,14 +108,14 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 16, type = COMBAT_LIFEDRAIN, minDamage = -50, maxDamage = -150, radius = 4, effect = CONST_ME_MAGIC_RED, target = false },
 	{ name = "combat", interval = 2000, chance = 22, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -150, range = 7, shootEffect = CONST_ANI_HUNTINGSPEAR, effect = CONST_ME_EXPLOSIONAREA, target = false },
 	-- bleed
-	{ name = "condition", interval = 2000, chance = 40, target = true, condition =
-	{ type = CONDITION_BLEEDING, minDamage = -300, maxDamage = -400, radius = 4, shootEffect = CONST_ANI_THROWINGKNIFE, effect = CONST_ME_DRAWBLOOD } },
+	{ name = "condition", type = CONDITION_BLEEDING, interval = 2000, chance = 40, minDamage = -300, maxDamage = -400, radius = 4, effect = CONST_ME_DRAWBLOOD, shootEffect = CONST_ANI_THROWINGKNIFE, target = true },
 	{ name = "minotaur amazon paralyze", interval = 2000, chance = 15, target = false },
 }
 
 monster.defenses = {
 	defense = 35,
 	armor = 37,
+	mitigation = 1.18,
 }
 
 monster.elements = {

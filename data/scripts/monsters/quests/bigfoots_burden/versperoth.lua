@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Versperoth")
 local monster = {}
 
-monster.name = "Versperoth"
 monster.description = "Versperoth"
 monster.experience = 30000
 monster.outfit = {
@@ -14,6 +13,8 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 100000
 monster.maxHealth = 100000
 monster.race = "venom"
@@ -24,6 +25,13 @@ monster.manaCost = 0
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -70,6 +78,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 55,
+	--	mitigation = ???,
 }
 
 monster.elements = {

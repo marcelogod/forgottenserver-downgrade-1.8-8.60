@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Troll")
 local monster = {}
 
-monster.name = "Troll"
 monster.description = "a troll"
 monster.experience = 20
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 15
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "In many dungeons around Tibia like the troll cave in Thais, south of Carlin (out the east \z
+		exit and down the hole), Island of Destiny, Edron Troll Cave, and in Ab'Dendriel. Also found in Rookgaard.",
+}
 
 monster.health = 50
 monster.maxHealth = 50
 monster.race = "blood"
 monster.corpse = 5960
-monster.speed = 126
+monster.speed = 63
 monster.manaCost = 290
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -85,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 6,
+	mitigation = 0.20,
 }
 
 monster.elements = {

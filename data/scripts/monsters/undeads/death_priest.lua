@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Death Priest")
 local monster = {}
 
-monster.name = "Death Priest"
 monster.description = "a death priest"
 monster.experience = 750
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 710
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Horestis Tomb.",
+}
 
 monster.health = 800
 monster.maxHealth = 800
 monster.race = "undead"
 monster.corpse = 12840
-monster.speed = 204
+monster.speed = 102
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	health = 10,
+	damage = 10,
 }
 
 monster.flags = {
@@ -42,10 +58,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -78,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 38,
+	mitigation = 1.29,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 80, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

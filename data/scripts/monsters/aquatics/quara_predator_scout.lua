@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Quara Predator Scout")
 local monster = {}
 
-monster.name = "Quara Predator Scout"
 monster.description = "a quara predator scout"
 monster.experience = 400
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 238
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Malada, Hrodmir Quara Scout Caves, Quara Grotto, Oramond.",
+}
 
 monster.health = 890
 monster.maxHealth = 890
 monster.race = "blood"
 monster.corpse = 6067
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -63,15 +77,16 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 98960, maxCount = 129 },
-	{ name = "quara bone", chance = 10120 },
-	{ name = "scale armor", chance = 8990 },
-	{ name = "double axe", chance = 5790 },
-	{ name = "shrimp", chance = 5070, maxCount = 5 },
-	{ name = "small diamond", chance = 5010, maxCount = 2 },
-	{ name = "two handed sword", chance = 2980 },
-	{ name = "fish fin", chance = 1060 },
-	{ name = "northwind rod", chance = 950 },
+	{ name = "gold coin", chance = 50000, maxCount = 60 },
+	{ name = "gold coin", chance = 48000, maxCount = 72 },
+	{ name = "quara bone", chance = 10150 },
+	{ name = "scale armor", chance = 8960 },
+	{ name = "double axe", chance = 5770 },
+	{ name = "shrimp", chance = 5050, maxCount = 5 },
+	{ name = "small diamond", chance = 5020, maxCount = 2 },
+	{ name = "two handed sword", chance = 3010 },
+	{ name = "fish fin", chance = 1080 },
+	{ name = "northwind rod", chance = 960 },
 }
 
 monster.attacks = {
@@ -81,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	mitigation = 1.04,
 }
 
 monster.elements = {

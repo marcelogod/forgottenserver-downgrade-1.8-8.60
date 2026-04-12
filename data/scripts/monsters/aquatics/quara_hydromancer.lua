@@ -1,9 +1,8 @@
 local mType = Game.createMonsterType("Quara Hydromancer")
 local monster = {}
 
-monster.name = "Quara Hydromancer"
 monster.description = "a quara hydromancer"
-monster.experience = 950
+monster.experience = 800
 monster.outfit = {
 	lookType = 47,
 	lookHead = 0,
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 243
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Calassa, Frozen Trench, Yalahar (Sunken Quarter).",
+}
 
 monster.health = 1100
 monster.maxHealth = 1100
 monster.race = "blood"
 monster.corpse = 6066
-monster.speed = 490
+monster.speed = 245
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -65,17 +79,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 90480, maxCount = 110 },
-	{ name = "quara eye", chance = 15730 },
-	{ name = "white pearl", chance = 5180 },
-	{ name = "small emerald", chance = 5120, maxCount = 2 },
-	{ name = "shrimp", chance = 4790, maxCount = 5 },
-	{ name = "great mana potion", chance = 2970 },
-	{ name = "black pearl", chance = 2950 },
-	{ name = "fish fin", chance = 1480 },
-	{ id = 3098, chance = 1180 }, -- ring of healing
-	{ name = "wand of cosmic energy", chance = 990 },
-	{ name = "knight armor", chance = 250 },
+	{ name = "gold coin", chance = 50000, maxCount = 60 },
+	{ name = "gold coin", chance = 40000, maxCount = 50 },
+	{ name = "quara eye", chance = 15930 },
+	{ name = "white pearl", chance = 5250 },
+	{ name = "small emerald", chance = 5111, maxCount = 2 },
+	{ name = "shrimp", chance = 4545, maxCount = 5 },
+	{ name = "black pearl", chance = 3150 },
+	{ name = "great mana potion", chance = 2880 },
+	{ name = "fish fin", chance = 1410 },
+	{ id = 3098, chance = 1218 }, -- ring of healing
+	{ name = "wand of cosmic energy", chance = 980 },
+	{ name = "knight armor", chance = 230 },
 }
 
 monster.attacks = {
@@ -84,12 +99,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_ICEDAMAGE, minDamage = -90, maxDamage = -150, radius = 3, effect = CONST_ME_BUBBLES, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -170, maxDamage = -240, length = 8, spread = 0, effect = CONST_ME_HITBYPOISON, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_LIFEDRAIN, minDamage = 0, maxDamage = -170, range = 7, effect = CONST_ME_MAGIC_RED, target = true },
-	{ name = "speed", interval = 2000, chance = 15, speed = -600, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -600, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 15000 },
 }
 
 monster.defenses = {
 	defense = 15,
 	armor = 30,
+	mitigation = 1.04,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 100, maxDamage = 120, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

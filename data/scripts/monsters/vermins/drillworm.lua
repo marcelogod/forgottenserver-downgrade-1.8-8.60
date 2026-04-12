@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Drillworm")
 local monster = {}
 
-monster.name = "Drillworm"
 monster.description = "a drillworm"
 monster.experience = 1200
 monster.outfit = {
@@ -14,19 +13,35 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
 
 monster.raceId = 878
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Drillworm Caves, Lower Spike, Lost Dwarf version of the Forsaken Mine, Oramond Factory Raids and Warzone 4.",
+}
 
 monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "venom"
 monster.corpse = 17425
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -82,7 +97,7 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -300, condition = { type = CONDITION_POISON, totalDamage = 100, interval = 4000 } },
-	{ name = "speed", interval = 2000, chance = 15, speed = -600, length = 8, spread = 3, effect = CONST_ME_MAGIC_RED, target = false, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -600, length = 8, spread = 3, effect = CONST_ME_MAGIC_RED, target = false, duration = 15000 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -150, maxDamage = -300, length = 8, spread = 3, effect = CONST_ME_HITBYPOISON, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -100, maxDamage = -150, radius = 3, effect = CONST_ME_POISONAREA, target = true },
 }
@@ -90,6 +105,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 41,
+	mitigation = 1.26,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cult Enforcer")
 local monster = {}
 
-monster.name = "Cult Enforcer"
 monster.description = "a cult enforcer"
 monster.experience = 1000
 monster.outfit = {
@@ -14,19 +13,38 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
 
 monster.raceId = 1513
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Forbidden Temple (Carlin).",
+}
 
 monster.health = 1150
 monster.maxHealth = 1150
 monster.race = "blood"
 monster.corpse = 22017
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -43,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -87,6 +105,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 30,
+	mitigation = 1.24,
 	{ name = "combat", interval = 4000, chance = 25, type = COMBAT_HEALING, minDamage = 150, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

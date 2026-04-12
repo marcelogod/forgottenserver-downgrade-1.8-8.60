@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Omrafir")
 local monster = {}
 
-monster.name = "Omrafir"
 monster.description = "Omrafir"
 monster.experience = 50000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1011,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 322000
 monster.maxHealth = 322000
 monster.race = "fire"
 monster.corpse = 6068
-monster.speed = 480
+monster.speed = 240
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -111,6 +122,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 165,
 	armor = 155,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 22, type = COMBAT_HEALING, minDamage = 440, maxDamage = 800, target = false },
 	{ name = "omrafir summon", interval = 2000, chance = 50, target = false },
 	{ name = "omrafir healing 2", interval = 2000, chance = 20, target = false },

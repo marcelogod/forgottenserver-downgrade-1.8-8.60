@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Undead Cavebear")
 local monster = {}
 
-monster.name = "Undead Cavebear"
 monster.description = "an undead cavebear"
 monster.experience = 600
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 696
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 50,
+	Stars = 3,
+	Occurrence = 3,
+	Locations = "Lich Hell.",
+}
 
 monster.health = 450
 monster.maxHealth = 450
 monster.race = "undead"
 monster.corpse = 12336
-monster.speed = 218
+monster.speed = 109
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -74,6 +89,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 27,
 	armor = 28,
+	mitigation = 0.72,
 }
 
 monster.elements = {

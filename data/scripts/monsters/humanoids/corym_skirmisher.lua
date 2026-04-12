@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Corym Skirmisher")
 local monster = {}
 
-monster.name = "Corym Skirmisher"
 monster.description = "a corym skirmisher"
 monster.experience = 260
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 917
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Venore Corym Cave, Tiquanda Corym Cave, Corym Black Market, \z
+		Carlin Corym Cave/Dwarf Mines Diggers Depths Mine, Upper Spike.",
+}
 
 monster.health = 450
 monster.maxHealth = 450
 monster.race = "blood"
 monster.corpse = 17446
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 695
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -84,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 25,
+	mitigation = 0.96,
 }
 
 monster.elements = {

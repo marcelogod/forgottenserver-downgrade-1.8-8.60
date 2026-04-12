@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dawn Bat")
 local monster = {}
 
-monster.name = "Dawn Bat"
 monster.description = "a dawn bat"
 monster.experience = 10
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 30
 monster.maxHealth = 30
 monster.race = "blood"
 monster.corpse = 6053
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 250
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 3,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -67,6 +70,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	--	mitigation = ???,
 }
 
 monster.elements = {

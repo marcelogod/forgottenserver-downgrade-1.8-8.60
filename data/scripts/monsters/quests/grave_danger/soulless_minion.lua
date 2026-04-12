@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Soulless Minion")
 local monster = {}
 
-monster.name = "Soulless Minion"
 monster.description = "a soulless minion"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 2000
 monster.maxHealth = 2000
 monster.race = "blood"
 monster.corpse = 6006
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 	{ name = "outfit", interval = 4000, chance = 10, effect = CONST_ME_GROUNDSHAKER, target = false, duration = 5000, outfitMonster = "bat" },
 	{ name = "combat", interval = 2000, chance = 35, type = COMBAT_HEALING, minDamage = 350, maxDamage = 550, effect = CONST_ME_MAGIC_BLUE, target = false },
 }

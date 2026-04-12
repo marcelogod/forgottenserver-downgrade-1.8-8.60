@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Burster Spectre")
 local monster = {}
 
-monster.name = "Burster Spectre"
 monster.description = "a burster spectre"
 monster.experience = 6000
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1726
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Haunted Tomb west of Darashia, Buried Cathedral.",
+}
 
 monster.health = 6500
 monster.maxHealth = 6500
 monster.race = "blood"
 monster.corpse = 30163
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -95,6 +112,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 70,
 	armor = 70,
+	mitigation = 2.11,
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_HEALING, minDamage = 150, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

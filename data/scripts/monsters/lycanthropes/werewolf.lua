@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Werewolf")
 local monster = {}
 
-monster.name = "Werewolf"
 monster.description = "a werewolf"
 monster.experience = 1900
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 510
+monster.Bestiary = {
+	class = "Lycanthrope",
+	race = BESTY_RACE_LYCANTHROPE,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Vengoth Castle, Vengoth Werewolf Cave, Grimvale, were-beasts cave south-west of Edron.",
+}
 
 monster.health = 1955
 monster.maxHealth = 1955
 monster.race = "blood"
 monster.corpse = 18099
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 300,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -101,8 +115,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 36,
+	mitigation = 0.83,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 120, maxDamage = 225, effect = CONST_ME_MAGIC_GREEN, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 400, range = 7, effect = CONST_ME_SOUND_PURPLE, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 400, range = 7, effect = CONST_ME_SOUND_PURPLE, target = false, duration = 5000 },
 }
 
 monster.elements = {

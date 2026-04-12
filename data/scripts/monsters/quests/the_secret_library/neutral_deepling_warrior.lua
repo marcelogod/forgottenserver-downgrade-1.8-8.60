@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Neutral Deepling Warrior")
 local monster = {}
 
-monster.name = "Neutral Deepling Warrior"
 monster.description = "a neutral deepling warrior"
 monster.experience = 1500
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 1600
 monster.maxHealth = 1600
 monster.race = "blood"
 monster.corpse = 13712
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -66,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 50, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

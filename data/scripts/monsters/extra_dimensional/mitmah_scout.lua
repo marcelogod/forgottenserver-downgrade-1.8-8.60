@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mitmah Scout")
 local monster = {}
 
-monster.name = "Mitmah Scout"
 monster.description = "a mitmah scout"
 monster.experience = 3230
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2460
+monster.Bestiary = {
+	class = "Extra Dimensional",
+	race = BESTY_RACE_EXTRA_DIMENSIONAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Iksupan Waterways",
+}
 
 monster.health = 3940
 monster.maxHealth = 3940
 monster.race = "venom"
 monster.corpse = 44666
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -43,7 +60,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -64,7 +81,7 @@ monster.voices = {
 
 monster.loot = {
 	{ name = "platinum coin", chance = 100000, maxCount = 10 },
--- { name = "broken mitmah necklace", chance = 17180 },
+	--{ name = "broken mitmah necklace", chance = 17180 },
 	{ name = "brown crystal splinter", chance = 7620 },
 	{ id = 281, chance = 7400 }, -- giant shimmering pearl
 	{ name = "green crystal splinter", chance = 6890 },
@@ -75,7 +92,7 @@ monster.loot = {
 	{ id = 3037, chance = 2450 }, -- yellow gem
 	{ name = "prismatic quartz", chance = 2410 },
 	{ name = "ruby necklace", chance = 1810 },
--- { name = "gold-brocaded cloth", chance = 1340 },
+	--{ name = "gold-brocaded cloth", chance = 1340 },
 	{ name = "drill bolt", chance = 1270, maxCount = 10 },
 	{ id = 3040, chance = 320 }, -- gold nugget
 	{ name = "ornate crossbow", chance = 140 },
@@ -90,6 +107,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 45,
+	mitigation = 2.02,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 50, maxDamage = 180, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

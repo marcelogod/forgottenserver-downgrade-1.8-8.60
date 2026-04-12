@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Spark of Destruction")
 local monster = {}
 
-monster.name = "Spark of Destruction"
 monster.description = "a spark of destruction"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3900
 monster.maxHealth = 3900
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 3000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -63,13 +69,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ENERGYDAMAGE, minDamage = -180, maxDamage = -400, range = 5, radius = 5, shootEffect = CONST_ANI_ENERGYBALL, effect = CONST_ME_PURPLEENERGY, target = true },
 	{ name = "reality reaver wave", interval = 2000, chance = 20, minDamage = -100, maxDamage = -400, target = false },
 	-- energy damage
-	{ name = "condition", interval = 2000, chance = 20, target = false, condition =
-	{ type = CONDITION_ENERGY, minDamage = -400, maxDamage = -800, radius = 5, effect = CONST_ME_STUN } },
+	{ name = "condition", type = CONDITION_ENERGY, interval = 2000, chance = 20, minDamage = -400, maxDamage = -800, radius = 5, effect = CONST_ME_STUN, target = false },
 }
 
 monster.defenses = {
 	defense = 65,
 	armor = 65,
+	--	mitigation = ???,
 }
 
 monster.elements = {

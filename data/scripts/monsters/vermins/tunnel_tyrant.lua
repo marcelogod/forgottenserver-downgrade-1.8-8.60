@@ -1,9 +1,8 @@
 local mType = Game.createMonsterType("Tunnel Tyrant")
 local monster = {}
 
-monster.name = "Tunnel Tyrant"
 monster.description = "a tunnel tyrant"
-monster.experience = 4420
+monster.experience = 3400
 monster.outfit = {
 	lookType = 1035,
 	lookHead = 0,
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1545
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Warzone 5",
+}
 
 monster.health = 5200
 monster.maxHealth = 5200
 monster.race = "blood"
 monster.corpse = 27555
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 10000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,7 +87,7 @@ monster.loot = {
 	{ name = "crystal mace", chance = 1580 },
 	{ id = 23508, chance = 3010 }, -- energy vein
 	{ name = "crystalline armor", chance = 860 },
-	{ name = "suspicious device", chance = 1850 },
+	{ name = "suspicious device", chance = 1290 },
 }
 
 monster.attacks = {
@@ -84,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 76,
+	mitigation = 1.82,
 }
 
 monster.elements = {

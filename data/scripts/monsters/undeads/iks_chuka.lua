@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Iks Chuka")
 local monster = {}
 
-monster.name = "Iks Chuka"
 monster.description = "an iks chuka"
 monster.experience = 1050
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2345
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Iksupan",
+}
 
 monster.health = 1240
 monster.maxHealth = 1240
 monster.race = "blood"
 monster.corpse = 42057
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 3,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,9 +82,9 @@ monster.loot = {
 	{ name = "small sapphire", chance = 9940 },
 	{ name = "royal spear", chance = 3960, maxCount = 1 },
 	{ id = 3007, chance = 1760 }, -- crystal ring
--- { name = "rotten feather", chance = 1710 },
--- { name = "ritual tooth", chance = 1340 },
--- { name = "gold-brocaded cloth", chance = 960 },
+	--{ name = "rotten feather", chance = 1710 },
+	--{ name = "ritual tooth", chance = 1340 },
+	--{ name = "gold-brocaded cloth", chance = 960 },
 	{ name = "broken iks spear", chance = 110 },
 	{ name = "broken iks headpiece", chance = 50 },
 }
@@ -85,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 29,
+	mitigation = 0.99,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orc Warrior")
 local monster = {}
 
-monster.name = "Orc Warrior"
 monster.description = "an orc warrior"
 monster.experience = 50
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 7
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Ancient Temple in Thais, Orc Fort, below Point of No Return in Outlaw Camp and inside a \z
+		mountain north of it, Orc Peninsula, Folda, Edron Orc cave, Maze of Lost Souls, Elvenbane Castle, \z
+		Foreigner Quarter, Zao Orc Land.",
+}
 
 monster.health = 125
 monster.maxHealth = 125
 monster.race = "blood"
 monster.corpse = 5979
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 360
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 11,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -71,7 +87,6 @@ monster.loot = {
 	{ name = "broken helmet", chance = 10800 },
 	{ name = "orc leather", chance = 4000 },
 	{ name = "skull belt", chance = 980 },
-	{ name = "light bandana", chance = 560 },
 	{ id = 23986, chance = 1000 }, -- heavy old tome
 }
 
@@ -82,6 +97,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 8,
+	mitigation = 0.36,
 }
 
 monster.elements = {

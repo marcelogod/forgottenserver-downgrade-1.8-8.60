@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Superior Death Minion")
 local monster = {}
 
-monster.name = "Superior Death Minion"
 monster.description = "a superior death minion"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 2500
 monster.maxHealth = 2500
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 }
 
 monster.elements = {

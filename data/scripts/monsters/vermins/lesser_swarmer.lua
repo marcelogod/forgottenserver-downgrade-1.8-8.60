@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lesser Swarmer")
 local monster = {}
 
-monster.name = "Lesser Swarmer"
 monster.description = "a lesser swarmer"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 230
 monster.maxHealth = 230
 monster.race = "venom"
 monster.corpse = 13973
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 5,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Glooth Battery")
 local monster = {}
 
-monster.name = "Glooth Battery"
 monster.description = "a glooth battery"
 monster.experience = 3000
 monster.outfit = {
@@ -20,6 +19,13 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

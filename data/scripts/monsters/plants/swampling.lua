@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Swampling")
 local monster = {}
 
-monster.name = "Swampling"
 monster.description = "a swampling"
 monster.experience = 45
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 919
+monster.Bestiary = {
+	class = "Plant",
+	race = BESTY_RACE_PLANT,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Venore swamp area, Venore Salamander Cave, Tiquanda Laboratory.",
+}
 
 monster.health = 80
 monster.maxHealth = 80
 monster.race = "venom"
 monster.corpse = 17622
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -71,12 +88,13 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -80 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -2, maxDamage = -15, range = 7, shootEffect = CONST_ANI_POISON, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -300, length = 3, spread = 2, effect = CONST_ME_WATERSPLASH, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -300, length = 3, spread = 2, effect = CONST_ME_WATERSPLASH, target = false, duration = 5000 },
 }
 
 monster.defenses = {
 	defense = 10,
 	armor = 4,
+	mitigation = 0.25,
 }
 
 monster.elements = {

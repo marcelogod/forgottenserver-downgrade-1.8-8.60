@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crazed Dwarf")
 local monster = {}
 
-monster.name = "Crazed Dwarf"
 monster.description = "a crazed dwarf"
 monster.experience = 50
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 105
 monster.maxHealth = 105
 monster.race = "blood"
 monster.corpse = 6007
-monster.speed = 156
+monster.speed = 78
 monster.manaCost = 320
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -75,6 +78,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 9,
+	--	mitigation = ???,
 }
 
 monster.elements = {

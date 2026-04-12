@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Hungry Baron from Below")
 local monster = {}
 
-monster.name = "The Hungry Baron from Below"
 monster.description = "The Hungry Baron From Below"
 monster.experience = 40000
 monster.outfit = {
@@ -26,6 +25,13 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -71,6 +77,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 160,
 	armor = 160,
+	--	mitigation = ???,
 }
 
 monster.elements = {

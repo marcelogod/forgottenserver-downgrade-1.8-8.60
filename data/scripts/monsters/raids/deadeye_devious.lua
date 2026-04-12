@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Deadeye Devious")
 local monster = {}
 
-monster.name = "Deadeye Devious"
 monster.description = "Deadeye Devious"
 monster.experience = 750
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1450
 monster.maxHealth = 1450
 monster.race = "blood"
 monster.corpse = 18097
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 3,
 	runHealth = 150,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,6 +88,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 35,
+	mitigation = 1.20,
 	{ name = "combat", interval = 4000, chance = 25, type = COMBAT_HEALING, minDamage = 50, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

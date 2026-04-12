@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Abyssador")
 local monster = {}
 
-monster.name = "Abyssador"
 monster.description = "Abyssador"
 monster.experience = 400000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 887,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 340000
 monster.maxHealth = 340000
 monster.race = "blood"
 monster.corpse = 16067
-monster.speed = 460
+monster.speed = 230
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,8 +90,7 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 3000, chance = 100, skill = 300, attack = 150 },
 	-- energy damage
-	{ name = "condition", interval = 1000, chance = 10, target = false, condition =
-	{ type = CONDITION_ENERGY, minDamage = -800, maxDamage = -800, radius = 4, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_ENERGYHIT } },
+	{ name = "condition", type = CONDITION_ENERGY, interval = 1000, chance = 10, minDamage = -800, maxDamage = -800, radius = 4, shootEffect = CONST_ANI_POISON, effect = CONST_ME_SMALLPLANTS, target = false },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ENERGYDAMAGE, minDamage = -500, maxDamage = -1600, radius = 4, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_ENERGYHIT, target = false },
 	{ name = "abyssador poison wave", interval = 1000, chance = 20, minDamage = -1000, maxDamage = -1800, target = false },
 }
@@ -86,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 15,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 1, type = COMBAT_HEALING, minDamage = 0, maxDamage = 300000, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "combat", interval = 5000, chance = 30, type = COMBAT_HEALING, minDamage = 1000, maxDamage = 1000, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 2000, chance = 25, effect = CONST_ME_MAGIC_BLUE },

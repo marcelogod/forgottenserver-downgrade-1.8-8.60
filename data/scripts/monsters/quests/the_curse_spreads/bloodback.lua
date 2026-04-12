@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bloodback")
 local monster = {}
 
-monster.name = "Bloodback"
 monster.description = "Bloodback"
 monster.experience = 4000
 monster.outfit = {
@@ -18,12 +17,24 @@ monster.health = 5200
 monster.maxHealth = 5200
 monster.race = "blood"
 monster.corpse = 27718
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1560,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -90,13 +101,14 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -290 },
 	{ name = "combat", interval = 1000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -100, maxDamage = -420, range = 7, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -600, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -600, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000 },
 	{ name = "combat", interval = 1000, chance = 14, type = COMBAT_DEATHDAMAGE, minDamage = -100, maxDamage = -200, length = 5, spread = 0, effect = CONST_ME_MORTAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 45,
 	armor = 40,
+	--	mitigation = ???,
 	{ name = "combat", interval = 4000, chance = 15, type = COMBAT_HEALING, minDamage = 150, maxDamage = 345, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

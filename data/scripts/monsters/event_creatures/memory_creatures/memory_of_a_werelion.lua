@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Memory of a Werelion")
 local monster = {}
 
-monster.name = "Memory of a Werelion"
 monster.description = "a memory of a werelion"
 monster.experience = 1800
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 3880
 monster.maxHealth = 3880
 monster.race = "blood"
 monster.corpse = 33825
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -40,7 +39,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 5,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -76,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	mitigation = 1.40,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 100, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

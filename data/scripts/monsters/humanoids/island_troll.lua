@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Island Troll")
 local monster = {}
 
-monster.name = "Island Troll"
 monster.description = "an island troll"
 monster.experience = 20
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 277
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Goroma.",
+}
 
 monster.health = 50
 monster.maxHealth = 50
 monster.race = "blood"
 monster.corpse = 865
-monster.speed = 126
+monster.speed = 63
 monster.manaCost = 290
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -85,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 6,
+	mitigation = 0.20,
 }
 
 monster.elements = {

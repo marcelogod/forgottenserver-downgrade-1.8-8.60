@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gozzler")
 local monster = {}
 
-monster.name = "Gozzler"
 monster.description = "a gozzler"
 monster.experience = 180
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 523
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Magician Quarter, cave in Beregar, Farmine Mines.",
+}
 
 monster.health = 240
 monster.maxHealth = 240
 monster.race = "undead"
 monster.corpse = 9024
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 800
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -84,8 +101,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 25,
+	mitigation = 1.37,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 30, maxDamage = 50, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 210, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 210, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

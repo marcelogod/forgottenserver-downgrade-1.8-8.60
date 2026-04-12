@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Grynch Clan Goblin")
 local monster = {}
 
-monster.name = "Grynch Clan Goblin"
 monster.description = "a grynch clan goblin"
 monster.experience = 4
 monster.outfit = {
@@ -15,17 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 393
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 10,
+	Stars = 1,
+	Occurrence = 3,
+	Locations = "They do not have a set respawn spot. They are announced to be stealing presents from a \z
+			random Tibian city and spawn in the aforetold city. \z
+			There are two or three messages that appear on each raid and three massive spawns of goblins.",
+}
 
 monster.health = 80
 monster.maxHealth = 80
 monster.race = "blood"
 monster.corpse = 6002
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +61,10 @@ monster.flags = {
 	targetDistance = 11,
 	runHealth = 80,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
 }
 
 monster.light = {
@@ -121,7 +140,8 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 12,
 	armor = 5,
-	{ name = "speed", interval = 1000, chance = 15, speed = 500, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.25,
+	{ name = "speed", interval = 1000, chance = 15, speedChange = 500, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

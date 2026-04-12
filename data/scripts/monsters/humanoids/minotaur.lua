@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Minotaur")
 local monster = {}
 
-monster.name = "Minotaur"
 monster.description = "a minotaur"
 monster.experience = 50
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 25
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Mino Hell (Rookgaard), Two outside Bear Room Quest, (Rookgaard) and also 2x on the premium side, \z
+		Mintwallin, Folda, Minotaur Pyramid, Outlaw Camp, Kazordoon minotaur cave, Plains of Havoc, Elven Bane, \z
+		Deeper Fibula Dungeon (level 50+ to open the door), Ancient Temple, Maze of Lost Souls, \z
+		Thais Minotaur Camp, Foreigner Quarter.",
+}
 
 monster.health = 100
 monster.maxHealth = 100
 monster.race = "blood"
 monster.corpse = 5969
-monster.speed = 168
+monster.speed = 84
 monster.manaCost = 330
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 11,
+	mitigation = 0.28,
 }
 
 monster.elements = {

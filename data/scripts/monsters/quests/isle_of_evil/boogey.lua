@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Boogey")
 local monster = {}
 
-monster.name = "Boogey"
 monster.description = "Boogey"
 monster.experience = 475
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 567,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 930
 monster.maxHealth = 930
 monster.race = "undead"
 monster.corpse = 8127
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -85,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	mitigation = 0.40,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 80, maxDamage = 120, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

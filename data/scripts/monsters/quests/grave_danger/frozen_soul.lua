@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Frozen Soul")
 local monster = {}
 
-monster.name = "Frozen Soul"
 monster.description = "a frozen soul"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 2000
 monster.maxHealth = 2000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ghost Wolf")
 local monster = {}
 
-monster.name = "Ghost Wolf"
 monster.description = "a ghost wolf"
 monster.experience = 65
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1148
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 2,
+	Locations = "Poacher Caves/Gloomy.",
+}
 
 monster.health = 160
 monster.maxHealth = 160
 monster.race = "blood"
 monster.corpse = 22078
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -69,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 12,
+	mitigation = 0.51,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Wisdom of Urmahlullu")
 local monster = {}
 
-monster.name = "Wisdom of Urmahlullu"
 monster.description = "Wisdom of Urmahlullu"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,24 @@ monster.health = 200000
 monster.maxHealth = 512000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1811,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +51,13 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -71,6 +83,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 84,
 	armor = 84,
+	--	mitigation = ???,
 }
 
 monster.elements = {

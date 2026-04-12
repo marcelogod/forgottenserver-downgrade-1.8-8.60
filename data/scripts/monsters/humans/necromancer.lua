@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Necromancer")
 local monster = {}
 
-monster.name = "Necromancer"
 monster.description = "a necromancer"
 monster.experience = 580
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 9
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "All the Tombs, Lich Hell, Drefia, Medusa Shield Quest room, Old Fortress, Old Masonry, \z
+		beneath Fenrock, Cemetery Quarter and Magician Quarter.",
+}
 
 monster.health = 580
 monster.maxHealth = 580
 monster.race = "blood"
 monster.corpse = 18174
-monster.speed = 188
+monster.speed = 94
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -93,6 +108,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 50,
+	mitigation = 1.04,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 50, maxDamage = 80, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

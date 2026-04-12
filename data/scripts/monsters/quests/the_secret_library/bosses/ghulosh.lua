@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ghulosh")
 local monster = {}
 
-monster.name = "Ghulosh"
 monster.description = "Ghulosh"
 monster.experience = 45000
 monster.outfit = {
@@ -14,16 +13,27 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 1608,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 300000
 monster.maxHealth = 300000
 monster.race = "blood"
 monster.corpse = 26133
-monster.speed = 100
+monster.speed = 50
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 4,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +50,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -101,6 +111,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	--	mitigation = ???,
 }
 
 monster.elements = {

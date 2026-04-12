@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Disgusting Ooze")
 local monster = {}
 
-monster.name = "Disgusting Ooze"
 monster.description = "a disgusting ooze"
 monster.experience = 3700
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3650
 monster.maxHealth = 3650
 monster.race = "venom"
 monster.corpse = 6532
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 85,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -82,17 +89,16 @@ monster.attacks = {
 	{ name = "defiler paralyze 1", interval = 2000, chance = 6, target = false },
 	{ name = "defiler paralyze 2", interval = 2000, chance = 8, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -300, maxDamage = -500, radius = 8, effect = CONST_ME_HITBYPOISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -300, maxDamage = -500, radius = 8, effect = CONST_ME_HITBYPOISON, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -400, maxDamage = -725, length = 8, spread = 0, effect = CONST_ME_SMALLPLANTS } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -400, maxDamage = -725, length = 8, spread = 0, effect = CONST_ME_SMALLPLANTS, target = false },
 	{ name = "combat", interval = 2000, chance = 14, type = COMBAT_EARTHDAMAGE, minDamage = -120, maxDamage = -170, radius = 3, effect = CONST_ME_POISONAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 250, maxDamage = 450, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Donkey")
 local monster = {}
 
-monster.name = "Donkey"
 monster.description = "a donkey"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 45
 monster.maxHealth = 45
 monster.race = "blood"
 monster.corpse = 12520
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 25,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

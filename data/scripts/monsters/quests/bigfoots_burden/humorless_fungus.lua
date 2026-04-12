@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Humorless Fungus")
 local monster = {}
 
-monster.name = "Humorless Fungus"
 monster.description = "a humorless fungus"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1600
 monster.maxHealth = 1600
 monster.race = "venom"
 monster.corpse = 16083
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -64,9 +70,7 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -475 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -40, maxDamage = -197, range = 7, shootEffect = CONST_ANI_SMALLEARTH, effect = CONST_ME_SMALLPLANTS, target = true },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_ICEDAMAGE, minDamage = 0, maxDamage = -525, range = 7, shootEffect = CONST_ANI_SNOWBALL, effect = CONST_ME_ICEAREA, target = true },
-	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -400, maxDamage = -640, range = 7, radius = 3, effect = CONST_ME_HITBYPOISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -400, maxDamage = -640, range = 7, radius = 3, effect = CONST_ME_HITBYPOISON, target = false },
 }
 
 monster.defenses = {

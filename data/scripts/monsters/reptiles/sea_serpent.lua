@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sea Serpent")
 local monster = {}
 
-monster.name = "Sea Serpent"
 monster.description = "a sea serpent"
 monster.experience = 2300
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 438
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Sea Serpent Area and Seacrest Grounds.",
+}
 
 monster.health = 1950
 monster.maxHealth = 1950
 monster.race = "blood"
 monster.corpse = 949
-monster.speed = 480
+monster.speed = 240
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -93,8 +107,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 25,
+	mitigation = 1.04,
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_HEALING, minDamage = 70, maxDamage = 273, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 400, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 400, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tyrn")
 local monster = {}
 
-monster.name = "Tyrn"
 monster.description = "Tyrn"
 monster.experience = 6900
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 966,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 12000
 monster.maxHealth = 12000
 monster.race = "blood"
 monster.corpse = 18970
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -94,6 +105,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 68,
 	armor = 58,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 33, type = COMBAT_HEALING, minDamage = 200, maxDamage = 300, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 2000, chance = 11, effect = CONST_ME_ENERGYHIT },
 	{ name = "tyrn heal", interval = 1000, chance = 100, target = false },

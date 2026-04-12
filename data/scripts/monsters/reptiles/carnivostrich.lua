@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Carnivostrich")
 local monster = {}
 
-monster.name = "Carnivostrich"
 monster.description = "a carnivostrich"
 monster.experience = 7290
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2341
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 1,
+	Locations = "Ingol",
+}
 
 monster.health = 8250
 monster.maxHealth = 8250
 monster.race = "blood"
 monster.corpse = 42226
-monster.speed = 336
+monster.speed = 168
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 3,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

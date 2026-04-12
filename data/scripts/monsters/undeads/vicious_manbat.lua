@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Vicious Manbat")
 local monster = {}
 
-monster.name = "Vicious Manbat"
 monster.description = "a vicious manbat"
 monster.experience = 1200
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 959
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 50,
+	Stars = 3,
+	Occurrence = 3,
+	Locations = "Deep under Drefia.",
+}
 
 monster.health = 1700
 monster.maxHealth = 1700
 monster.race = "blood"
 monster.corpse = 18949
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	health = 10,
+	damage = 10,
 }
 
 monster.flags = {
@@ -42,10 +58,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -65,15 +82,15 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -215 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_PHYSICALDAMAGE, minDamage = -100, maxDamage = -250, radius = 3, effect = CONST_ME_HITAREA, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -400, radius = 1, effect = CONST_ME_BATS, target = true },
+	{ name = "speed", interval = 2000, chance = 15, minDamage = 0, maxDamage = -210, radius = 1, effect = CONST_ME_BATS, target = true },
 	-- bleed
-	{ name = "condition", interval = 2000, chance = 20, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -400, maxDamage = -600, radius = 2, effect = CONST_ME_DRAWBLOOD } },
+	{ name = "condition", type = CONDITION_BLEEDING, interval = 2000, chance = 20, minDamage = -400, maxDamage = -600, radius = 2, effect = CONST_ME_DRAWBLOOD, target = false },
 }
 
 monster.defenses = {
 	defense = 35,
 	armor = 44,
+	mitigation = 1.21,
 }
 
 monster.elements = {

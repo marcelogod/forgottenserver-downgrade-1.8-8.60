@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dwarf Miner")
 local monster = {}
 
-monster.name = "Dwarf Miner"
 monster.description = "a dwarf miner"
 monster.experience = 60
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 120
 monster.maxHealth = 120
 monster.race = "blood"
 monster.corpse = 6007
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 420
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -77,6 +83,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 7,
+	mitigation = 0.51,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Clay Guardian")
 local monster = {}
 
-monster.name = "Clay Guardian"
 monster.description = "a clay guardian"
 monster.experience = 400
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 706
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Horestis Tomb, Middle Spike, Medusa Tower.",
+}
 
 monster.health = 625
 monster.maxHealth = 625
 monster.race = "undead"
 monster.corpse = 12837
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -78,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 42,
+	mitigation = 0.70,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 40, maxDamage = 130, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

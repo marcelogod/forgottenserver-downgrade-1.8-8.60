@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dragon Warden")
 local monster = {}
 
-monster.name = "Dragon Warden"
 monster.description = "a dragon warden"
 monster.experience = 4600
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 2800
 monster.maxHealth = 2800
 monster.race = "blood"
 monster.corpse = 25186
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -40,7 +39,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 366,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -66,6 +65,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 45,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 9, type = COMBAT_HEALING, minDamage = 70, maxDamage = 300, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

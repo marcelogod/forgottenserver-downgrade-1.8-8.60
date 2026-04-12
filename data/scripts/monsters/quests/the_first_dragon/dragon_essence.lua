@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dragon Essence")
 local monster = {}
 
-monster.name = "Dragon Essence"
 monster.description = "a dragon essence"
 monster.experience = 0
 monster.outfit = {
@@ -18,13 +17,21 @@ monster.health = 30000
 monster.maxHealth = 30000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -41,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 250,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -69,8 +76,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 22,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 16, type = COMBAT_HEALING, minDamage = 150, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 8, speed = 262, effect = CONST_ME_MAGIC_RED, target = false, duration = 7000 },
+	{ name = "speed", interval = 2000, chance = 8, speedChange = 262, effect = CONST_ME_MAGIC_RED, target = false, duration = 7000 },
 }
 
 monster.elements = {

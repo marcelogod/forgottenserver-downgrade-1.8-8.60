@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crazed Winter Rearguard")
 local monster = {}
 
-monster.name = "Crazed Winter Rearguard"
 monster.description = "a crazed winter rearguard"
 monster.experience = 4700
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1731
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Court of Winter, Dream Labyrinth.",
+}
 
 monster.health = 5200
 monster.maxHealth = 5200
 monster.race = "blood"
 monster.corpse = 30127
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -91,6 +108,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 76,
+	mitigation = 2.11,
 }
 
 monster.reflects = {

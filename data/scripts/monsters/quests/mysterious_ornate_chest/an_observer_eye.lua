@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("An Observer Eye")
 local monster = {}
 
-monster.name = "An Observer Eye"
 monster.description = "an observer eye"
 monster.experience = 0
 monster.outfit = {
@@ -26,6 +25,10 @@ monster.changeTarget = {
 	chance = 20,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -67,6 +70,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 55,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Demon Parrot")
 local monster = {}
 
-monster.name = "Demon Parrot"
 monster.description = "a demon parrot"
 monster.experience = 225
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 562
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Isle of Evil.",
+}
 
 monster.health = 360
 monster.maxHealth = 360
 monster.race = "blood"
 monster.corpse = 6056
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -64,7 +78,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 80110, maxCount = 100 },
+	{ name = "gold coin", chance = 81630, maxCount = 99 },
 }
 
 monster.attacks = {
@@ -77,6 +91,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 18,
 	armor = 18,
+	mitigation = 0.48,
 }
 
 monster.elements = {

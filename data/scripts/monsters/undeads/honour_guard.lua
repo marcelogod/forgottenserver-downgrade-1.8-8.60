@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Honour Guard")
 local monster = {}
 
-monster.name = "Honour Guard"
 monster.description = "a honour guard"
 monster.experience = 55
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 712
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 2,
+	Locations = "Desert north of Ankrahmun.",
+}
 
 monster.health = 85
 monster.maxHealth = 85
 monster.race = "undead"
 monster.corpse = 4024
-monster.speed = 154
+monster.speed = 77
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -79,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 4,
+	mitigation = 0.20,
 }
 
 monster.elements = {

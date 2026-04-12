@@ -1,9 +1,8 @@
 local mType = Game.createMonsterType("Undead Dragon")
 local monster = {}
 
-monster.name = "Undead Dragon"
 monster.description = "an undead dragon"
-monster.experience = 7500
+monster.experience = 7200
 monster.outfit = {
 	lookType = 231,
 	lookHead = 0,
@@ -15,17 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 282
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Helheim (single, isolated spawn), Pits of Inferno (Ashfalor's throneroom), \z
+		Demon Forge (The Shadow Nexus and The Arcanum), under Razachai (including the Inner Sanctum), \z
+		Chyllfroest, Oramond Fury Dungeon.",
+}
 
 monster.health = 8350
 monster.maxHealth = 8350
 monster.race = "undead"
 monster.corpse = 6305
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -114,7 +133,7 @@ monster.elements = {
 	{ type = COMBAT_LIFEDRAIN, percent = 0 },
 	{ type = COMBAT_MANADRAIN, percent = 0 },
 	{ type = COMBAT_DROWNDAMAGE, percent = 100 },
-	{ type = COMBAT_ICEDAMAGE, percent = 90 },
+	{ type = COMBAT_ICEDAMAGE, percent = 50 },
 	{ type = COMBAT_HOLYDAMAGE, percent = -25 },
 	{ type = COMBAT_DEATHDAMAGE, percent = 100 },
 }

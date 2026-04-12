@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dog")
 local monster = {}
 
-monster.name = "Dog"
 monster.description = "a dog"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 32
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 25,
+	FirstUnlock = 5,
+	SecondUnlock = 10,
+	CharmsPoints = 1,
+	Stars = 0,
+	Occurrence = 0,
+	Locations = "Isle of the Kings, North of the Thais temple, Lubos house, west of Carlin (with sheep), \z
+		Edron north of castle and one south towards Ivory Towers, Liberty Bay (Silverhand Manor), \z
+		Mintwallin central park and on the way to the old Mintwallin area, Factory Quarter (Yalahar).",
+}
 
 monster.health = 20
 monster.maxHealth = 20
 monster.race = "blood"
 monster.corpse = 5971
-monster.speed = 124
+monster.speed = 62
 monster.manaCost = 220
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +58,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 8,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {

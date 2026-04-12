@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Ravager")
 local monster = {}
 
-monster.name = "The Ravager"
 monster.description = "The Ravager"
 monster.experience = 14980
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 1035,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 53500
 monster.maxHealth = 53500
 monster.race = "undead"
 monster.corpse = 6031
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +53,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -85,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 25,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 400, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

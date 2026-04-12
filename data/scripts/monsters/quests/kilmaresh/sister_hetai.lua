@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sister Hetai")
 local monster = {}
 
-monster.name = "Sister Hetai"
 monster.description = "Sister Hetai"
 monster.experience = 20500
 monster.outfit = {
@@ -18,12 +17,21 @@ monster.health = 25000
 monster.maxHealth = 25000
 monster.race = "blood"
 monster.corpse = 31419
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 2104,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

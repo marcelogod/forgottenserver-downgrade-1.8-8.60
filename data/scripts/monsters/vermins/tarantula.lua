@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tarantula")
 local monster = {}
 
-monster.name = "Tarantula"
 monster.description = "a tarantula"
 monster.experience = 120
 monster.outfit = {
@@ -15,17 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 219
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Tiquanda Tarantula Caves, Spider Caves, Trapwood ground level and underground, \z
+		in 2 small caves South of Thais, Dark Cathedral, single spawn on top of Crocodile den north of Port Hope, \z
+		Plains of Havoc, underground Liberty Bay, Nargor Undead Cave and other constituents of the Shattered Isles, \z
+		Green Claw Swamp, first floor up in the big building in the Cemetery Quarter, Robson Isle, Vengoth. \z
+		After the summer update of 2876, tarantulas can be seen on the beginner's island of Rookgaard.",
+}
 
 monster.health = 225
 monster.maxHealth = 225
 monster.race = "venom"
 monster.corpse = 6060
-monster.speed = 214
+monster.speed = 107
 monster.manaCost = 485
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -66,7 +85,6 @@ monster.loot = {
 	{ name = "plate shield", chance = 2000 },
 	{ name = "spider fangs", chance = 4820 },
 	{ name = "tarantula egg", chance = 10000 },
-	{ name = "monk robe", chance = 390 },
 }
 
 monster.attacks = {
@@ -77,7 +95,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 20,
-	{ name = "speed", interval = 2000, chance = 15, speed = 220, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.51,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 220, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

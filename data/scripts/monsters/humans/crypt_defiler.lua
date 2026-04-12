@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crypt Defiler")
 local monster = {}
 
-monster.name = "Crypt Defiler"
 monster.description = "a crypt defiler"
 monster.experience = 70
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 868
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 2,
+	Locations = "Horestis Tomb.",
+}
 
 monster.health = 185
 monster.maxHealth = 185
 monster.race = "blood"
 monster.corpse = 18078
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 450
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -83,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 6,
+	mitigation = 0.41,
 }
 
 monster.elements = {

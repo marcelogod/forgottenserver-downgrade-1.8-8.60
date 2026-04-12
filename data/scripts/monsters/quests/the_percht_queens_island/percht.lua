@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Percht")
 local monster = {}
 
-monster.name = "Percht"
 monster.description = "a percht"
 monster.experience = 600
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1740
+monster.Bestiary = {
+	class = "Fey",
+	race = BESTY_RACE_FEY,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Percht Island",
+}
 
 monster.health = 620
 monster.maxHealth = 620
 monster.race = "blood"
 monster.corpse = 30296
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -84,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	mitigation = 0.83,
 }
 
 monster.elements = {

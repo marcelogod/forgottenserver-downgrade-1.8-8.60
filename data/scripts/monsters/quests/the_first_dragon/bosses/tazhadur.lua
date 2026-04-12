@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tazhadur")
 local monster = {}
 
-monster.name = "Tazhadur"
 monster.description = "Tazhadur"
 monster.experience = 9000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1390,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "blood"
 monster.corpse = 25065
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -81,6 +92,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 64,
 	armor = 52,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 150, maxDamage = 450, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Disruption")
 local monster = {}
 
-monster.name = "Disruption"
 monster.description = "a disruption"
 monster.experience = 398
 monster.outfit = {
@@ -12,12 +11,19 @@ monster.health = 12000
 monster.maxHealth = 12000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -34,12 +40,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -61,6 +68,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	--	mitigation = ???,
 }
 
 monster.elements = {

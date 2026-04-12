@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Lord of the Lice")
 local monster = {}
 
-monster.name = "The Lord of the Lice"
 monster.description = "The Lord of the Lice"
 monster.experience = 0
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 1179,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 80000
 monster.maxHealth = 80000
 monster.race = "blood"
 monster.corpse = 8957
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,11 +90,9 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 100, attack = 100, condition = { type = CONDITION_POISON, totalDamage = 100, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_EARTHDAMAGE, minDamage = -120, maxDamage = -310, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 22, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -1000, maxDamage = -1800, length = 8, spread = 3, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 22, minDamage = -1000, maxDamage = -1800, length = 8, spread = 3, effect = CONST_ME_POISONAREA, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -80, maxDamage = -80, radius = 3, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -80, maxDamage = -80, radius = 3, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_LIFEDRAIN, minDamage = -300, maxDamage = -420, range = 7, radius = 7, effect = CONST_ME_MAGIC_RED, target = false },
 	{ name = "mutated rat paralyze", interval = 2000, chance = 20, range = 7, target = false },
 }
@@ -89,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 9, type = COMBAT_HEALING, minDamage = 250, maxDamage = 550, effect = CONST_ME_HITBYPOISON, target = false },
 }
 

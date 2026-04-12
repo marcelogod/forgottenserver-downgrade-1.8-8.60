@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Weakened Demon")
 local monster = {}
 
-monster.name = "Weakened Demon"
 monster.description = "a weakened demon"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 5
 monster.maxHealth = 5
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -88,5 +94,15 @@ monster.immunities = {
 	{ type = "invisible", condition = false },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature) end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gnome Pack Crawler")
 local monster = {}
 
-monster.name = "Gnome Pack Crawler"
 monster.description = "a gnome pack crawler"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 5000
 monster.maxHealth = 5000
 monster.race = "fire"
 monster.corpse = 15991
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -63,6 +69,7 @@ monster.loot = {
 monster.defenses = {
 	defense = 45,
 	armor = 45,
+	--	mitigation = ???,
 }
 
 monster.elements = {

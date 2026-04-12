@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Winter Wolf")
 local monster = {}
 
-monster.name = "Winter Wolf"
 monster.description = "a winter wolf"
 monster.experience = 20
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 52
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Ice Islands.",
+}
 
 monster.health = 30
 monster.maxHealth = 30
 monster.race = "blood"
 monster.corpse = 5997
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 260
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -71,6 +85,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 2,
+	mitigation = 0.15,
 }
 
 monster.elements = {

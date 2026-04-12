@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Oozing Carcass")
 local monster = {}
 
-monster.name = "Oozing Carcass"
 monster.description = "an oozing carcass"
 monster.experience = 20980
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2377
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Putrefactory.",
+}
 
 monster.health = 27500
 monster.maxHealth = 27500
 monster.race = "undead"
 monster.corpse = 43579
-monster.speed = 430
+monster.speed = 215
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -55,7 +72,7 @@ monster.light = {
 
 monster.loot = {
 	{ name = "crystal coin", chance = 9000, maxCount = 1 },
--- { name = "lichen gobbler", chance = 12369, maxCount = 1 },
+	--{ name = "lichen gobbler", chance = 12369, maxCount = 1 },
 	{ name = "small emerald", chance = 12859, maxCount = 1 },
 	{ id = 3039, chance = 9808, maxCount = 1 }, -- red gem
 	{ name = "skull staff", chance = 12316, maxCount = 1 },
@@ -80,6 +97,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 102,
 	armor = 102,
+	mitigation = 3.10,
 }
 
 monster.elements = {

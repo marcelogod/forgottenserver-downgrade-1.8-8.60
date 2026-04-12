@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Stone Golem")
 local monster = {}
 
-monster.name = "Stone Golem"
 monster.description = "a stone golem"
 monster.experience = 160
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 67
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Maze of Lost Souls, in and around Ashta daramai, Formorgar Mines, \z
+		Mad Technomancer room, Dark Cathedral, Demona, Goroma, Tarpit Tomb, Peninsula Tomb, \z
+		Deeper Banuta, Forbidden Lands, Beregar Mines, Farmine Mines, Drillworm Caves, 2 caves on Hrodmir, \z
+		Orc Fortress (single spawn) and Medusa Tower.",
+}
 
 monster.health = 270
 monster.maxHealth = 270
 monster.race = "undead"
 monster.corpse = 6005
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 590
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -80,6 +97,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 30,
+	mitigation = 0.64,
 }
 
 monster.elements = {

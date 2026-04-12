@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Reflection of Mawhawk")
 local monster = {}
 
-monster.name = "Reflection of Mawhawk"
 monster.description = "a reflection of Mawhawk"
 monster.experience = 14000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 45000
 monster.maxHealth = 45000
 monster.race = "blood"
 monster.corpse = 21004
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 4,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -88,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 55,
+	--	mitigation = ???,
 }
 
 monster.elements = {

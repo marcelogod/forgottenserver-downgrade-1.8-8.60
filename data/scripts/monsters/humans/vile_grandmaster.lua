@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Vile Grandmaster")
 local monster = {}
 
-monster.name = "Vile Grandmaster"
 monster.description = "a vile grandmaster"
 monster.experience = 1500
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1147
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Old Fortress (north of Edron), Old Masonry, Forbidden Temple (Carlin).",
+}
 
 monster.health = 1700
 monster.maxHealth = 1700
 monster.race = "blood"
 monster.corpse = 22023
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -91,13 +108,13 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 10, maxDamage = -260 },
 	-- bleed
-	{ name = "condition", interval = 2000, chance = 20, target = true, condition =
-	{ type = CONDITION_BLEEDING, minDamage = -150, maxDamage = -225, radius = 4, shootEffect = CONST_ANI_THROWINGKNIFE, effect = CONST_ME_DRAWBLOOD } },
+	{ name = "condition", type = CONDITION_BLEEDING, interval = 2000, chance = 20, minDamage = -150, maxDamage = -225, radius = 4, shootEffect = CONST_ANI_THROWINGKNIFE, effect = CONST_ME_DRAWBLOOD, target = true },
 }
 
 monster.defenses = {
 	defense = 50,
 	armor = 40,
+	mitigation = 1.48,
 	{ name = "combat", interval = 4000, chance = 15, type = COMBAT_HEALING, minDamage = 220, maxDamage = 280, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

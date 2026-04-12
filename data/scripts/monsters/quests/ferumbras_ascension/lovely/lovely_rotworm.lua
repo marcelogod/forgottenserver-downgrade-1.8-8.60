@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lovely Rotworm")
 local monster = {}
 
-monster.name = "Lovely Rotworm"
 monster.description = "a lovely rotworm"
 monster.experience = 40
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 65
 monster.maxHealth = 65
 monster.race = "blood"
 monster.corpse = 5967
-monster.speed = 116
+monster.speed = 58
 monster.manaCost = 305
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

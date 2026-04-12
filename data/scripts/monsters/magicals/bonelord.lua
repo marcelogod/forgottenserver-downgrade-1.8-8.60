@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bonelord")
 local monster = {}
 
-monster.name = "Bonelord"
 monster.description = "a bonelord"
 monster.experience = 170
 monster.outfit = {
@@ -15,17 +14,40 @@ monster.outfit = {
 }
 
 monster.raceId = 17
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Ancient Temple, Alatar Lake, Mount Sternum Undead Cave, Desert Dungeon, Hellgate, \z
+		Helheim, Fibula Dungeon, Villa Scapula, Hero Cave before Dragons, Eastern Drefia, Folda hidden cave, \z
+		Maze of Lost Souls, way to Mintwallin, before Kazordoon city entrance, abandoned building east of Venore, \z
+		Green Claw Swamp, north of the Venore Amazon Camp, Below Point of No Return in Outlaw Camp, Vandura Bonelord Cave, \z
+		Triangle Tower, Hidden cave north of Port Hope, Deeper Banuta, Dark Cathedral, Shadow Tomb, Ancient Ruins Tomb, \z
+		Tarpit Tomb, Mountain Tomb, Peninsula Tomb, Oasis Tomb and beneath Fenrock.",
+}
 
 monster.health = 260
 monster.maxHealth = 260
 monster.race = "venom"
 monster.corpse = 5992
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +64,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -98,6 +120,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 5,
+	mitigation = 0.51,
 }
 
 monster.elements = {

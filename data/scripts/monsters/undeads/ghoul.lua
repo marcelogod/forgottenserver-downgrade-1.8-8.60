@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ghoul")
 local monster = {}
 
-monster.name = "Ghoul"
 monster.description = "a ghoul"
 monster.experience = 85
 monster.outfit = {
@@ -15,17 +14,39 @@ monster.outfit = {
 }
 
 monster.raceId = 18
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Ancient Temple in the Skeleton area, way to Mintwallin, Old Mintwallin Quest, \z
+		Alatar Lake, Magician Tower, Mount Sternum Undead Cave, Ghostlands, Hellgate, \z
+		Maze of Lost Souls, below Point of No Return in Outlaw Camp, Plains of Havoc in Necromant House, \z
+		Drefia and Drefia's underground caves, Edron ghoul hill, Venore Amazon Camp underground, \z
+		Venore Swamp Troll cave, Ghostship between Venore and Darashia, Triangle Tower, Dark Cathedral, \z
+		Ankrahmun tombs, Isle of the Kings, Treasure Island, Nargor Undead Cave, Helheim, Lion's Rock, \z
+		The Witches' Cliff (only accessible during a quest) and a cave northeast of Ab'Dendriel. \z
+		Also found behind a wall in both Rookgaard and Paradox Tower, although they cannot be reached.",
+}
 
 monster.health = 100
 monster.maxHealth = 100
 monster.race = "blood"
 monster.corpse = 5976
-monster.speed = 144
+monster.speed = 72
 monster.manaCost = 450
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +63,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -81,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 8,
+	mitigation = 0.43,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 9, maxDamage = 15, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

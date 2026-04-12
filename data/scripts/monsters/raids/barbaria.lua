@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Barbaria")
 local monster = {}
 
-monster.name = "Barbaria"
 monster.description = "Barbaria"
 monster.experience = 355
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 440,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 345
 monster.maxHealth = 345
 monster.race = "blood"
 monster.corpse = 18058
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -85,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 10,
+	mitigation = 0.70,
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_HEALING, minDamage = 50, maxDamage = 80, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

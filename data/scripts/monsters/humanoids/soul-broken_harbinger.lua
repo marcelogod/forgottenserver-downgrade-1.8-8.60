@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Soul-Broken Harbinger")
 local monster = {}
 
-monster.name = "Soul-Broken Harbinger"
 monster.description = "a soul-broken harbinger"
 monster.experience = 5800
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1734
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Court of Winter.",
+}
 
 monster.health = 6300
 monster.maxHealth = 6300
 monster.race = "blood"
 monster.corpse = 30138
-monster.speed = 420
+monster.speed = 210
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -85,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 76,
+	mitigation = 2.08,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

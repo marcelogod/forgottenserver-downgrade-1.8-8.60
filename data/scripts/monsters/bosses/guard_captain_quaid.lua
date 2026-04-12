@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Guard Captain Quaid")
 local monster = {}
 
-monster.name = "Guard Captain Quaid"
 monster.description = "Guard Captain Quaid"
 monster.experience = 28000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1791,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 55000
 monster.maxHealth = 55000
 monster.race = "blood"
 monster.corpse = 31654
-monster.speed = 184
+monster.speed = 92
 monster.manaCost = 0
+
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -57,29 +70,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "small sapphire", chance = 100000 },
 	{ name = "platinum coin", chance = 100000, maxCount = 20 },
-	{ name = "yellow gem", chance = 31000 },
-	{ id = 3039, chance = 31000 }, -- red gem
-	{ name = "gold ingot", chance = 48000 },
-	{ id = 281, chance = 28000 }, -- giant shimmering pearl (green)
-	{ name = "cobra crest", chance = 11000 },
-	{ name = "blue gem", chance = 31000 },
-	{ name = "green gem", chance = 31000 },
-	{ name = "terra hood", chance = 8900 },
-	{ name = "crossbow", chance = 10000 },
-	{ name = "bow", chance = 10000 },
-	{ name = "hunting spear", chance = 62000 },
-	{ name = "blue crystal shard", chance = 8600 },
-	{ name = "green crystal shard", chance = 8600 },
+	{ name = "leaf star", chance = 73000, maxCount = 2 },
 	{ name = "throwing star", chance = 65000, maxCount = 6 },
-	{ name = "small topaz", chance = 9800 },
-	{ name = "sacred tree amulet", chance = 12320 },
-	{ name = "magma monocle", chance = 8000 },
-	{ name = "wood cape", chance = 17000 },
-	{ name = "crystal crossbow", chance = 16580 },
+	{ name = "hunting spear", chance = 62000 },
+	{ name = "gold ingot", chance = 48000 },
+	{ name = "blue gem", chance = 31000 },
+	{ name = "yellow gem", chance = 31000 },
+	{ name = "green crystal shard", chance = 8600 },
+	{ id = 281, chance = 28000 }, -- giant shimmering pearl (green)
 	{ name = "skull helmet", chance = 7500 },
-	{ id = 23529, chance = 7200 }, -- collar of blue plasma
+	{ id = 23542, chance = 7200 }, -- collar of blue plasma
+	{ name = "cobra crest", chance = 11000 },
 	{ name = "cobra boots", chance = 115 },
 	{ name = "cobra hood", chance = 120 },
 	{ name = "cobra crossbow", chance = 50 },
@@ -98,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 86,
 	armor = 86,
+	--	mitigation = ???,
 }
 
 monster.elements = {

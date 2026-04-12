@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Strong Glooth Horror")
 local monster = {}
 
-monster.name = "Strong Glooth Horror"
 monster.description = "a strong glooth horror"
 monster.experience = 1500
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 20000
 monster.maxHealth = 20000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 200,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -63,14 +70,14 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 150, attack = 100 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_DEATHDAMAGE, minDamage = -300, maxDamage = -500, range = 1, shootEffect = CONST_ANI_POISON, target = true },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 12, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -500, maxDamage = -800, radius = 8, effect = CONST_ME_HITBYPOISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 12, minDamage = -500, maxDamage = -800, radius = 8, effect = CONST_ME_HITBYPOISON, target = false },
 	{ name = "drunk", interval = 2000, chance = 8, radius = 8, effect = CONST_ME_HITBYPOISON, target = false, duration = 15000 },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 15,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 500, maxDamage = 700, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 

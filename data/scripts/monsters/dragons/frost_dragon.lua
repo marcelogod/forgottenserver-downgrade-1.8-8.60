@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Frost Dragon")
 local monster = {}
 
-monster.name = "Frost Dragon"
 monster.description = "a frost dragon"
 monster.experience = 2100
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 317
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Okolnir, Razachai, Ice Witch Temple, Frost Dragon Tunnel, \z
+	Yakchal Crypt (only during Yakchals awakening ritual), Dragonblaze Peaks, Deeper Banuta, Chyllfroest.",
+}
 
 monster.health = 1800
 monster.maxHealth = 1800
 monster.race = "undead"
 monster.corpse = 7091
-monster.speed = 212
+monster.speed = 106
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 250,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -85,19 +103,20 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -225 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -175, maxDamage = -380, length = 8, spread = 3, effect = CONST_ME_POFF, target = false },
-	{ name = "speed", interval = 2000, chance = 5, speed = -700, radius = 3, effect = CONST_ME_POFF, target = false, duration = 12000 },
-	{ name = "speed", interval = 2000, chance = 15, speed = -850, length = 7, spread = 3, effect = CONST_ME_ICEATTACK, target = false, duration = 18000 },
+	{ name = "speed", interval = 2000, chance = 5, speedChange = -700, radius = 3, effect = CONST_ME_POFF, target = false, duration = 12000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -850, length = 7, spread = 3, effect = CONST_ME_ICEATTACK, target = false, duration = 18000 },
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_ICEDAMAGE, minDamage = -60, maxDamage = -120, radius = 3, effect = CONST_ME_ICETORNADO, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_ICEDAMAGE, minDamage = -100, maxDamage = -240, radius = 4, effect = CONST_ME_ICEAREA, target = true },
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -220, length = 1, spread = 3, effect = CONST_ME_POFF, target = false },
-	{ name = "speed", interval = 2000, chance = 20, speed = -600, radius = 4, effect = CONST_ME_ICEAREA, target = true, duration = 12000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -600, radius = 4, effect = CONST_ME_ICEAREA, target = true, duration = 12000 },
 }
 
 monster.defenses = {
 	defense = 45,
 	armor = 38,
+	mitigation = 1.07,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 150, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

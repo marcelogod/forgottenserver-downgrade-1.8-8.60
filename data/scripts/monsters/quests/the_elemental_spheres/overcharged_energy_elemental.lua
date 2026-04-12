@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Overcharged Energy Elemental")
 local monster = {}
 
-monster.name = "Overcharged Energy Elemental"
 monster.description = "an overcharged energy elemental"
 monster.experience = 1300
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1200
 monster.maxHealth = 1200
 monster.race = "undead"
 monster.corpse = 8138
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 20000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

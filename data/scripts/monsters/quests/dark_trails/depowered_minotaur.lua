@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Depowered Minotaur")
 local monster = {}
 
-monster.name = "Depowered Minotaur"
 monster.description = "a depowered minotaur"
 monster.experience = 1100
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "blood"
 monster.corpse = 5969
-monster.speed = 212
+monster.speed = 106
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -74,6 +77,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	mitigation = 1.09,
 }
 
 monster.elements = {

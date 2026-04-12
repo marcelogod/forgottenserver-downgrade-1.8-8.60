@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dworc Venomsniper")
 local monster = {}
 
-monster.name = "Dworc Venomsniper"
 monster.description = "a dworc venomsniper"
 monster.experience = 35
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 216
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "South of Port Hope (Trapwood) on ground level and underground and on Foreigner Quarter of Yalahar.",
+}
 
 monster.health = 80
 monster.maxHealth = 80
 monster.race = "blood"
 monster.corpse = 6059
-monster.speed = 152
+monster.speed = 76
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -77,13 +91,13 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -15 },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -20, maxDamage = -40, range = 5, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -20, maxDamage = -40, range = 5, shootEffect = CONST_ANI_POISON, target = false },
 }
 
 monster.defenses = {
 	defense = 10,
 	armor = 3,
+	mitigation = 0.38,
 }
 
 monster.elements = {

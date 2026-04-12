@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("King Zelos")
 local monster = {}
 
-monster.name = "King Zelos"
 monster.description = "King Zelos"
 monster.experience = 75000
 monster.outfit = {
@@ -14,12 +13,18 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 480000
 monster.maxHealth = 480000
 monster.race = "venom"
 monster.corpse = 31611
-monster.speed = 424
+monster.speed = 212
 
+monster.bosstiary = {
+	bossRaceId = 1784,
+	bossRace = RARITY_ARCHFOE,
+}
 
 monster.changeTarget = {
 	interval = 4000,
@@ -72,7 +77,6 @@ monster.loot = {
 	{ name = "galea mortis", chance = 550 },
 	{ name = "shadow cowl", chance = 530 },
 	{ name = "toga mortis", chance = 500 },
-	{ name = "death oyoroi", chance = 500 },
 }
 
 monster.attacks = {

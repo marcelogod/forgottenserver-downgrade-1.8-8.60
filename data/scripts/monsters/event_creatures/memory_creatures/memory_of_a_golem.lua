@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Memory of a Golem")
 local monster = {}
 
-monster.name = "Memory of a Golem"
 monster.description = "a memory of a golem"
 monster.experience = 1620
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3660
 monster.maxHealth = 3660
 monster.race = "venom"
 monster.corpse = 20972
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,7 +83,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 40,
-	{ name = "speed", interval = 2000, chance = 13, speed = 404, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
+	mitigation = 1.40,
+	{ name = "speed", interval = 2000, chance = 13, speedChange = 404, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

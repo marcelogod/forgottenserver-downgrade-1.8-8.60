@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rootthing Amber Shaper")
 local monster = {}
 
-monster.name = "Rootthing Amber Shaper"
 monster.description = "a rootthing amber shaper"
 monster.experience = 12400
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2539
+monster.Bestiary = {
+	class = "Plant",
+	race = BESTY_RACE_PLANT,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Podzilla Stalk.",
+}
 
 monster.health = 15000
 monster.maxHealth = 15000
 monster.race = "venom"
 monster.corpse = 48401
-monster.speed = 370
+monster.speed = 185
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -92,6 +109,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	mitigation = 2.75,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 500, maxDamage = 800, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 

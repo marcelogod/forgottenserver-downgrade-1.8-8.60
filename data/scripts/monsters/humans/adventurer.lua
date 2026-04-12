@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Adventurer")
 local monster = {}
 
-monster.name = "Adventurer"
 monster.description = "an adventurer"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 922
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Venore swamp.",
+}
 
 monster.health = 65
 monster.maxHealth = 65
 monster.race = "blood"
 monster.corpse = 18034
-monster.speed = 106
+monster.speed = 53
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 65,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -62,6 +77,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 5,
 	armor = 8,
+	mitigation = 0.28,
 }
 
 monster.elements = {

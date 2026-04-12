@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Blood Hand")
 local monster = {}
 
-monster.name = "Blood Hand"
 monster.description = "a blood hand"
 monster.experience = 750
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 974
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Drefia.",
+}
 
 monster.health = 700
 monster.maxHealth = 700
 monster.race = "blood"
 monster.corpse = 18940
-monster.speed = 192
+monster.speed = 96
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -84,15 +98,15 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -158, condition = { type = CONDITION_POISON, totalDamage = 80, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_LIFEDRAIN, minDamage = -50, maxDamage = -100, radius = 4, effect = CONST_ME_MAGIC_RED, target = false },
-	{ name = "speed", interval = 2000, chance = 10, speed = -600, radius = 4, effect = CONST_ME_BLOCKHIT, target = true, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = -600, radius = 4, effect = CONST_ME_BLOCKHIT, target = true, duration = 15000 },
 	-- bleed
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_BLEEDING, minDamage = -120, maxDamage = -160, radius = 6, effect = CONST_ME_HITAREA } },
+	{ name = "condition", type = CONDITION_BLEEDING, interval = 2000, chance = 15, minDamage = -120, maxDamage = -160, radius = 6, effect = CONST_ME_HITAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 48,
+	mitigation = 1.10,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 70, maxDamage = 90, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "effect", interval = 2000, chance = 10, radius = 1, effect = CONST_ME_INSECTS, target = false },
 }

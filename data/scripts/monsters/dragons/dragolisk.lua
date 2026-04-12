@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dragolisk")
 local monster = {}
 
-monster.name = "Dragolisk"
 monster.description = "a dragolisk"
 monster.experience = 5050
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2456
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Nimmersatt's Breeding Ground",
+}
 
 monster.health = 6180
 monster.maxHealth = 6180
 monster.race = "blood"
 monster.corpse = 44654
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -82,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 86,
 	armor = 86,
+	mitigation = 2.11,
 }
 
 monster.elements = {

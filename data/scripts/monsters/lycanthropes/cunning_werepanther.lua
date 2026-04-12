@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cunning Werepanther")
 local monster = {}
 
-monster.name = "Cunning Werepanther"
 monster.description = "a cunning werepanther"
 monster.experience = 3620
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2403
+monster.Bestiary = {
+	class = "Lycanthrope",
+	race = BESTY_RACE_LYCANTHROPE,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Murky Caverns, Oskayaat",
+}
 
 monster.health = 4300
 monster.maxHealth = 4300
 monster.race = "blood"
 monster.corpse = 43959
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -87,6 +104,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 72,
+	mitigation = 2.05,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 50, maxDamage = 100, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Old Bug")
 local monster = {}
 
 monster.name = "Bug"
-monster.name = "Old Bug"
 monster.description = "a bug"
 monster.experience = 18
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 29
 monster.maxHealth = 29
 monster.race = "venom"
 monster.corpse = 5990
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

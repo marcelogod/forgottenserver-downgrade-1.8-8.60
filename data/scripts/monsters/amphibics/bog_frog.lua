@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bog Frog")
 local monster = {}
 
-monster.name = "Bog Frog"
 monster.description = "a bog frog"
 monster.experience = 0
 monster.outfit = {
@@ -15,37 +14,52 @@ monster.outfit = {
 }
 
 monster.raceId = 738
+monster.Bestiary = {
+	class = "Amphibic",
+	race = BESTY_RACE_AMPHIBIC,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Shadowthorn in the bog god's temple, Drefia, around Lake Equivocolao when it's dirty.",
+}
 
 monster.health = 25
 monster.maxHealth = 25
 monster.race = "blood"
 monster.corpse = 6079
-monster.speed = 320
-monster.manaCost = 0
+monster.speed = 160
+monster.manaCost = 305
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
-	summonable = false,
+	summonable = true,
 	attackable = true,
 	hostile = true,
-	convinceable = false,
+	convinceable = true,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
-	canPushItems = true,
+	illusionable = false,
+	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	runHealth = 25,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
-	canWalkOnEnergy = true,
-	canWalkOnFire = true,
-	canWalkOnPoison = true
+	isBlockable = false,
+	canWalkOnEnergy = false,
+	canWalkOnFire = false,
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -56,15 +70,15 @@ monster.light = {
 monster.voices = {
 	interval = 5000,
 	chance = 10,
-	{ text = "Ribbit!", yell = false },
 	{ text = "Ribbit! Ribbit!", yell = false },
+	{ text = "Ribbit!", yell = false },
 }
 
 monster.loot = {}
 
 monster.defenses = {
 	defense = 5,
-	armor = 2,
+	armor = 10,
 }
 
 monster.elements = {

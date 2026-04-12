@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Enraged White Deer")
 local monster = {}
 
-monster.name = "Enraged White Deer"
 monster.description = "an enraged white deer"
 monster.experience = 165
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 255
 monster.maxHealth = 255
 monster.race = "blood"
 monster.corpse = 12524
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,12 +43,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,

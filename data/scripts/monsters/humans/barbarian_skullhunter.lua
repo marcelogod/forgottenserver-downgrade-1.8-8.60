@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Barbarian Skullhunter")
 local monster = {}
 
-monster.name = "Barbarian Skullhunter"
 monster.description = "a barbarian skullhunter"
 monster.experience = 85
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 322
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Ragnir, Krimhorn, Bittermor, and Fenrock.",
+}
 
 monster.health = 135
 monster.maxHealth = 135
 monster.race = "blood"
 monster.corpse = 18066
-monster.speed = 168
+monster.speed = 84
 monster.manaCost = 450
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -84,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 8,
+	mitigation = 0.33,
 }
 
 monster.elements = {

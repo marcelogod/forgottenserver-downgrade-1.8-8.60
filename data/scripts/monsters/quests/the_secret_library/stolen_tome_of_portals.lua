@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Stolen Tome of Portals")
 local monster = {}
 
-monster.name = "Stolen Tome of Portals"
 monster.description = "a stolen tome of portals"
 monster.experience = 0
 monster.outfit = {
@@ -15,10 +14,15 @@ monster.corpse = 0
 monster.speed = 0
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -35,7 +39,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -56,6 +60,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 33,
 	armor = 28,
+	--	mitigation = ???,
 }
 
 monster.elements = {

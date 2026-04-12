@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gingerbread Man")
 local monster = {}
 
-monster.name = "Gingerbread Man"
 monster.description = "a gingerbread man"
 monster.experience = 22
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2549
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 25,
+	FirstUnlock = 5,
+	SecondUnlock = 10,
+	CharmsPoints = 1,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Candia",
+}
 
 monster.health = 85
 monster.maxHealth = 85
 monster.race = "undead"
 monster.corpse = 48263
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 85,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -69,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 13,
+	mitigation = 0.41,
 }
 
 monster.elements = {

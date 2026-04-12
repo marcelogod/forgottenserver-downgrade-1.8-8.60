@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Blood Crab")
 local monster = {}
 
-monster.name = "Blood Crab"
 monster.description = "a blood crab"
 monster.experience = 160
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 261
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Goroma (beyond electric barrier), Laguna Islands, Shattered Isles, Underground Port Hope, \z
+		Mistrock, Treasure Island. There is also one underwater next to The Tibianic, however it is unreachable.",
+}
 
 monster.health = 290
 monster.maxHealth = 290
 monster.race = "blood"
 monster.corpse = 6075
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 505
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -59,12 +74,12 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 85680, maxCount = 20 },
-	{ id = 3578, chance = 15670 }, -- fish
-	{ name = "bloody pincers", chance = 5960 },
-	{ name = "chain armor", chance = 5070 },
-	{ name = "brass legs", chance = 2100 },
-	{ name = "white pearl", chance = 540 },
+	{ name = "gold coin", chance = 85750, maxCount = 20 },
+	{ id = 3578, chance = 14300 }, -- fish
+	{ name = "bloody pincers", chance = 6190 },
+	{ name = "chain armor", chance = 5240 },
+	{ name = "brass legs", chance = 2120 },
+	{ name = "white pearl", chance = 530 },
 }
 
 monster.attacks = {
@@ -74,6 +89,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 28,
 	armor = 28,
+	mitigation = 0.46,
 }
 
 monster.elements = {

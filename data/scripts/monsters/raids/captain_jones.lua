@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Captain Jones")
 local monster = {}
 
-monster.name = "Captain Jones"
 monster.description = "Captain Jones"
 monster.experience = 620
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 430,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 555
 monster.maxHealth = 555
 monster.race = "undead"
 monster.corpse = 5565
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,6 +88,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 0,
+	mitigation = 0.99,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 40, maxDamage = 70, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

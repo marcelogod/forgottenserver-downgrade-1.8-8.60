@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Grand Mother Foulscale")
 local monster = {}
 
-monster.name = "Grand Mother Foulscale"
 monster.description = "Grand Mother Foulscale"
 monster.experience = 1400
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 642,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 1850
 monster.maxHealth = 1850
 monster.race = "blood"
 monster.corpse = 5973
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 400,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -95,6 +106,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 27,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 17, type = COMBAT_HEALING, minDamage = 34, maxDamage = 66, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

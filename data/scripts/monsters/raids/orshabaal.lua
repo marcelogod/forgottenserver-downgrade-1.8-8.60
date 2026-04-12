@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orshabaal")
 local monster = {}
 
-monster.name = "Orshabaal"
 monster.description = "Orshabaal"
 monster.experience = 10000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 201,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 22500
 monster.maxHealth = 22500
 monster.race = "fire"
 monster.corpse = 5995
-monster.speed = 540
+monster.speed = 270
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 2500,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -130,9 +141,10 @@ monster.attacks = {
 monster.defenses = {
 	defense = 111,
 	armor = 90,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 9, type = COMBAT_HEALING, minDamage = 1500, maxDamage = 2500, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "combat", interval = 1000, chance = 17, type = COMBAT_HEALING, minDamage = 600, maxDamage = 1000, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 1000, chance = 5, speed = 1901, effect = CONST_ME_MAGIC_RED, target = false, duration = 7000 },
+	{ name = "speed", interval = 1000, chance = 5, speedChange = 1901, effect = CONST_ME_MAGIC_RED, target = false, duration = 7000 },
 }
 
 monster.elements = {

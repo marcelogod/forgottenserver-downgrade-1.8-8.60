@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Plant Attendant")
 local monster = {}
 
-monster.name = "Plant Attendant"
 monster.description = "a plant attendant"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 90
 monster.maxHealth = 90
 monster.race = "undead"
 monster.corpse = 19041
-monster.speed = 140
+monster.speed = 70
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,12 +67,13 @@ monster.loot = {}
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -90 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -15, range = 7, shootEffect = CONST_ANI_SMALLSTONE, target = true },
-	{ name = "speed", interval = 2000, chance = 20, speed = -600, radius = 3, effect = CONST_ME_SMALLPLANTS, target = false, duration = 9000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -600, radius = 3, effect = CONST_ME_SMALLPLANTS, target = false, duration = 9000 },
 }
 
 monster.defenses = {
 	defense = 10,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

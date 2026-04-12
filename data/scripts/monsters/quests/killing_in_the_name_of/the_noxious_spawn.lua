@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Noxious Spawn")
 local monster = {}
 
-monster.name = "The Noxious Spawn"
 monster.description = "The Noxious Spawn"
 monster.experience = 6000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 9500
 monster.maxHealth = 9500
 monster.race = "venom"
 monster.corpse = 4388
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 275,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -78,7 +84,7 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -250 },
-	{ name = "speed", interval = 4000, chance = 20, speed = -370, range = 7, shootEffect = CONST_ANI_POISON, target = true, duration = 12000 },
+	{ name = "speed", interval = 4000, chance = 20, speedChange = -370, range = 7, shootEffect = CONST_ANI_POISON, target = true, duration = 12000 },
 	{ name = "combat", interval = 2000, chance = 7, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -550, length = 8, spread = 3, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 9, type = COMBAT_LIFEDRAIN, minDamage = 0, maxDamage = -550, length = 8, spread = 3, effect = CONST_ME_SOUND_RED, target = false },
 	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -300, range = 1, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },

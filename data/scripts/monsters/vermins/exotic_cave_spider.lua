@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Exotic Cave Spider")
 local monster = {}
 
-monster.name = "Exotic Cave Spider"
 monster.description = "a exotic cave spider"
 monster.experience = 1400
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 2024
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Exotic cave spider cave.",
+}
 
 monster.health = 1900
 monster.maxHealth = 1900
 monster.race = "venom"
 monster.corpse = 35358
-monster.speed = 264
+monster.speed = 132
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 20,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,

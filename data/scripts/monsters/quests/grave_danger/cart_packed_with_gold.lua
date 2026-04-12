@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cart Packed with Gold")
 local monster = {}
 
-monster.name = "Cart Packed with Gold"
 monster.description = "a cart packed with gold"
 monster.experience = 0
 monster.outfit = {
@@ -26,6 +25,10 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -63,6 +66,7 @@ monster.loot = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	--	mitigation = ???,
 }
 
 monster.elements = {

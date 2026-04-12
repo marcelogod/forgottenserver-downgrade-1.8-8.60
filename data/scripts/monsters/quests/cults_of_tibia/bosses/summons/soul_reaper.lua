@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Soul Reaper")
 local monster = {}
 
-monster.name = "Soul Reaper"
 monster.description = "a soul reaper"
 monster.experience = 2200
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3500
 monster.maxHealth = 3500
 monster.race = "venom"
 monster.corpse = 23553
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,6 +74,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 52,
 	armor = 52,
+	--	mitigation = ???,
 }
 
 monster.elements = {

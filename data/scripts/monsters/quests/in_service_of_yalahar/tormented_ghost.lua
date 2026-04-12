@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tormented Ghost")
 local monster = {}
 
-monster.name = "Tormented Ghost"
 monster.description = "a tormented ghost"
 monster.experience = 5
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 210
 monster.maxHealth = 210
 monster.race = "undead"
 monster.corpse = 8826
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -68,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 10,
+	mitigation = 0.51,
 }
 
 monster.elements = {

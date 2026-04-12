@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Badger")
 local monster = {}
 
-monster.name = "Badger"
 monster.description = "a badger"
 monster.experience = 5
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 105
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Hrodmir, southern Tiquanda, unannounced raid in Ab'Dendriel and Edron.",
+}
 
 monster.health = 23
 monster.maxHealth = 23
 monster.race = "blood"
 monster.corpse = 6034
-monster.speed = 140
+monster.speed = 70
 monster.manaCost = 200
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -71,6 +85,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.07,
 }
 
 monster.elements = {

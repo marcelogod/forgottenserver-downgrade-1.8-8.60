@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Devourer")
 local monster = {}
 
-monster.name = "Devourer"
 monster.description = "a devourer"
 monster.experience = 1755
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 1056
+monster.Bestiary = {
+	class = "Slime",
+	race = BESTY_RACE_SLIME,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Rathleton Sewers, Lower Rathleton, Oramond/Western Plains, \z
+		Underground Glooth Factory, Jaccus Maxxen's Dungeon.",
+}
 
 monster.health = 1900
 monster.maxHealth = 1900
 monster.race = "venom"
 monster.corpse = 21113
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -97,6 +115,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 45,
+	mitigation = 1.46,
 	{ name = "combat", interval = 2000, chance = 6, type = COMBAT_HEALING, minDamage = 100, maxDamage = 150, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 

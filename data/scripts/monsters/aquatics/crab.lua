@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crab")
 local monster = {}
 
-monster.name = "Crab"
 monster.description = "a crab"
 monster.experience = 30
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 112
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Various locations like Goroma, Edron, Port Hope, Nargor and other Shattered Isles. \z
+		There is also one located underwater by The Tibianic, however it is unreachable.",
+}
 
 monster.health = 55
 monster.maxHealth = 55
 monster.race = "undead"
 monster.corpse = 6039
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 305
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -59,9 +74,9 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 80410, maxCount = 10 },
-	{ name = "crab pincers", chance = 19850 },
-	{ id = 3578, chance = 19810 }, -- fish
+	{ name = "gold coin", chance = 80000, maxCount = 10 },
+	{ id = 3578, chance = 20000 }, -- fish
+	{ name = "crab pincers", chance = 20000 },
 }
 
 monster.attacks = {
@@ -71,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 28,
+	mitigation = 0.78,
 }
 
 monster.elements = {

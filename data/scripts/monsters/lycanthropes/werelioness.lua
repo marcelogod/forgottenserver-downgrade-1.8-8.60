@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Werelioness")
 local monster = {}
 
-monster.name = "Werelioness"
 monster.description = "a werelioness"
 monster.experience = 2300
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1966
+monster.Bestiary = {
+	class = "Lycanthrope",
+	race = BESTY_RACE_LYCANTHROPE,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Lion Sanctum.",
+}
 
 monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "blood"
 monster.corpse = 34185
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -42,7 +52,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 5,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -92,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 38,
+	mitigation = 0.91,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 100, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Juggernaut")
 local monster = {}
 
-monster.name = "Juggernaut"
 monster.description = "a juggernaut"
 monster.experience = 11200
 monster.outfit = {
@@ -15,17 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 296
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Deep in Pits of Inferno (Apocalypse's throne room), The Dark Path, The Blood Halls, \z
+	The Vats, The Hive, The Shadow Nexus, a room deep in Formorgar Mines, Roshamuul Prison, \z
+	Oramond Dungeon, Grounds of Destruction and Halls of Ascension.",
+}
 
 monster.health = 18000
 monster.maxHealth = 18000
 monster.race = "blood"
 monster.corpse = 6335
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -103,7 +122,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 70,
-	{ name = "speed", interval = 2000, chance = 15, speed = 520, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.74,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 520, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 400, maxDamage = 900, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,11 +1,15 @@
 local mType = Game.createMonsterType("Megasylvan Yselda")
 local monster = {}
 
-monster.name = "Megasylvan Yselda"
 monster.description = "Megasylvan Yselda"
 monster.experience = 19900
 monster.outfit = {
 	lookTypeEx = 36928,
+}
+
+monster.bosstiary = {
+	bossRaceId = 2114,
+	bossRace = RARITY_ARCHFOE,
 }
 
 monster.health = 32000
@@ -18,6 +22,10 @@ monster.manaCost = 0
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -34,7 +42,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -97,6 +105,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 82,
+	--	mitigation = ???,
 }
 
 monster.elements = {

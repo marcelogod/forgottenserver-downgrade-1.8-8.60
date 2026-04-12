@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Noble Lion")
 local monster = {}
 
-monster.name = "Noble Lion"
 monster.description = "a noble lion"
 monster.experience = 400
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1118
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Lion's Rock temple.",
+}
 
 monster.health = 1000
 monster.maxHealth = 1000
 monster.race = "blood"
 monster.corpse = 21863
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -73,7 +91,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 26,
 	armor = 27,
-	{ name = "speed", interval = 2000, chance = 15, speed = 250, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.02,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 250, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

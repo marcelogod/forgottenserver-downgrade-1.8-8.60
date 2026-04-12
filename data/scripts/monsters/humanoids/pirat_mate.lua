@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pirat Mate")
 local monster = {}
 
-monster.name = "Pirat Mate"
 monster.description = "a pirat mate"
 monster.experience = 2400
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2039
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "The Wreckoning",
+}
 
 monster.health = 3200
 monster.maxHealth = 3200
 monster.race = "blood"
 monster.corpse = 35388
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = true,
+	isBlockable = true,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -63,7 +80,7 @@ monster.loot = {
 	{ name = "cyan crystal fragment", chance = 10000 },
 	{ name = "small diamond", chance = 10000 },
 	{ name = "red crystal fragment", chance = 10000 },
--- { name = "mouldy powder", chance = 9000 },
+	{ name = "mouldy powder", chance = 9000 },
 	{ name = "pirat's tail", chance = 7000 },
 	{ id = 3039, chance = 6000 }, -- red gem
 	{ name = "fire sword", chance = 5000 },
@@ -85,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 75,
+	mitigation = 1.94,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 30, maxDamage = 60, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

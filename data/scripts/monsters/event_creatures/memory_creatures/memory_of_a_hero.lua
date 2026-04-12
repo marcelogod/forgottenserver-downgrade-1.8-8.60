@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Memory of a Hero")
 local monster = {}
 
-monster.name = "Memory of a Hero"
 monster.description = "a memory of a hero"
 monster.experience = 1750
 monster.outfit = {
@@ -18,12 +17,18 @@ monster.health = 3850
 monster.maxHealth = 3850
 monster.race = "blood"
 monster.corpse = 18134
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	health = 10,
+	damage = 10,
 }
 
 monster.flags = {
@@ -40,7 +45,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -81,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	mitigation = 1.50,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

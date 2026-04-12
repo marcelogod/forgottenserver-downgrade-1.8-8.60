@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Usurper Archer")
 local monster = {}
 
-monster.name = "Usurper Archer"
 monster.description = "an usurper archer"
 monster.experience = 6800
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1973
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Bounac, the Order of the Lion settlement.",
+}
 
 monster.health = 7300
 monster.maxHealth = 7300
 monster.race = "blood"
 monster.corpse = 33981
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.faction = FACTION_LIONUSURPERS
@@ -29,6 +39,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_LION }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -45,7 +59,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -96,6 +110,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 82,
+	mitigation = 2.31,
 }
 
 monster.elements = {

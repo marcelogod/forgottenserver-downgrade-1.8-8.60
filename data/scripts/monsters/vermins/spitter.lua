@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Spitter")
 local monster = {}
 
-monster.name = "Spitter"
 monster.description = "a spitter"
 monster.experience = 1100
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 791
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "The Hive, Hive Outpost.",
+}
 
 monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "venom"
 monster.corpse = 13979
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 40,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -82,13 +96,14 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -150, condition = { type = CONDITION_POISON, totalDamage = 240, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -100, maxDamage = -160, range = 7, radius = 3, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = true },
-	{ name = "speed", interval = 2000, chance = 15, speed = -600, range = 7, shootEffect = CONST_ANI_POISON, target = true, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -600, range = 7, shootEffect = CONST_ANI_POISON, target = true, duration = 15000 },
 }
 
 monster.defenses = {
 	defense = 20,
 	armor = 48,
-	{ name = "speed", interval = 2000, chance = 15, speed = 400, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.60,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 400, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

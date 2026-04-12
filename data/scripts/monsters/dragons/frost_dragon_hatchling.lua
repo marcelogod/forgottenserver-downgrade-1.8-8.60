@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Frost Dragon Hatchling")
 local monster = {}
 
-monster.name = "Frost Dragon Hatchling"
 monster.description = "a frost dragon hatchling"
 monster.experience = 745
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 402
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Okolnir, Factory Quarter (Yalahar), Dragonblaze Peaks, Ice Witch Temple, Frost Dragon Tunnel, Chyllfroest.",
+}
 
 monster.health = 800
 monster.maxHealth = 800
 monster.race = "undead"
 monster.corpse = 909
-monster.speed = 172
+monster.speed = 86
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 80,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -72,12 +89,13 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -160 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_ICEDAMAGE, minDamage = -60, maxDamage = -110, length = 5, spread = 2, effect = CONST_ME_ICEATTACK, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_ICEDAMAGE, minDamage = -60, maxDamage = -110, radius = 4, effect = CONST_ME_ICEAREA, target = true },
-	{ name = "speed", interval = 2000, chance = 15, speed = -600, radius = 4, shootEffect = CONST_ANI_ICE, effect = CONST_ME_ICEAREA, target = true, duration = 12000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -600, radius = 4, shootEffect = CONST_ANI_ICE, effect = CONST_ME_ICEAREA, target = true, duration = 12000 },
 }
 
 monster.defenses = {
 	defense = 15,
 	armor = 32,
+	mitigation = 1.04,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 45, maxDamage = 50, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

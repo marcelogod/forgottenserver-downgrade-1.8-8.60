@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sphere of Wrath")
 local monster = {}
 
-monster.name = "Sphere of Wrath"
 monster.description = "a sphere of wrath"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 20000
 monster.maxHealth = 20000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 120
+monster.speed = 60
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +72,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 }
 
 monster.elements = {

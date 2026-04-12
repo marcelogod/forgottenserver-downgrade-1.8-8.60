@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Hunger")
 local monster = {}
 
-monster.name = "The Hunger"
 monster.description = "The Hunger"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 250000
 monster.maxHealth = 250000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -61,7 +68,7 @@ monster.loot = {}
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -962 },
-	--{ name = "practise fire wave", interval = 2000, chance = 20, minDamage = -600, maxDamage = -900, target = false },
+	{ name = "practise fire wave", interval = 2000, chance = 20, minDamage = -600, maxDamage = -900, target = false },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_LIFEDRAIN, radius = 8, effect = CONST_ME_MAGIC_RED, target = false },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -700, maxDamage = -1100, length = 10, spread = 0, effect = CONST_ME_EXPLOSIONHIT, target = false },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_LIFEDRAIN, minDamage = -200, maxDamage = -400, length = 10, spread = 0, effect = CONST_ME_MAGIC_RED, target = false },
@@ -72,6 +79,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 0, maxDamage = 191, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 

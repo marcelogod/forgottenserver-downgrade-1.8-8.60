@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crypt Warden")
 local monster = {}
 
-monster.name = "Crypt Warden"
 monster.description = "a crypt warden"
 monster.experience = 8400
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1805
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Kilmaresh Catacombs.",
+}
 
 monster.health = 8300
 monster.maxHealth = 8300
 monster.race = "blood"
 monster.corpse = 31650
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.faction = FACTION_ANUMA
@@ -29,6 +39,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_FAFNAR }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -45,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -87,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 84,
 	armor = 84,
+	mitigation = 2.31,
 }
 
 monster.elements = {

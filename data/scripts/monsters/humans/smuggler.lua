@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Smuggler")
 local monster = {}
 
-monster.name = "Smuggler"
 monster.description = "a smuggler"
 monster.experience = 48
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 222
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Around Dark Cathedral, Tiquanda Bandit Caves, the Outlaw Camp, Tyrsung, Yalahar and Nargor.",
+}
 
 monster.health = 130
 monster.maxHealth = 130
 monster.race = "blood"
 monster.corpse = 18226
-monster.speed = 176
+monster.speed = 88
 monster.manaCost = 390
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -81,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 8,
+	mitigation = 0.33,
 }
 
 monster.elements = {

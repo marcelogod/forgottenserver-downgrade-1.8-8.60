@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ink Splash")
 local monster = {}
 
-monster.name = "Ink Splash"
 monster.description = "an ink splash"
 monster.experience = 1450
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 2639
+monster.Bestiary = {
+	class = "Inkborn",
+	race = BESTY_RACE_INKBORN,
+	toKill = 1000,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Fields of Glory.",
+}
 
 monster.health = 1950
 monster.maxHealth = 1950
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 28601
-monster.speed = 380
+monster.speed = 190
 monster.manaCost = 0
 
 monster.voices = {
@@ -56,6 +66,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 36,
+	mitigation = 0.99,
 }
 
 monster.elements = {

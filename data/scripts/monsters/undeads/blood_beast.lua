@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Blood Beast")
 local monster = {}
 
-monster.name = "Blood Beast"
 monster.description = "a blood beast"
 monster.experience = 1000
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 1040
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Oramond/Southern Plains, Lower Rathleton, Oramond/Western Plains, \z
+		Underground Glooth Factory, Jaccus Maxxen's Dungeon.",
+}
 
 monster.health = 1600
 monster.maxHealth = 1600
 monster.race = "venom"
 monster.corpse = 20980
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 4,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -78,14 +96,14 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 82, attack = 50, condition = { type = CONDITION_POISON, totalDamage = 260, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -65, maxDamage = -105, range = 5, shootEffect = CONST_ANI_GREENSTAR, effect = CONST_ME_POISONAREA, target = true },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 17, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -300, maxDamage = -400, radius = 4, effect = CONST_ME_MAGIC_GREEN } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 17, minDamage = -300, maxDamage = -400, radius = 4, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 
 monster.defenses = {
 	defense = 36,
 	armor = 32,
-	{ name = "speed", interval = 2000, chance = 8, speed = 314, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	mitigation = 1.18,
+	{ name = "speed", interval = 2000, chance = 8, speedChange = 314, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 	{ name = "combat", interval = 2000, chance = 7, type = COMBAT_HEALING, minDamage = 80, maxDamage = 120, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

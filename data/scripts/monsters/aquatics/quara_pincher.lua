@@ -1,9 +1,8 @@
 local mType = Game.createMonsterType("Quara Pincher")
 local monster = {}
 
-monster.name = "Quara Pincher"
 monster.description = "a quara pincher"
-monster.experience = 1500
+monster.experience = 1200
 monster.outfit = {
 	lookType = 77,
 	lookHead = 0,
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 245
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Calassa, Frozen Trench, Yalahar (Sunken Quarter).",
+}
 
 monster.health = 1800
 monster.maxHealth = 1800
 monster.race = "blood"
 monster.corpse = 6063
-monster.speed = 396
+monster.speed = 198
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -62,28 +76,30 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 100000, maxCount = 150 },
-	{ name = "platinum coin", chance = 40430 },
-	{ name = "quara pincers", chance = 14560 },
-	{ name = "great health potion", chance = 10110 },
-	{ name = "small ruby", chance = 7710, maxCount = 2 },
-	{ name = "halberd", chance = 6910 },
-	{ name = "shrimp", chance = 4910, maxCount = 5 },
-	{ name = "fish fin", chance = 1680 },
-	{ name = "warrior helmet", chance = 1550 },
-	{ name = "crown armor", chance = 260 },
-	{ name = "glacier robe", chance = 110 },
+	{ name = "gold coin", chance = 50000, maxCount = 100 },
+	{ name = "gold coin", chance = 50000, maxCount = 50 },
+	{ name = "platinum coin", chance = 40000 },
+	{ name = "quara pincers", chance = 14285 },
+	{ name = "great health potion", chance = 10630 },
+	{ name = "small ruby", chance = 7761, maxCount = 2 },
+	{ name = "halberd", chance = 6861 },
+	{ name = "shrimp", chance = 5245, maxCount = 5 },
+	{ name = "fish fin", chance = 1600 },
+	{ name = "warrior helmet", chance = 1460 },
+	{ name = "crown armor", chance = 280 },
+	{ name = "glacier robe", chance = 120 },
 	{ name = "giant shrimp", chance = 40 },
 }
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -342, effect = CONST_ME_DRAWBLOOD },
-	{ name = "speed", interval = 2000, chance = 20, speed = -600, range = 1, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -600, range = 1, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
 }
 
 monster.defenses = {
 	defense = 50,
 	armor = 85,
+	mitigation = 0.99,
 }
 
 monster.elements = {

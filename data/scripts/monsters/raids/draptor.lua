@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Draptor")
 local monster = {}
 
-monster.name = "Draptor"
 monster.description = "a draptor"
 monster.experience = 2400
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 695
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 50,
+	Stars = 3,
+	Occurrence = 3,
+	Locations = "Zao, north east of Dragonblaze Peaks during raid. There are up to 10 draptors per raid, \z
+		while 6 of them may also appear in mission 8 of Wrath of the Emperor Quest.",
+}
 
 monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "blood"
 monster.corpse = 12329
-monster.speed = 680
+monster.speed = 340
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +60,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 350,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -80,8 +99,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 37,
 	armor = 40,
+	mitigation = 0.91,
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_HEALING, minDamage = 57, maxDamage = 93, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 12, speed = 457, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 12, speedChange = 457, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

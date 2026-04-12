@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Old Spider")
 local monster = {}
 
 monster.name = "Spider"
-monster.name = "Old Spider"
 monster.description = "a spider"
 monster.experience = 12
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 20
 monster.maxHealth = 20
 monster.race = "venom"
 monster.corpse = 5961
-monster.speed = 152
+monster.speed = 76
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 6,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

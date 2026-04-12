@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("An Astral Glyph")
 local monster = {}
 
-monster.name = "An Astral Glyph"
 monster.description = "an astral glyph"
 monster.experience = 0
 monster.outfit = {
@@ -12,13 +11,21 @@ monster.health = 300000
 monster.maxHealth = 300000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 470
+monster.speed = 235
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -35,7 +42,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -63,6 +70,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 50,
+	--	mitigation = ???,
 }
 
 monster.elements = {

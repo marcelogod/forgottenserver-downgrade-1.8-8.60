@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bruise Payne")
 local monster = {}
 
-monster.name = "Bruise Payne"
 monster.description = "Bruise Payne"
 monster.experience = 1000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1600
 monster.maxHealth = 1600
 monster.race = "blood"
 monster.corpse = 8915
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 300,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -75,13 +81,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_DROWNDAMAGE, minDamage = -130, maxDamage = -237, radius = 6, effect = CONST_ME_SOUND_WHITE, target = false },
 	{ name = "mutated bat curse", interval = 2000, chance = 10, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -12, maxDamage = -12, length = 4, spread = 0, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -12, maxDamage = -12, length = 4, spread = 0, effect = CONST_ME_POISONAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 20,
 	armor = 20,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 80, maxDamage = 95, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

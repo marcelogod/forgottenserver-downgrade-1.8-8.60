@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Retainer of Baeloc")
 local monster = {}
 
-monster.name = "Retainer of Baeloc"
 monster.description = "a retainer of Baeloc"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 580
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	--	mitigation = ???,
 }
 
 monster.elements = {

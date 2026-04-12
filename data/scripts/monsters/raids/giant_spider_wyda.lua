@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Giant Spider Wyda")
 local monster = {}
 
 monster.name = "Giant Spider"
-monster.name = "Giant Spider Wyda"
 monster.description = "a giant spider"
 monster.experience = 12
 monster.outfit = {
@@ -19,12 +18,18 @@ monster.health = 20
 monster.maxHealth = 20
 monster.race = "venom"
 monster.corpse = 5977
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 20,
+	random = 10,
 }
 
 monster.flags = {
@@ -41,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 6,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Shadow Tentacle")
 local monster = {}
 
-monster.name = "Shadow Tentacle"
 monster.description = "a shadow tentacle"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 22500
 monster.maxHealth = 22500
 monster.race = "venom"
 monster.corpse = 24256
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 800,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

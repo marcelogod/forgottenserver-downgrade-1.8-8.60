@@ -1,26 +1,36 @@
 local mType = Game.createMonsterType("Orchid Frog")
 local monster = {}
 
-monster.name = "Orchid Frog"
 monster.description = "an orchid frog"
 monster.experience = 20
 monster.outfit = {
 	lookType = 226,
-	lookHead = 71,
+	lookHead = 109,
 	lookBody = 14,
-	lookLegs = 71,
-	lookFeet = 70,
+	lookLegs = 109,
+	lookFeet = 114,
 	lookAddons = 0,
 	lookMount = 0,
 }
 
 monster.raceId = 271
+monster.Bestiary = {
+	class = "Amphibic",
+	race = BESTY_RACE_AMPHIBIC,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Meriana, Laguna Islands, and other Shattered Isles.",
+}
 
 monster.health = 60
 monster.maxHealth = 60
 monster.race = "blood"
 monster.corpse = 6079
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 305
 
 monster.changeTarget = {
@@ -28,24 +38,28 @@ monster.changeTarget = {
 	chance = 20,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
-	summonable = false,
+	summonable = true,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
-	pushable = false,
+	pushable = true,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = true,
+	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -61,8 +75,8 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 74840, maxCount = 10 },
-	{ name = "worm", chance = 9990 },
+	{ name = "gold coin", chance = 73230, maxCount = 10 },
+	{ name = "worm", chance = 8000 },
 }
 
 monster.attacks = {
@@ -71,7 +85,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 5,
-	armor = 8,
+	armor = 5,
 }
 
 monster.elements = {

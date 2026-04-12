@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Oozing Corpus")
 local monster = {}
 
-monster.name = "Oozing Corpus"
 monster.description = "an oozing corpus"
 monster.experience = 20600
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2381
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Jaded Roots.",
+}
 
 monster.health = 28700
 monster.maxHealth = 28700
 monster.race = "undead"
 monster.corpse = 43575
-monster.speed = 440
+monster.speed = 220
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 0,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -55,13 +72,13 @@ monster.light = {
 
 monster.loot = {
 	{ name = "crystal coin", chance = 9000, maxCount = 1 },
--- { name = "organic acid", chance = 7678, maxCount = 1 },
+	--{ name = "organic acid", chance = 7678, maxCount = 1 },
 	{ name = "terra boots", chance = 12369, maxCount = 1 },
 	{ name = "small amethyst", chance = 12859, maxCount = 1 },
 	{ name = "rotten roots", chance = 13133, maxCount = 1 },
 	{ name = "blue gem", chance = 9808, maxCount = 1 },
 	{ name = "dragonbone staff", chance = 6964, maxCount = 1 },
--- { name = "worm sponge", chance = 7270, maxCount = 1 },
+	--{ name = "worm sponge", chance = 7270, maxCount = 1 },
 	{ name = "violet gem", chance = 5084, maxCount = 1 },
 	{ name = "jade hammer", chance = 3073, maxCount = 1 },
 }
@@ -77,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 107,
+	mitigation = 3.25,
 }
 
 monster.elements = {

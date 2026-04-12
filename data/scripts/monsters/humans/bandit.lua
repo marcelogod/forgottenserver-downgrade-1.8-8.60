@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bandit")
 local monster = {}
 
-monster.name = "Bandit"
 monster.description = "a bandit"
 monster.experience = 65
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 223
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Dark Cathedral, Tiquanda Bandit Caves, Outlaw Camp, mountain pass west of Ankrahmun, \z
+		Tyrsung, Thais Bandit Cave, Formorgar Mines. Also summoned by Gamel.",
+}
 
 monster.health = 245
 monster.maxHealth = 245
 monster.race = "blood"
 monster.corpse = 18050
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 450
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 25,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -79,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 11,
+	mitigation = 0.43,
 }
 
 monster.elements = {

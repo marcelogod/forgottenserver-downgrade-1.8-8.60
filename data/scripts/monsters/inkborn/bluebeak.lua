@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bluebeak")
 local monster = {}
 
-monster.name = "Bluebeak"
 monster.description = "a bluebeak"
 monster.experience = 2070
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 2673
+monster.Bestiary = {
+	class = "Inkborn",
+	race = BESTY_RACE_INKBORN,
+	toKill = 2500,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Book World.",
+}
 
 monster.health = 2430
 monster.maxHealth = 2430
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 51505
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.voices = {
@@ -59,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 58,
 	armor = 40,
+	mitigation = 1.04,
 }
 
 monster.elements = {

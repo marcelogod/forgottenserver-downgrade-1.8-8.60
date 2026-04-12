@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Witch")
 local monster = {}
 
-monster.name = "Witch"
 monster.description = "a witch"
 monster.experience = 120
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 54
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Vandura, west of the Dwarf Mines in a small house, Amazon Tower north of Carlin, \z
+		Triangle Tower, Temple of Xayepocax, Green Claw Swamp and Amazon Camp (Venore), \z
+		Dark Cathedral (2 levels underground), Goroma Volcano (underground), west from Necromant House, \z
+		Mammoth Shearing Factory, Trade Quarter in Yalahar, The Witches' Cliff (only accessible during a quest).",
+}
 
 monster.health = 300
 monster.maxHealth = 300
 monster.race = "blood"
 monster.corpse = 18254
-monster.speed = 204
+monster.speed = 102
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -89,6 +106,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 8,
+	mitigation = 0.30,
 }
 
 monster.elements = {

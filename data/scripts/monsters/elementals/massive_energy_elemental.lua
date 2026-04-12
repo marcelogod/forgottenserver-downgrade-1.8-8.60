@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Massive Energy Elemental")
 local monster = {}
 
-monster.name = "Massive Energy Elemental"
 monster.description = "a massive energy elemental"
 monster.experience = 950
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 456
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "North west of Ankrahmun, you must Levitate to hunt. Two can also be found in the Asura Palace.",
+}
 
 monster.health = 1100
 monster.maxHealth = 1100
 monster.race = "venom"
 monster.corpse = 8138
-monster.speed = 430
+monster.speed = 215
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -82,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 35,
+	mitigation = 1.04,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 190, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

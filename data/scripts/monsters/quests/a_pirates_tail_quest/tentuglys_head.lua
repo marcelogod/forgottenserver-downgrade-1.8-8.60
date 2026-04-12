@@ -1,11 +1,15 @@
 local mType = Game.createMonsterType("Tentugly's Head")
 local monster = {}
 
-monster.name = "Tentugly's Head"
 monster.description = "Tentugly's Head"
 monster.experience = 40000
 monster.outfit = {
 	lookTypeEx = 35105,
+}
+
+monster.bosstiary = {
+	bossRaceId = 2238,
+	bossRace = RARITY_ARCHFOE,
 }
 
 monster.health = 75000
@@ -15,10 +19,15 @@ monster.corpse = 35600
 monster.speed = 0
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -35,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -87,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 82,
+	--	mitigation = ???,
 }
 
 monster.elements = {

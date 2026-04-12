@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Srezz Yellow Eyes")
 local monster = {}
 
-monster.name = "Srezz Yellow Eyes"
 monster.description = "Srezz Yellow Eyes"
 monster.experience = 4800
 monster.outfit = {
@@ -14,16 +13,26 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1983,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 6200
 monster.maxHealth = 6200
 monster.race = "venom"
 monster.corpse = 6061
-monster.speed = 234
+monster.speed = 117
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 30,
 }
 
 monster.flags = {
@@ -40,7 +49,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -94,8 +103,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 35,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 250, maxDamage = 500, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 340, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 340, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

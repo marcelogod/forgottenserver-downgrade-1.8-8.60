@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Zomba")
 local monster = {}
 
-monster.name = "Zomba"
 monster.description = "Zomba"
 monster.experience = 300
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 956,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 300
 monster.maxHealth = 300
 monster.race = "blood"
 monster.corpse = 19103
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -71,6 +82,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 13,
 	armor = 6,
+	mitigation = 0.40,
 }
 
 monster.elements = {

@@ -269,7 +269,7 @@ bool Monsters::deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std
 				drunkenness = spell->drunkenness;
 			}
 
-			auto condition = Condition::createCondition(CONDITIONID_COMBAT, CONDITION_DRUNK, duration, drunkenness);
+		auto condition = Condition::createCondition(CONDITIONID_COMBAT, CONDITION_DRUNK, duration, drunkenness);
 			combat->addCondition(std::move(condition));
 		} else if (tmpName == "firefield") {
 			combat->setParam(COMBAT_PARAM_CREATEITEM, ITEM_FIREFIELD_PVP_FULL);
@@ -280,6 +280,8 @@ bool Monsters::deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std
 		} else if (tmpName == "outfit") {
 			//
 		} else if (tmpName == "effect") {
+			//
+		} else if (tmpName == "strength") {
 			//
 		} else {
 			LOG_ERROR(fmt::format("[Error - Monsters::deserializeSpell] - {} - Unknown spell name: {}", description, spell->name));

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Barkless Fanatic")
 local monster = {}
 
-monster.name = "Barkless Fanatic"
 monster.description = "a barkless fanatic"
 monster.experience = 2500
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1488
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Barkless Cult Trial Zone (below Ab'Dendriel).",
+}
 
 monster.health = 3200
 monster.maxHealth = 3200
 monster.race = "blood"
 monster.corpse = 6012
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 390
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {

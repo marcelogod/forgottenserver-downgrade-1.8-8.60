@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Headpecker")
 local monster = {}
 
-monster.name = "Headpecker"
 monster.description = "a headpecker"
 monster.experience = 12026
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2275
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Crystal Enigma",
+}
 
 monster.health = 16300
 monster.maxHealth = 16300
 monster.race = "blood"
 monster.corpse = 39319
-monster.speed = 434
+monster.speed = 217
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 70,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -59,17 +73,17 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "Crystal Coin", chance = 35340 },
-	{ name = "Headpecker Beak", chance = 11350 },
-	{ name = "Headpecker Feather", chance = 7560, minCount = 1, maxCount = 5 },
-	{ name = "Furry Club", chance = 5540 },
-	{ id = 3595, chance = 4950 }, -- Carrot
-	{ name = "Knife", chance = 4240 },
-	{ name = "Spike Sword", chance = 4060 },
+	{ name = "Crystal Coin", chance = 35160 },
+	{ name = "Headpecker Beak", chance = 11360 },
+	{ name = "Headpecker Feather", chance = 7620, minCount = 1, maxCount = 5 },
+	{ name = "Furry Club", chance = 5560 },
+	{ id = 3595, chance = 4950, minCount = 1, maxCount = 3 }, -- Carrot
+	{ name = "Knife", chance = 4260 },
+	{ name = "Spike Sword", chance = 4040 },
 	{ name = "War Hammer", chance = 2290 },
 	{ name = "Titan Axe", chance = 1720 },
 	{ name = "Blue Gem", chance = 1560 },
-	{ name = "Wand of Starstorm", chance = 1000 },
+	{ name = "Wand of Starstorm", chance = 980 },
 	{ name = "Gold Ingot", chance = 910 },
 }
 
@@ -83,6 +97,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 68,
+	mitigation = 2.05,
 }
 
 monster.elements = {

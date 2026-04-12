@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Varnished Diremaw")
 local monster = {}
 
-monster.name = "Varnished Diremaw"
 monster.description = "a varnished diremaw"
 monster.experience = 5900
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2090
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Dwelling of the Forgotten.",
+}
 
 monster.health = 9000
 monster.maxHealth = 9000
 monster.race = "blood"
 monster.corpse = 36688
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -96,6 +113,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 50,
+	mitigation = 1.60,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Skunk")
 local monster = {}
 
-monster.name = "Skunk"
 monster.description = "a skunk"
 monster.experience = 3
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 106
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Unannounced raid in Edron outside the depot, Tiquanda, Shattered Isles, \z
+		Liberty Bay, south gate of Thais.",
+}
 
 monster.health = 20
 monster.maxHealth = 20
 monster.race = "blood"
 monster.corpse = 6035
-monster.speed = 136
+monster.speed = 68
 monster.manaCost = 200
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +57,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 8,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -71,6 +87,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.13,
 }
 
 monster.elements = {

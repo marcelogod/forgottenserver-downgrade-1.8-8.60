@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Penguin")
 local monster = {}
 
-monster.name = "Penguin"
 monster.description = "a penguin"
 monster.experience = 1
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 318
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "In and north of Formorgar Glacier, Nibelor, Helheim, Grimlund, south of Svargrond, Chyllfroest.",
+}
 
 monster.health = 33
 monster.maxHealth = 33
 monster.race = "blood"
 monster.corpse = 7334
-monster.speed = 116
+monster.speed = 58
 monster.manaCost = 290
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 32,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -59,9 +73,9 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ id = 3578, chance = 7920, maxCount = 2 }, -- fish
-	{ name = "rainbow trout", chance = 60 },
-	{ name = "green perch", chance = 120 },
+	{ id = 3578, chance = 7830, maxCount = 2 }, -- fish
+	{ name = "rainbow trout", chance = 70 },
+	{ name = "green perch", chance = 130 },
 }
 
 monster.attacks = {
@@ -71,6 +85,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 2,
+	mitigation = 0.07,
 }
 
 monster.elements = {

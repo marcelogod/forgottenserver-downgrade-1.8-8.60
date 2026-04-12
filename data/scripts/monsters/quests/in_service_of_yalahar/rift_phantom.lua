@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rift Phantom")
 local monster = {}
 
-monster.name = "Rift Phantom"
 monster.description = "a rift phantom"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 150
 monster.maxHealth = 150
 monster.race = "undead"
 monster.corpse = 5993
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -61,6 +64,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 5,
 	armor = 10,
+	mitigation = 0.51,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Headwalker")
 local monster = {}
 
-monster.name = "Headwalker"
 monster.description = "a headwalker"
 monster.experience = 2050
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2672
+monster.Bestiary = {
+	class = "Inkborn",
+	race = BESTY_RACE_INKBORN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Book World.",
+}
 
 monster.health = 2460
 monster.maxHealth = 2460
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 51552
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -90,6 +107,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 58,
 	armor = 38,
+	mitigation = 0.96,
 }
 
 monster.elements = {

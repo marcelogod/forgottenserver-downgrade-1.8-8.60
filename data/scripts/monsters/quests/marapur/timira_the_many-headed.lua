@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Timira the Many-Headed")
 local monster = {}
 
 monster.name = "Timira The Many-Headed"
-monster.name = "Timira the Many-Headed"
 monster.description = "Timira the Many-Headed"
 monster.experience = 45500
 monster.outfit = {
@@ -10,11 +9,16 @@ monster.outfit = {
 	lookAddons = 3,
 }
 
+monster.bosstiary = {
+	bossRaceId = 2250,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 75000
 monster.maxHealth = 75000
 monster.race = "blood"
 monster.corpse = 39712
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -85,8 +89,6 @@ monster.loot = {
 	{ name = "naga wand", chance = 200 },
 	{ name = "naga rod", chance = 200 },
 	{ name = "naga crossbow", chance = 200 },
-	{ name = "naga katar", chance = 200 },
-	{ name = "naga tanko", chance = 200 },
 }
 
 monster.attacks = {
@@ -102,6 +104,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 82,
+	mitigation = 2.07,
 }
 
 monster.elements = {
@@ -123,5 +126,11 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
 
 mType:register(monster)

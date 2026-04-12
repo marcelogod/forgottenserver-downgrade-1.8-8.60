@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hell Hole")
 local monster = {}
 
-monster.name = "Hell Hole"
 monster.description = "a hell hole"
 monster.experience = 0
 monster.outfit = {
@@ -20,6 +19,10 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +37,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = true,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

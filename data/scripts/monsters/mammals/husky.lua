@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Husky")
 local monster = {}
 
-monster.name = "Husky"
 monster.description = "a husky"
 monster.experience = 0
 monster.outfit = {
@@ -14,19 +13,35 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
 
 monster.raceId = 325
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 25,
+	FirstUnlock = 5,
+	SecondUnlock = 10,
+	CharmsPoints = 1,
+	Stars = 0,
+	Occurrence = 1,
+	Locations = "Svargrond and Nibelor.",
+}
 
 monster.health = 140
 monster.maxHealth = 140
 monster.race = "blood"
 monster.corpse = 7316
-monster.speed = 264
+monster.speed = 132
 monster.manaCost = 420
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,10 +58,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -67,6 +83,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.13,
 }
 
 monster.elements = {

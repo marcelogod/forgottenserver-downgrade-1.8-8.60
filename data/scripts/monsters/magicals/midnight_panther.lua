@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Midnight Panther")
 local monster = {}
 
-monster.name = "Midnight Panther"
 monster.description = "a midnight panther"
 monster.experience = 900
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 698
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 50,
+	Stars = 3,
+	Occurrence = 3,
+	Locations = "Tiquanda.",
+}
 
 monster.health = 1200
 monster.maxHealth = 1200
 monster.race = "blood"
 monster.corpse = 12340
-monster.speed = 580
+monster.speed = 290
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -78,7 +93,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
-	{ name = "speed", interval = 2000, chance = 15, speed = 370, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.99,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 370, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 50, maxDamage = 125, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_MAGIC_BLUE },
 }

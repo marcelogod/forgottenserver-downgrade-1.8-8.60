@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pirate Marauder")
 local monster = {}
 
-monster.name = "Pirate Marauder"
 monster.description = "a pirate marauder"
 monster.experience = 125
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 247
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Nargor, Tyrsung, Yalahar, Krailos Steppe, The Cave.",
+}
 
 monster.health = 210
 monster.maxHealth = 210
 monster.race = "blood"
 monster.corpse = 18202
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 490
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 20,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -87,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 8,
+	mitigation = 0.56,
 }
 
 monster.elements = {

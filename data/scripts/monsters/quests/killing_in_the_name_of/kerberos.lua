@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Kerberos")
 local monster = {}
 
-monster.name = "Kerberos"
 monster.description = "Kerberos"
 monster.experience = 10000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 11000
 monster.maxHealth = 11000
 monster.race = "blood"
 monster.corpse = 6331
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -86,6 +92,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	mitigation = 2.95,
 }
 
 monster.elements = {

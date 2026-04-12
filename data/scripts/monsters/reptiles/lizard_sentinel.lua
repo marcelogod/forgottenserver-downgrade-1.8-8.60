@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lizard Sentinel")
 local monster = {}
 
-monster.name = "Lizard Sentinel"
 monster.description = "a lizard sentinel"
 monster.experience = 110
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 114
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Chor, Zzaion and Foreigner Quarter.",
+}
 
 monster.health = 265
 monster.maxHealth = 265
 monster.race = "blood"
 monster.corpse = 6040
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 560
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -82,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 17,
+	mitigation = 0.62,
 }
 
 monster.elements = {

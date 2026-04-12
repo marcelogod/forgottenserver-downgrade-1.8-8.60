@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Nightmare Tendril")
 local monster = {}
 
-monster.name = "Nightmare Tendril"
 monster.description = "a nightmare tendril"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 2100
 monster.maxHealth = 2100
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,12 +67,13 @@ monster.loot = {}
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -250 },
 	{ name = "drunk", interval = 2000, chance = 8, shootEffect = CONST_ANI_EARTHARROW, effect = CONST_ME_STUN, target = true, duration = 5000 },
-	{ name = "speed", interval = 2000, chance = 7, speed = -120, range = 7, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
+	{ name = "speed", interval = 2000, chance = 7, speedChange = -120, range = 7, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
 }
 
 monster.defenses = {
 	defense = 10,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Inky")
 local monster = {}
 
-monster.name = "Inky"
 monster.description = "Inky"
 monster.experience = 700
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 750
 monster.maxHealth = 750
 monster.race = "blood"
 monster.corpse = 6065
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -75,6 +83,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	mitigation = 0.94,
 }
 
 monster.elements = {

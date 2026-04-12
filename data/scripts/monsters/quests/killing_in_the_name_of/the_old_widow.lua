@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Old Widow")
 local monster = {}
 
-monster.name = "The Old Widow"
 monster.description = "The Old Widow"
 monster.experience = 4200
 monster.outfit = {
@@ -18,12 +17,18 @@ monster.health = 3200
 monster.maxHealth = 3200
 monster.race = "blood"
 monster.corpse = 5977
-monster.speed = 438
+monster.speed = 219
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 20,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +45,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -84,16 +89,16 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = -100, maxDamage = -500 },
 	{ name = "combat", interval = 1000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -250, maxDamage = -300, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
-	{ name = "speed", interval = 1000, chance = 20, speed = -850, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false, duration = 25000 },
+	{ name = "speed", interval = 1000, chance = 20, speedChange = -850, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false, duration = 25000 },
 	{ name = "poisonfield", interval = 1000, chance = 10, range = 7, radius = 4, shootEffect = CONST_ANI_POISON, target = true },
 }
 
 monster.defenses = {
 	defense = 21,
 	armor = 45,
-	--
+	--	mitigation = 1.54,
 	{ name = "combat", interval = 1000, chance = 17, type = COMBAT_HEALING, minDamage = 225, maxDamage = 275, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 1000, chance = 8, speed = 345, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	{ name = "speed", interval = 1000, chance = 8, speedChange = 345, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

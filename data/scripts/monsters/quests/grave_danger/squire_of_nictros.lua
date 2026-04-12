@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Squire of Nictros")
 local monster = {}
 
-monster.name = "Squire of Nictros"
 monster.description = "a squire of Nictros"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 45,
+	--	mitigation = ???,
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_MAGIC_BLUE },
 }
 

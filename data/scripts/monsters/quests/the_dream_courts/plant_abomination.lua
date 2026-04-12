@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Plant Abomination")
 local monster = {}
 
-monster.name = "Plant Abomination"
 monster.description = "a plant abomination"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3900
 monster.maxHealth = 3900
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,7 +67,7 @@ monster.loot = {}
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -150 },
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_MANADRAIN, minDamage = -30, maxDamage = -100, radius = 4, effect = CONST_ME_GREEN_RINGS, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -700, length = 5, spread = 0, effect = CONST_ME_SMALLPLANTS, target = false, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -700, length = 5, spread = 0, effect = CONST_ME_SMALLPLANTS, target = false, duration = 15000 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -100, range = 7, radius = 1, shootEffect = CONST_ANI_SMALLEARTH, effect = CONST_ME_CARNIPHILA, target = true },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -55, maxDamage = -100, radius = 4, effect = CONST_ME_HITBYPOISON, target = true },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, radius = 1, effect = CONST_ME_POISONAREA, target = false },
@@ -70,6 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 20,
+	--	mitigation = ???,
 }
 
 monster.elements = {

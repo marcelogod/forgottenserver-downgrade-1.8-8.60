@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Greed")
 local monster = {}
 
-monster.name = "Greed"
 monster.description = "Greed"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1000
 monster.maxHealth = 1000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 380
+monster.speed = 190
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -69,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 50,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Demon Skeleton")
 local monster = {}
 
-monster.name = "Demon Skeleton"
 monster.description = "a demon skeleton"
 monster.experience = 240
 monster.outfit = {
@@ -14,19 +13,39 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
 
 monster.raceId = 37
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Triangle Tower, Hellgate, Draconia, Plains of Havoc, Pits of Inferno, Thais Ancient Temple, \z
+		Fibula Dungeon, Mintwallin, Mount Sternum hidden cave, Drefia, Ghost Ship, Edron Hero Cave, Shadowthorn, \z
+		Elvenbane, Ghostlands, Femor Hills, White Flower Temple, Isle of the Kings, Dark Cathedral, Ankrahmun Tombs, \z
+		Ramoa, Helheim, Vengoth, Upper Spike, Lion's Rock.",
+}
 
 monster.health = 400
 monster.maxHealth = 400
 monster.race = "undead"
 monster.corpse = 5963
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 620
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -43,7 +62,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -85,6 +104,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 25,
+	mitigation = 0.91,
 }
 
 monster.elements = {

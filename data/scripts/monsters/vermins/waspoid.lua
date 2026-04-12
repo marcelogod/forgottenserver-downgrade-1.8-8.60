@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Waspoid")
 local monster = {}
 
-monster.name = "Waspoid"
 monster.description = "a Waspoid"
 monster.experience = 830
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 792
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "The Hive, Hive Outpost.",
+}
 
 monster.health = 1100
 monster.maxHealth = 1100
 monster.race = "venom"
 monster.corpse = 13983
-monster.speed = 310
+monster.speed = 155
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -84,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 36,
+	mitigation = 1.54,
 }
 
 monster.elements = {

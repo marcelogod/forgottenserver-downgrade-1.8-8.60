@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Spirit of Fire")
 local monster = {}
 
-monster.name = "Spirit of Fire"
 monster.description = "a spirit of fire"
 monster.experience = 950
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 2210
 monster.maxHealth = 2210
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -69,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 0,
+	--	mitigation = ???,
 }
 
 monster.elements = {

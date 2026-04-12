@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rift Fragment")
 local monster = {}
 
-monster.name = "Rift Fragment"
 monster.description = "a rift fragment"
 monster.experience = 0
 monster.outfit = {
@@ -12,12 +11,19 @@ monster.health = 7200
 monster.maxHealth = 7200
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 50
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1400,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,6 +67,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 65,
 	armor = 40,
+	--	mitigation = ???,
 }
 
 monster.elements = {

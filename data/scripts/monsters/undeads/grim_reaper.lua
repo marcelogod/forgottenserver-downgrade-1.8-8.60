@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Grim Reaper")
 local monster = {}
 
-monster.name = "Grim Reaper"
 monster.description = "a grim reaper"
 monster.experience = 5500
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 465
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Drefia Grim Reaper Dungeons, deep in Drefia Wyrm Lair (after the Medusa Shield Quest), \z
+		Edron (Hero Cave), Yalahar (Cemetery Quarter), Oramond Dungeon, \z
+		  Abandoned Sewers and optionally in the Demon Oak Quest.",
+}
 
 monster.health = 3900
 monster.maxHealth = 3900
 monster.race = "undead"
 monster.corpse = 8127
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	health = 10,
+	damage = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -92,8 +110,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 30,
+	mitigation = 0.64,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 130, maxDamage = 205, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

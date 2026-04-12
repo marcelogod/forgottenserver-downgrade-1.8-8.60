@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Incredibly Old Witch")
 local monster = {}
 
-monster.name = "Incredibly Old Witch"
 monster.description = "an incredibly old witch"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 620
 monster.maxHealth = 620
 monster.race = "blood"
 monster.corpse = 6081
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 100,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -78,6 +81,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {
@@ -99,5 +103,19 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

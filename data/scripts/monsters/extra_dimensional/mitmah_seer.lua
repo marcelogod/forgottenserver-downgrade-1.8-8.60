@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mitmah Seer")
 local monster = {}
 
-monster.name = "Mitmah Seer"
 monster.description = "a mitmah seer"
 monster.experience = 4900
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2461
+monster.Bestiary = {
+	class = "Extra Dimensional",
+	race = BESTY_RACE_EXTRA_DIMENSIONAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Iksupan Waterways",
+}
 
 monster.health = 4620
 monster.maxHealth = 4620
 monster.race = "venom"
 monster.corpse = 44670
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -43,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,12 +82,12 @@ monster.voices = {
 monster.loot = {
 	{ name = "platinum coin", chance = 100000, maxCount = 15 },
 	{ name = "great mana potion", chance = 11880 },
--- { name = "crystal of the mitmah", chance = 11410 }, -- 280gp yasir
+	--{ name = "crystal of the mitmah", chance = 11410 }, -- 280gp yasir
 	{ name = "strong health potion", chance = 5810, maxCount = 3 },
 	{ name = "opal", chance = 4990 },
 	{ name = "wand of cosmic energy", chance = 3920 },
 	{ id = 3039, chance = 2280 }, -- red gem
--- { name = "gold-brocaded cloth", chance = 1450 },
+	--{ name = "gold-brocaded cloth", chance = 1450 },
 	{ name = "gold ring", chance = 1190 },
 	{ name = "ruby necklace", chance = 1100 },
 	{ id = 3038, chance = 570 }, -- green gem
@@ -88,6 +105,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 45,
+	mitigation = 2.02,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 130, maxDamage = 210, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

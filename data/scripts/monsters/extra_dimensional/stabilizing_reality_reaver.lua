@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Stabilizing Reality Reaver")
 local monster = {}
 
-monster.name = "Stabilizing Reality Reaver"
 monster.description = "a stabilizing reality reaver"
 monster.experience = 1950
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1266
+monster.Bestiary = {
+	class = "Extra Dimensional",
+	race = BESTY_RACE_EXTRA_DIMENSIONAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Otherworld (Edron)",
+}
 
 monster.health = 2500
 monster.maxHealth = 2500
 monster.race = "venom"
 monster.corpse = 23412
-monster.speed = 310
+monster.speed = 155
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -88,9 +105,10 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 46,
+	mitigation = 1.57,
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_POFF },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 80, maxDamage = 210, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 10, speed = 330, effect = CONST_ME_HITAREA, target = false, duration = 8000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 330, effect = CONST_ME_HITAREA, target = false, duration = 8000 },
 }
 
 monster.elements = {

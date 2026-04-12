@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Eruption of Destruction")
 local monster = {}
 
-monster.name = "Eruption of Destruction"
 monster.description = "an eruption of destruction"
 monster.experience = 0
 monster.outfit = {
@@ -12,12 +11,19 @@ monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 120
+monster.speed = 60
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -53,13 +59,14 @@ monster.voices = {
 monster.loot = {}
 
 monster.attacks = {
-	{ name = "speed", interval = 2000, chance = 25, speed = -600, radius = 7, effect = CONST_ME_LOSEENERGY, target = false, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 25, speedChange = -600, radius = 7, effect = CONST_ME_LOSEENERGY, target = false, duration = 15000 },
 	{ name = "eruption of destruction explosion", interval = 10000, chance = 100, minDamage = -1800, maxDamage = -2200, target = false },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Nightstalker")
 local monster = {}
 
-monster.name = "Nightstalker"
 monster.description = "a Nightstalker"
 monster.experience = 500
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 520
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Cemetery Quarter, Vengoth Castle, Vandura Mountain, Robson Isle.",
+}
 
 monster.health = 700
 monster.maxHealth = 700
 monster.race = "undead"
 monster.corpse = 9001
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -88,7 +105,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 40,
-	{ name = "speed", interval = 2000, chance = 15, speed = 240, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.18,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 240, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 	{ name = "invisible", interval = 2000, chance = 10, effect = CONST_ME_YELLOW_RINGS },
 	{ name = "outfit", interval = 5000, chance = 10, target = false, duration = 4000, outfitMonster = "nightstalker" },
 	{ name = "outfit", interval = 5000, chance = 10, target = false, duration = 4000, outfitMonster = "werewolf" },

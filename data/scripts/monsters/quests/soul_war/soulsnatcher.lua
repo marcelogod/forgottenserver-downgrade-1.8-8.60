@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Soulsnatcher")
 local monster = {}
 
-monster.name = "Soulsnatcher"
 monster.description = "a soulsnatcher"
 monster.experience = 0
 monster.outfit = {
@@ -18,13 +17,18 @@ monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +45,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -54,14 +58,15 @@ monster.light = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = -1000, maxDamage = -1500 },
-	--{ name = "soulsnatcher-lifedrain-beam", interval = 2000, chance = 20, minDamage = -1000, maxDamage = -1500, target = false },
-	--{ name = "soulsnatcher-lifedrain-missile", interval = 2000, chance = 25, minDamage = -1000, maxDamage = -1500, target = true },
-	--{ name = "soulsnatcher-manadrain-ball", interval = 2000, chance = 30, minDamage = -500, maxDamage = -1000 },
+	{ name = "soulsnatcher-lifedrain-beam", interval = 2000, chance = 20, minDamage = -1000, maxDamage = -1500, target = false },
+	{ name = "soulsnatcher-lifedrain-missile", interval = 2000, chance = 25, minDamage = -1000, maxDamage = -1500, target = true },
+	{ name = "soulsnatcher-manadrain-ball", interval = 2000, chance = 30, minDamage = -500, maxDamage = -1000 },
 }
 
 monster.defenses = {
 	defense = 80,
 	armor = 90,
+	mitigation = 0.51,
 }
 
 monster.elements = {
@@ -83,5 +88,26 @@ monster.immunities = {
 	{ type = "invisible", condition = false },
 	{ type = "bleed", condition = false },
 }
+
+local transformTimeCount = 0
+mType.onThink = function(monster, interval)
+	transformTimeCount = transformTimeCount + interval
+	if transformTimeCount == 8000 then
+		transformTimeCount = 0
+		local zone = Zone("boss.goshnar's-greed")
+		if zone then
+			local players = zone:getPlayers()
+			for _, player in ipairs(players) do
+				player:addHealth(-math.random(500, 1000))
+			end
+		end
+		CreateGoshnarsGreedMonster(monster:getName(), GreedMonsters[monster:getName()])
+		monster:remove()
+	end
+end
+
+mType.onAppear = function(monster)
+	transformTimeCount = 0
+end
 
 mType:register(monster)

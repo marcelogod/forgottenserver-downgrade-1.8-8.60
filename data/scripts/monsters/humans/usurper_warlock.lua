@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Usurper Warlock")
 local monster = {}
 
-monster.name = "Usurper Warlock"
 monster.description = "an usurper warlock"
 monster.experience = 7000
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1974
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Bounac, the Order of the Lion settlement.",
+}
 
 monster.health = 7500
 monster.maxHealth = 7500
 monster.race = "blood"
 monster.corpse = 34184
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.faction = FACTION_LIONUSURPERS
@@ -29,6 +39,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_LION }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -45,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -92,6 +106,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 80,
+	mitigation = 2.25,
 }
 
 monster.elements = {

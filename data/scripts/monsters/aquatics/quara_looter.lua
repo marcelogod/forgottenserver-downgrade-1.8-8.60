@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Quara Looter")
 local monster = {}
 
-monster.name = "Quara Looter"
 monster.description = "a quara looter"
 monster.experience = 8650
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2543
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 1,
+	Locations = "Podzilla Bottom, Podzilla Underwater ",
+}
 
 monster.health = 11500
 monster.maxHealth = 11500
 monster.race = "undead"
 monster.corpse = 48276
-monster.speed = 420
+monster.speed = 210
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 11,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 3,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -62,20 +76,20 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "amber souvenir", chance = 7030 },
-	{ name = "resinous fish fin", chance = 6630 },
-	{ id = 3039, chance = 5290 }, -- red gem
-	{ name = "blue gem", chance = 2480 },
-	{ name = "glacier kilt", chance = 800 },
-	{ name = "necklace of the deep", chance = 670 },
-	{ name = "rift lance", chance = 400 },
-	{ name = "mantassin tail", chance = 330 },
-	{ name = "crystal crossbow", chance = 330 },
-	{ name = "preserved light blue seed", chance = 70 },
-	{ name = "preserved violet seed", chance = 70 },
+	{ name = "Amber Souvenir", chance = 7040 },
+	{ name = "Resinous Fish Fin", chance = 6460 },
+	{ id = 3039, chance = 4340 }, -- red gem
+	{ id = 3041, chance = 2700 }, -- blue gem
+	{ name = "Glacier Kilt", chance = 940 },
+	{ name = "Necklace of the Deep", chance = 820 },
+	{ name = "Crystal Crossbow", chance = 470 },
+	{ name = "Rift Lance", chance = 350 },
+	{ name = "Mantassin Tail", chance = 230 },
 	{ name = "platinum coin", chance = 10000, maxCount = 25 },
-	{ name = "glacier robe", chance = 800 },
-	{ name = "preserved purple seed", chance = 70 },
+	{ name = "Glacier Robe", chance = 1000 },
+	{ name = "Preserved Light Blue Seed", chance = 110 },
+	{ name = "Preserved Purple Seed", chance = 110 },
+	{ name = "Preserved Violet Seed", chance = 110 },
 }
 
 monster.attacks = {
@@ -88,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 95,
 	armor = 95,
+	mitigation = 2.75,
 	{ name = "combat", interval = 2000, chance = 7, type = COMBAT_HEALING, minDamage = 600, maxDamage = 800, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

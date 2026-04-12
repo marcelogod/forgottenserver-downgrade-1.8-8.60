@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bear")
 local monster = {}
 
-monster.name = "Bear"
 monster.description = "a bear"
 monster.experience = 23
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 16
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Several spawns near Kazordoon, Femor Hills, north of Thais, near the White Flower Temple, \z
+		Rookgaard Bear Cave, Bear Room Quest in Rookgaard, Rookgaard Bear Mountain, South of Villa Scapula, \z
+		Ferngrims Gate, North of Carlin, Fields of Glory, Edron Troll Cave, south of Venore, Desert Dungeon, \z
+		first floor of the Orc Fort mountain and west of Outlaw Camp.",
+}
 
 monster.health = 80
 monster.maxHealth = 80
 monster.race = "blood"
 monster.corpse = 5975
-monster.speed = 156
+monster.speed = 78
 monster.manaCost = 300
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -74,6 +91,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 6,
+	mitigation = 0.15,
 }
 
 monster.elements = {

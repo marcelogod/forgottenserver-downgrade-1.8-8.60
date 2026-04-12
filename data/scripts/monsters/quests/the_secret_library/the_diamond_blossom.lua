@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Diamond Blossom")
 local monster = {}
 
-monster.name = "The Diamond Blossom"
 monster.description = "The Diamond Blossom"
 monster.experience = 10000
 monster.outfit = {
@@ -14,17 +13,27 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1598,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 20000
 monster.maxHealth = 20000
 monster.race = "undead"
 monster.corpse = 28802
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +50,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,6 +77,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 33,
 	armor = 28,
+	--	mitigation = ???,
 }
 
 monster.elements = {

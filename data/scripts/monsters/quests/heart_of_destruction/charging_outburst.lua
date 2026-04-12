@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Charging Outburst")
 local monster = {}
 
-monster.name = "Charging Outburst"
 monster.description = "Charging Outburst"
 monster.experience = 50000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 12000
 monster.maxHealth = 12000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -71,6 +78,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	--	mitigation = ???,
 }
 
 monster.elements = {

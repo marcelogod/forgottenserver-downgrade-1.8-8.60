@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Boogy")
 local monster = {}
 
-monster.name = "Boogy"
 monster.description = "a boogy"
 monster.experience = 950
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1439
+monster.Bestiary = {
+	class = "Fey",
+	race = BESTY_RACE_FEY,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Feyrist (night time) and its underground (all day).",
+}
 
 monster.health = 1300
 monster.maxHealth = 1300
 monster.race = "blood"
 monster.corpse = 25819
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 20,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,15 +99,15 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -450 },
 	-- bleed
-	{ name = "condition", interval = 3000, chance = 11, target = true, condition =
-	{ type = CONDITION_BLEEDING, minDamage = -100, maxDamage = -300, radius = 6, shootEffect = CONST_ANI_WHIRLWINDCLUB, effect = CONST_ME_DRAWBLOOD } },
+	{ name = "condition", type = CONDITION_BLEEDING, interval = 3000, chance = 11, minDamage = -100, maxDamage = -300, radius = 6, shootEffect = CONST_ANI_WHIRLWINDCLUB, effect = CONST_ME_DRAWBLOOD, target = true },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_ENERGYDAMAGE, minDamage = -60, maxDamage = -115, range = 7, shootEffect = CONST_ANI_LARGEROCK, effect = CONST_ME_EXPLOSIONAREA, target = true },
 }
 
 monster.defenses = {
 	defense = 35,
 	armor = 35,
-	{ name = "speed", interval = 2000, chance = 15, speed = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.24,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 0, maxDamage = 110, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

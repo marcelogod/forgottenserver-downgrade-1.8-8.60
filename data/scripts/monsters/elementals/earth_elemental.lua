@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Earth Elemental")
 local monster = {}
 
-monster.name = "Earth Elemental"
 monster.description = "an earth elemental"
 monster.experience = 550
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 458
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Edron Earth Elemental Cave, Vandura Mountain, Deeper Banuta, Vengoth Castle, Robson Isle, \z
+	Drillworm Caves, Crystal Grounds, Middle Spike.",
+}
 
 monster.health = 650
 monster.maxHealth = 650
 monster.race = "undead"
 monster.corpse = 8105
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 80,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -78,17 +96,16 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -72, maxDamage = -105, range = 7, shootEffect = CONST_ANI_SMALLEARTH, effect = CONST_ME_GREEN_RINGS, target = true },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -100, range = 7, radius = 2, shootEffect = CONST_ANI_LARGEROCK, effect = CONST_ME_POFF, target = true },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -200, maxDamage = -260, length = 6, spread = 0, effect = CONST_ME_BIGPLANTS } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 20, minDamage = -200, maxDamage = -260, length = 6, spread = 0, effect = CONST_ME_BIGPLANTS, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -100, maxDamage = -140, radius = 5, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA } },
-	{ name = "speed", interval = 2000, chance = 10, speed = -330, range = 5, effect = CONST_ME_SMALLPLANTS, target = true, duration = 5000 },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -100, maxDamage = -140, radius = 5, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = -330, range = 5, effect = CONST_ME_SMALLPLANTS, target = true, duration = 5000 },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 45,
+	mitigation = 0.78,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 60, maxDamage = 80, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

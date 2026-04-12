@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Shatterer")
 local monster = {}
 
-monster.name = "The Shatterer"
 monster.description = "The Shatterer"
 monster.experience = 58000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 220000
 monster.maxHealth = 220000
 monster.race = "fire"
 monster.corpse = 6068
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1165,
+	bossRace = RARITY_BANE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 2500,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,7 +83,7 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = -200, maxDamage = -3000 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_MANADRAIN, minDamage = -200, maxDamage = -1000, range = 7, target = false },
 	{ name = "combat", interval = 3000, chance = 44, type = COMBAT_PHYSICALDAMAGE, minDamage = -400, maxDamage = -2000, range = 7, shootEffect = CONST_ANI_WHIRLWINDSWORD, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -400, range = 7, shootEffect = CONST_ANI_THROWINGKNIFE, target = false, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -400, range = 7, shootEffect = CONST_ANI_THROWINGKNIFE, target = false, duration = 15000 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ICEDAMAGE, minDamage = 0, maxDamage = -800, range = 7, radius = 7, effect = CONST_ME_BIGPLANTS, target = false },
 }
 
@@ -78,7 +91,7 @@ monster.defenses = {
 	defense = 65,
 	armor = 55,
 	{ name = "combat", interval = 3000, chance = 35, type = COMBAT_HEALING, minDamage = 400, maxDamage = 6000, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 4000, chance = 80, speed = 440, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	{ name = "speed", interval = 4000, chance = 80, speedChange = 440, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

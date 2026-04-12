@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bone Capsule")
 local monster = {}
 
-monster.name = "Bone Capsule"
 monster.description = "a bone capsule"
 monster.experience = 0
 monster.outfit = {
@@ -26,6 +25,13 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -62,6 +69,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 55,
 	armor = 60,
+	--	mitigation = ???,
 }
 
 monster.elements = {

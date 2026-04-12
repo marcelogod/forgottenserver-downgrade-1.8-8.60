@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Vashresamun")
 local monster = {}
 
-monster.name = "Vashresamun"
 monster.description = "Vashresamun"
 monster.experience = 2950
 monster.outfit = {
@@ -18,12 +17,23 @@ monster.health = 4000
 monster.maxHealth = 4000
 monster.race = "undead"
 monster.corpse = 6025
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.bosstiary = {
+	bossRaceId = 85,
+	bossRace = RARITY_BANE,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	health = 10,
+	damage = 10,
 }
 
 monster.flags = {
@@ -40,7 +50,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -91,7 +101,7 @@ monster.defenses = {
 	defense = 35,
 	armor = 20,
 	{ name = "combat", interval = 1000, chance = 20, type = COMBAT_HEALING, minDamage = 60, maxDamage = 450, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 1000, chance = 12, speed = 350, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 30000 },
+	{ name = "speed", interval = 1000, chance = 12, speedChange = 350, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 30000 },
 }
 
 monster.elements = {

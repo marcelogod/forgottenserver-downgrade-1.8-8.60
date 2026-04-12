@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ancient Spawn of Morgathla")
 local monster = {}
 
-monster.name = "Ancient Spawn of Morgathla"
 monster.description = "Ancient Spawn Of Morgathla"
 monster.experience = 70000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1551,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 900000
 monster.maxHealth = 900000
 monster.race = "blood"
 monster.corpse = 21004
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 4,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,7 +81,6 @@ monster.loot = {
 	{ id = 9057, chance = 5810, maxCount = 2 }, -- small topaz
 	{ id = 3030, chance = 4520, maxCount = 2 }, -- small ruby
 	{ id = 7412, chance = 900 }, -- butcher's axe
-	{ id = 50176, chance = 1590 }, -- depth claws
 	{ id = 3381, chance = 770 }, -- crown armor
 	{ id = 21176, chance = 1420 }, -- execowtioner axe
 	{ id = 3318, chance = 770 }, -- knight axe
@@ -89,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 190,
 	armor = 190,
+	--	mitigation = ???,
 }
 
 monster.elements = {

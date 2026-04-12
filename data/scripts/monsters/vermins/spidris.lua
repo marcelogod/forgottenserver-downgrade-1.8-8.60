@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Spidris")
 local monster = {}
 
-monster.name = "Spidris"
 monster.description = "a spidris"
 monster.experience = 2600
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 787
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Hive, Hive Outpost.",
+}
 
 monster.health = 3700
 monster.maxHealth = 3700
 monster.race = "venom"
 monster.corpse = 13870
-monster.speed = 390
+monster.speed = 195
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -86,7 +100,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 53,
-	{ name = "speed", interval = 2000, chance = 15, speed = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.62,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

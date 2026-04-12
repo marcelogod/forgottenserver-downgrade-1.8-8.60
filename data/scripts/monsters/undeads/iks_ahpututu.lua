@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Iks Ahpututu")
 local monster = {}
 
-monster.name = "Iks Ahpututu"
 monster.description = "an iks ahpututu"
 monster.experience = 1700
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2349
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 5,
+	FirstUnlock = 1,
+	SecondUnlock = 2,
+	CharmsPoints = 50,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Iksupan",
+}
 
 monster.health = 1630
 monster.maxHealth = 1630
 monster.race = "blood"
 monster.corpse = 42065
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -64,14 +78,14 @@ monster.loot = {
 	{ name = "tiger Eye", chance = 7100 },
 	{ name = "strong mana potion", chance = 6380, maxCount = 4 },
 	{ name = "small sapphire", chance = 4370, maxCount = 5 },
--- { name = "daedal chisel", chance = 2910 },
+	--{ name = "daedal chisel", chance = 2910 },
 	{ name = "opal", chance = 1640, maxCount = 2 },
--- { name = "ritual tooth", chance = 1460 },
+	--{ name = "ritual tooth", chance = 1460 },
 	{ name = "spellbook of enlightenment", chance = 1090 },
 	{ name = "gold ingot", chance = 730 },
--- { name = "rotten feather", chance = 730 },
+	--{ name = "rotten feather", chance = 730 },
 	{ name = "broken iks faulds", chance = 360 },
--- { name = "gold-brocaded cloth", chance = 360 },
+	--{ name = "gold-brocaded cloth", chance = 360 },
 }
 
 monster.attacks = {
@@ -82,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 34,
+	mitigation = 1.26,
 }
 
 monster.elements = {

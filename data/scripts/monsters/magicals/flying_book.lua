@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Flying Book")
 local monster = {}
 
-monster.name = "Flying Book"
 monster.description = "a flying book"
 monster.experience = 200
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1654
+monster.Bestiary = {
+	class = "Inkborn",
+	race = BESTY_RACE_INKBORN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Secret Library (fire and energy sections).",
+}
 
 monster.health = 500
 monster.maxHealth = 500
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 28586
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -68,6 +83,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 45,
+	mitigation = 1.46,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Voidshard")
 local monster = {}
 
-monster.name = "Voidshard"
 monster.description = "a voidshard"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3500
 monster.maxHealth = 3500
 monster.race = "venom"
 monster.corpse = 23553
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -63,14 +69,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ENERGYDAMAGE, minDamage = -168, maxDamage = -400, range = 6, radius = 4, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_PURPLEENERGY, target = true },
 	{ name = "energy strike", interval = 2000, chance = 30, minDamage = -50, maxDamage = -180, range = 1, target = false },
 	-- energy damage
-	{ name = "condition", interval = 1000, chance = 15, target = false, condition =
-	{ type = CONDITION_ENERGY, minDamage = -10, maxDamage = -120, radius = 3, effect = CONST_ME_YELLOWENERGY } },	
-
+	{ name = "condition", type = CONDITION_ENERGY, interval = 1000, chance = 15, radius = 3, effect = CONST_ME_YELLOWENERGY, target = false },
 }
 
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	--	mitigation = ???,
 }
 
 monster.elements = {

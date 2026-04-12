@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pillar of Protection")
 local monster = {}
 
-monster.name = "Pillar of Protection"
 monster.description = "a pillar of protection"
 monster.experience = 0
 monster.outfit = {
@@ -15,10 +14,18 @@ monster.corpse = 0
 monster.speed = 0
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -35,7 +42,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -56,6 +63,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 50,
 	armor = 35,
+	--	mitigation = ???,
 }
 
 monster.elements = {

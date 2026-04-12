@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Twisted Pooka")
 local monster = {}
 
-monster.name = "Twisted Pooka"
 monster.description = "a twisted pooka"
 monster.experience = 600
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1436
+monster.Bestiary = {
+	class = "Fey",
+	race = BESTY_RACE_FEY,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Feyrist (nighttime) and its underground (all day).",
+}
 
 monster.health = 700
 monster.maxHealth = 700
 monster.race = "blood"
 monster.corpse = 25827
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 20,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -81,15 +98,14 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -120 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -50, range = 4, shootEffect = CONST_ANI_SMALLSTONE, effect = CONST_ME_STONES, target = true },
 	-- earth damage
-	{ name = "condition", interval = 2000, chance = 15, target = true, condition =
-	{ type = CONDITION_POISON, minDamage = -50, maxDamage = -100, range = 3, effect = CONST_ME_POISONAREA } },
-
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -50, maxDamage = -100, range = 3, effect = CONST_ME_POISONAREA, target = true },
 	{ name = "drunk", interval = 2000, chance = 11, length = 4, spread = 2, effect = CONST_ME_STUN, target = false, duration = 5000 },
 }
 
 monster.defenses = {
 	defense = 38,
 	armor = 41,
+	mitigation = 1.04,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 40, maxDamage = 60, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 

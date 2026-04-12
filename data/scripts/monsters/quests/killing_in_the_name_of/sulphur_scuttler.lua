@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sulphur Scuttler")
 local monster = {}
 
-monster.name = "Sulphur Scuttler"
 monster.description = "Sulphur Scuttler"
 monster.experience = 900
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1300
 monster.maxHealth = 1300
 monster.race = "venom"
 monster.corpse = 11571
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -73,7 +79,7 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -200 },
-	{ name = "speed", interval = 2000, chance = 20, speed = -600, range = 7, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_MORTAREA, target = false, duration = 10000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -600, range = 7, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_MORTAREA, target = false, duration = 10000 },
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -394, radius = 6, effect = CONST_ME_SMALLPLANTS, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_MANADRAIN, minDamage = 0, maxDamage = -200, length = 6, spread = 3, effect = CONST_ME_HITBYPOISON, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -120, length = 8, spread = 3, effect = CONST_ME_YELLOW_RINGS, target = false },
@@ -82,7 +88,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
-	--
+	--	mitigation = 1.38,
 }
 
 monster.elements = {

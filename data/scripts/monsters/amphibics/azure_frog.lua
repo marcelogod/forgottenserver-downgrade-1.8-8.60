@@ -1,26 +1,36 @@
 local mType = Game.createMonsterType("Azure Frog")
 local monster = {}
 
-monster.name = "Azure Frog"
 monster.description = "an azure frog"
 monster.experience = 20
 monster.outfit = {
 	lookType = 226,
-	lookHead = 87,
-	lookBody = 85,
-	lookLegs = 85,
-	lookFeet = 87,
+	lookHead = 69,
+	lookBody = 66,
+	lookLegs = 69,
+	lookFeet = 66,
 	lookAddons = 0,
 	lookMount = 0,
 }
 
 monster.raceId = 268
+monster.Bestiary = {
+	class = "Amphibic",
+	race = BESTY_RACE_AMPHIBIC,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Meriana, Laguna Islands, and other Shattered Isles.",
+}
 
 monster.health = 60
 monster.maxHealth = 60
 monster.race = "blood"
 monster.corpse = 6079
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 305
 
 monster.changeTarget = {
@@ -28,24 +38,28 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
-	summonable = false,
+	summonable = true,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = true,
+	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -56,13 +70,13 @@ monster.light = {
 monster.voices = {
 	interval = 5000,
 	chance = 10,
-	{ text = "Ribbit!", yell = false },
 	{ text = "Ribbit! Ribbit!", yell = false },
+	{ text = "Ribbit!", yell = false },
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 74500, maxCount = 10 },
-	{ name = "worm", chance = 9770 },
+	{ name = "gold coin", chance = 74230, maxCount = 10 },
+	{ name = "worm", chance = 9240 },
 }
 
 monster.attacks = {

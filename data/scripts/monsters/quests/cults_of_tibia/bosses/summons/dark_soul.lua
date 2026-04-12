@@ -1,11 +1,10 @@
 local mType = Game.createMonsterType("Dark Soul")
 local monster = {}
 
-monster.name = "Dark Soul"
 monster.description = "a dark soul"
 monster.experience = 0
 monster.outfit = {
-	lookType = 712,
+	lookType = 714,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -17,13 +16,20 @@ monster.outfit = {
 monster.health = 5000
 monster.maxHealth = 5000
 monster.race = "undead"
-monster.corpse = 25774
-monster.speed = 162
+monster.corpse = 23729
+monster.speed = 81
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 250,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -63,7 +69,8 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 15,
 	armor = 10,
-	{ name = "speed", interval = 2000, chance = 8, speed = 240, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 20000 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 2000, chance = 8, speedChange = 240, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 20000 },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_MAGIC_BLUE },
 }

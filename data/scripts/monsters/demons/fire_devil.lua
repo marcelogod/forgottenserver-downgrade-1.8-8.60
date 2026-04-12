@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Fire Devil")
 local monster = {}
 
-monster.name = "Fire Devil"
 monster.description = "a fire devil"
 monster.experience = 145
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 40
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Desert Dungeon, Ancient Temple, Magician Tower, Shadow Tomb, Ghostlands, Goroma, \z
+	Plains of Havoc at Ornamented Shield Quest, Spike Sword Quest.",
+}
 
 monster.health = 200
 monster.maxHealth = 200
 monster.race = "blood"
 monster.corpse = 5985
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 530
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -82,6 +97,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 13,
+	mitigation = 0.38,
 }
 
 monster.elements = {

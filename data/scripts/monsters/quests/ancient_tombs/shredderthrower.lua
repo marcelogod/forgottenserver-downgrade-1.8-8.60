@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Shredderthrower")
 local monster = {}
 
-monster.name = "Shredderthrower"
 monster.description = "a shredderthrower"
 monster.experience = 18
 monster.outfit = {
@@ -20,6 +19,10 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +37,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = true,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -59,6 +62,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 1,
 	armor = 1,
+	--	mitigation = ???,
 }
 
 monster.elements = {

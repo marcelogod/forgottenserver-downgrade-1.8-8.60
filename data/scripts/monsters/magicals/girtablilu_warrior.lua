@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Girtablilu Warrior")
 local monster = {}
 
-monster.name = "Girtablilu Warrior"
 monster.description = "a girtablilu warrior"
 monster.experience = 5800
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2099
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Ruins of Nuur.",
+}
 
 monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "blood"
 monster.corpse = 36800
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -99,6 +116,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 76,
 	armor = 76,
+	mitigation = 2.22,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 150, maxDamage = 550, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Flamethrower")
 local monster = {}
 
-monster.name = "Flamethrower"
 monster.description = "a flamethrower"
 monster.experience = 18
 monster.outfit = {
@@ -20,6 +19,10 @@ monster.changeTarget = {
 	chance = 5,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +37,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 100,
 	healthHidden = true,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -59,6 +62,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.20,
 }
 
 monster.elements = {

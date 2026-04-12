@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Frost Giant")
 local monster = {}
 
-monster.name = "Frost Giant"
 monster.description = "a frost giant"
 monster.experience = 150
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 324
+monster.Bestiary = {
+	class = "Giant",
+	race = BESTY_RACE_GIANT,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Tyrsung (in the Jotunar mountain), Formorgar Glacier (single spawn), \z
+		Mammoth Shearing Factory, Chyllfroest.",
+}
 
 monster.health = 270
 monster.maxHealth = 270
 monster.race = "blood"
 monster.corpse = 7330
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 490
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -87,7 +103,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 22,
-	{ name = "speed", interval = 2000, chance = 15, speed = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.46,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Avalanche")
 local monster = {}
 
-monster.name = "Avalanche"
 monster.description = "Avalanche"
 monster.experience = 305
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 550
 monster.maxHealth = 550
 monster.race = "undead"
 monster.corpse = 7349
-monster.speed = 208
+monster.speed = 104
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -64,13 +70,14 @@ monster.loot = {}
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -180 },
 	{ name = "combat", interval = 1000, chance = 100, type = COMBAT_DROWNDAMAGE, minDamage = -10, maxDamage = -50, length = 5, spread = 6, effect = CONST_ME_ENERGYAREA, target = false },
-	{ name = "speed", interval = 4000, chance = 100, speed = -400, radius = 3, effect = CONST_ME_POFF, target = false, duration = 10000 },
+	{ name = "speed", interval = 4000, chance = 100, speedChange = -400, radius = 3, effect = CONST_ME_POFF, target = false, duration = 10000 },
 	{ name = "combat", interval = 6000, chance = 100, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -40, range = 5, radius = 1, shootEffect = CONST_ANI_LARGEROCK, target = true },
 }
 
 monster.defenses = {
 	defense = 27,
 	armor = 26,
+	--	mitigation = ???,
 }
 
 monster.elements = {

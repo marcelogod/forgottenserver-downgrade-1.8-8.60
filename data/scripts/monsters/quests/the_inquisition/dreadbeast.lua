@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dreadbeast")
 local monster = {}
 
-monster.name = "Dreadbeast"
 monster.description = "a dreadbeast"
 monster.experience = 250
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 800
 monster.maxHealth = 800
 monster.race = "undead"
 monster.corpse = 4212
-monster.speed = 136
+monster.speed = 68
 monster.manaCost = 800
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -79,6 +82,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 36,
 	armor = 34,
+	--	mitigation = ???,
 	{ name = "combat", interval = 5000, chance = 20, type = COMBAT_HEALING, minDamage = 35, maxDamage = 65, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

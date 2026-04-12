@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Esmeralda")
 local monster = {}
 
-monster.name = "Esmeralda"
 monster.description = "Esmeralda"
 monster.experience = 600
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 800
 monster.maxHealth = 800
 monster.race = "blood"
 monster.corpse = 8957
-monster.speed = 244
+monster.speed = 122
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -75,17 +81,16 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -170, condition = { type = CONDITION_POISON, totalDamage = 5, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -110, range = 7, shootEffect = CONST_ANI_POISON, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 22, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -5, maxDamage = -5, spread = 3, effect = CONST_ME_SMALLPLANTS } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 22, minDamage = -5, maxDamage = -5, length = 6, spread = 3, effect = CONST_ME_SMALLPLANTS, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -4, maxDamage = -4, radius = 3, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -4, maxDamage = -4, radius = 3, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_LIFEDRAIN, minDamage = 0, maxDamage = -110, radius = 3, effect = CONST_ME_MAGIC_RED, target = false },
 }
 
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	mitigation = 1.19,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 30, maxDamage = 50, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

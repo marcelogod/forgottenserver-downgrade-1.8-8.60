@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lokathmor Stuck")
 local monster = {}
 
-monster.name = "Lokathmor Stuck"
 monster.description = "Lokathmor"
 monster.experience = 0
 monster.outfit = {
@@ -40,7 +39,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -63,8 +62,7 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 8, type = COMBAT_LIFEDRAIN, minDamage = -2500, maxDamage = -2800, range = 7, radius = 5, shootEffect = CONST_ANI_WHIRLWINDAXE, effect = CONST_ME_DRAWBLOOD, target = true },
 	{ name = "combat", interval = 1000, chance = 8, type = COMBAT_DEATHDAMAGE, minDamage = -1500, maxDamage = -1900, radius = 9, effect = CONST_ME_MORTAREA, target = false },
 	-- poison
-	{ name = "condition", interval = 5000, chance = 18, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -2000, maxDamage = -2500, effect = CONST_ME_HITBYPOISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 5000, chance = 18, minDamage = -2000, maxDamage = -2500, effect = CONST_ME_HITBYPOISON, target = false },
 	{ name = "combat", interval = 1000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -1000, maxDamage = -255, range = 7, radius = 6, effect = CONST_ME_LOSEENERGY, target = false },
 	{ name = "combat", interval = 2000, chance = 8, type = COMBAT_PHYSICALDAMAGE, minDamage = -170, maxDamage = -200, range = 7, shootEffect = CONST_ANI_WHIRLWINDAXE, effect = CONST_ME_EXPLOSIONAREA, target = true },
 }

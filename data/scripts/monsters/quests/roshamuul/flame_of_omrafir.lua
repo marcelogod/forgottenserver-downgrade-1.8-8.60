@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Flame of Omrafir")
 local monster = {}
 
-monster.name = "Flame of Omrafir"
 monster.description = "a flame of omrafir"
 monster.experience = 550
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 800
 monster.maxHealth = 800
 monster.race = "fire"
 monster.corpse = 8136
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -68,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 20,
+	--	mitigation = ???,
 }
 
 monster.elements = {

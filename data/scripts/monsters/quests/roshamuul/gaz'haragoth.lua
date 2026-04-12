@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gaz'Haragoth")
 local monster = {}
 
-monster.name = "Gaz'Haragoth"
 monster.description = "Gaz'Haragoth"
 monster.experience = 1000000
 monster.outfit = {
@@ -18,12 +17,24 @@ monster.health = 350000
 monster.maxHealth = 350000
 monster.race = "undead"
 monster.corpse = 20228
-monster.speed = 500
+monster.speed = 250
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 10000,
 	chance = 20,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1003,
+	bossRace = RARITY_NEMESIS,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,23 +51,20 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
 }
+
+monster.events = {}
 
 monster.light = {
 	level = 0,
 	color = 0,
 }
 
-monster.summon = {
-	maxSummons = 7,
-	summons = {
-		{ name = "Minion of Gaz'haragoth", chance = 35, interval = 2000, count = 1 },
-	},
-}
+monster.summon = {}
 
 monster.voices = {
 	interval = 5000,
@@ -139,13 +147,14 @@ monster.attacks = {
 	{ name = "gaz'haragoth iceball", interval = 2000, chance = 24, minDamage = -1000, maxDamage = -1000, target = false },
 	{ name = "gaz'haragoth death", interval = 4000, chance = 6, target = false },
 	{ name = "gaz'haragoth paralyze", interval = 2000, chance = 12, target = false },
+	{ name = "gaz'haragoth summon", interval = 1000, chance = 100, target = false },
 }
 
 monster.defenses = {
 	defense = 65,
 	armor = 55,
 	{ name = "combat", interval = 3000, chance = 35, type = COMBAT_HEALING, minDamage = 2500, maxDamage = 3500, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 4000, chance = 80, speed = 700, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	{ name = "speed", interval = 4000, chance = 80, speedChange = 700, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

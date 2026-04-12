@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bretzecutioner")
 local monster = {}
 
-monster.name = "Bretzecutioner"
 monster.description = "Bretzecutioner"
 monster.experience = 3700
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 5600
 monster.maxHealth = 5600
 monster.race = "undead"
 monster.corpse = 6319
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -92,7 +98,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
-	{ name = "speed", interval = 2000, chance = 15, speed = 420, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 2.04,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 420, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Dorokoll The Mystic Stop")
 local monster = {}
 
 monster.name = "Dorokoll The Mystic"
-monster.name = "Dorokoll The Mystic Stop"
 monster.description = "Dorokoll The Mystic"
 monster.experience = 0
 monster.outfit = {
@@ -27,6 +26,13 @@ monster.changeTarget = {
 	chance = 20,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -41,7 +47,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

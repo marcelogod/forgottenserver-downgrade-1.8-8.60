@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Horestis")
 local monster = {}
 
-monster.name = "Horestis"
 monster.description = "Horestis"
 monster.experience = 3500
 monster.outfit = {
@@ -18,12 +17,24 @@ monster.health = 6000
 monster.maxHealth = 6000
 monster.race = "undead"
 monster.corpse = 6031
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.bosstiary = {
+	bossRaceId = 713,
+	bossRace = RARITY_NEMESIS,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -85,10 +96,9 @@ monster.attacks = {
 	{ name = "combat", interval = 1000, chance = 12, type = COMBAT_DEATHDAMAGE, minDamage = -200, maxDamage = -750, range = 7, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_MORTAREA, target = false },
 	{ name = "combat", interval = 3000, chance = 17, type = COMBAT_LIFEDRAIN, minDamage = -400, maxDamage = -500, length = 8, spread = 3, effect = CONST_ME_MAGIC_RED, target = false },
 	{ name = "drunk", interval = 3000, chance = 11, radius = 6, effect = CONST_ME_POISONAREA, target = false, duration = 25000 },
-	{ name = "speed", interval = 1000, chance = 25, speed = -350, length = 7, spread = 3, effect = CONST_ME_POISONAREA, target = false, duration = 30000 },
+	{ name = "speed", interval = 1000, chance = 25, speedChange = -350, length = 7, spread = 3, effect = CONST_ME_POISONAREA, target = false, duration = 30000 },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 30, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -35, maxDamage = -35, radius = 5, effect = CONST_ME_HITBYPOISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 30, minDamage = -35, maxDamage = -35, radius = 5, effect = CONST_ME_HITBYPOISON, target = false },
 }
 
 monster.defenses = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Somewhat Beatable")
 local monster = {}
 
-monster.name = "Somewhat Beatable"
 monster.description = "a somewhat beatable"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 300,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,

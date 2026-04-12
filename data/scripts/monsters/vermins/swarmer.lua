@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Swarmer")
 local monster = {}
 
-monster.name = "Swarmer"
 monster.description = "a swarmer"
 monster.experience = 350
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 790
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "The Hive, Hive Outpost.",
+}
 
 monster.health = 460
 monster.maxHealth = 460
 monster.race = "venom"
 monster.corpse = 13973
-monster.speed = 256
+monster.speed = 128
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -76,7 +90,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 29,
-	{ name = "speed", interval = 2000, chance = 15, speed = 220, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.91,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 220, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

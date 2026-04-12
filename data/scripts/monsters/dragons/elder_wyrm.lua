@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Elder Wyrm")
 local monster = {}
 
-monster.name = "Elder Wyrm"
 monster.description = "an elder wyrm"
 monster.experience = 2500
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 963
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Drefia Wyrm Lair, Vandura Wyrm Cave, Oramond Factory Raids (west), Warzone 4.",
+}
 
 monster.health = 2700
 monster.maxHealth = 2700
 monster.race = "blood"
 monster.corpse = 18966
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 250,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -81,7 +98,6 @@ monster.loot = {
 	{ name = "shadow sceptre", chance = 170 },
 	{ name = "lightning boots", chance = 150 },
 	{ name = "shockwave amulet", chance = 120 },
-	{ name = "legs of wisdom", chance = 700 },
 }
 
 monster.attacks = {
@@ -95,6 +111,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 48,
+	mitigation = 1.35,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 100, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

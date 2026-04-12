@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hand of Cursed Fate")
 local monster = {}
 
-monster.name = "Hand of Cursed Fate"
 monster.description = "a hand of cursed fate"
 monster.experience = 5000
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 281
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Pits of Inferno, The Battlefield, The Arcanum, The Blood Halls and The Crystal Caves.",
+}
 
 monster.health = 6600
 monster.maxHealth = 6600
 monster.race = "blood"
 monster.corpse = 6311
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 3500,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -99,7 +116,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 53,
-	{ name = "speed", interval = 2000, chance = 15, speed = 1000, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.88,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 1000, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 	{ name = "invisible", interval = 2000, chance = 10, effect = CONST_ME_MAGIC_BLUE },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 100, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }

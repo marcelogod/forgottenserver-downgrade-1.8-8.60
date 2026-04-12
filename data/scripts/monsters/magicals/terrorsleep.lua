@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Terrorsleep")
 local monster = {}
 
-monster.name = "Terrorsleep"
 monster.description = "a terrorsleep"
 monster.experience = 6900
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1016
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Roshamuul Mines, Roshamuul Cistern.",
+}
 
 monster.health = 7200
 monster.maxHealth = 7200
 monster.race = "blood"
 monster.corpse = 20163
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -81,14 +98,12 @@ monster.loot = {
 	{ id = 20029, chance = 1130 }, -- broken dream
 	{ name = "trapped bad dream monster", chance = 13000 },
 	{ name = "bowl of terror sweat", chance = 18000 },
-	{ id = 50152, chance = 560 }, -- collar of orange plasma
 }
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -450 },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 20, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -1000, maxDamage = -1500, radius = 7, effect = CONST_ME_YELLOW_RINGS } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 20, minDamage = -1000, maxDamage = -1500, radius = 7, effect = CONST_ME_YELLOW_RINGS, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_MANADRAIN, minDamage = -100, maxDamage = -300, radius = 5, effect = CONST_ME_MAGIC_RED, target = false },
 	{ name = "feversleep skill reducer", interval = 2000, chance = 10, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -350, maxDamage = -500, length = 6, spread = 0, effect = CONST_ME_YELLOWENERGY, target = true },
@@ -100,7 +115,7 @@ monster.defenses = {
 	armor = 50,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 350, maxDamage = 600, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_HITAREA },
-	{ name = "speed", interval = 2000, chance = 15, speed = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

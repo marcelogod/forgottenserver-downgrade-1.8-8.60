@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ghazbaran")
 local monster = {}
 
-monster.name = "Ghazbaran"
 monster.description = "Ghazbaran"
 monster.experience = 15000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 312,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 77000
 monster.maxHealth = 77000
 monster.race = "undead"
 monster.corpse = 6068
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 10000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 3500,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -128,8 +139,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 65,
 	armor = 55,
+	--	mitigation = ???,
 	{ name = "combat", interval = 3000, chance = 35, type = COMBAT_HEALING, minDamage = 300, maxDamage = 800, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 4000, chance = 80, speed = 440, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	{ name = "speed", interval = 4000, chance = 80, speedChange = 440, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

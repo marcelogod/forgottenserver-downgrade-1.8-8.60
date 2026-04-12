@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dwarf Soldier")
 local monster = {}
 
-monster.name = "Dwarf Soldier"
 monster.description = "a dwarf soldier"
 monster.experience = 70
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 71
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Kazordoon Dwarf Mines, Cyclopolis, Dwacatra, Ferngrims Gate, Dwarf Bridge, \z
+		Mount Sternum Undead Cave, Beregar, Tiquanda Dwarf Cave, Cormaya Dwarf Cave.",
+}
 
 monster.health = 135
 monster.maxHealth = 135
 monster.race = "blood"
 monster.corpse = 6014
-monster.speed = 176
+monster.speed = 88
 monster.manaCost = 360
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,6 +97,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 9,
+	mitigation = 0.51,
 }
 
 monster.elements = {

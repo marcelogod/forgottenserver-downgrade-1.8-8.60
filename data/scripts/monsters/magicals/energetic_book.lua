@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Energetic Book")
 local monster = {}
 
-monster.name = "Energetic Book"
 monster.description = "an energetic book"
 monster.experience = 12034
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1665
+monster.Bestiary = {
+	class = "Inkborn",
+	race = BESTY_RACE_INKBORN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Secret Library (energy section).",
+}
 
 monster.health = 18500
 monster.maxHealth = 18500
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 28778
-monster.speed = 440
+monster.speed = 220
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -88,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 82,
+	mitigation = 2.16,
 }
 
 monster.elements = {

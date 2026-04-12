@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Utua Stone Sting")
 local monster = {}
 
-monster.name = "Utua Stone Sting"
 monster.description = "Utua Stone Sting"
 monster.experience = 5100
 monster.outfit = {
@@ -14,16 +13,26 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1984,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 6400
 monster.maxHealth = 6400
 monster.race = "undead"
 monster.corpse = 12512
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 60,
+	random = 40,
 }
 
 monster.flags = {
@@ -40,7 +49,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -98,6 +107,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 42,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 60, maxDamage = 100, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

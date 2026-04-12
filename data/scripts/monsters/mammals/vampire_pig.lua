@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Vampire Pig")
 local monster = {}
 
-monster.name = "Vampire Pig"
 monster.description = "a vampire pig"
 monster.experience = 165
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 558
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Isle of Evil on the surface.",
+}
 
 monster.health = 305
 monster.maxHealth = 305
 monster.race = "blood"
 monster.corpse = 6000
-monster.speed = 110
+monster.speed = 55
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -73,6 +88,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 20,
+	mitigation = 0.62,
 	{ name = "outfit", interval = 2000, chance = 20, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 1500, outfitMonster = "mutated bat" },
 }
 

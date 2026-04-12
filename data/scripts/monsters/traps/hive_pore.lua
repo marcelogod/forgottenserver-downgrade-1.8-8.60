@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hive Pore")
 local monster = {}
 
-monster.name = "Hive Pore"
 monster.description = "a hive pore"
 monster.experience = 0
 monster.outfit = {
@@ -20,6 +19,10 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +37,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -64,6 +67,7 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 0,
 	armor = 0,
+	mitigation = 0.00,
 	{ name = "effect", interval = 30000, chance = 100, radius = 3, effect = CONST_ME_HITBYPOISON, target = false },
 }
 

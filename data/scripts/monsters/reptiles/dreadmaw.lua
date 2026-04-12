@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dreadmaw")
 local monster = {}
 
-monster.name = "Dreadmaw"
 monster.description = "a dreadmaw"
 monster.experience = 1500
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 639,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 2000
 monster.maxHealth = 2000
 monster.race = "blood"
 monster.corpse = 10221
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,6 +78,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	--	mitigation = ???,
 }
 
 monster.elements = {

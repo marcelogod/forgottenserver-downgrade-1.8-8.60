@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Energuardian of Tales")
 local monster = {}
 
-monster.name = "Energuardian of Tales"
 monster.description = "an energuardian of tales"
 monster.experience = 11361
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1666
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "The Secret Library (energy section).",
+}
 
 monster.health = 14000
 monster.maxHealth = 14000
 monster.race = "undead"
 monster.corpse = 28873
-monster.speed = 420
+monster.speed = 210
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -80,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 77,
+	mitigation = 1.94,
 }
 
 monster.elements = {

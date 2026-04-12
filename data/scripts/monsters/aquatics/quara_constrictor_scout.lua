@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Quara Constrictor Scout")
 local monster = {}
 
-monster.name = "Quara Constrictor Scout"
 monster.description = "a quara constrictor scout"
 monster.experience = 200
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 240
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Malada, Arena Quarter, Treasure Island Eastern Caves, \z
+		Hrodmir Quara Scout Caves, Quara Grotto, Oramond.",
+}
 
 monster.health = 450
 monster.maxHealth = 450
 monster.race = "blood"
 monster.corpse = 6065
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 600
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 45,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -63,13 +78,13 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 99950, maxCount = 49 },
-	{ name = "quara tentacle", chance = 15110 },
-	{ name = "shrimp", chance = 10030, maxCount = 3 },
-	{ name = "longsword", chance = 8120 },
-	{ name = "brass armor", chance = 5060 },
-	{ name = "small amethyst", chance = 3990 },
-	{ name = "fish fin", chance = 510 },
+	{ name = "gold coin", chance = 87620, maxCount = 100 },
+	{ name = "quara tentacle", chance = 14620 },
+	{ name = "longsword", chance = 6910 },
+	{ name = "shrimp", chance = 5140, maxCount = 3 },
+	{ name = "brass armor", chance = 4810 },
+	{ name = "small amethyst", chance = 3060 },
+	{ name = "fish fin", chance = 490 },
 }
 
 monster.attacks = {
@@ -80,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 14,
+	mitigation = 0.86,
 }
 
 monster.elements = {

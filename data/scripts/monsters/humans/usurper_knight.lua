@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Usurper Knight")
 local monster = {}
 
-monster.name = "Usurper Knight"
 monster.description = "an usurper knight"
 monster.experience = 6900
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1972
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Bounac, the Order of the Lion settlement.",
+}
 
 monster.health = 8200
 monster.maxHealth = 8200
 monster.race = "blood"
 monster.corpse = 33977
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.faction = FACTION_LIONUSURPERS
@@ -29,6 +39,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_LION }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -45,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,7 +91,6 @@ monster.loot = {
 	{ name = "blue gem", chance = 4171 },
 	{ name = "green gem", chance = 2238 },
 	{ name = "magma legs", chance = 610 },
-	{ id = 50152, chance = 560 }, -- collar of orange plasma
 }
 
 monster.attacks = {
@@ -90,6 +103,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 86,
 	armor = 83,
+	mitigation = 2.40,
 	{ name = "combat", interval = 4000, chance = 40, type = COMBAT_HEALING, minDamage = 200, maxDamage = 550, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

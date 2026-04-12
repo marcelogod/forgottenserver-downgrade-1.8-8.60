@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tanjis")
 local monster = {}
 
-monster.name = "Tanjis"
 monster.description = "Tanjis"
 monster.experience = 15000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 775,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 30000
 monster.maxHealth = 30000
 monster.race = "blood"
 monster.corpse = 13801
-monster.speed = 560
+monster.speed = 280
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 50,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 60,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -73,12 +86,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_PHYSICALDAMAGE, minDamage = -100, maxDamage = -400, range = 7, radius = 1, shootEffect = CONST_ANI_LARGEROCK, target = true },
 	{ name = "combat", interval = 1200, chance = 7, type = COMBAT_DEATHDAMAGE, minDamage = -300, maxDamage = -800, length = 8, spread = 3, effect = CONST_ME_SMALLCLOUDS, target = false },
 	{ name = "combat", interval = 2000, chance = 14, type = COMBAT_ENERGYDAMAGE, minDamage = -200, maxDamage = -500, length = 8, spread = 3, effect = CONST_ME_PURPLEENERGY, target = false },
-	{ name = "speed", interval = 2150, chance = 16, speed = -600, range = 7, radius = 1, target = true, duration = 15000 },
+	{ name = "speed", interval = 2150, chance = 16, speedChange = -600, range = 7, radius = 1, target = true, duration = 15000 },
 }
 
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	--	mitigation = ???,
 	{ name = "combat", interval = 3000, chance = 40, type = COMBAT_HEALING, minDamage = 800, maxDamage = 1100, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Yellow Butterfly")
 local monster = {}
 
 monster.name = "Butterfly"
-monster.name = "Yellow Butterfly"
 monster.description = "a butterfly"
 monster.experience = 0
 monster.outfit = {
@@ -16,17 +15,35 @@ monster.outfit = {
 }
 
 monster.raceId = 213
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 25,
+	FirstUnlock = 5,
+	SecondUnlock = 10,
+	CharmsPoints = 1,
+	Stars = 0,
+	Occurrence = 0,
+	Locations = "Ab'Dendriel, Carlin Surroundings, Cormaya, Feyrist Meadows, Grimvale, Issavi, \z
+		Kazordoon Surroundings, Liberty Bay City, Liberty Bay Surroundings, Meriana, Plains of Havoc, \z
+		Port Hope Surroundings, Yalahar Arena Quarter, Yalahar Centre, Yalahar Magician Quarter.",
+}
 
 monster.health = 2
 monster.maxHealth = 2
 monster.race = "venom"
 monster.corpse = 5013
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 60,
+	random = 40,
 }
 
 monster.flags = {
@@ -43,7 +60,7 @@ monster.flags = {
 	targetDistance = 6,
 	runHealth = 2,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

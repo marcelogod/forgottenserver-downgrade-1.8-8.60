@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Thornback Tortoise")
 local monster = {}
 
-monster.name = "Thornback Tortoise"
 monster.description = "a thornback tortoise"
 monster.experience = 150
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 259
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Laguna Islands, Meriana Gargoyle Cave and one on Nargor.",
+}
 
 monster.health = 300
 monster.maxHealth = 300
 monster.race = "blood"
 monster.corpse = 6073
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 490
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -79,6 +93,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 24,
+	mitigation = 0.70,
 }
 
 monster.elements = {

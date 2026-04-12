@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cat")
 local monster = {}
 
-monster.name = "Cat"
 monster.description = "a cat"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 387
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 25,
+	FirstUnlock = 5,
+	SecondUnlock = 10,
+	CharmsPoints = 1,
+	Stars = 0,
+	Occurrence = 0,
+	Locations = "Carlin, Rookgaard, Factory Quarter, Yalahar, \z
+		The Witches' Cliff (only accessible during a quest), probably more areas.",
+}
 
 monster.health = 20
 monster.maxHealth = 20
 monster.race = "blood"
 monster.corpse = 286
-monster.speed = 124
+monster.speed = 62
 monster.manaCost = 220
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +57,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 8,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -68,8 +84,9 @@ monster.attacks = {
 }
 
 monster.defenses = {
-	defense = 0,
+	defense = 5,
 	armor = 1,
+	mitigation = 0.05,
 }
 
 monster.elements = {

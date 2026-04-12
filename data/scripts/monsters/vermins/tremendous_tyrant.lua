@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tremendous Tyrant")
 local monster = {}
 
-monster.name = "Tremendous Tyrant"
 monster.description = "a tremendous tyrant"
 monster.experience = 6100
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2089
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 1,
+	Locations = "Dwelling of the Forgotten",
+}
 
 monster.health = 11500
 monster.maxHealth = 11500
 monster.race = "blood"
 monster.corpse = 36684
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 10000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -91,6 +108,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 71,
 	armor = 71,
+	mitigation = 1.88,
 }
 
 monster.elements = {

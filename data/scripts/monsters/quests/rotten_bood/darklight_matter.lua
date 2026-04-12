@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Darklight Matter")
 local monster = {}
 
-monster.name = "Darklight Matter"
 monster.description = "a darklight matter"
 monster.experience = 22250
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2380
+monster.Bestiary = {
+	class = "Slime",
+	race = BESTY_RACE_SLIME,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Darklight Core.",
+}
 
 monster.health = 30150
 monster.maxHealth = 30150
 monster.race = "venom"
 monster.corpse = 43571
-monster.speed = 460
+monster.speed = 230
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -62,7 +79,7 @@ monster.voices = {
 
 monster.loot = {
 	{ name = "crystal coin", chance = 11755, maxCount = 1 },
--- { name = "unstable darklight matter", chance = 9060, maxCount = 1 },
+	--{ name = "unstable darklight matter", chance = 9060, maxCount = 1 },
 	{ name = "darklight core", chance = 12887, maxCount = 1 },
 	{ name = "ultimate health potion", chance = 6553, maxCount = 6 },
 	{ id = 3039, chance = 1430 }, -- red gem
@@ -84,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 98,
 	armor = 98,
+	mitigation = 3.28,
 }
 
 monster.elements = {

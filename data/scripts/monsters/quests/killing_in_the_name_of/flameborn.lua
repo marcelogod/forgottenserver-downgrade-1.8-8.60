@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Flameborn")
 local monster = {}
 
-monster.name = "Flameborn"
 monster.description = "Flameborn"
 monster.experience = 2550
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3500
 monster.maxHealth = 3500
 monster.race = "fire"
 monster.corpse = 9009
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -86,8 +92,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	mitigation = 1.52,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 120, maxDamage = 230, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 270, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 270, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

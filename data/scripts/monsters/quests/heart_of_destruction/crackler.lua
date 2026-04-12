@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crackler")
 local monster = {}
 
-monster.name = "Crackler"
 monster.description = "a crackler"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 15000
 monster.maxHealth = 15000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 3,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -64,13 +71,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ENERGYDAMAGE, minDamage = -100, maxDamage = -300, range = 4, radius = 2, shootEffect = CONST_ANI_ENERGYBALL, effect = CONST_ME_ENERGYHIT, target = true },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ENERGYDAMAGE, minDamage = -100, maxDamage = -300, range = 4, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_YELLOWENERGY, target = true },
 	-- energy damage
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_ENERGY, minDamage = -400, maxDamage = -800, radius = 5, effect = CONST_ME_BLOCKHIT } },
+	{ name = "condition", type = CONDITION_ENERGY, interval = 2000, chance = 15, minDamage = -400, maxDamage = -800, radius = 5, effect = CONST_ME_BLOCKHIT, target = false },
 }
 
 monster.defenses = {
 	defense = 50,
 	armor = 50,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_HEALING, minDamage = 100, maxDamage = 300, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

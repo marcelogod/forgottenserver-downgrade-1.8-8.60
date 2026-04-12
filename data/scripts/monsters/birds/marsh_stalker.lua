@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Marsh Stalker")
 local monster = {}
 
-monster.name = "Marsh Stalker"
 monster.description = "a marsh stalker"
 monster.experience = 50
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 914
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Venore swamp surface, Venore Salamander Cave, Dryad Gardens.",
+}
 
 monster.health = 100
 monster.maxHealth = 100
 monster.race = "blood"
 monster.corpse = 17428
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -60,15 +74,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 64010, maxCount = 23 },
-	{ name = "meat", chance = 19880, maxCount = 2 },
-	{ id = 3578, chance = 20310, maxCount = 2 }, -- fish
-	{ name = "worm", chance = 14740, maxCount = 2 },
-	{ name = "marsh stalker feather", chance = 8740 },
+	{ name = "gold coin", chance = 64090, maxCount = 23 },
+	{ name = "meat", chance = 19950, maxCount = 2 },
+	{ id = 3578, chance = 20320, maxCount = 2 }, -- fish
+	{ name = "worm", chance = 14730, maxCount = 2 },
+	{ name = "marsh stalker feather", chance = 8650 },
 	{ name = "longsword", chance = 7560 },
-	{ name = "marsh stalker beak", chance = 6010 },
-	{ id = 3003, chance = 4870 }, -- rope
-	{ name = "seeds", chance = 100 },
+	{ name = "marsh stalker beak", chance = 6080 },
+	{ id = 3003, chance = 4830 }, -- rope
+	{ name = "seeds", chance = 110 },
 }
 
 monster.attacks = {
@@ -79,6 +93,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 3,
 	armor = 3,
+	mitigation = 0.23,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ravenous Hunger")
 local monster = {}
 
-monster.name = "Ravenous Hunger"
 monster.description = "Ravenous Hunger"
 monster.experience = 0
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 1427,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 100000
 monster.maxHealth = 100000
 monster.race = "blood"
 monster.corpse = 6323
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -98,7 +111,6 @@ monster.loot = {
 	{ name = "cobra crown", chance = 400 },
 	{ name = "silver token", chance = 18180 },
 	{ name = "elven mail", chance = 3000 },
-	{ id = 50154, chance = 890 },
 }
 
 monster.attacks = {
@@ -108,6 +120,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 35,
+	--	mitigation = ???,
 }
 
 monster.elements = {

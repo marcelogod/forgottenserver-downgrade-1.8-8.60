@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Memory of a Wolf")
 local monster = {}
 
-monster.name = "Memory of a Wolf"
 monster.description = "a memory of a wolf"
 monster.experience = 1640
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 3640
 monster.maxHealth = 3640
 monster.race = "blood"
 monster.corpse = 5968
-monster.speed = 164
+monster.speed = 82
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 8,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,6 +68,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 5,
+	mitigation = 1.20,
 }
 
 monster.elements = {

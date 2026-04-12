@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Fleshcrawler")
 local monster = {}
 
-monster.name = "Fleshcrawler"
 monster.description = "Fleshcrawler"
 monster.experience = 1000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1450
 monster.maxHealth = 1450
 monster.race = "venom"
 monster.corpse = 6021
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -82,15 +88,15 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -330 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -150, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -700, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false, duration = 25000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -700, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false, duration = 25000 },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 30, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = 0, maxDamage = -520, radius = 5, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 30, minDamage = 0, maxDamage = -520, radius = 5, effect = CONST_ME_POISONAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	mitigation = 0.96,
 }
 
 monster.elements = {

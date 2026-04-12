@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Toad")
 local monster = {}
 
-monster.name = "Toad"
 monster.description = "a toad"
 monster.experience = 60
 monster.outfit = {
@@ -15,34 +14,57 @@ monster.outfit = {
 }
 
 monster.raceId = 262
+monster.Bestiary = {
+	class = "Amphibic",
+	race = BESTY_RACE_AMPHIBIC,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "The Laguna Islands, Arena and Zoo Quarter, Tiquanda/Tarantula Caves, \z
+		Shadowthorn Bog God Temple, Northern Zao Plantations, Northern Brimstone Bug Cave.",
+}
 
 monster.health = 135
 monster.maxHealth = 135
 monster.race = "blood"
 monster.corpse = 6077
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 400
+
+monster.summon = {
+	maxSummons = 1,
+	summons = {
+		{ name = "Azure Frog", chance = 30, interval = 1000, count = 2 },
+	},
+}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = true,
 	attackable = true,
 	hostile = true,
-	convinceable = false,
-	pushable = false,
+	convinceable = true,
+	pushable = true,
 	rewardBoss = false,
 	illusionable = true,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -61,22 +83,22 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 82130, maxCount = 20 },
-	{ id = 3578, chance = 19630, maxCount = 2 }, -- fish
-	{ name = "poisonous slime", chance = 4880 },
-	{ name = "mace", chance = 2930 },
-	{ name = "war hammer", chance = 120 },
+	{ name = "gold coin", chance = 80000, maxCount = 20 },
+	{ name = "war hammer", chance = 148 },
+	{ name = "mace", chance = 2854 },
+	{ id = 3578, chance = 20000 },
+	{ name = "poisonous slime", chance = 4761 },
 }
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -30, effect = CONST_ME_DRAWBLOOD, condition = { type = CONDITION_POISON, totalDamage = 20, interval = 4000 } },
-	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -8, maxDamage = -17, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_GREEN_RINGS, target = false },
+	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -8, maxDamage = -17, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_GREEN_RINGS, target = false },
 }
 
 monster.defenses = {
 	defense = 6,
 	armor = 6,
-	{ name = "speed", interval = 2000, chance = 15, speed = 200, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 200, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

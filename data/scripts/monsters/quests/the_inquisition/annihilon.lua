@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Annihilon")
 local monster = {}
 
-monster.name = "Annihilon"
 monster.description = "Annihilon"
 monster.experience = 15000
 monster.outfit = {
@@ -14,16 +13,32 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {
+	"InquisitionBossDeath",
+}
+
+monster.bosstiary = {
+	bossRaceId = 418,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 46500
 monster.maxHealth = 46500
 monster.race = "fire"
 monster.corpse = 6068
-monster.speed = 132
+monster.speed = 66
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +55,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -112,8 +127,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 60,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 14, type = COMBAT_HEALING, minDamage = 400, maxDamage = 900, effect = CONST_ME_MAGIC_GREEN, target = false },
-	{ name = "speed", interval = 1000, chance = 4, speed = 500, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 7000 },
+	{ name = "speed", interval = 1000, chance = 4, speedChange = 500, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 7000 },
 }
 
 monster.elements = {

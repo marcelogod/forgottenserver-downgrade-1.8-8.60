@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Goblin")
 local monster = {}
 
-monster.name = "Goblin"
 monster.description = "a goblin"
 monster.experience = 25
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 61
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Femor Hills, north east of Carlin, Edron Goblin Cave, Rookgaard (Premium Area), \z
+		Maze of Lost Souls and Fenrock.",
+}
 
 monster.health = 50
 monster.maxHealth = 50
 monster.race = "blood"
 monster.corpse = 6002
-monster.speed = 120
+monster.speed = 60
 monster.manaCost = 290
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -86,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 6,
+	mitigation = 0.20,
 }
 
 monster.elements = {

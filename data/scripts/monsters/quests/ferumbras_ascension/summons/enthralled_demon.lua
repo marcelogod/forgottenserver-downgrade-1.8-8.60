@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Enthralled Demon")
 local monster = {}
 
-monster.name = "Enthralled Demon"
 monster.description = "an enthralled demon"
 monster.experience = 100
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 8200
 monster.maxHealth = 8200
 monster.race = "fire"
 monster.corpse = 0
-monster.speed = 256
+monster.speed = 128
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -72,8 +78,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 65,
 	armor = 40,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 14, type = COMBAT_HEALING, minDamage = 150, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 10, speed = 388, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 388, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
 }
 
 monster.elements = {

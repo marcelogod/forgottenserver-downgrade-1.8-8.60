@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sandcrawler")
 local monster = {}
 
-monster.name = "Sandcrawler"
 monster.description = "a sandcrawler"
 monster.experience = 20
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 641
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Zao Steppe, Raging Mage tower, Ankrahmun Desert, Darashia Desert, Drefia.",
+}
 
 monster.health = 30
 monster.maxHealth = 30
 monster.race = "venom"
 monster.corpse = 10440
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 250
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -71,6 +85,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 2,
+	mitigation = 0.07,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cobra")
 local monster = {}
 
-monster.name = "Cobra"
 monster.description = "a cobra"
 monster.experience = 30
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 81
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Ankrahmun Library Tomb, Tarpit Tomb, Mountain Tomb, Peninsula Tomb, Darama, Tiquanda, \z
+		Drefia, Forbidden Lands, Arena Quarter, Lion's Rock.",
+}
 
 monster.health = 65
 monster.maxHealth = 65
 monster.race = "blood"
 monster.corpse = 4188
-monster.speed = 120
+monster.speed = 60
 monster.manaCost = 275
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -66,13 +81,13 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = 0, condition = { type = CONDITION_POISON, totalDamage = 100, interval = 4000 } }, -- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -20, maxDamage = -40, range = 7, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -20, maxDamage = -40, range = 7, shootEffect = CONST_ANI_POISON, target = false },
 }
 
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.15,
 }
 
 monster.elements = {

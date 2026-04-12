@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dark Apprentice")
 local monster = {}
 
-monster.name = "Dark Apprentice"
 monster.description = "a dark apprentice"
 monster.experience = 100
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 372
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Magician Tower, Dark Cathedral, Hero Cave, Magician Quarter.",
+}
 
 monster.health = 225
 monster.maxHealth = 225
 monster.race = "blood"
 monster.corpse = 18082
-monster.speed = 172
+monster.speed = 86
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -84,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 16,
+	mitigation = 0.30,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 30, maxDamage = 40, effect = CONST_ME_MAGIC_GREEN, target = false },
 	{ name = "outfit", interval = 2000, chance = 5, target = true, duration = 3000, outfitMonster = "green frog" },
 }

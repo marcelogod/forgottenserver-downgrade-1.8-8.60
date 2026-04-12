@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Candy Horror")
 local monster = {}
 
-monster.name = "Candy Horror"
 monster.description = "a candy horror"
 monster.experience = 3000
 monster.outfit = {
@@ -14,18 +13,38 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.raceId = 2535
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Chocolate Mines.",
+}
 
 monster.health = 3100
 monster.maxHealth = 3100
 monster.race = "blood"
 monster.corpse = 48267
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -87,6 +106,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 24,
 	armor = 43,
+	mitigation = 1.21,
 }
 
 monster.elements = {

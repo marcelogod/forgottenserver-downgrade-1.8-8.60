@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Muglex Clan Scavenger")
 local monster = {}
 
-monster.name = "Muglex Clan Scavenger"
 monster.description = "a muglex clan scavenger"
 monster.experience = 37
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 60
 monster.maxHealth = 60
 monster.race = "blood"
 monster.corpse = 6002
-monster.speed = 132
+monster.speed = 66
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -80,7 +83,7 @@ monster.defenses = {
 	defense = 4,
 	armor = 2,
 	{ name = "combat", interval = 2000, chance = 1, type = COMBAT_HEALING, minDamage = 10, maxDamage = 20, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 5, speed = 140, effect = CONST_ME_ENERGYHIT, target = false, duration = 4000 },
+	{ name = "speed", interval = 2000, chance = 5, speedChange = 140, effect = CONST_ME_ENERGYHIT, target = false, duration = 4000 },
 }
 
 monster.elements = {

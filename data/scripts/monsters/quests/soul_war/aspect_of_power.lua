@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Aspect of Power")
 local monster = {}
 
-monster.name = "Aspect of Power"
 monster.description = "an aspect of power"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,20 @@ monster.health = 25000
 monster.maxHealth = 25000
 monster.race = "undead"
 monster.corpse = 33949
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.events = {}
+
+monster.strategiesTarget = {
+	nearest = 100,
+	health = 20,
+	damage = 30,
 }
 
 monster.flags = {
@@ -40,7 +47,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

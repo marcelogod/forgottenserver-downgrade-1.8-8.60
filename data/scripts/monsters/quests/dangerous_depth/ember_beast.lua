@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ember Beast")
 local monster = {}
 
-monster.name = "Ember Beast"
 monster.description = "an ember beast"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 4000
 monster.maxHealth = 4000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -67,6 +73,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

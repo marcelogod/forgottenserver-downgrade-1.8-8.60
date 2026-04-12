@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rotten Golem")
 local monster = {}
 
-monster.name = "Rotten Golem"
 monster.description = "a rotten golem"
 monster.experience = 17860
 monster.outfit = {
@@ -15,18 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 1939
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Rotten Wasteland.",
+}
 
+monster.events = {}
 
 monster.health = 28000
 monster.maxHealth = 28000
 monster.race = "venom"
 monster.corpse = 33897
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -43,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -90,6 +108,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 108,
 	armor = 108,
+	mitigation = 3.04,
 }
 
 monster.elements = {

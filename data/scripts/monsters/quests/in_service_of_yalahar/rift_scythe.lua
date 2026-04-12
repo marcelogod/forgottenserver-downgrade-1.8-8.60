@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rift Scythe")
 local monster = {}
 
-monster.name = "Rift Scythe"
 monster.description = "a rift scythe"
 monster.experience = 2000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3600
 monster.maxHealth = 3600
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 370
+monster.speed = 185
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -69,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	mitigation = 0.64,
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_HEALING, minDamage = 100, maxDamage = 195, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

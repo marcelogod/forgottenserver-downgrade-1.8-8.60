@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Redeemed Soul")
 local monster = {}
 
-monster.name = "Redeemed Soul"
 monster.description = "a redeemed soul"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1138
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Tainted Caves in the Green Claw Swamp (under the right conditions).",
+}
 
 monster.health = 250
 monster.maxHealth = 250
 monster.race = "undead"
 monster.corpse = 21978
-monster.speed = 140
+monster.speed = 70
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 250,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -67,7 +85,8 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 15,
 	armor = 12,
-	{ name = "speed", interval = 2000, chance = 8, speed = 240, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 20000 },
+	mitigation = 0.64,
+	{ name = "speed", interval = 2000, chance = 8, speedChange = 240, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 20000 },
 	{ name = "combat", interval = 2000, chance = 100, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_MAGIC_BLUE },
 }

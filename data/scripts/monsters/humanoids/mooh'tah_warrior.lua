@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mooh'Tah Warrior")
 local monster = {}
 
-monster.name = "Mooh'Tah Warrior"
 monster.description = "a mooh'tah warrior"
 monster.experience = 900
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 1051
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Oramond/Southern Plains, Minotaur Hills, \z
+		Oramond Dungeon (depending on Magistrate votes), Underground Glooth Factory.",
+}
 
 monster.health = 1200
 monster.maxHealth = 1200
 monster.race = "blood"
 monster.corpse = 21091
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 4,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -93,8 +108,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 37,
 	armor = 37,
+	mitigation = 1.35,
 	{ name = "combat", interval = 2000, chance = 22, type = COMBAT_HEALING, minDamage = 110, maxDamage = 160, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "haste", interval = 2000, chance = 8, speed = 220, effect = CONST_ME_MAGIC_RED, target = false, duration = 1000 },
+	{ name = "haste", interval = 2000, chance = 8, speedChange = 220, effect = CONST_ME_MAGIC_RED, target = false, duration = 1000 },
 }
 
 monster.elements = {

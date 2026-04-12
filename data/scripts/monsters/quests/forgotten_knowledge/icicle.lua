@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Icicle")
 local monster = {}
 
-monster.name = "Icicle"
 monster.description = "an icicle"
 monster.experience = 0
 monster.outfit = {
@@ -26,6 +25,10 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 199,
 	armor = 199,
+	mitigation = 0.50,
 	{ name = "icicle heal", interval = 2000, chance = 60, target = false },
 }
 

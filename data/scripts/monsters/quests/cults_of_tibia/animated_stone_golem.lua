@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Animated Stone Golem")
 local monster = {}
 
-monster.name = "Animated Stone Golem"
 monster.description = "an animated stone golem"
 monster.experience = 160
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 270
 monster.maxHealth = 270
 monster.race = "undead"
 monster.corpse = 6005
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 590
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

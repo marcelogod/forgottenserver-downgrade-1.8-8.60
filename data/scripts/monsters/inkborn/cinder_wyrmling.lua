@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cinder Wyrmling")
 local monster = {}
 
-monster.name = "Cinder Wyrmling"
 monster.description = "a cinder wyrmling"
 monster.experience = 1950
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 2670
+monster.Bestiary = {
+	class = "Inkborn",
+	race = BESTY_RACE_INKBORN,
+	toKill = 2500,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Crumbling Caverns.",
+}
 
 monster.health = 2350
 monster.maxHealth = 2350
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 51509
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.voices = {
@@ -53,6 +63,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 38,
+	mitigation = 0.94,
 }
 
 monster.elements = {

@@ -1,11 +1,15 @@
 local mType = Game.createMonsterType("The Percht Queen")
 local monster = {}
 
-monster.name = "The Percht Queen"
 monster.description = "The Percht Queen"
 monster.experience = 500
 monster.outfit = {
 	lookTypeEx = 30340, -- (frozen) // lookTypeEx = 30341 (thawed)
+}
+
+monster.bosstiary = {
+	bossRaceId = 1744,
+	bossRace = RARITY_NEMESIS,
 }
 
 monster.health = 2300
@@ -18,6 +22,10 @@ monster.manaCost = 0
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -34,7 +42,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -110,6 +118,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 79,
+	--	mitigation = ???,
 }
 
 monster.elements = {

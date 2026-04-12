@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hellhound")
 local monster = {}
 
-monster.name = "Hellhound"
 monster.description = "a hellhound"
 monster.experience = 5440
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 294
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Pits of Inferno (Infernatil's Throneroom), The Inquisition Quest Area, Hellgorge, \z
+	Roshamuul Prison, Chyllfroest, Oramond Dungeon, The Extension Site and Asura Vaults.",
+}
 
 monster.health = 7500
 monster.maxHealth = 7500
 monster.race = "blood"
 monster.corpse = 6331
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -113,7 +131,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 60,
-	{ name = "speed", interval = 2000, chance = 15, speed = 320, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 2.75,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 320, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 220, maxDamage = 425, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crypt Shambler")
 local monster = {}
 
-monster.name = "Crypt Shambler"
 monster.description = "a crypt shambler"
 monster.experience = 195
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 100
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Ankrahmun Tombs, Trapwood, Ramoa, Hellgate, Helheim, Mount Sternum Undead Cave, Deeper Catacombs, \z
+		Cemetery Quarter, Treasure Island, Upper Spike, Lion's Rock.",
+}
 
 monster.health = 330
 monster.maxHealth = 330
 monster.race = "undead"
 monster.corpse = 6029
-monster.speed = 140
+monster.speed = 70
 monster.manaCost = 580
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -84,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 30,
+	mitigation = 0.64,
 }
 
 monster.elements = {

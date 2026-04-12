@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Energy Elemental")
 local monster = {}
 
-monster.name = "Energy Elemental"
 monster.description = "an energy elemental"
 monster.experience = 550
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 457
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Khazeel, Energy Elemental Lair, Vandura Mountain, Vengoths mountain.",
+}
 
 monster.health = 500
 monster.maxHealth = 500
 monster.race = "venom"
 monster.corpse = 8138
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -85,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 25,
+	mitigation = 0.72,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 90, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

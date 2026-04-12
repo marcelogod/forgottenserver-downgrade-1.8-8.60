@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orclops Doomhauler")
 local monster = {}
 
-monster.name = "Orclops Doomhauler"
 monster.description = "an orclops doomhauler"
 monster.experience = 1200
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1314
+monster.Bestiary = {
+	class = "Giant",
+	race = BESTY_RACE_GIANT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Desecrated Glade, Edron Orc Cave",
+}
 
 monster.health = 1700
 monster.maxHealth = 1700
 monster.race = "blood"
 monster.corpse = 25078
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -88,14 +105,14 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -300 },
 	{ name = "combat", interval = 2000, chance = 35, type = COMBAT_PHYSICALDAMAGE, minDamage = -117, maxDamage = -220, range = 7, shootEffect = CONST_ANI_LARGEROCK, target = true },
 	-- curse
-	{ name = "condition", interval = 2000, chance = 50, target = true, condition =
-	{ type = CONDITION_CURSED, minDamage = -100, maxDamage = -200, radius = 4, shootEffect = CONST_ANI_WHIRLWINDCLUB, effect = CONST_ME_EXPLOSIONAREA } },
+	{ name = "condition", type = CONDITION_CURSED, interval = 2000, chance = 50, minDamage = -100, maxDamage = -200, radius = 4, shootEffect = CONST_ANI_WHIRLWINDCLUB, effect = CONST_ME_EXPLOSIONAREA, target = true },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 35,
-	{ name = "speed", interval = 2000, chance = 10, speed = 336, effect = CONST_ME_MAGIC_RED, target = false, duration = 2000 },
+	mitigation = 1.32,
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 336, effect = CONST_ME_MAGIC_RED, target = false, duration = 2000 },
 }
 
 monster.elements = {

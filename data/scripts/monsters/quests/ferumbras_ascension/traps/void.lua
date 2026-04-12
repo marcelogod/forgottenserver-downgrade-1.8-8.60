@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Void")
 local monster = {}
 
-monster.name = "Void"
 monster.description = "void"
 monster.experience = 320
 monster.outfit = {
@@ -20,6 +19,13 @@ monster.changeTarget = {
 	chance = 8,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = true,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

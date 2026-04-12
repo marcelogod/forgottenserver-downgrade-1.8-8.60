@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Adult Goanna")
 local monster = {}
 
-monster.name = "Adult Goanna"
 monster.description = "an adult goanna"
 monster.experience = 6650
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1818
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Kilmaresh Central Steppe, Kilmaresh Southern Steppe, Green Belt.",
+}
 
 monster.health = 8300
 monster.maxHealth = 8300
 monster.race = "blood"
 monster.corpse = 31405
-monster.speed = 420
+monster.speed = 210
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -101,7 +115,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 84,
 	armor = 84,
-	{ name = "speed", interval = 2000, chance = 15, speed = 420, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 2.6,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 420, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

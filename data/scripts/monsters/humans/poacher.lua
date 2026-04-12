@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Poacher")
 local monster = {}
 
-monster.name = "Poacher"
 monster.description = "a poacher"
 monster.experience = 70
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 376
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "South of Elvenbane and Ab'Dendriel, Ferngrims Gate, Northeast of Carlin, \z
+		Edron Hunter Camps, Yalahar - Trade Quarter and Foreigner Quarter.",
+}
 
 monster.health = 90
 monster.maxHealth = 90
 monster.race = "blood"
 monster.corpse = 18206
-monster.speed = 198
+monster.speed = 99
 monster.manaCost = 530
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 5,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -80,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 10,
+	mitigation = 0.33,
 }
 
 monster.elements = {

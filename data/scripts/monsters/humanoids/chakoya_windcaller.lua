@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Chakoya Windcaller")
 local monster = {}
 
-monster.name = "Chakoya Windcaller"
 monster.description = "a chakoya windcaller"
 monster.experience = 48
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 329
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Inukaya, Chyllfroest, Chakoya Iceberg.",
+}
 
 monster.health = 84
 monster.maxHealth = 84
 monster.race = "blood"
 monster.corpse = 7320
-monster.speed = 142
+monster.speed = 71
 monster.manaCost = 305
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -77,14 +91,14 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -22 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_ICEDAMAGE, minDamage = -16, maxDamage = -32, range = 7, shootEffect = CONST_ANI_ICE, target = false },
 	-- freeze
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_FREEZING, minDamage = -130, maxDamage = -160, radius = 3, effect = CONST_ME_ICEAREA } },
+	{ name = "condition", type = CONDITION_FREEZING, interval = 2000, chance = 10, minDamage = -130, maxDamage = -160, radius = 3, effect = CONST_ME_ICEAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_ICEDAMAGE, minDamage = -9, maxDamage = -30, length = 5, spread = 2, effect = CONST_ME_ICEAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 10,
 	armor = 7,
+	mitigation = 0.38,
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_MAGIC_BLUE },
 }
 

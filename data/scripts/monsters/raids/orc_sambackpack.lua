@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Orc Sambackpack")
 local monster = {}
 
 monster.name = "Orc"
-monster.name = "Orc Sambackpack"
 monster.description = "an orc"
 monster.experience = 25
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 70
 monster.maxHealth = 70
 monster.race = "blood"
 monster.corpse = 5966
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 300
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

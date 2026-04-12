@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Eradicator")
 local monster = {}
 
-monster.name = "Eradicator"
 monster.description = "Eradicator"
 monster.experience = 50000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1226,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 290000
 monster.maxHealth = 290000
 monster.race = "venom"
 monster.corpse = 23564
-monster.speed = 450
+monster.speed = 225
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +51,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -99,6 +111,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	--	mitigation = ???,
 }
 
 monster.elements = {

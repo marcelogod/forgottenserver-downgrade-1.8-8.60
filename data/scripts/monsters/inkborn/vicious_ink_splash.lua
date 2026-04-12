@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Vicious Ink Splash")
 local monster = {}
 
-monster.name = "Vicious Ink Splash"
 monster.description = "a blood totem"
 monster.experience = 0
 monster.outfit = {
@@ -16,14 +15,21 @@ monster.outfit = {
 
 monster.health = 1950
 monster.maxHealth = 1950
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 28601
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -69,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 108,
 	armor = 108,
+	mitigation = 3.04,
 }
 
 monster.elements = {

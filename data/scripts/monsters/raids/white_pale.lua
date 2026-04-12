@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("White Pale")
 local monster = {}
 
-monster.name = "White Pale"
 monster.description = "White Pale"
 monster.experience = 390
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 965,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 500
 monster.maxHealth = 500
 monster.race = "blood"
 monster.corpse = 18978
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -74,14 +85,14 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 45, attack = 40 },
 	{ name = "combat", interval = 2000, chance = 14, type = COMBAT_EARTHDAMAGE, minDamage = -100, maxDamage = -110, radius = 5, effect = CONST_ME_SMALLPLANTS, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 12, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -200, maxDamage = -300, radius = 3, effect = CONST_ME_HITAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 12, minDamage = -200, maxDamage = -300, radius = 3, effect = CONST_ME_HITAREA, target = false },
 	{ name = "white pale paralyze", interval = 2000, chance = 11, target = false },
 }
 
 monster.defenses = {
 	defense = 11,
 	armor = 8,
+	mitigation = 0.87,
 	{ name = "white pale summon", interval = 2000, chance = 12, target = false },
 }
 

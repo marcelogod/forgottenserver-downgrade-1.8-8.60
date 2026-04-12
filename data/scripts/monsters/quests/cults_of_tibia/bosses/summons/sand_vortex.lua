@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sand Vortex")
 local monster = {}
 
-monster.name = "Sand Vortex"
 monster.description = "a sand vortex"
 monster.experience = 0
 monster.outfit = {
@@ -12,12 +11,19 @@ monster.health = 20000
 monster.maxHealth = 20000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 140
+monster.speed = 70
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -55,7 +61,7 @@ monster.loot = {}
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -200 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -200, radius = 4, effect = CONST_ME_POFF, target = false },
-	{ name = "speed", interval = 2000, chance = 20, speed = -650, radius = 4, effect = CONST_ME_POFF, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -650, radius = 4, effect = CONST_ME_POFF, target = false, duration = 5000 },
 	{ name = "drunk", interval = 2000, chance = 10, range = 1, target = true, duration = 5000 },
 }
 

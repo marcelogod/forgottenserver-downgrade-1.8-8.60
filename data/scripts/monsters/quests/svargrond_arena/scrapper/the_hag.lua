@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Hag")
 local monster = {}
 
-monster.name = "The Hag"
 monster.description = "The Hag"
 monster.experience = 510
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 935
 monster.maxHealth = 935
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 204
+monster.speed = 102
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 5,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -73,12 +79,13 @@ monster.loot = {}
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -100 },
 	{ name = "drunk", interval = 3000, chance = 35, range = 5, radius = 1, target = true, duration = 15000 },
-	{ name = "speed", interval = 4000, chance = 55, speed = -400, range = 5, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 12000 },
+	{ name = "speed", interval = 4000, chance = 55, speedChange = -400, range = 5, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 12000 },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 24,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 35, type = COMBAT_HEALING, minDamage = 95, maxDamage = 155, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 3000, chance = 50, effect = CONST_ME_MAGIC_BLUE },
 }

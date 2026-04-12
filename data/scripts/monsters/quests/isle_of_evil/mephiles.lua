@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mephiles")
 local monster = {}
 
-monster.name = "Mephiles"
 monster.description = "Mephiles"
 monster.experience = 415
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 566,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 415
 monster.maxHealth = 415
 monster.race = "blood"
 monster.corpse = 6363
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 3,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -78,7 +89,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 30,
-	{ name = "speed", interval = 1000, chance = 40, speed = 400, effect = CONST_ME_MAGIC_RED, target = false, duration = 40000 },
+	mitigation = 0.40,
+	{ name = "speed", interval = 1000, chance = 40, speedChange = 400, effect = CONST_ME_MAGIC_RED, target = false, duration = 40000 },
 	{ name = "invisible", interval = 4000, chance = 50, effect = CONST_ME_MAGIC_RED },
 }
 

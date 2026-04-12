@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Fury")
 local monster = {}
 
-monster.name = "Fury"
 monster.description = "a fury"
 monster.experience = 3600
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 291
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Pits of Inferno (Apocalypse's Throne Room), The Inquisition Quest (The Shadow Nexus, Battlefield), \z
+	Vengoth, Fury Dungeon, Oramond Fury Dungeon, The Extension Site, Grounds of Destruction and Halls of Ascension.",
+}
 
 monster.health = 4100
 monster.maxHealth = 4100
 monster.race = "blood"
 monster.corpse = 18118
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -92,13 +107,14 @@ monster.attacks = {
 	{ name = "fury skill reducer", interval = 2000, chance = 5, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -120, maxDamage = -300, radius = 3, effect = CONST_ME_HITAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_DEATHDAMAGE, minDamage = -125, maxDamage = -250, range = 7, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_SMALLCLOUDS, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -800, range = 7, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_SMALLCLOUDS, target = false, duration = 30000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -800, range = 7, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_SMALLCLOUDS, target = false, duration = 30000 },
 }
 
 monster.defenses = {
 	defense = 20,
 	armor = 35,
-	{ name = "speed", interval = 2000, chance = 15, speed = 800, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.32,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 800, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dragon")
 local monster = {}
 
-monster.name = "Dragon"
 monster.description = "a dragon"
 monster.experience = 700
 monster.outfit = {
@@ -14,13 +13,31 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.raceId = 34
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Thais Ancient Temple, Darashia Dragon Lair, Mount Sternum Dragon Cave, Mintwallin, \z
+		deep in Fibula Dungeon, Kazordoon Dragon Lair (near Dwarf Bridge), Plains of Havoc, Elven Bane castle, \z
+		Maze of Lost Souls, southern cave and dragon tower in Shadowthorn, Orc Fortress, Venore Dragon Lair, \z
+		Pits of Inferno, Behemoth Quest room in Edron, Hero Cave, deep Cyclopolis, Edron Dragon Lair, Goroma, \z
+		Ankrahmun Dragon Lairs, Draconia, Dragonblaze Peaks, some Ankrahmun Tombs, \z
+		underground of Fenrock (on the way to Beregar), Krailos Steppe and Crystal Lakes.",
+}
 
 monster.health = 1000
 monster.maxHealth = 1000
 monster.race = "blood"
 monster.corpse = 5973
-monster.speed = 172
+monster.speed = 86
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -49,7 +66,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 300,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -100,6 +117,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 25,
+	mitigation = 0.99,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 40, maxDamage = 70, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

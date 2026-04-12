@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hunter")
 local monster = {}
 
-monster.name = "Hunter"
 monster.description = "a hunter"
 monster.experience = 150
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 11
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "North of Mount Sternum, Plains of Havoc, Outlaw Camp, Dark Cathedral, Femor Hills, \z
+		Maze of Lost Souls, north of the Amazon Camp, at the entrance and in the Hero Cave, \z
+		a castle tower at Elvenbane, Trade Quarter, Smuggler camp on Tyrsung, Formorgar Mines.",
+}
 
 monster.health = 150
 monster.maxHealth = 150
 monster.race = "blood"
 monster.corpse = 18138
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 530
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -90,6 +106,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 8,
+	mitigation = 0.25,
 }
 
 monster.elements = {

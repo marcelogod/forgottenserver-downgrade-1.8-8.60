@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Silver Rabbit")
 local monster = {}
 
-monster.name = "Silver Rabbit"
 monster.description = "a silver rabbit"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 327
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "A lot of places on the Ice Islands and one on Rookgaard (unreachable).",
+}
 
 monster.health = 15
 monster.maxHealth = 15
 monster.race = "blood"
 monster.corpse = 7338
-monster.speed = 184
+monster.speed = 92
 monster.manaCost = 220
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -67,6 +82,7 @@ monster.loot = {
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.05,
 }
 
 monster.elements = {

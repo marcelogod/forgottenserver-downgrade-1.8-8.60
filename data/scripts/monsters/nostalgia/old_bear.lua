@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Old Bear")
 local monster = {}
 
 monster.name = "Bear"
-monster.name = "Old Bear"
 monster.description = "a bear"
 monster.experience = 23
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 80
 monster.maxHealth = 80
 monster.race = "blood"
 monster.corpse = 5975
-monster.speed = 156
+monster.speed = 78
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lovely Souleater")
 local monster = {}
 
-monster.name = "Lovely Souleater"
 monster.description = "a lovely souleater"
 monster.experience = 1300
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1100
 monster.maxHealth = 1100
 monster.race = "undead"
 monster.corpse = 11675
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

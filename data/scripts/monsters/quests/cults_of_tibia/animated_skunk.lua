@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Animated Skunk")
 local monster = {}
 
-monster.name = "Animated Skunk"
 monster.description = "an animated skunk"
 monster.experience = 3
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 20
 monster.maxHealth = 20
 monster.race = "blood"
 monster.corpse = 6035
-monster.speed = 120
+monster.speed = 60
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 8,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -69,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 5,
+	--	mitigation = ???,
 }
 
 monster.elements = {

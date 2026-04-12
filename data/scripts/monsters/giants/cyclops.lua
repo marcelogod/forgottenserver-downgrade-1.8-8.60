@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cyclops")
 local monster = {}
 
-monster.name = "Cyclops"
 monster.description = "a cyclops"
 monster.experience = 150
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 22
+monster.Bestiary = {
+	class = "Giant",
+	race = BESTY_RACE_GIANT,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Plains of Havoc, Mount Sternum, Femor Hills, Cyclops Camp, Cyclopolis, Ancient Temple, Shadowthorn, \z
+	Orc Fort, Mistrock, Foreigner Quarter, Outlaw Camp and in the Cyclops version of the Forsaken Mine. ",
+}
 
 monster.health = 260
 monster.maxHealth = 260
 monster.race = "blood"
 monster.corpse = 5962
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 490
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -86,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 17,
+	mitigation = 0.62,
 }
 
 monster.elements = {

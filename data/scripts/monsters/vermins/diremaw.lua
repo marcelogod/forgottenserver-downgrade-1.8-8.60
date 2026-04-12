@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Diremaw")
 local monster = {}
 
-monster.name = "Diremaw"
 monster.description = "a diremaw"
 monster.experience = 2770
 monster.outfit = {
@@ -14,18 +13,38 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.raceId = 1532
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Gnome Deep Hub north and south tasking areas, Warzone 6",
+}
 
 monster.health = 3600
 monster.maxHealth = 3600
 monster.race = "blood"
 monster.corpse = 27494
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -80,13 +99,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_EARTHDAMAGE, minDamage = -150, maxDamage = -200, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_EARTHDAMAGE, minDamage = -150, maxDamage = -250, range = 7, radius = 4, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POFF, target = true },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 21, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -200, maxDamage = -310, radius = 4, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 21, minDamage = -200, maxDamage = -310, radius = 4, effect = CONST_ME_GREEN_RINGS, target = false },
 }
 
 monster.defenses = {
 	defense = 5,
 	armor = 71,
+	mitigation = 1.94,
 }
 
 monster.elements = {

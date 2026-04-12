@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Despair")
 local monster = {}
 
-monster.name = "Despair"
 monster.description = "a despair"
 monster.experience = 0
 monster.outfit = {
@@ -20,6 +19,13 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -57,6 +63,7 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 44,
 	armor = 22,
+	mitigation = 1.24,
 }
 
 monster.elements = {

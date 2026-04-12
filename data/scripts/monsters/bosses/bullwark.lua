@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bullwark")
 local monster = {}
 
-monster.name = "Bullwark"
 monster.description = "Bullwark"
 monster.experience = 22000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1060,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 72000
 monster.maxHealth = 72000
 monster.race = "blood"
 monster.corpse = 20996
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 3,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -57,33 +68,31 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 100000, maxCount = 375 },
-	{ name = "platinum coin", chance = 100000, maxCount = 9 },
-	{ name = "great health potion", chance = 25930, maxCount = 9 },
-	{ name = "great mana potion", chance = 33950, maxCount = 9 },
-	{ name = "great spirit potion", chance = 40120, maxCount = 9 },
-	{ name = "ham", chance = 53700, maxCount = 9 },
-	{ name = "meat", chance = 46300, maxCount = 9 },
-	{ name = "minotaur leather", chance = 100000, maxCount = 1 },
-	{ name = "moohtant horn", chance = 100000, maxCount = 3 },
-	{ name = "small diamond", chance = 14200, maxCount = 9 },
-	{ name = "small emerald", chance = 14810, maxCount = 9 },
-	{ name = "small ruby", chance = 16670, maxCount = 9 },
-	{ name = "small sapphire", chance = 13580, maxCount = 9 },
-	{ name = "mooh'tah plate", chance = 7410 },
-	{ name = "red piece of cloth", chance = 5560 },
-	{ name = "yellow gem", chance = 3700 },
-	{ name = "one hit wonder", chance = 1850 },
+	{ name = "gold coin", chance = 100000, maxCount = 200 },
+	{ name = "platinum coin", chance = 80000, maxCount = 5 },
+	{ name = "great health potion", chance = 40000, maxCount = 5 },
+	{ name = "great mana potion", chance = 40000, maxCount = 5 },
+	{ name = "great spirit potion", chance = 40000, maxCount = 5 },
+	{ name = "ham", chance = 35250, maxCount = 5 },
+	{ name = "meat", chance = 35250, maxCount = 5 },
+	{ name = "minotaur leather", chance = 26500, maxCount = 2 },
+	{ name = "moohtant horn", chance = 21000, maxCount = 2 },
+	{ name = "small diamond", chance = 17900, maxCount = 5 },
+	{ name = "small emerald", chance = 16350, maxCount = 5 },
+	{ name = "small ruby", chance = 15500, maxCount = 5 },
+	{ name = "small sapphire", chance = 14200, maxCount = 5 },
+	{ name = "giant pacifier", chance = 1920 },
 	{ name = "moohtant cudgel", chance = 1800 },
-	{ name = "giant pacifier", chance = 100000 },
+	{ name = "red piece of cloth", chance = 1500 },
+	{ name = "yellow gem", chance = 1200 },
+	{ name = "one hit wonder", chance = 350 },
 }
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 180, attack = 200 },
 	{ name = "combat", interval = 2000, chance = 19, type = COMBAT_LIFEDRAIN, minDamage = -200, maxDamage = -400, radius = 6, effect = CONST_ME_MAGIC_RED, target = false },
 	-- bleed
-	{ name = "condition", interval = 2000, chance = 9, target = false, condition =
-	{ type = CONDITION_BLEEDING, minDamage = -400, maxDamage = -600, radius = 8, effect = CONST_ME_ICEATTACK } },
+	{ name = "condition", type = CONDITION_BLEEDING, interval = 2000, chance = 9, minDamage = -400, maxDamage = -600, radius = 8, effect = CONST_ME_ICEATTACK, target = false },
 	{ name = "combat", interval = 2000, chance = 8, type = COMBAT_PHYSICALDAMAGE, minDamage = -250, maxDamage = -400, range = 7, radius = 6, shootEffect = CONST_ANI_LARGEROCK, effect = CONST_ME_STONES, target = true },
 	{ name = "combat", interval = 2000, chance = 13, type = COMBAT_PHYSICALDAMAGE, minDamage = -200, maxDamage = -400, range = 7, radius = 4, shootEffect = CONST_ANI_WHIRLWINDCLUB, effect = CONST_ME_EXPLOSIONHIT, target = true },
 	{ name = "bullwark paralyze", interval = 2000, chance = 6, target = false },
@@ -92,8 +101,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 66,
 	armor = 48,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 1, type = COMBAT_HEALING, minDamage = 4000, maxDamage = 6000, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 11, speed = 660, effect = CONST_ME_HITAREA, target = false, duration = 7000 },
+	{ name = "speed", interval = 2000, chance = 11, speedChange = 660, effect = CONST_ME_HITAREA, target = false, duration = 7000 },
 	{ name = "bullwark summon", interval = 2000, chance = 9, target = false },
 }
 

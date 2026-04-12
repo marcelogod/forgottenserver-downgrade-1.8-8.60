@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Grand Master Oberon")
 local monster = {}
 
-monster.name = "Grand Master Oberon"
 monster.description = "Grand Master Oberon"
 monster.experience = 20000
 monster.outfit = {
@@ -14,17 +13,27 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1576,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 60000
 monster.maxHealth = 60000
 monster.race = "blood"
 monster.corpse = 28625
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +50,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -74,7 +83,6 @@ monster.loot = {
 	{ name = "falcon shield", chance = 200, maxCount = 1 },
 	{ name = "falcon greaves", chance = 200, maxCount = 1 },
 	{ name = "falcon plate", chance = 200, maxCount = 1 },
-	{ name = "falcon sai", chance = 200, maxCount = 1 },
 }
 
 monster.attacks = {
@@ -87,7 +95,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 82,
-	{ name = "speed", interval = 1000, chance = 10, speed = 180, effect = CONST_ME_POFF, target = false, duration = 4000 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 1000, chance = 10, speedChange = 180, effect = CONST_ME_POFF, target = false, duration = 4000 },
 }
 
 monster.elements = {
@@ -109,5 +118,37 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval)
+	if monster:getStorageValue(GrandMasterOberonConfig.Storage.Life) <= GrandMasterOberonConfig.AmountLife then
+		local percentageHealth = (monster:getHealth() * 100) / monster:getMaxHealth()
+		if percentageHealth <= 20 then
+			SendOberonAsking(monster)
+		end
+	end
+end
+
+mType.onSay = function(monster, creature, type, message)
+	if type ~= TALKTYPE_SAY then
+		return false
+	end
+	local exhaust = GrandMasterOberonConfig.Storage.Exhaust
+	if creature:isPlayer() and monster:getStorageValue(exhaust) <= os.time() then
+		message = message:lower()
+
+		monster:setStorageValue(exhaust, os.time() + 1)
+		local asking_storage = monster:getStorageValue(GrandMasterOberonConfig.Storage.Asking)
+		local oberonMessagesTable = GrandMasterOberonResponses[asking_storage]
+
+		if oberonMessagesTable then
+			if message == oberonMessagesTable.msg:lower() or message == oberonMessagesTable.msg2:lower() then
+				monster:say("GRRRAAANNGH!", TALKTYPE_MONSTER_SAY)
+				monster:unregisterEvent("OberonImmunity")
+			else
+				monster:say("HAHAHAHA!", TALKTYPE_MONSTER_SAY)
+			end
+		end
+	end
+end
 
 mType:register(monster)

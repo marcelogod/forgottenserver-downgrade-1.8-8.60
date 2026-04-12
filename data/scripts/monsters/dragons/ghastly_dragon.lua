@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ghastly Dragon")
 local monster = {}
 
-monster.name = "Ghastly Dragon"
 monster.description = "a ghastly dragon"
 monster.experience = 4600
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 643
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Ghastly Dragon Lair, Corruption Hole, Razachai including the Inner Sanctum, Zao Palace, Deeper Banuta single spawn, Chyllfroest.",
+}
 
 monster.health = 7800
 monster.maxHealth = 7800
 monster.race = "undead"
 monster.corpse = 10445
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 366,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -94,17 +111,17 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -603 },
 	{ name = "ghastly dragon curse", interval = 2000, chance = 5, range = 5, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = true, condition =
-	{ type = CONDITION_POISON, minDamage = -920, maxDamage = -1200, range = 5, effect = CONST_ME_SMALLCLOUDS } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -920, maxDamage = -1280, range = 5, effect = CONST_ME_SMALLCLOUDS, target = true },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_LIFEDRAIN, minDamage = -80, maxDamage = -230, range = 7, effect = CONST_ME_MAGIC_RED, target = true },
 	{ name = "ghastly dragon wave", interval = 2000, chance = 10, minDamage = -120, maxDamage = -250, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_DEATHDAMAGE, minDamage = -110, maxDamage = -180, radius = 4, effect = CONST_ME_MORTAREA, target = false },
-	{ name = "speed", interval = 2000, chance = 20, speed = -800, range = 7, effect = CONST_ME_SMALLCLOUDS, target = true, duration = 30000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -800, range = 7, effect = CONST_ME_SMALLCLOUDS, target = true, duration = 30000 },
 }
 
 monster.defenses = {
 	defense = 35,
 	armor = 30,
+	mitigation = 1.24,
 }
 
 monster.elements = {

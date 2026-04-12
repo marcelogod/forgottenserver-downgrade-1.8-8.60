@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Animated Stone Rhino")
 local monster = {}
 
-monster.name = "Animated Stone Rhino"
 monster.description = "an animated stone rhino"
 monster.experience = 1800
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "blood"
 monster.corpse = 25082
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 290
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

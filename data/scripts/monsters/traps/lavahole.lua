@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lavahole")
 local monster = {}
 
-monster.name = "Lavahole"
 monster.description = "a lavahole"
 monster.experience = 0
 monster.outfit = {
@@ -20,6 +19,10 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +37,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = true,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -59,6 +62,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 10,
+	mitigation = 0.00,
 }
 
 monster.elements = {

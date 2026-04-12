@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Spyrat West")
 local monster = {}
 
 monster.name = "Spyrat"
-monster.name = "Spyrat West"
 monster.description = "You see a spyrat"
 monster.experience = 3750
 monster.outfit = {
@@ -21,6 +20,13 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -35,7 +41,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

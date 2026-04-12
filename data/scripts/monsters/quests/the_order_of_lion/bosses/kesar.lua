@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Kesar")
 local monster = {}
 
-monster.name = "Kesar"
 monster.description = "Kesar"
 monster.experience = 0
 monster.outfit = {
@@ -29,6 +28,12 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
+monster.events = {}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -43,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -74,6 +79,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 82,
+	--	mitigation = ???,
 }
 
 monster.elements = {

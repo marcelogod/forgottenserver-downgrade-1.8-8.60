@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Midnight Spawn")
 local monster = {}
 
-monster.name = "Midnight Spawn"
 monster.description = "a midnight spawn"
 monster.experience = 900
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 584
+monster.Bestiary = {
+	class = "Slime",
+	race = BESTY_RACE_SLIME,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 50,
+	Stars = 3,
+	Occurrence = 3,
+	Locations = "Forbidden Lands around the Lightbringers basin.",
+}
 
 monster.health = 2000
 monster.maxHealth = 2000
 monster.race = "undead"
 monster.corpse = 11317
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -69,6 +87,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 40,
+	mitigation = 1.18,
 }
 
 monster.elements = {

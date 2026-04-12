@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Demon Outcast")
 local monster = {}
 
-monster.name = "Demon Outcast"
 monster.description = "a demon outcast"
 monster.experience = 6200
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1019
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Roshamuul Prison.",
+}
 
 monster.health = 6900
 monster.maxHealth = 6900
 monster.race = "blood"
 monster.corpse = 20215
-monster.speed = 296
+monster.speed = 148
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -108,6 +125,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 49,
+	mitigation = 1.60,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 250, maxDamage = 425, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

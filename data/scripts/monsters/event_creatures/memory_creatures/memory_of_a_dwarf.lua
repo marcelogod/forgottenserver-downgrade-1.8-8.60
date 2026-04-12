@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Memory of a Dwarf")
 local monster = {}
 
-monster.name = "Memory of a Dwarf"
 monster.description = "a memory of a dwarf"
 monster.experience = 1460
 monster.outfit = {
@@ -18,12 +17,18 @@ monster.health = 3730
 monster.maxHealth = 3730
 monster.race = "blood"
 monster.corpse = 6013
-monster.speed = 206
+monster.speed = 103
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 20,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +45,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -76,6 +81,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	mitigation = 1.10,
 }
 
 monster.elements = {

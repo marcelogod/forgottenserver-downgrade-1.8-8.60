@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Paiz the Pauperizer")
 local monster = {}
 
-monster.name = "Paiz the Pauperizer"
 monster.description = "Paiz the Pauperizer"
 monster.experience = 6300
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "blood"
 monster.corpse = 11653
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -93,13 +99,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_EARTHDAMAGE, minDamage = -280, maxDamage = -450, range = 4, radius = 4, shootEffect = CONST_ANI_EARTH, effect = CONST_ME_POFF, target = true },
 	{ name = "soulfire rune", interval = 2000, chance = 10, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 11, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -20, maxDamage = -20, range = 7, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 11, minDamage = -20, maxDamage = -20, range = 7, shootEffect = CONST_ANI_POISON, target = false },
 }
 
 monster.defenses = {
 	defense = 35,
 	armor = 35,
+	mitigation = 2.00,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 230, maxDamage = 330, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

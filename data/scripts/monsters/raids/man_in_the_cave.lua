@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Man in the Cave")
 local monster = {}
 
-monster.name = "Man in the Cave"
 monster.description = "man in the cave"
 monster.experience = 777
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 338,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 485
 monster.maxHealth = 485
 monster.race = "blood"
 monster.corpse = 18165
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -85,7 +96,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 15,
-	{ name = "speed", interval = 2000, chance = 12, speed = 250, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
+	mitigation = 1.00,
+	{ name = "speed", interval = 2000, chance = 12, speedChange = 250, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 10, maxDamage = 50, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

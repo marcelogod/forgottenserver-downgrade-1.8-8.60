@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Afflicted Strider")
 local monster = {}
 
-monster.name = "Afflicted Strider"
 monster.description = "an afflicted strider"
 monster.experience = 5700
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 2094
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Antrum of the Fallen.",
+}
 
 monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "blood"
 monster.corpse = 36719
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -92,7 +107,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 68,
 	armor = 68,
-	{ name = "speed", interval = 2000, chance = 25, speed = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.88,
+	{ name = "speed", interval = 2000, chance = 25, speedChange = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

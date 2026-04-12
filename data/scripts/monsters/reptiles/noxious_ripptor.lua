@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Noxious Ripptor")
 local monster = {}
 
-monster.name = "Noxious Ripptor"
 monster.description = "a noxious ripptor"
 monster.experience = 13190
 monster.outfit = {
@@ -15,18 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 2276
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 5000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 1,
+	Locations = "Crystal Enigma",
+}
 
 monster.health = 22700
 monster.maxHealth = 22700
 monster.race = "blood"
 monster.corpse = 39323
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Feroxa2")
 local monster = {}
 
 monster.name = "Feroxa"
-monster.name = "Feroxa2"
 monster.description = "Feroxa"
 monster.experience = 0
 monster.outfit = {
@@ -19,12 +18,19 @@ monster.health = 50000
 monster.maxHealth = 50000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 2,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -41,12 +47,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -70,7 +77,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 50,
-	{ name = "speed", interval = 2000, chance = 12, speed = 1250, effect = CONST_ME_MAGIC_RED, target = false, duration = 10000 },
+	{ name = "speed", interval = 2000, chance = 12, speedChange = 1250, effect = CONST_ME_MAGIC_RED, target = false, duration = 10000 },
 	{ name = "outfit", interval = 2000, chance = 20, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 5000, outfitMonster = "werewolf" },
 	{ name = "feroxa summon", interval = 2000, chance = 20, target = false },
 }

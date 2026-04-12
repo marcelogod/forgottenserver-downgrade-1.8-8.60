@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Magma Crystal")
 local monster = {}
 
-monster.name = "Magma Crystal"
 monster.description = "a magma crystal"
 monster.experience = 0
 monster.outfit = {
@@ -20,6 +19,10 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +37,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -57,6 +60,7 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 0,
 	armor = 0,
+	mitigation = 0.00,
 	{ name = "combat", interval = 1000, chance = 100, type = COMBAT_HEALING, minDamage = 200, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

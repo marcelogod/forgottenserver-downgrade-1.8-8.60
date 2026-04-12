@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Diamond Servant Replica")
 local monster = {}
 
-monster.name = "Diamond Servant Replica"
 monster.description = "a diamond servant replica"
 monster.experience = 700
 monster.outfit = {
@@ -14,18 +13,35 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.raceId = 1326
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Replica Dungeon",
+}
 
 monster.health = 2000
 monster.maxHealth = 2000
 monster.race = "venom"
 monster.corpse = 12496
-monster.speed = 172
+monster.speed = 86
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +58,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 100,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -88,6 +105,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 25,
+	mitigation = 0.83,
 	{ name = "combat", interval = 2000, chance = 11, type = COMBAT_HEALING, minDamage = 50, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, effect = CONST_ME_YELLOWENERGY, target = false },
 }

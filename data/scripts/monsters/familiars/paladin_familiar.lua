@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Paladin familiar")
 local monster = {}
 
-monster.name = "Paladin familiar"
 monster.description = "a paladin familiar"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 15000
 monster.maxHealth = 15000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 308
+monster.speed = 154
 monster.manaCost = 2000
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 2,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,7 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 55,
-	{ name = "combat", interval = 2000, chance = 75, type = COMBAT_HEALING, minDamage = 450, maxDamage = 450, effect = CONST_ME_MAGIC_GREEN, target = false },
+	{ name = "combat", interval = 2000, chance = 75, type = COMBAT_HEALING, minDamage = 380, maxDamage = 380, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 
 monster.elements = {
@@ -88,7 +94,9 @@ monster.elements = {
 
 monster.immunities = {
 	{ type = "paralyze", condition = true },
+	{ type = "outfit", condition = false },
 	{ type = "invisible", condition = true },
+	{ type = "bleed", condition = false },
 }
 
 mType:register(monster)

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Glooth Anemone")
 local monster = {}
 
-monster.name = "Glooth Anemone"
 monster.description = "a glooth anemone"
 monster.experience = 1755
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1042
+monster.Bestiary = {
+	class = "Plant",
+	race = BESTY_RACE_PLANT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Rathleton Sewers, Underground Glooth Factory, Jaccus Maxxen's Dungeon.",
+}
 
 monster.health = 2400
 monster.maxHealth = 2400
 monster.race = "venom"
 monster.corpse = 20988
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 3,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -90,6 +107,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 42,
+	mitigation = 1.02,
 	{ name = "combat", interval = 2000, chance = 9, type = COMBAT_HEALING, minDamage = 50, maxDamage = 100, effect = CONST_ME_MAGIC_GREEN, target = false },
 	{ name = "glooth anemone summon", interval = 2000, chance = 14, target = false },
 }

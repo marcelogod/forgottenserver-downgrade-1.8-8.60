@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lion Knight")
 local monster = {}
 
-monster.name = "Lion Knight"
 monster.description = "a lion knight"
 monster.experience = 0
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 8200
 monster.maxHealth = 8200
 monster.race = "blood"
 monster.corpse = 33957
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.faction = FACTION_LION
@@ -27,6 +26,10 @@ monster.enemyFactions = { FACTION_LIONUSURPERS }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 86,
 	armor = 0,
+	--	mitigation = ???,
 }
 
 monster.elements = {

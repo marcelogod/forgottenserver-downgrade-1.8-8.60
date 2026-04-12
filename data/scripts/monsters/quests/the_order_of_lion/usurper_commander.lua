@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Usurper Commander")
 local monster = {}
 
-monster.name = "Usurper Commander"
 monster.description = "an usurper commander"
 monster.experience = 7200
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.faction = FACTION_LIONUSURPERS
@@ -28,6 +27,12 @@ monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
 }
+
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
+monster.events = {}
 
 monster.flags = {
 	summonable = false,
@@ -43,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -82,6 +87,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 86,
 	armor = 86,
+	--	mitigation = ???,
 }
 
 monster.elements = {

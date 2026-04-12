@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Execowtioner")
 local monster = {}
 
-monster.name = "Execowtioner"
 monster.description = "an execowtioner"
 monster.experience = 2400
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 1046
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Oramond Mountain Hideout, Oramond Minotaur Camp (northern camp), \z
+		Underground Glooth Factory, Oramond Dungeon.",
+}
 
 monster.health = 3500
 monster.maxHealth = 3500
 monster.race = "blood"
 monster.corpse = 21004
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 4,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

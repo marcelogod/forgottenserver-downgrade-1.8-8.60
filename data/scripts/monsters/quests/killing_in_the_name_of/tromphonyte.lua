@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tromphonyte")
 local monster = {}
 
-monster.name = "Tromphonyte"
 monster.description = "Tromphonyte"
 monster.experience = 1300
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "blood"
 monster.corpse = 12325
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -78,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 0,
+	mitigation = 1.11,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 90, maxDamage = 120, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

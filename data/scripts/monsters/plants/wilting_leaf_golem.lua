@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Wilting Leaf Golem")
 local monster = {}
 
-monster.name = "Wilting Leaf Golem"
 monster.description = "a wilting leaf golem"
 monster.experience = 145
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 982
+monster.Bestiary = {
+	class = "Plant",
+	race = BESTY_RACE_PLANT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Forest Fury Camp, Lair of the Treeling Witch and in the Forest Fury version of the Forsaken Mine.",
+}
 
 monster.health = 380
 monster.maxHealth = 380
 monster.race = "blood"
 monster.corpse = 19117
-monster.speed = 148
+monster.speed = 74
 monster.manaCost = 390
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -73,9 +90,8 @@ monster.attacks = {
 	{ name = "melee", interval = 1500, chance = 100, minDamage = 0, maxDamage = -120, condition = { type = CONDITION_POISON, totalDamage = 300, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -50, range = 7, radius = 1, shootEffect = CONST_ANI_LARGEROCK, effect = CONST_ME_EXPLOSIONHIT, target = true },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -150, maxDamage = -200, radius = 4, effect = CONST_ME_GREEN_RINGS } },
-	{ name = "speed", interval = 2000, chance = 20, speed = -600, radius = 3, effect = CONST_ME_MAGIC_RED, target = false, duration = 15000 },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -150, maxDamage = -200, radius = 4, effect = CONST_ME_GREEN_RINGS, target = false },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -600, radius = 3, effect = CONST_ME_MAGIC_RED, target = false, duration = 15000 },
 }
 
 monster.defenses = {

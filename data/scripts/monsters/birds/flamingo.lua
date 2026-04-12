@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Flamingo")
 local monster = {}
 
-monster.name = "Flamingo"
 monster.description = "a flamingo"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 212
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Tiquanda, Shattered Isles, Gardens of Night.",
+}
 
 monster.health = 25
 monster.maxHealth = 25
 monster.race = "blood"
 monster.corpse = 6054
-monster.speed = 168
+monster.speed = 84
 monster.manaCost = 250
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 25,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -59,12 +73,13 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "downy feather", chance = 1040 },
+	{ name = "downy feather", chance = 1180 },
 }
 
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.15,
 }
 
 monster.elements = {

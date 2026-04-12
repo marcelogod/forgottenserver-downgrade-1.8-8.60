@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Undead Minion")
 local monster = {}
 
-monster.name = "Undead Minion"
 monster.description = "a Undead Minion"
 monster.experience = 550
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 850
 monster.maxHealth = 850
 monster.race = "undead"
 monster.corpse = 5963
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 620
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 1,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -74,6 +80,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	mitigation = 0.90,
 }
 
 monster.elements = {

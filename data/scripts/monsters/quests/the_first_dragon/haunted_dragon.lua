@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Haunted Dragon")
 local monster = {}
 
-monster.name = "Haunted Dragon"
 monster.description = "a haunted dragon"
 monster.experience = 6500
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1376
+monster.Bestiary = {
+	class = "Dragon",
+
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 2,
+	Locations = "The First Dragons Lair, fourth floor.",
+}
 
 monster.health = 6500
 monster.maxHealth = 6500
 monster.race = "undead"
 monster.corpse = 6305
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -94,6 +112,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 58,
+	mitigation = 1.60,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

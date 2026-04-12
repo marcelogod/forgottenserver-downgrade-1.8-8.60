@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Apprentice Sheng")
 local monster = {}
 
-monster.name = "Apprentice Sheng"
 monster.description = "Apprentice Sheng"
 monster.experience = 150
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 95
 monster.maxHealth = 95
 monster.race = "blood"
 monster.corpse = 5981
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 20,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -69,15 +75,13 @@ monster.voices = {
 
 monster.loot = {
 	{ name = "minotaur leather", chance = 100000 },
-	{ name = "minotaur horn", chance = 20000 },
-	{ id = 3046, chance = 84510 }, -- magic light wand
-	{ name = "gold coin", chance = 70420, maxCount = 10 },
-	{ id = 2920, chance = 26760, maxCount = 2 }, -- torch
-	{ name = "leather legs", chance = 14080 },
-	{ id = 3595, chance = 4230 }, -- carrot
-	{ name = "leather helmet", chance = 5630 },
-	{ name = "knife", chance = 12680 },
-	{ id = 3577, chance = 25500 }, -- meat
+	{ id = 3046, chance = 76000 }, -- magic light wand
+	{ name = "gold coin", chance = 38000, maxCount = 10 },
+	{ id = 2920, chance = 30000, maxCount = 2 }, -- torch
+	{ name = "leather legs", chance = 23000 },
+	{ id = 3595, chance = 7690 }, -- carrot
+	{ name = "leather helmet", chance = 7690 },
+	{ name = "knife", chance = 7690 },
 }
 
 monster.attacks = {
@@ -90,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 13,
 	armor = 12,
+	--	mitigation = ???,
 	{ name = "combat", interval = 4000, chance = 15, type = COMBAT_HEALING, minDamage = 10, maxDamage = 20, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

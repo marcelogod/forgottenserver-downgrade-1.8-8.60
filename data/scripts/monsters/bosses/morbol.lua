@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Morbol")
 local monster = {}
 
-monster.name = "Morbol"
 monster.description = "Morbol"
 monster.experience = 75000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 75000
 monster.maxHealth = 75000
 monster.race = "blood"
 monster.corpse = 21900
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -84,7 +90,7 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 32, type = COMBAT_PHYSICALDAMAGE, minDamage = -400, maxDamage = -800, radius = 8, effect = CONST_ME_CARNIPHILA, target = false },
 	{ name = "combat", interval = 2000, chance = 19, type = COMBAT_EARTHDAMAGE, minDamage = -600, maxDamage = -1400, range = 7, radius = 3, shootEffect = CONST_ANI_POISON, effect = CONST_ME_CARNIPHILA, target = true },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_PHYSICALDAMAGE, minDamage = -500, maxDamage = -2000, length = 7, spread = 0, effect = CONST_ME_GROUNDSHAKER, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -1000, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -850, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_FIREDAMAGE, minDamage = -400, maxDamage = -1400, length = 7, spread = 0, effect = CONST_ME_FIREAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_FIREDAMAGE, minDamage = -600, maxDamage = -1200, radius = 3, effect = CONST_ME_EXPLOSIONHIT, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_ENERGYDAMAGE, minDamage = -550, maxDamage = -1230, range = 7, radius = 2, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_ENERGYHIT, target = true },
@@ -94,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 75,
 	armor = 48,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 1000, maxDamage = 3000, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Spiteful Spitter")
 local monster = {}
 
-monster.name = "Spiteful Spitter"
 monster.description = "a spiteful spitter"
 monster.experience = 24960
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 28000
 monster.maxHealth = 28000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,6 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 90,
 	armor = 107,
+	--	mitigation = ???,
 }
 
 monster.elements = {
@@ -91,5 +98,9 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval)
+	monster:tryTeleportToPlayer("You have been chosen for a harvest!")
+end
 
 mType:register(monster)

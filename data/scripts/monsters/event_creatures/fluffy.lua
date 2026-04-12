@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Fluffy")
 local monster = {}
 
-monster.name = "Fluffy"
 monster.description = "Fluffy"
 monster.experience = 3550
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 4500
 monster.maxHealth = 4500
 monster.race = "blood"
 monster.corpse = 6331
-monster.speed = 310
+monster.speed = 155
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -82,6 +88,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 25,
+	mitigation = 2.25,
 }
 
 monster.elements = {

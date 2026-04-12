@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Putrid Mummy")
 local monster = {}
 
-monster.name = "Putrid Mummy"
 monster.description = "a putrid mummy"
 monster.experience = 900
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1415
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Caverna Exanima.",
+}
 
 monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "undead"
 monster.corpse = 6004
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -75,12 +92,13 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -300 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -100, maxDamage = -150, range = 1, shootEffect = CONST_ANI_EARTH, effect = CONST_ME_CARNIPHILA, target = true },
-	{ name = "speed", interval = 2000, chance = 15, speed = -226, range = 7, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_MORTAREA, target = true, duration = 10000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -226, range = 7, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_MORTAREA, target = true, duration = 10000 },
 }
 
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	mitigation = 0.91,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 100, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

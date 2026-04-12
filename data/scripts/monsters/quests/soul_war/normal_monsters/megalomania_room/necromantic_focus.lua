@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Necromantic Focus")
 local monster = {}
 
-monster.name = "Necromantic Focus"
 monster.description = "a necromantic focus"
 monster.experience = 0
 monster.outfit = {
@@ -16,10 +15,15 @@ monster.speed = 0
 monster.manaCost = 100
 monster.maxSummons = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -36,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,

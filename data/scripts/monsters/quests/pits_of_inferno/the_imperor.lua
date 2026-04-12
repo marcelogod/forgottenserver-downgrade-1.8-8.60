@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Imperor")
 local monster = {}
 
-monster.name = "The Imperor"
 monster.description = "The Imperor"
 monster.experience = 8000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 304,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 15000
 monster.maxHealth = 15000
 monster.race = "blood"
 monster.corpse = 6363
-monster.speed = 310
+monster.speed = 155
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 1500,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -87,9 +98,10 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 35, type = COMBAT_HEALING, minDamage = 275, maxDamage = 840, effect = CONST_ME_MAGIC_RED, target = false },
 	{ name = "the imperor summon", interval = 2000, chance = 21, target = false },
-	{ name = "speed", interval = 2000, chance = 12, speed = 1496, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 12, speedChange = 1496, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 	{ name = "invisible", interval = 2000, chance = 11, effect = CONST_ME_TELEPORT },
 }
 

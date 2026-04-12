@@ -1,10 +1,11 @@
 local mType = Game.createMonsterType("Bad Dream")
 local monster = {}
 
-monster.name = "Bad Dream"
 monster.description = "a bad dream"
 monster.experience = 0
-monster.outfit = { lookTypeEx = 20110 }
+monster.outfit = {
+	lookTypeEx = 20110,
+}
 
 monster.health = 7200
 monster.maxHealth = 7200
@@ -18,6 +19,13 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -27,12 +35,12 @@ monster.flags = {
 	rewardBoss = false,
 	illusionable = false,
 	canPushItems = true,
-	canPushCreatures = false,
+	canPushCreatures = true,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = true,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -53,6 +61,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 5,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Black Sphinx Acolyte")
 local monster = {}
 
-monster.name = "Black Sphinx Acolyte"
 monster.description = "a black sphinx acolyte"
 monster.experience = 7200
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1800
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Issavi Sewers, Kilmaresh Catacombs and Kilmaresh Mountains (above and under ground).",
+}
 
 monster.health = 8100
 monster.maxHealth = 8100
 monster.race = "blood"
 monster.corpse = 31423
-monster.speed = 310
+monster.speed = 155
 monster.manaCost = 0
 
 monster.faction = FACTION_FAFNAR
@@ -29,6 +39,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_ANUMA }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -45,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

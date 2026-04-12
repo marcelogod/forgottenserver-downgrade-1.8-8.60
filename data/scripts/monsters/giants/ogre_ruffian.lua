@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ogre Ruffian")
 local monster = {}
 
-monster.name = "Ogre Ruffian"
 monster.description = "an ogre ruffian"
 monster.experience = 5000
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1820
+monster.Bestiary = {
+	class = "Giant",
+	race = BESTY_RACE_GIANT,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Kilmaresh Central Steppe, Kilmaresh Southern Steppe, Green Belt, Kilmaresh Mountains underground.",
+}
 
 monster.health = 5500
 monster.maxHealth = 5500
 monster.race = "blood"
 monster.corpse = 31527
-monster.speed = 430
+monster.speed = 215
 monster.manaCost = 0
 
 monster.faction = FACTION_ANUMA
@@ -29,6 +39,11 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_FAFNAR }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -45,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -83,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 102,
 	armor = 102,
+	mitigation = 2.72,
 }
 
 monster.elements = {

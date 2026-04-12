@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Wild Warrior")
 local monster = {}
 
-monster.name = "Wild Warrior"
 monster.description = "a wild warrior"
 monster.experience = 60
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 47
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Dark Cathedral, Outlaw Camp, North of Thais, Cyclopolis, in Edron Hero Cave and around it, \z
+		the small camp near Femor Hills, in Ghostlands disguised as a statue.",
+}
 
 monster.health = 135
 monster.maxHealth = 135
 monster.race = "blood"
 monster.corpse = 18250
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 420
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -80,7 +95,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 8,
-	{ name = "speed", interval = 2000, chance = 15, speed = 200, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.46,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 200, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rhindeer")
 local monster = {}
 
-monster.name = "Rhindeer"
 monster.description = "a rhindeer"
 monster.experience = 5600
 monster.outfit = {
@@ -15,16 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2342
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 1,
+	Locations = "Ingol",
+}
+
 monster.health = 8650
 monster.maxHealth = 8650
 monster.race = "blood"
 monster.corpse = 42230
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 200,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

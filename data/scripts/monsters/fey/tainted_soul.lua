@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tainted Soul")
 local monster = {}
 
-monster.name = "Tainted Soul"
 monster.description = "a tainted soul"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1137
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_FEY,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Tainted Caves in the Green Claw Swamp.",
+}
 
 monster.health = 250
 monster.maxHealth = 250
 monster.race = "undead"
 monster.corpse = 21977
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 7,
 	runHealth = 115,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -72,7 +87,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 10,
-	{ name = "speed", interval = 2000, chance = 15, speed = 200, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.46,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 200, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 15, maxDamage = 25, effect = CONST_ME_MAGIC_GREEN, target = false },
 	{ name = "invisible", interval = 2000, chance = 10, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 3000 },
 }

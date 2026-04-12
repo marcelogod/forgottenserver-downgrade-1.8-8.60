@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Horadron")
 local monster = {}
 
-monster.name = "Horadron"
 monster.description = "Horadron"
 monster.experience = 18000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 30000
 monster.maxHealth = 30000
 monster.race = "blood"
 monster.corpse = 6068
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -107,13 +113,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_EARTHDAMAGE, minDamage = -100, maxDamage = -235, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_HITBYPOISON, target = true },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_EARTHDAMAGE, minDamage = -100, maxDamage = -250, radius = 3, effect = CONST_ME_POISONAREA, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 25, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -300, maxDamage = -450,  radius = 3, effect = CONST_ME_HITBYPOISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 25, minDamage = -300, maxDamage = -450, radius = 3, effect = CONST_ME_HITBYPOISON, target = false },
 }
 
 monster.defenses = {
 	defense = 65,
 	armor = 72,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 35, type = COMBAT_HEALING, minDamage = 400, maxDamage = 700, target = false },
 }
 

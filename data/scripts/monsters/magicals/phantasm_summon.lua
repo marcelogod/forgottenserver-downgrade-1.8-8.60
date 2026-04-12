@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Phantasm Summon")
 local monster = {}
 
 monster.name = "Phantasm"
-monster.name = "Phantasm Summon"
 monster.description = "a phantasm"
 monster.experience = 1
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 65
 monster.maxHealth = 65
 monster.race = "undead"
 monster.corpse = 6343
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -68,8 +71,7 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -50 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_DEATHDAMAGE, minDamage = -50, maxDamage = -80, range = 7, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_SMALLCLOUDS, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_MANADRAIN, minDamage = -5, maxDamage = -80, radius = 3, effect = CONST_ME_YELLOW_RINGS, target = false },
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_DROWN, minDamage = -5, maxDamage = -5, effect = CONST_ME_LOSEENERGY } },
+	{ name = "phantasm drown", interval = 2000, chance = 10, target = false },
 	{ name = "drunk", interval = 2000, chance = 5, radius = 5, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
@@ -77,7 +79,7 @@ monster.defenses = {
 	defense = 0,
 	armor = 0,
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_HEALING, minDamage = 40, maxDamage = 65, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 10, speed = 500, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 500, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 	{ name = "invisible", interval = 2000, chance = 25, effect = CONST_ME_MAGIC_BLUE },
 }
 

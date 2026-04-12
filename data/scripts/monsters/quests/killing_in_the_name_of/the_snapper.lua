@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Snapper")
 local monster = {}
 
-monster.name = "The Snapper"
 monster.description = "The Snapper"
 monster.experience = 150
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 300
 monster.maxHealth = 300
 monster.race = "blood"
 monster.corpse = 6046
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -73,6 +79,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 13,
+	mitigation = 0.28,
 }
 
 monster.elements = {

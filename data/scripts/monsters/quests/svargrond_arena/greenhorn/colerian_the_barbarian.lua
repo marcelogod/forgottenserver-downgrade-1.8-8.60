@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Colerian the Barbarian")
 local monster = {}
 
-monster.name = "Colerian the Barbarian"
 monster.description = "Colerian the Barbarian"
 monster.experience = 90
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 265
 monster.maxHealth = 265
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -69,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 8,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Count")
 local monster = {}
 
-monster.name = "The Count"
 monster.description = "The Count"
 monster.experience = 450
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1250
 monster.maxHealth = 1250
 monster.race = "undead"
 monster.corpse = 8109
-monster.speed = 370
+monster.speed = 185
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,6 +83,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_HEALING, minDamage = 100, maxDamage = 195, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 3000, chance = 30, effect = CONST_ME_MAGIC_BLUE },
 }

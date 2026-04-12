@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orc Warlord")
 local monster = {}
 
-monster.name = "Orc Warlord"
 monster.description = "an orc warlord"
 monster.experience = 670
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 2
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Orc Fortress, Foreigner Quarter, Zao Orc Land.",
+}
 
 monster.health = 950
 monster.maxHealth = 950
 monster.race = "blood"
 monster.corpse = 6008
-monster.speed = 234
+monster.speed = 117
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 15,
+	damage = 15,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -96,6 +112,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 28,
+	mitigation = 1.46,
 	{ name = "invisible", interval = 2000, chance = 5, effect = CONST_ME_MAGIC_BLUE },
 }
 

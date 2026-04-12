@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Troll-Trained Salamander")
 local monster = {}
 
-monster.name = "Troll-Trained Salamander"
 monster.description = "a troll-trained salamander"
 monster.experience = 23
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 70
 monster.maxHealth = 70
 monster.race = "blood"
 monster.corpse = 17427
-monster.speed = 112
+monster.speed = 56
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -79,6 +82,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 1,
+	mitigation = 0.15,
 }
 
 monster.elements = {

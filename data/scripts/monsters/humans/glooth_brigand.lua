@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Glooth Brigand")
 local monster = {}
 
-monster.name = "Glooth Brigand"
 monster.description = "a glooth brigand"
 monster.experience = 1900
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1120
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Underground Glooth Factory.",
+}
 
 monster.health = 2400
 monster.maxHealth = 2400
 monster.race = "blood"
 monster.corpse = 21888
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -93,6 +110,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 26,
 	armor = 51,
+	mitigation = 1.74,
 	{ name = "combat", interval = 3000, chance = 35, type = COMBAT_HEALING, minDamage = 200, maxDamage = 245, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

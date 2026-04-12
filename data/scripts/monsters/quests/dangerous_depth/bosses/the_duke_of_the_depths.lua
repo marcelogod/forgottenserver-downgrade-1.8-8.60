@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Duke of the Depths")
 local monster = {}
 
-monster.name = "The Duke of the Depths"
 monster.description = "The Duke Of The Depths"
 monster.experience = 300000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 350000
 monster.maxHealth = 350000
 monster.race = "blood"
 monster.corpse = 27641
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 50,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1520,
+	bossRace = RARITY_BANE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -97,7 +110,6 @@ monster.loot = {
 	{ name = "terra mantle", chance = 2080 },
 	{ name = "violet gem", chance = 2080 },
 	{ name = "gnome legs", chance = 3390 },
-	{ name = "gnomish footwraps", chance = 3390 },
 }
 
 monster.attacks = {
@@ -111,6 +123,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 160,
 	armor = 160,
+	--	mitigation = ???,
 }
 
 monster.elements = {

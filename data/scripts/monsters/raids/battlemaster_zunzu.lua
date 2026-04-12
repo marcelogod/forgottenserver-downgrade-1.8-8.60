@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Battlemaster Zunzu")
 local monster = {}
 
-monster.name = "Battlemaster Zunzu"
 monster.description = "Battlemaster Zunzu"
 monster.experience = 2500
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 635,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 4000
 monster.maxHealth = 4000
 monster.race = "blood"
 monster.corpse = 10364
-monster.speed = 420
+monster.speed = 210
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 150,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -75,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 45,
+	mitigation = 1.60,
 	{ name = "combat", interval = 1000, chance = 18, type = COMBAT_HEALING, minDamage = 200, maxDamage = 400, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

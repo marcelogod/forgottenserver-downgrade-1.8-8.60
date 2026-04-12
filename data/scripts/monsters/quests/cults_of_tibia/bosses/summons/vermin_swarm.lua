@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Vermin Swarm")
 local monster = {}
 
-monster.name = "Vermin Swarm"
 monster.description = "a vermin swarm"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 5000
 monster.maxHealth = 5000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

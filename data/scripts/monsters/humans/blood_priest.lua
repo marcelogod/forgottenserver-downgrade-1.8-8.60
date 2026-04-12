@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Blood Priest")
 local monster = {}
 
-monster.name = "Blood Priest"
 monster.description = "a blood priest"
 monster.experience = 900
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 961
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Drefia and Old Fortress.",
+}
 
 monster.health = 820
 monster.maxHealth = 820
 monster.race = "blood"
 monster.corpse = 18945
-monster.speed = 198
+monster.speed = 99
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -88,13 +102,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_LIFEDRAIN, minDamage = -40, maxDamage = -60, radius = 4, effect = CONST_ME_MAGIC_RED, target = false },
 	{ name = "combat", interval = 3000, chance = 10, type = COMBAT_MANADRAIN, minDamage = -80, maxDamage = -130, range = 1, length = 7, spread = 0, effect = CONST_ME_HITAREA, target = true },
 	-- bleed
-	{ name = "condition", interval = 2000, chance = 5, target = true, condition =
-	{ type = CONDITION_BLEEDING, minDamage = -160, maxDamage = -290, range = 1, radius = 1 } },
+	{ name = "condition", type = CONDITION_BLEEDING, interval = 2000, chance = 5, minDamage = -160, maxDamage = -290, range = 1, radius = 1, target = true },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 55,
+	mitigation = 1.18,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 80, maxDamage = 120, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

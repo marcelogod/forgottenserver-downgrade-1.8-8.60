@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Glooth Bomb")
 local monster = {}
 
-monster.name = "Glooth Bomb"
 monster.description = "a glooth bomb"
 monster.experience = 2600
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 250000
 monster.maxHealth = 250000
 monster.race = "blood"
 monster.corpse = 21887
-monster.speed = 80
+monster.speed = 40
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 3,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -84,6 +90,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 40,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 9, type = COMBAT_HEALING, minDamage = 50, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

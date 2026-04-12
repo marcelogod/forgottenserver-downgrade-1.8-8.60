@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lisa")
 local monster = {}
 
-monster.name = "Lisa"
 monster.description = "Lisa"
 monster.experience = 18000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1059,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 55000
 monster.maxHealth = 55000
 monster.race = "venom"
 monster.corpse = 20988
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 3,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -94,6 +105,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 15,
+	--	mitigation = ???,
 	{ name = "lisa summon", interval = 2000, chance = 5, target = false },
 	{ name = "lisa heal", interval = 1000, chance = 100, target = false },
 }
@@ -117,5 +129,19 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

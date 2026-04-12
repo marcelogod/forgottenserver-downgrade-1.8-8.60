@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Liquor Spirit")
 local monster = {}
 
-monster.name = "Liquor Spirit"
 monster.description = "a liquor spirit"
 monster.experience = 0
 monster.outfit = {
@@ -18,13 +17,21 @@ monster.health = 7000
 monster.maxHealth = 7000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -41,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +73,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 35,
+	--	mitigation = ???,
 }
 
 monster.elements = {

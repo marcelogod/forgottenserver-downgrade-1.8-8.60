@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Animated Feather")
 local monster = {}
 
-monster.name = "Animated Feather"
 monster.description = "an animated feather"
 monster.experience = 9860
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1671
+monster.Bestiary = {
+	class = "Inkborn",
+	race = BESTY_RACE_INKBORN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "The Secret Library (ice section).",
+}
 
 monster.health = 13000
 monster.maxHealth = 13000
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 28578
-monster.speed = 420
+monster.speed = 210
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -87,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 79,
+	mitigation = 2.02,
 }
 
 monster.elements = {

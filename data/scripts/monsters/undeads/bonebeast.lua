@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bonebeast")
 local monster = {}
 
-monster.name = "Bonebeast"
 monster.description = "a bonebeast"
 monster.experience = 580
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 101
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Old Fortress, Ankrahmun Tombs, Helheim, Ramoa, Lich Hell, beneath Fenrock, Deeper Banuta, \z
+		Vengoth Castle, Vandura Mountain, Robson's Isle, Middle Spike, Lion's Rock, Mother of Scarabs Lair, Caverna Exanima.",
+}
 
 monster.health = 515
 monster.maxHealth = 515
 monster.race = "undead"
 monster.corpse = 6030
-monster.speed = 218
+monster.speed = 109
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -79,17 +94,16 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -50, maxDamage = -90, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -25, maxDamage = -47, radius = 3, effect = CONST_ME_MAGIC_RED, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -50, maxDamage = -60, radius = 3, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -50, maxDamage = -60, radius = 3, effect = CONST_ME_POISONAREA, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -70, maxDamage = -80, length = 6, spread = 0, effect = CONST_ME_POISONAREA } },
-	{ name = "speed", interval = 2000, chance = 15, speed = -600, target = true, duration = 13000 },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -70, maxDamage = -80, length = 6, spread = 0, effect = CONST_ME_POISONAREA, target = false },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -600, target = true, duration = 13000 },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 40,
+	mitigation = 1.15,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 50, maxDamage = 60, effect = CONST_ME_HITBYPOISON, target = false },
 }
 

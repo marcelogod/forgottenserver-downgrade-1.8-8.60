@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Glooth Golem")
 local monster = {}
 
-monster.name = "Glooth Golem"
 monster.description = "a glooth golem"
 monster.experience = 1606
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 1038
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Glooth Factory, Underground Glooth Factory, Rathleton Sewers, Jaccus Maxxens Dungeon, \z
+		Oramond Dungeon (depending on Magistrate votes).",
+}
 
 monster.health = 2700
 monster.maxHealth = 2700
 monster.race = "venom"
 monster.corpse = 20972
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -93,7 +111,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 43,
-	{ name = "speed", interval = 2000, chance = 13, speed = 404, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
+	mitigation = 1.37,
+	{ name = "speed", interval = 2000, chance = 13, speedChange = 404, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

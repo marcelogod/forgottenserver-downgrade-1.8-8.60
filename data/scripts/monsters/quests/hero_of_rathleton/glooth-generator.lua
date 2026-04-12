@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Glooth-Generator")
 local monster = {}
 
-monster.name = "Glooth-Generator"
 monster.description = "a glooth-generator"
 monster.experience = 0
 monster.outfit = {
@@ -20,6 +19,13 @@ monster.changeTarget = {
 	chance = 5,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -59,6 +65,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 50,
+	--	mitigation = ???,
 	{ name = "glooth-generator summon", interval = 1000, chance = 100, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rage Squid")
 local monster = {}
 
-monster.name = "Rage Squid"
 monster.description = "a rage squid"
 monster.experience = 14820
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1668
+monster.Bestiary = {
+	class = "Inkborn",
+	race = BESTY_RACE_INKBORN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Secret Library (fire section).",
+}
 
 monster.health = 17000
 monster.maxHealth = 17000
 monster.race = "undead"
 monster.corpse = 28782
-monster.speed = 430
+monster.speed = 215
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -101,6 +115,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 78,
 	armor = 78,
+	mitigation = 2.16,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Terramite")
 local monster = {}
 
-monster.name = "Terramite"
 monster.description = "a terramite"
 monster.experience = 160
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 631
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Steppe of Zao, Lion's Rock, Zao Terramite Caves, Darama Terramite Cave, \z
+		Terramite Breeding Tunnels. Also raids desert north of Ankrahmun.",
+}
 
 monster.health = 365
 monster.maxHealth = 365
 monster.race = "venom"
 monster.corpse = 10430
-monster.speed = 222
+monster.speed = 111
 monster.manaCost = 505
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -74,6 +89,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 15,
+	mitigation = 0.56,
 }
 
 monster.elements = {

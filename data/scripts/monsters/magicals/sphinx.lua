@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sphinx")
 local monster = {}
 
-monster.name = "Sphinx"
 monster.description = "a sphinx"
 monster.experience = 7500
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 1808
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Nykri Delta, Kilmaresh Central Steppe, Kilmaresh Southern Steppe, Kilmaresh Catacombs.",
+}
 
 monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "blood"
 monster.corpse = 31386
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.faction = FACTION_ANUMA
@@ -29,6 +39,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_FAFNAR }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -45,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

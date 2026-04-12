@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Svoren the Mad")
 local monster = {}
 
-monster.name = "Svoren the Mad"
 monster.description = "Svoren the Mad"
 monster.experience = 3000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 6310
 monster.maxHealth = 6310
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,12 +72,13 @@ monster.loot = {}
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -525 },
-	{ name = "speed", interval = 3500, chance = 35, speed = -250, range = 1, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 40 },
+	{ name = "speed", interval = 3500, chance = 35, speedChange = -250, range = 1, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 40 },
 }
 
 monster.defenses = {
 	defense = 27,
 	armor = 25,
+	--	mitigation = ???,
 }
 
 monster.elements = {

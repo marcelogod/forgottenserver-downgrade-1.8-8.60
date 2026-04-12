@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Masked Marauder")
 local monster = {}
 
-monster.name = "The Masked Marauder"
 monster.description = "The Masked Marauder"
 monster.experience = 3500
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 7320
 monster.maxHealth = 7320
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -70,6 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 25,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 50, type = COMBAT_HEALING, minDamage = 75, maxDamage = 125, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

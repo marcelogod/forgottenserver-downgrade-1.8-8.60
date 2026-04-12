@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("White Shade")
 local monster = {}
 
-monster.name = "White Shade"
 monster.description = "a white shade"
 monster.experience = 120
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 962
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Drefia.",
+}
 
 monster.health = 260
 monster.maxHealth = 260
 monster.race = "undead"
 monster.corpse = 19059
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -68,12 +83,13 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -8 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_LIFEDRAIN, minDamage = -4, maxDamage = -6, range = 7, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_YALAHARIGHOST, target = false },
-	{ name = "speed", interval = 2000, chance = 5, speed = -400, radius = 4, effect = CONST_ME_HITAREA, target = false, duration = 3000 },
+	{ name = "speed", interval = 2000, chance = 5, speedChange = -400, radius = 4, effect = CONST_ME_HITAREA, target = false, duration = 3000 },
 }
 
 monster.defenses = {
 	defense = 15,
 	armor = 10,
+	mitigation = 0.51,
 	{ name = "invisible", interval = 2000, chance = 5, effect = CONST_ME_MAGIC_BLUE },
 }
 

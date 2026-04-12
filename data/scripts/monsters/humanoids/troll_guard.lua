@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Troll Guard")
 local monster = {}
 
-monster.name = "Troll Guard"
 monster.description = "a troll guard"
 monster.experience = 25
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 745
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 5,
+	FirstUnlock = 1,
+	SecondUnlock = 3,
+	CharmsPoints = 30,
+	Stars = 2,
+	Occurrence = 3,
+	Locations = "Rookgaard and in Thais during raids",
+}
 
 monster.health = 60
 monster.maxHealth = 60
 monster.race = "blood"
 monster.corpse = 861
-monster.speed = 126
+monster.speed = 63
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 17,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -72,6 +87,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 2,
 	armor = 4,
+	mitigation = 0.15,
 }
 
 monster.elements = {

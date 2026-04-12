@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cyclops Drone")
 local monster = {}
 
-monster.name = "Cyclops Drone"
 monster.description = "a cyclops drone"
 monster.experience = 200
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 391
+monster.Bestiary = {
+	class = "Giant",
+	race = BESTY_RACE_GIANT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Cyclopolis, Mount Sternum, Mistrock and in the Cyclops version of the Forsaken Mine.",
+}
 
 monster.health = 325
 monster.maxHealth = 325
 monster.race = "blood"
 monster.corpse = 771
-monster.speed = 198
+monster.speed = 99
 monster.manaCost = 525
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -84,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 25,
+	mitigation = 0.72,
 }
 
 monster.elements = {

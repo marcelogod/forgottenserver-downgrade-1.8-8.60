@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Condensed Sins")
 local monster = {}
 
-monster.name = "Condensed Sins"
 monster.description = "a condensed sins"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "undead"
 monster.corpse = 11317
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pig")
 local monster = {}
 
-monster.name = "Pig"
 monster.description = "a pig"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 60
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Rookgaard, Orc Fort, under Femor Hills with Goblins, some farms like Donald McRonaldThe McRonalds Farm, Liberty Bay slums and Nargor, Foreigner Quarter in Yalahar, Isle of the Kings, cells in The Pits of Inferno QuestTafariels throneroom in Pits of Inferno, Gardens of Night Mapper Coords129.18126.125104texthere, unreachable.",
+}
 
 monster.health = 25
 monster.maxHealth = 25
 monster.race = "blood"
 monster.corpse = 6000
-monster.speed = 114
+monster.speed = 57
 monster.manaCost = 255
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 25,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -66,8 +81,9 @@ monster.loot = {
 }
 
 monster.defenses = {
-	defense = 0,
-	armor = 1,
+	defense = 5,
+	armor = 2,
+	mitigation = 0.05,
 }
 
 monster.elements = {

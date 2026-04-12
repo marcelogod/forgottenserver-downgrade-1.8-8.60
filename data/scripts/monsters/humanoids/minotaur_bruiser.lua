@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Minotaur Bruiser")
 local monster = {}
 
-monster.name = "Minotaur Bruiser"
 monster.description = "a minotaur bruiser"
 monster.experience = 50
 monster.outfit = {
@@ -14,16 +13,22 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 100
 monster.maxHealth = 100
 monster.race = "blood"
 monster.corpse = 5969
-monster.speed = 168
+monster.speed = 84
 monster.manaCost = 330
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +45,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,6 +82,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 11,
+	mitigation = 0.18,
 }
 
 monster.elements = {

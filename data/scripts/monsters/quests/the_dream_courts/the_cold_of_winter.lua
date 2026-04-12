@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Cold of Winter")
 local monster = {}
 
-monster.name = "The Cold of Winter"
 monster.description = "a the cold of winter"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 40
 monster.maxHealth = 40
 monster.race = "blood"
 monster.corpse = 5998
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Bloodweb")
 local monster = {}
 
-monster.name = "The Bloodweb"
 monster.description = "The Bloodweb"
 monster.experience = 1450
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1750
 monster.maxHealth = 1750
 monster.race = "undead"
 monster.corpse = 7344
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 20000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -74,14 +80,15 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = -0, maxDamage = -280 },
 	{ name = "melee", interval = 2000, chance = 100, skill = 40, attack = 100, condition = { type = CONDITION_POISON, totalDamage = 8, interval = 4000 } },
-	{ name = "speed", interval = 2000, chance = 20, speed = -850, range = 7, radius = 7, effect = CONST_ME_POFF, target = false, duration = 8000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -850, range = 7, radius = 7, effect = CONST_ME_POFF, target = false, duration = 8000 },
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_ENERGYDAMAGE, minDamage = -60, maxDamage = -150, range = 7, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_ENERGYHIT, target = true },
 }
 
 monster.defenses = {
 	defense = 20,
 	armor = 25,
-	{ name = "speed", interval = 3000, chance = 40, speed = 380, effect = CONST_ME_MAGIC_RED, target = false, duration = 80000 },
+	mitigation = 1.80,
+	{ name = "speed", interval = 3000, chance = 40, speedChange = 380, effect = CONST_ME_MAGIC_RED, target = false, duration = 80000 },
 }
 
 monster.elements = {

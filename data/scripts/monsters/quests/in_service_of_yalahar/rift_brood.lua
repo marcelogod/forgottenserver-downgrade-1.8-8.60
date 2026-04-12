@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rift Brood")
 local monster = {}
 
-monster.name = "Rift Brood"
 monster.description = "a rift brood"
 monster.experience = 1600
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 2950
 monster.maxHealth = 2950
 monster.race = "venom"
 monster.corpse = 2126
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 20000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -66,6 +72,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	mitigation = 0.51,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 70, maxDamage = 100, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

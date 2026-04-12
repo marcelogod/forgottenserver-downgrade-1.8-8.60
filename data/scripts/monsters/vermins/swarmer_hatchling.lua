@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Swarmer Hatchling")
 local monster = {}
 
-monster.name = "Swarmer Hatchling"
 monster.description = "a swarmer hatchling"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 5
 monster.maxHealth = 5
 monster.race = "blood"
 monster.corpse = 13973
-monster.speed = 560
+monster.speed = 280
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 50,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -67,6 +70,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 12,
+	mitigation = 0.07,
 }
 
 monster.elements = {

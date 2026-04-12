@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gaffir")
 local monster = {}
 
-monster.name = "Gaffir"
 monster.description = "Gaffir"
 monster.experience = 25000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1778,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 48500
 monster.maxHealth = 48500
 monster.race = "blood"
 monster.corpse = 31307
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
+
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,20 +78,29 @@ monster.voices = {
 
 monster.loot = {
 	{ name = "platinum coin", chance = 100000, maxCount = 17 },
-	{ name = "small amethyst", chance = 27630 },
-	{ name = "small ruby", chance = 13760 },
-	{ name = "small sapphire", chance = 10530 },
-	{ name = "small topaz", chance = 11840 },
-	{ name = "small diamond", chance = 27630 },
-	{ name = "terra rod", chance = 24000 },
-	{ name = "springsprout rod", chance = 21000 },
+	{ name = "small amethyst", chance = 33500, maxCount = 2 },
+	{ name = "small ruby", chance = 33500, maxCount = 2 },
+	{ name = "small sapphire", chance = 33500 },
+	{ name = "small topaz", chance = 33500 },
+	{ name = "small diamond", chance = 33500 },
 	{ name = "great spirit potion", chance = 26400 },
+	{ name = "terra rod", chance = 24000, maxCount = 3 },
+	{ name = "springsprout rod", chance = 21000 },
+	{ name = "blue crystal shard", chance = 21000 },
+	{ name = "blue gem", chance = 21000 },
+	{ name = "cobra crest", chance = 12560 },
+	{ name = "violet crystal shard", chance = 14800 },
+	{ id = 281, chance = 14520 }, -- giant shimmering pearl (green)
+	{ name = "gold ingot", chance = 14500 },
 	{ name = "spellbook of warding", chance = 6500 },
 	{ id = 3098, chance = 5400 }, -- ring of healing
+	{ name = "terra hood", chance = 1600 },
 	{ name = "amulet of loss", chance = 3400 },
-	{ name = "cobra crest", chance = 900 },
+	{ name = "wand of everblazing", chance = 2900 },
 	{ name = "cobra wand", chance = 100 },
+	{ name = "cobra axe", chance = 100 },
 	{ name = "cobra rod", chance = 100 },
+	{ name = "cobra crest", chance = 100 },
 }
 
 monster.attacks = {
@@ -93,6 +115,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 83,
 	armor = 83,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,23 +1,50 @@
 local mType = Game.createMonsterType("Silencer")
 local monster = {}
 
-monster.name = "Silencer"
 monster.description = "a silencer"
 monster.experience = 5100
-monster.outfit = { lookType = 585 }
+monster.outfit = {
+	lookType = 585,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
+	lookAddons = 0,
+	lookMount = 0,
+}
+
+monster.events = {}
 
 monster.raceId = 1014
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "All over the Roshamuul surface and Nightmare Isles.",
+}
 
 monster.health = 5400
 monster.maxHealth = 5400
 monster.race = "blood"
 monster.corpse = 20155
-monster.speed = 470
+monster.speed = 235
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -34,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = true,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -82,7 +109,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 71,
-	{ name = "speed", interval = 2000, chance = 15, speed = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.82,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 220, maxDamage = 425, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

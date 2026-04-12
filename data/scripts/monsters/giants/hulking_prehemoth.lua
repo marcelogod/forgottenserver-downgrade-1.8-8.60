@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hulking Prehemoth")
 local monster = {}
 
-monster.name = "Hulking Prehemoth"
 monster.description = "a hulking prehemoth"
 monster.experience = 12690
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2271
+monster.Bestiary = {
+	class = "Giant",
+	race = BESTY_RACE_GIANT,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Sparkling Pools",
+}
 
 monster.health = 20700
 monster.maxHealth = 20700
 monster.race = "blood"
 monster.corpse = 39303
-monster.speed = 382
+monster.speed = 191
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -81,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 84,
 	armor = 84,
+	mitigation = 2.51,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Diseased Bill")
 local monster = {}
 
-monster.name = "Diseased Bill"
 monster.description = "Diseased Bill"
 monster.experience = 300
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 485,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 1000
 monster.maxHealth = 1000
 monster.race = "venom"
 monster.corpse = 8123
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,20 +74,21 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 40007, maxCount = 25 },
+	{ name = "gold coin", chance = 28000, maxCount = 20 },
 }
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -207, condition = { type = CONDITION_POISON, totalDamage = 4, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 100, type = COMBAT_LIFEDRAIN, minDamage = -90, maxDamage = -140, effect = CONST_ME_MAGIC_RED, target = true },
 	{ name = "combat", interval = 1000, chance = 40, type = COMBAT_PHYSICALDAMAGE, minDamage = -100, maxDamage = -175, radius = 2, shootEffect = CONST_ANI_SMALLEARTH, effect = CONST_ME_HITBYPOISON, target = false },
-	{ name = "speed", interval = 3000, chance = 40, speed = -900, effect = CONST_ME_MAGIC_RED, target = true, duration = 20000 },
+	{ name = "speed", interval = 3000, chance = 40, speedChange = -900, effect = CONST_ME_MAGIC_RED, target = true, duration = 20000 },
 }
 
 monster.defenses = {
 	defense = 15,
 	armor = 10,
-	{ name = "speed", interval = 10000, chance = 40, speed = 310, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 20000 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 10000, chance = 40, speedChange = 310, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 20000 },
 	{ name = "combat", interval = 5000, chance = 60, type = COMBAT_HEALING, minDamage = 50, maxDamage = 80, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

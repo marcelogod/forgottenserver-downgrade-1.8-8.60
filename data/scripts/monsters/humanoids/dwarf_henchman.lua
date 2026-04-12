@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dwarf Henchman")
 local monster = {}
 
-monster.name = "Dwarf Henchman"
 monster.description = "a dwarf henchman"
 monster.experience = 15
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 379
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Kazordoon Underground",
+}
 
 monster.health = 350
 monster.maxHealth = 350
 monster.race = "blood"
 monster.corpse = 6007
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -73,6 +88,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 16,
+	mitigation = 0.64,
 }
 
 monster.elements = {

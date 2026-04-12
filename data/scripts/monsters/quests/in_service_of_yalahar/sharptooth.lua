@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sharptooth")
 local monster = {}
 
-monster.name = "Sharptooth"
 monster.description = "Sharptooth"
 monster.experience = 3000
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 3100
 monster.maxHealth = 3100
 monster.race = "blood"
 monster.corpse = 6067
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -71,7 +79,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 29,
 	armor = 20,
-	{ name = "speed", interval = 2000, chance = 15, speed = 210, effect = CONST_ME_MAGIC_GREEN, target = false },
+	mitigation = 1.46,
+	{ name = "speed", interval = 2000, chance = 15, minDamage = -120, maxDamage = -140, effect = CONST_ME_MAGIC_GREEN, target = false },
 	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_HEALING, minDamage = 200, maxDamage = 240, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Spidris Elite")
 local monster = {}
 
-monster.name = "Spidris Elite"
 monster.description = "a spidris elite"
 monster.experience = 4000
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 797
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "The Hive: east tower (beyond gates), west tower (including beyond gates), \z
+		also anywhere Hive Overseers are found (as summons), Hive Outpost.",
+}
 
 monster.health = 5000
 monster.maxHealth = 5000
 monster.race = "venom"
 monster.corpse = 13870
-monster.speed = 394
+monster.speed = 197
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +57,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -83,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 55,
+	mitigation = 1.74,
 }
 
 monster.elements = {

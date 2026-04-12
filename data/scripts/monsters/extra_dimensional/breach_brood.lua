@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Breach Brood")
 local monster = {}
 
-monster.name = "Breach Brood"
 monster.description = "a breach brood"
 monster.experience = 1760
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1235
+monster.Bestiary = {
+	class = "Extra Dimensional",
+	race = BESTY_RACE_EXTRA_DIMENSIONAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Otherworld.",
+}
 
 monster.health = 3500
 monster.maxHealth = 3500
 monster.race = "venom"
 monster.corpse = 23392
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -78,8 +95,6 @@ monster.loot = {
 	{ id = 16121, chance = 4100 }, -- green crystal shard
 	{ id = 23544, chance = 470 }, -- collar of red plasma
 	{ id = 23542, chance = 470 }, -- collar of blue plasma
-	{ id = 50150, chance = 560 }, -- ring of orange plasma
-	{ id = 50152, chance = 560 }, -- collar of orange plasma
 	{ name = "spark sphere", chance = 14870 },
 }
 
@@ -93,6 +108,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 52,
 	armor = 53,
+	mitigation = 1.46,
 }
 
 monster.elements = {

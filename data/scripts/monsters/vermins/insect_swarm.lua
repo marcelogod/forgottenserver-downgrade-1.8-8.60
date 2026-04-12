@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Insect Swarm")
 local monster = {}
 
-monster.name = "Insect Swarm"
 monster.description = "an insect swarm"
 monster.experience = 40
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 621
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Zao Steppe, Northern Zao Plantations and the Horestis Tomb \z
+		(only when the curse of Horestis is not active).",
+}
 
 monster.health = 50
 monster.maxHealth = 50
 monster.race = "undead"
 monster.corpse = 10403
-monster.speed = 236
+monster.speed = 118
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +57,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {

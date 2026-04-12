@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lion Commander")
 local monster = {}
 
-monster.name = "Lion Commander"
 monster.description = "a lion commander"
 monster.experience = 0
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.faction = FACTION_LION
@@ -28,6 +27,12 @@ monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
 }
+
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
+monster.events = {}
 
 monster.flags = {
 	summonable = false,
@@ -43,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -81,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 86,
 	armor = 86,
+	--	mitigation = ???,
 }
 
 monster.elements = {

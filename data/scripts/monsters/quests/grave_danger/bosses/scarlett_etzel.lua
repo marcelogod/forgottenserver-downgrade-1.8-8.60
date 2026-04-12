@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Scarlett Etzel")
 local monster = {}
 
-monster.name = "Scarlett Etzel"
 monster.description = "Scarlett Etzel"
 monster.experience = 20000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 1804,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 30000
 monster.maxHealth = 30000
 monster.race = "blood"
 monster.corpse = 31453
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -95,7 +108,6 @@ monster.loot = {
 	{ name = "cobra sword", chance = 650 },
 	{ name = "cobra wand", chance = 650 },
 	{ name = "cobra amulet", chance = 350 },
-	{ name = "cobra bo", chance = 650 },
 }
 
 monster.attacks = {
@@ -108,6 +120,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 88,
 	armor = 88,
+	--	mitigation = ???,
 }
 
 monster.elements = {

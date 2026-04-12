@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crusader")
 local monster = {}
 
-monster.name = "Crusader"
 monster.description = "a crusader"
 monster.experience = 3050
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 2677
+monster.Bestiary = {
+	class = "Inkborn",
+	race = BESTY_RACE_INKBORN,
+	toKill = 2500,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Book World.",
+}
 
 monster.health = 3400
 monster.maxHealth = 3400
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 51497
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.voices = {
@@ -57,6 +67,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 65,
 	armor = 52,
+	mitigation = 0.99,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Primitive")
 local monster = {}
 
-monster.name = "Primitive"
 monster.description = "a primitive"
 monster.experience = 45
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 200
 monster.maxHealth = 200
 monster.race = "blood"
 monster.corpse = 111
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 5,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -97,6 +103,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 20,
+	mitigation = 0.43,
 }
 
 monster.elements = {

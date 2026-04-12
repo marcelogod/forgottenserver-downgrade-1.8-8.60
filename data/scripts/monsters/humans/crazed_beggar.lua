@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crazed Beggar")
 local monster = {}
 
-monster.name = "Crazed Beggar"
 monster.description = "a crazed beggar"
 monster.experience = 35
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 525
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Factory, Foreigner, and Trade Quarters in Yalahar.",
+}
 
 monster.health = 100
 monster.maxHealth = 100
 monster.race = "blood"
 monster.corpse = 18070
-monster.speed = 154
+monster.speed = 77
 monster.manaCost = 300
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -90,6 +104,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 4,
+	mitigation = 0.20,
 }
 
 monster.elements = {

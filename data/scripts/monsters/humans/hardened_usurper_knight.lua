@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hardened Usurper Knight")
 local monster = {}
 
-monster.name = "Hardened Usurper Knight"
 monster.description = "a hardened usurper knight"
 monster.experience = 0
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 8200
 monster.maxHealth = 8200
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.faction = FACTION_LIONUSURPERS
@@ -27,6 +26,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_LION }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -71,6 +74,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 86,
 	armor = 0,
+	--	mitigation = ???,
 	{ name = "combat", interval = 4000, chance = 40, type = COMBAT_HEALING, minDamage = 200, maxDamage = 550, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

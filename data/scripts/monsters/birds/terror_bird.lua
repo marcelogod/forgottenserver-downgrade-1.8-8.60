@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Terror Bird")
 local monster = {}
 
-monster.name = "Terror Bird"
 monster.description = "a terror bird"
 monster.experience = 150
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 218
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Around Port Hope, Arena and Zoo Quarter in Yalahar, few on Zao steppes.",
+}
 
 monster.health = 300
 monster.maxHealth = 300
 monster.race = "blood"
 monster.corpse = 6057
-monster.speed = 212
+monster.speed = 106
 monster.manaCost = 490
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -62,14 +77,14 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 82500, maxCount = 30 },
-	{ name = "meat", chance = 48930, maxCount = 3 },
-	{ name = "terrorbird beak", chance = 10160 },
-	{ name = "worm", chance = 9680 },
-	{ name = "colourful feather", chance = 2940 },
-	{ name = "health potion", chance = 800 },
-	{ name = "seeds", chance = 290 },
-	{ name = "feather headdress", chance = 110 },
+	{ name = "gold coin", chance = 82430, maxCount = 30 },
+	{ name = "meat", chance = 48550, maxCount = 3 },
+	{ name = "terrorbird beak", chance = 10310 },
+	{ name = "worm", chance = 9540, maxCount = 3 },
+	{ name = "colourful feather", chance = 3090 },
+	{ name = "health potion", chance = 690 },
+	{ name = "seeds", chance = 280 },
+	{ name = "feather headdress", chance = 100 },
 }
 
 monster.attacks = {
@@ -79,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 13,
 	armor = 13,
+	mitigation = 0.54,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Flimsy Lost Soul")
 local monster = {}
 
-monster.name = "Flimsy Lost Soul"
 monster.description = "a flimsy lost soul"
 monster.experience = 4500
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1864
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Brain Grounds, Netherworld, Zarganash.",
+}
 
 monster.health = 4000
 monster.maxHealth = 4000
 monster.race = "undead"
 monster.corpse = 32610
-monster.speed = 480
+monster.speed = 240
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -84,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 79,
+	mitigation = 2.22,
 }
 
 monster.elements = {

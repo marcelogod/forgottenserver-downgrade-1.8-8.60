@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Deathstrike")
 local monster = {}
 
-monster.name = "Deathstrike"
 monster.description = "Deathstrike"
 monster.experience = 40000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 892,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 200000
 monster.maxHealth = 200000
 monster.race = "blood"
 monster.corpse = 16088
-monster.speed = 470
+monster.speed = 235
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 2000,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -73,7 +86,7 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 1300, chance = 100, skill = 80, attack = 120 },
-	{ name = "speed", interval = 2000, chance = 20, speed = -400, range = 7, shootEffect = CONST_ANI_WHIRLWINDAXE, target = false, duration = 2500 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -400, range = 7, shootEffect = CONST_ANI_WHIRLWINDAXE, target = false, duration = 2500 },
 	{ name = "combat", interval = 2000, chance = 100, type = COMBAT_FIREDAMAGE, minDamage = -820, maxDamage = -950, range = 7, effect = CONST_ME_FIREAREA, target = false },
 	{ name = "combat", interval = 1000, chance = 12, type = COMBAT_ENERGYDAMAGE, minDamage = -350, maxDamage = -800, range = 3, effect = CONST_ME_PURPLEENERGY, target = true },
 }
@@ -81,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 25,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_HEALING, minDamage = 1000, maxDamage = 5500, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Demon Goblin")
 local monster = {}
 
-monster.name = "Demon Goblin"
 monster.description = "a demon goblin"
 monster.experience = 25
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 50
 monster.maxHealth = 50
 monster.race = "blood"
 monster.corpse = 5995
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

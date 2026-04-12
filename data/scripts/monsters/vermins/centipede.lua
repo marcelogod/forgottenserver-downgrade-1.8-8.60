@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Centipede")
 local monster = {}
 
-monster.name = "Centipede"
 monster.description = "a centipede"
 monster.experience = 34
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 124
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "All around Port Hope and Tiquanda, Dark Cathedral, Vandura, Meriana, Razzachai, \z
+	Slime cave east of Venore, Arena and Zoo Quarter, Gnarlhound Caves.",
+}
 
 monster.health = 70
 monster.maxHealth = 70
 monster.race = "venom"
 monster.corpse = 6050
-monster.speed = 166
+monster.speed = 83
 monster.manaCost = 335
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -70,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 8,
+	mitigation = 0.23,
 }
 
 monster.elements = {

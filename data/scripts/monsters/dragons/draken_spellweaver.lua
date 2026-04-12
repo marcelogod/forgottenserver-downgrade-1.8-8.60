@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Draken Spellweaver")
 local monster = {}
 
-monster.name = "Draken Spellweaver"
 monster.description = "a draken spellweaver"
 monster.experience = 3100
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 618
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Zao Palace, Razachai, and Zzaion.",
+}
 
 monster.health = 5000
 monster.maxHealth = 5000
 monster.race = "blood"
 monster.corpse = 10399
-monster.speed = 336
+monster.speed = 168
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -91,13 +105,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -200, maxDamage = -380, radius = 4, effect = CONST_ME_POFF, target = true },
 	{ name = "soulfire rune", interval = 2000, chance = 10, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = true, condition =
-	{ type = CONDITION_POISON, minDamage = -280, maxDamage = -360, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -280, maxDamage = -360, shootEffect = CONST_ANI_POISON, target = true },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	mitigation = 1.35,
 	{ name = "invisible", interval = 2000, chance = 10, effect = CONST_ME_MAGIC_RED },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 270, maxDamage = 530, effect = CONST_ME_MAGIC_BLUE, target = false },
 }

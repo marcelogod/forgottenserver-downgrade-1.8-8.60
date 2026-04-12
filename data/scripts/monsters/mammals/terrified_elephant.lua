@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Terrified Elephant")
 local monster = {}
 
-monster.name = "Terrified Elephant"
 monster.description = "a terrified elephant"
 monster.experience = 160
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 771
+monster.Bestiary = {
+	class = "Mammal",
+
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "East of Port Hope, close to the Deeper Banuta shortcut, Mapper Coords128.84127.16872texthere.",
+}
 
 monster.health = 320
 monster.maxHealth = 320
 monster.race = "blood"
 monster.corpse = 6052
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 500
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -75,7 +89,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 20,
-	{ name = "speed", interval = 2000, chance = 15, speed = 800, target = false, duration = 5000 },
+	mitigation = 0.41,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 800, target = false, duration = 5000 },
 }
 
 monster.elements = {

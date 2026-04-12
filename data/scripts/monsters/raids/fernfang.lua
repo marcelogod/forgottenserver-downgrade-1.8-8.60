@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Fernfang")
 local monster = {}
 
-monster.name = "Fernfang"
 monster.description = "Fernfang"
 monster.experience = 600
 monster.outfit = {
@@ -18,12 +17,18 @@ monster.health = 400
 monster.maxHealth = 400
 monster.race = "blood"
 monster.corpse = 18285
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 50,
 }
 
 monster.flags = {
@@ -40,7 +45,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -98,8 +103,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 15,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 10, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 1000, chance = 7, speed = 280, effect = CONST_ME_MAGIC_RED, target = false, duration = 10000 },
+	{ name = "speed", interval = 1000, chance = 7, speedChange = 280, effect = CONST_ME_MAGIC_RED, target = false, duration = 10000 },
 	{ name = "outfit", interval = 1000, chance = 5, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 14000, outfitMonster = "War Wolf" },
 }
 

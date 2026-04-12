@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Schiach")
 local monster = {}
 
-monster.name = "Schiach"
 monster.description = "a schiach"
 monster.experience = 580
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1741
+monster.Bestiary = {
+	class = "Fey",
+	race = BESTY_RACE_FEY,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Percht Island",
+}
 
 monster.health = 600
 monster.maxHealth = 600
 monster.race = "blood"
 monster.corpse = 30298
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -81,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 43,
 	armor = 43,
+	mitigation = 0.78,
 }
 
 monster.elements = {

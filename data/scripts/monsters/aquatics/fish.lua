@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Fish")
 local monster = {}
 
-monster.name = "Fish"
 monster.description = "a fish"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 784
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Fiehonja.",
+}
 
 monster.health = 25
 monster.maxHealth = 25
 monster.race = "undead"
 monster.corpse = 3578
-monster.speed = 140
+monster.speed = 70
 monster.manaCost = 305
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 25,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,6 +79,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 5,
 	armor = 9,
+	mitigation = 0.10,
 }
 
 monster.elements = {

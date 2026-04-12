@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Goblin Scavenger")
 local monster = {}
 
-monster.name = "Goblin Scavenger"
 monster.description = "a goblin scavenger"
 monster.experience = 37
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 464
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Femor Hills, Edron Goblin Cave, and Fenrock.",
+}
 
 monster.health = 60
 monster.maxHealth = 60
 monster.race = "blood"
 monster.corpse = 6002
-monster.speed = 132
+monster.speed = 66
 monster.manaCost = 310
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -87,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 7,
+	mitigation = 0.23,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 10, maxDamage = 16, effect = CONST_ME_ENERGYHIT, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Supercharged Mazzinor")
 local monster = {}
 
-monster.name = "Supercharged Mazzinor"
 monster.description = "Supercharged Mazzinor"
 monster.experience = 0
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 300000
 monster.maxHealth = 300000
 monster.race = "undead"
 monster.corpse = 22495
-monster.speed = 120
+monster.speed = 60
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -40,7 +39,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,6 +64,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	--	mitigation = ???,
 }
 
 monster.elements = {

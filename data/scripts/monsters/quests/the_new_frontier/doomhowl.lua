@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Doomhowl")
 local monster = {}
 
-monster.name = "Doomhowl"
 monster.description = "Doomhowl"
 monster.experience = 3750
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "blood"
 monster.corpse = 18326
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -67,7 +73,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 50,
-	{ name = "speed", interval = 2000, chance = 10, speed = 390, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 390, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

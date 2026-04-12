@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sugar Daddy")
 local monster = {}
 
-monster.name = "Sugar Daddy"
 monster.description = "Sugar Daddy"
 monster.experience = 45000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 2562,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 45000
 monster.maxHealth = 45000
 monster.race = "blood"
 monster.corpse = 48416
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 10,
+	health = 0,
+	damage = 90,
+	random = 0,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -88,15 +99,16 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_DEATHDAMAGE, minDamage = -1300, maxDamage = -1500, range = 6, effect = CONST_ME_MORTAREA, target = true },
 	{ name = "combat", interval = 2000, chance = 18, type = COMBAT_ENERGYDAMAGE, minDamage = -1200, maxDamage = -1300, radius = 12, effect = CONST_ME_PIXIE_EXPLOSION, target = false },
 	{ name = "combat", interval = 2000, chance = 18, type = COMBAT_EARTHDAMAGE, minDamage = -1050, maxDamage = -1110, radius = 12, effect = CONST_ME_HEARTS, target = false },
-	{ name = "root area", interval = 2000, chance = 100, target = false },
+	{ name = "root area", interval = 20000, chance = 100, target = false },
 	{ name = "sugar daddy cake", interval = 10000, chance = 50, target = true },
 }
 
 monster.defenses = {
 	defense = 65,
 	armor = 55,
+	--	mitigation = ???,
 	{ name = "combat", interval = 3000, chance = 25, type = COMBAT_HEALING, minDamage = 400, maxDamage = 1500, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 320, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 320, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

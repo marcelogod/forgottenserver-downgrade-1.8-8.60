@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Iron Servant Replica")
 local monster = {}
 
-monster.name = "Iron Servant Replica"
 monster.description = "an iron servant replica"
 monster.experience = 210
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1325
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Replica Dungeon",
+}
 
 monster.health = 1000
 monster.maxHealth = 1000
 monster.race = "venom"
 monster.corpse = 12494
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -75,6 +90,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 17,
+	mitigation = 0.62,
 }
 
 monster.elements = {

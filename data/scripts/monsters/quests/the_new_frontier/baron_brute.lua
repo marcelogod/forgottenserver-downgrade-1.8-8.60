@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Baron Brute")
 local monster = {}
 
-monster.name = "Baron Brute"
 monster.description = "Baron Brute"
 monster.experience = 3000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 5025
 monster.maxHealth = 5025
 monster.race = "blood"
 monster.corpse = 6008
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +72,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 22,
+	--	mitigation = ???,
 }
 
 monster.elements = {

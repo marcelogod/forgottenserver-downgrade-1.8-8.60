@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Old Beholder")
 local monster = {}
 
 monster.name = "Beholder"
-monster.name = "Old Beholder"
 monster.description = "a beholder"
 monster.experience = 170
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 260
 monster.maxHealth = 260
 monster.race = "venom"
 monster.corpse = 5992
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

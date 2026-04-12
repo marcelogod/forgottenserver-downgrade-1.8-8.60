@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Yalahari")
 local monster = {}
 
-monster.name = "Yalahari"
 monster.description = "a Yalahari"
 monster.experience = 5
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 150
 monster.maxHealth = 150
 monster.race = "blood"
 monster.corpse = 18269
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,6 +71,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 0,
 	armor = 0,
+	mitigation = 0.05,
 }
 
 monster.elements = {

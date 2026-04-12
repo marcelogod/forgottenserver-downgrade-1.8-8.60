@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ron the Ripper")
 local monster = {}
 
-monster.name = "Ron the Ripper"
 monster.description = "Ron the Ripper"
 monster.experience = 500
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "blood"
 monster.corpse = 18221
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 250,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -78,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 35,
+	mitigation = 1.20,
 	{ name = "combat", interval = 4000, chance = 25, type = COMBAT_HEALING, minDamage = 50, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

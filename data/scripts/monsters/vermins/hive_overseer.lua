@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hive Overseer")
 local monster = {}
 
-monster.name = "Hive Overseer"
 monster.description = "a hive overseer"
 monster.experience = 5500
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 801
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 2,
+	Locations = "The Hive towers: on the highest floor of each tower, \z
+		and in many of the closed rooms accessed with pheromones; \z
+		many in the large underground room of the west tower. \z
+	Liberty Bay Hive Outpost: one spawn on the second floor underground.",
+}
 
 monster.health = 7500
 monster.maxHealth = 7500
 monster.race = "venom"
 monster.corpse = 13937
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -90,13 +108,13 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -450 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -60, maxDamage = -80, radius = 4, effect = CONST_ME_POISONAREA, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 20, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -600, maxDamage = -1000, radius = 4, effect = CONST_ME_GREEN_RINGS } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 20, minDamage = -600, maxDamage = -1000, radius = 4, effect = CONST_ME_GREEN_RINGS, target = false },
 }
 
 monster.defenses = {
 	defense = 45,
 	armor = 57,
+	mitigation = 2.40,
 	{ name = "combat", interval = 2000, chance = 50, type = COMBAT_HEALING, minDamage = 50, maxDamage = 100, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 500, maxDamage = 700, effect = CONST_ME_MAGIC_BLUE, target = false },
 }

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Green Djinn")
 local monster = {}
 
-monster.name = "Green Djinn"
 monster.description = "a green djinn"
 monster.experience = 215
 monster.outfit = {
@@ -15,12 +14,24 @@ monster.outfit = {
 }
 
 monster.raceId = 51
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Mal'ouquah, Oasis Tomb, under the Ankrahmun Library Tomb, \z
+		Serpentine Tower last floor behind the Magic Walls, Deeper Banuta, Goroma underground, Magician Quarter.",
+}
 
 monster.health = 330
 monster.maxHealth = 330
 monster.race = "blood"
 monster.corpse = 6016
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.faction = FACTION_EFREET
@@ -29,6 +40,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_MARID }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -45,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

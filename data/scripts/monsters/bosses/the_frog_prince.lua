@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Frog Prince")
 local monster = {}
 
-monster.name = "The Frog Prince"
 monster.description = "The Frog Prince"
 monster.experience = 1
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 420,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 55
 monster.maxHealth = 55
 monster.race = "venom"
 monster.corpse = 6079
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -68,6 +79,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 2,
 	armor = 3,
+	--	mitigation = ???,
 }
 
 monster.elements = {
@@ -89,5 +101,19 @@ monster.immunities = {
 	{ type = "invisible", condition = false },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

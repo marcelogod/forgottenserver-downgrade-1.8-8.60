@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Travelling Merchant")
 local monster = {}
 
-monster.name = "Travelling Merchant"
 monster.description = "a travelling merchant"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 110
 monster.maxHealth = 110
 monster.race = "blood"
 monster.corpse = 18042
-monster.speed = 172
+monster.speed = 86
 monster.manaCost = 390
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -66,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 10,
+	mitigation = 0.28,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pigeon")
 local monster = {}
 
-monster.name = "Pigeon"
 monster.description = "a pigeon"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 915
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 25,
+	FirstUnlock = 5,
+	SecondUnlock = 10,
+	CharmsPoints = 1,
+	Stars = 0,
+	Occurrence = 1,
+	Locations = "Streets of Venore, Gardens of Night.",
+}
 
 monster.health = 30
 monster.maxHealth = 30
 monster.race = "blood"
 monster.corpse = 17429
-monster.speed = 130
+monster.speed = 65
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -66,6 +80,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.05,
 }
 
 monster.elements = {

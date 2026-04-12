@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gravedigger")
 local monster = {}
 
-monster.name = "Gravedigger"
 monster.description = "a gravedigger"
 monster.experience = 950
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 975
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Around the higher level areas of Drefia, \z
+		including the Drefia Grim Reaper Dungeons and the Drefia Vampire Crypt.",
+}
 
 monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "blood"
 monster.corpse = 18962
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 200,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -87,9 +105,10 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 58,
+	mitigation = 1.68,
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_MAGIC_RED },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 100, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 420, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 420, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

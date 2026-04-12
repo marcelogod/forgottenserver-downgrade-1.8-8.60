@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Spectral Scum")
 local monster = {}
 
-monster.name = "Spectral Scum"
 monster.description = "a spectral scum"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1
 monster.maxHealth = 1
 monster.race = "undead"
 monster.corpse = 6070
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -73,6 +79,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 19,
 	armor = 18,
+	mitigation = 0.00,
 }
 
 monster.elements = {

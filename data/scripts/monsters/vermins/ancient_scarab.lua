@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ancient Scarab")
 local monster = {}
 
-monster.name = "Ancient Scarab"
 monster.description = "an ancient scarab"
 monster.experience = 720
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 79
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Ankrahmun Library Tomb, Stone Tomb, Peninsula Tomb, Mother of Scarabs Lair, Kha'zeel Scarab Lair, \z
+	deep in Larva Caves (found beneath steps underground), Lion's Rock, Arena and Zoo Quarter and beneath Fenrock.",
+}
 
 monster.health = 1000
 monster.maxHealth = 1000
 monster.race = "venom"
 monster.corpse = 6021
-monster.speed = 218
+monster.speed = 109
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 20,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -85,16 +102,16 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -130, condition = { type = CONDITION_POISON, totalDamage = 56, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -15, maxDamage = -145, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -700, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false, duration = 25000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -700, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false, duration = 25000 },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 30, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -440, maxDamage = -520, radius = 5, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 30, minDamage = -440, maxDamage = -520, radius = 5, effect = CONST_ME_POISONAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 36,
-	{ name = "speed", interval = 2000, chance = 15, speed = 380, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.86,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 380, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

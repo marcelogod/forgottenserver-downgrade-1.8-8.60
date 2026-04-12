@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Brutus Bloodbeard")
 local monster = {}
 
-monster.name = "Brutus Bloodbeard"
 monster.description = "Brutus Bloodbeard"
 monster.experience = 795
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1555
 monster.maxHealth = 1555
 monster.race = "blood"
 monster.corpse = 18197
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -75,6 +81,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 35,
+	mitigation = 1.20,
 }
 
 monster.elements = {

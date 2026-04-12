@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Achad")
 local monster = {}
 
-monster.name = "Achad"
 monster.description = "Achad"
 monster.experience = 70
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 185
 monster.maxHealth = 185
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 176
+monster.speed = 88
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 55,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -67,6 +73,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 19,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

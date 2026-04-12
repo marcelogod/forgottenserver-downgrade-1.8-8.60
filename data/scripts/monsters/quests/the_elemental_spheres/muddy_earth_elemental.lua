@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Muddy Earth Elemental")
 local monster = {}
 
-monster.name = "Muddy Earth Elemental"
 monster.description = "a muddy earth elemental"
 monster.experience = 450
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 650
 monster.maxHealth = 650
 monster.race = "undead"
 monster.corpse = 8105
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 20000,
 	chance = 50,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,13 +74,13 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -160 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -25, maxDamage = -155, range = 7, radius = 2, effect = CONST_ME_STONES, target = true },
 	-- poison
-	{ name = "condition", interval = 1000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -5, maxDamage = -26, length = 6, spread = 0, effect = CONST_ME_GROUNDSHAKER } },
+	{ name = "condition", type = CONDITION_POISON, interval = 1000, chance = 10, minDamage = 0, maxDamage = -26, length = 6, spread = 0, effect = CONST_ME_GROUNDSHAKER, target = false },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 }
 
 monster.elements = {

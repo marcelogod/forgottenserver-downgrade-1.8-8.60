@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Scar Tribe Warrior")
 local monster = {}
 
-monster.name = "Scar Tribe Warrior"
 monster.description = "a scar tribe warrior"
 monster.experience = 85
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 125
 monster.maxHealth = 125
 monster.race = "blood"
 monster.corpse = 5979
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -72,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 7,
+	mitigation = 0.33,
 }
 
 monster.elements = {

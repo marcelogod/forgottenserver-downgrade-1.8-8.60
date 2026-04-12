@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rotten Man-Maggot")
 local monster = {}
 
-monster.name = "Rotten Man-Maggot"
 monster.description = "a rotten man-maggot"
 monster.experience = 22625
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2393
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Putrefactory.",
+}
 
 monster.health = 31100
 monster.maxHealth = 31100
 monster.race = "undead"
 monster.corpse = 43820
-monster.speed = 390
+monster.speed = 195
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 0,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,13 +78,13 @@ monster.voices = {
 monster.loot = {
 	{ name = "crystal coin", chance = 10340, maxCount = 1 },
 	{ name = "small amethyst", chance = 7364, maxCount = 2 },
--- { name = "lichen gobbler", chance = 8391, maxCount = 1 },
+	--{ name = "lichen gobbler", chance = 8391, maxCount = 1 },
 	{ name = "rotten roots", chance = 11619, maxCount = 1 },
 	{ id = 6299, chance = 12591, maxCount = 1 }, -- death ring
 	{ name = "wood cape", chance = 14371, maxCount = 1 },
 	{ id = 3039, chance = 5155, maxCount = 1 }, -- red gem
 	{ name = "yellow gem", chance = 9564, maxCount = 1 },
--- { name = "blooded worm", chance = 5096, maxCount = 1 },
+	--{ name = "blooded worm", chance = 5096, maxCount = 1 },
 }
 
 monster.attacks = {
@@ -81,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 110,
 	armor = 110,
+	mitigation = 2.75,
 }
 
 monster.elements = {

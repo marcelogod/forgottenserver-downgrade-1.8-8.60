@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dreadful Disruptor")
 local monster = {}
 
-monster.name = "Dreadful Disruptor"
 monster.description = "Dreadful Disruptor"
 monster.experience = 14000
 monster.outfit = {
@@ -18,12 +17,24 @@ monster.health = 14000
 monster.maxHealth = 14000
 monster.race = "venom"
 monster.corpse = 23478
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1279,
+	bossRace = RARITY_NEMESIS,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -111,6 +122,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 52,
 	armor = 53,
+	mitigation = 1.46,
 }
 
 monster.elements = {
@@ -132,5 +144,19 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

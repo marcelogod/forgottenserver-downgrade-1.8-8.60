@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sugar Mommy")
 local monster = {}
 
-monster.name = "Sugar Mommy"
 monster.description = "Sugar Mommy"
 monster.experience = 45000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 2580,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 45000
 monster.maxHealth = 45000
 monster.race = "blood"
 monster.corpse = 48415
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 90,
+	health = 0,
+	damage = 10,
+	random = 0,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -89,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 65,
 	armor = 55,
+	--	mitigation = ???,
 	{ name = "combat", interval = 3000, chance = 25, type = COMBAT_HEALING, minDamage = 1400, maxDamage = 1600, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

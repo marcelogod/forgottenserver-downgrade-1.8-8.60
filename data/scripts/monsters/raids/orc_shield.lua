@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Orc Shield")
 local monster = {}
 
 monster.name = "Orc Warlord"
-monster.name = "Orc Shield"
 monster.description = "an orc warlord"
 monster.experience = 670
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 950
 monster.maxHealth = 950
 monster.race = "blood"
 monster.corpse = 6008
-monster.speed = 234
+monster.speed = 117
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

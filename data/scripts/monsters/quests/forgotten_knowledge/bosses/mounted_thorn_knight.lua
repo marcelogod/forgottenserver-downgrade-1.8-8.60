@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mounted Thorn Knight")
 local monster = {}
 
-monster.name = "Mounted Thorn Knight"
 monster.description = "mounted Thorn Knight"
 monster.experience = 15000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 100000
 monster.maxHealth = 100000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 430
+monster.speed = 215
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -71,9 +78,10 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 60,
+	--	mitigation = ???,
 	{ name = "thorn summon", interval = 2000, chance = 20, target = false },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 1550, maxDamage = 2550, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 1000, chance = 12, speed = 620, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
+	{ name = "speed", interval = 1000, chance = 12, speedChange = 620, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
 }
 
 monster.elements = {

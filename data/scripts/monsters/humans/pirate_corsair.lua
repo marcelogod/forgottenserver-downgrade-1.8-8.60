@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pirate Corsair")
 local monster = {}
 
-monster.name = "Pirate Corsair"
 monster.description = "a pirate corsair"
 monster.experience = 350
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 250
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Nargor, Trade Quarter, Foreigner Quarter Dock, Krailos Steppe During a World Change.",
+}
 
 monster.health = 675
 monster.maxHealth = 675
 monster.race = "blood"
 monster.corpse = 18194
-monster.speed = 238
+monster.speed = 119
 monster.manaCost = 775
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 40,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -90,6 +104,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 20,
+	mitigation = 1.46,
 }
 
 monster.elements = {

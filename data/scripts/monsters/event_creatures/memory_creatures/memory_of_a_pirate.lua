@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Memory of a Pirate")
 local monster = {}
 
-monster.name = "Memory of a Pirate"
 monster.description = "a memory of a pirate"
 monster.experience = 1500
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 3750
 monster.maxHealth = 3750
 monster.race = "blood"
 monster.corpse = 18190
-monster.speed = 218
+monster.speed = 109
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -76,6 +79,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	mitigation = 1.30,
 }
 
 monster.elements = {

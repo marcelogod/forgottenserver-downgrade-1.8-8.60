@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ice Golem")
 local monster = {}
 
-monster.name = "Ice Golem"
 monster.description = "an ice golem"
 monster.experience = 295
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 326
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Formorgar Glacier, Formorgar Mines, Nibelor Ice Cave, Ice Witch Temple, \z
+		Deeper Banuta, Crystal Caves, Chyllfroest.",
+}
 
 monster.health = 385
 monster.maxHealth = 385
 monster.race = "undead"
 monster.corpse = 7282
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -79,7 +94,7 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -220 },
-	{ name = "speed", interval = 1000, chance = 13, speed = -800, length = 8, spread = 0, effect = CONST_ME_ENERGYHIT, target = false, duration = 20000 },
+	{ name = "speed", interval = 1000, chance = 13, speedChange = -800, length = 8, spread = 0, effect = CONST_ME_ENERGYHIT, target = false, duration = 20000 },
 	{ name = "combat", interval = 1000, chance = 15, type = COMBAT_ICEDAMAGE, minDamage = -50, maxDamage = -85, range = 7, shootEffect = CONST_ANI_SMALLICE, effect = CONST_ME_ICEATTACK, target = false },
 	{ name = "ice golem skill reducer", interval = 2000, chance = 10, target = false },
 }
@@ -87,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 26,
 	armor = 47,
+	mitigation = 0.70,
 }
 
 monster.elements = {

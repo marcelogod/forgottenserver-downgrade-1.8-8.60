@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ratmiral Blackwhiskers")
 local monster = {}
 
-monster.name = "Ratmiral Blackwhiskers"
 monster.description = "Ratmiral Blackwhiskers"
 monster.experience = 50000
 monster.outfit = {
@@ -18,13 +17,23 @@ monster.health = 220000
 monster.maxHealth = 220000
 monster.race = "blood"
 monster.corpse = 35846
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 2006,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +50,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -96,8 +105,6 @@ monster.loot = {
 	{ id = 35522, chance = 890 }, -- jungle wand
 	{ id = 35519, chance = 890 }, -- makeshift boots
 	{ id = 35520, chance = 890 }, -- make-do boots
-	{ id = 50270, chance = 890 }, -- bambus jo
-	{ id = 50186, chance = 890 }, -- jungle survivor legs
 }
 
 monster.attacks = {

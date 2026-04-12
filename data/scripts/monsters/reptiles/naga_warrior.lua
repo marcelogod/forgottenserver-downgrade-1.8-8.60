@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Naga Warrior")
 local monster = {}
 
-monster.name = "Naga Warrior"
 monster.description = "a naga warrior"
 monster.experience = 5890
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2261
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_AMPHIBIC,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Temple of the Moon Goddess.",
+}
 
 monster.health = 5530
 monster.maxHealth = 5530
 monster.race = "blood"
 monster.corpse = 39225
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -78,15 +92,16 @@ monster.loot = {
 }
 
 monster.attacks = {
-	{ name = "combat", interval = 2000, chance = 100, type = COMBAT_PHYSICALDAMAGE, minDamage = -120, maxDamage = -330, target = true }, -- basic_attack
+	{ name = "combat", interval = 2000, chance = 100, type = COMBAT_PHYSICALDAMAGE, minDamage = -120, maxDamage = -340, target = true }, -- basic_attack
 	{ name = "combat", interval = 2500, chance = 30, type = COMBAT_PHYSICALDAMAGE, minDamage = -320, maxDamage = -430, effect = CONST_ME_YELLOWSMOKE, range = 3, target = true }, -- eruption_strike
-	{ name = "nagadeathattack", interval = 3000, chance = 35, minDamage = -125, maxDamage = -250, target = true }, -- death_strike
-	{ name = "combat", interval = 3500, chance = 35, type = COMBAT_LIFEDRAIN, minDamage = -125, maxDamage = -330, radius = 4, effect = CONST_ME_DRAWBLOOD, target = false }, -- great_blood_ball
+	{ name = "nagadeathattack", interval = 3000, chance = 35, minDamage = -360, maxDamage = -415, target = true }, -- death_strike
+	{ name = "combat", interval = 3500, chance = 35, type = COMBAT_LIFEDRAIN, minDamage = -360, maxDamage = -386, radius = 4, effect = CONST_ME_DRAWBLOOD, target = false }, -- great_blood_ball
 }
 
 monster.defenses = {
 	defense = 110,
 	armor = 78,
+	mitigation = 2.19,
 }
 
 monster.elements = {

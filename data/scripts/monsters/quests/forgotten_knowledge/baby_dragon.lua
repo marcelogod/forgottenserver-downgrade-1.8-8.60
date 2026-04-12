@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Baby Dragon")
 local monster = {}
 
-monster.name = "Baby Dragon"
 monster.description = "a baby dragon"
 monster.experience = 185
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 380
 monster.maxHealth = 380
 monster.race = "blood"
 monster.corpse = 269
-monster.speed = 176
+monster.speed = 88
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 38,
 	armor = 25,
+	mitigation = 0.78,
 }
 
 monster.elements = {

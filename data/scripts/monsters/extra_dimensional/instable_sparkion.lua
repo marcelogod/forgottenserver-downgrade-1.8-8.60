@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Instable Sparkion")
 local monster = {}
 
-monster.name = "Instable Sparkion"
 monster.description = "an instable sparkion"
 monster.experience = 1350
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1264
+monster.Bestiary = {
+	class = "Extra Dimensional",
+	race = BESTY_RACE_EXTRA_DIMENSIONAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Otherworld Dwarf Bridge",
+}
 
 monster.health = 1900
 monster.maxHealth = 1900
 monster.race = "venom"
 monster.corpse = 23388
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -81,14 +98,14 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -250, maxDamage = -350, length = 6, spread = 0, effect = CONST_ME_GROUNDSHAKER, target = false },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_ENERGYDAMAGE, minDamage = -150, maxDamage = -200, range = 5, shootEffect = CONST_ANI_ENERGYBALL, effect = CONST_ME_ENERGYHIT, target = true },
 	-- energy damage
-	{ name = "condition", interval = 2000, chance = 20, target = true, condition =
-	{ type = CONDITION_ENERGY, minDamage = -300, maxDamage = -600, range = 6, radius = 4, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_PURPLEENERGY } },
+	{ name = "condition", type = CONDITION_ENERGY, interval = 2000, chance = 20, minDamage = -300, maxDamage = -600, range = 6, radius = 4, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_PURPLEENERGY, target = true },
 }
 
 monster.defenses = {
 	defense = 35,
 	armor = 37,
-	{ name = "speed", interval = 2000, chance = 10, speed = 360, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	mitigation = 1.18,
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 360, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 50, maxDamage = 80, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ekatrix")
 local monster = {}
 
-monster.name = "Ekatrix"
 monster.description = "Ekatrix"
 monster.experience = 200
 monster.outfit = {
@@ -18,12 +17,24 @@ monster.health = 500
 monster.maxHealth = 500
 monster.race = "blood"
 monster.corpse = 18254
-monster.speed = 102
+monster.speed = 51
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1140,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -59,15 +70,14 @@ monster.voices = {
 monster.loot = {
 	{ name = "gold coin", chance = 100000, maxCount = 60 },
 	{ name = "witch broom", chance = 100000 },
-	{ name = "cape", chance = 60610 },
-	{ id = 3012, chance = 36360 }, -- wolf tooth chain
-	{ name = "broom", chance = 34850 },
-	{ name = "coat", chance = 33330 },
-	{ name = "cookie", chance = 25760, maxCount = 10 },
-	{ name = "star herb", chance = 18180 },
-	{ name = "bag of apple slices", chance = 7580 },
-	{ name = "garlic necklace", chance = 3030 },
-	{ name = "necrotic rod", chance = 1520 },
+	{ name = "cape", chance = 64500 },
+	{ id = 3012, chance = 41670 }, -- wolf tooth chain
+	{ name = "broom", chance = 37500 },
+	{ name = "coat", chance = 37500 },
+	{ name = "cookie", chance = 25000, maxCount = 10 },
+	{ name = "star herb", chance = 11333 },
+	{ name = "bag of apple slices", chance = 2940 },
+	{ name = "necrotic rod", chance = 2940 },
 }
 
 monster.attacks = {
@@ -100,5 +110,19 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

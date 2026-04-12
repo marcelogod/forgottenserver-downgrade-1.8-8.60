@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Grand Commander Soeren")
 local monster = {}
 
-monster.name = "Grand Commander Soeren"
 monster.description = "Grand Commander Soeren"
 monster.experience = 12000
 monster.outfit = {
@@ -14,17 +13,27 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1582,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 17000
 monster.maxHealth = 17000
 monster.race = "blood"
 monster.corpse = 28726
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +50,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -83,6 +92,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 82,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 650, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

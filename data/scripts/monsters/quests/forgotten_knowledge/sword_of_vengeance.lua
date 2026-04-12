@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sword of Vengeance")
 local monster = {}
 
-monster.name = "Sword of Vengeance"
 monster.description = "a sword of vengeance"
 monster.experience = 0
 monster.outfit = {
@@ -12,12 +11,19 @@ monster.health = 2000
 monster.maxHealth = 2000
 monster.race = "fire"
 monster.corpse = 0
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -62,6 +68,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	mitigation = 0.70,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 100, maxDamage = 225, effect = CONST_ME_HITBYFIRE, target = false },
 }
 

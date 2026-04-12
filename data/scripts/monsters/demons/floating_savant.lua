@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Floating Savant")
 local monster = {}
 
-monster.name = "Floating Savant"
 monster.description = "a floating savant"
 monster.experience = 8000
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1637
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "The Extension Site",
+}
 
 monster.health = 8000
 monster.maxHealth = 8000
 monster.race = "undead"
 monster.corpse = 28598
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -89,6 +103,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 74,
+	mitigation = 1.96,
 }
 
 monster.elements = {

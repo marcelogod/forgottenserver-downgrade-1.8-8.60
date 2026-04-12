@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Blemished Spawn")
 local monster = {}
 
-monster.name = "Blemished Spawn"
 monster.description = "a blemished spawn"
 monster.experience = 5300
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2093
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Antrum of the Fallen.",
+}
 
 monster.health = 9000
 monster.maxHealth = 9000
 monster.race = "blood"
 monster.corpse = 36701
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -93,6 +110,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 61,
 	armor = 61,
+	mitigation = 1.60,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 225, maxDamage = 380, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

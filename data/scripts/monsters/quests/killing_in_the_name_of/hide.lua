@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hide")
 local monster = {}
 
-monster.name = "Hide"
 monster.description = "Hide"
 monster.experience = 240
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 500
 monster.maxHealth = 500
 monster.race = "venom"
 monster.corpse = 6060
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -73,7 +79,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 25,
-	{ name = "speed", interval = 2000, chance = 10, speed = 340, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.71,
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 340, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

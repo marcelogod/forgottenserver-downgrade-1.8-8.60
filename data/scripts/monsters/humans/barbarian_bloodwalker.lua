@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Barbarian Bloodwalker")
 local monster = {}
 
-monster.name = "Barbarian Bloodwalker"
 monster.description = "a barbarian bloodwalker"
 monster.experience = 195
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 323
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Krimhorn, Bittermor, Ragnir, Arena and Zoo Quarter inside the Arena.",
+}
 
 monster.health = 305
 monster.maxHealth = 305
 monster.race = "blood"
 monster.corpse = 18054
-monster.speed = 236
+monster.speed = 118
 monster.manaCost = 590
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -84,7 +101,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 9,
-	{ name = "speed", interval = 2000, chance = 15, speed = 240, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.25,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 240, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

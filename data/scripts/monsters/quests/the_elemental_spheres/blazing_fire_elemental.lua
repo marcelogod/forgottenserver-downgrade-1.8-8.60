@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Blazing Fire Elemental")
 local monster = {}
 
-monster.name = "Blazing Fire Elemental"
 monster.description = "a blazing fire elemental"
 monster.experience = 450
 monster.outfit = {
@@ -18,12 +17,17 @@ monster.health = 650
 monster.maxHealth = 650
 monster.race = "fire"
 monster.corpse = 8136
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	random = 20,
 }
 
 monster.flags = {
@@ -40,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -73,6 +77,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 20,
+	--	mitigation = ???,
 }
 
 monster.elements = {

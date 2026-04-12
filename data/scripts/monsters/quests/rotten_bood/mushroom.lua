@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mushroom")
 local monster = {}
 
-monster.name = "Mushroom"
 monster.description = "a Mushroom"
 monster.experience = 0
 monster.outfit = {
@@ -26,6 +25,13 @@ monster.changeTarget = {
 	chance = 40,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

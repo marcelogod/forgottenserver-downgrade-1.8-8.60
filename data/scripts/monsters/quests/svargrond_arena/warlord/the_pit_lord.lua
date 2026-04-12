@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Pit Lord")
 local monster = {}
 
-monster.name = "The Pit Lord"
 monster.description = "The Pit Lord"
 monster.experience = 2500
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 5270
 monster.maxHealth = 5270
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -69,7 +75,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 44,
 	armor = 46,
-	{ name = "speed", interval = 5000, chance = 100, speed = 500, effect = CONST_ME_MAGIC_RED, target = false, duration = 2500 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 5000, chance = 100, speedChange = 500, effect = CONST_ME_MAGIC_RED, target = false, duration = 2500 },
 	{ name = "combat", interval = 6000, chance = 65, type = COMBAT_HEALING, minDamage = 20, maxDamage = 50, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Stalking Stalk")
 local monster = {}
 
-monster.name = "Stalking Stalk"
 monster.description = "a stalking stalk"
 monster.experience = 11569
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2272
+monster.Bestiary = {
+	class = "Plant",
+	race = BESTY_RACE_PLANT,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Monster Graveyard",
+}
 
 monster.health = 17100
 monster.maxHealth = 17100
 monster.race = "blood"
 monster.corpse = 39307
-monster.speed = 380
+monster.speed = 190
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 2,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -82,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 110,
 	armor = 76,
+	mitigation = 2.11,
 }
 
 monster.elements = {

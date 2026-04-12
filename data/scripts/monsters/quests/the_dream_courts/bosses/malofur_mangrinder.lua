@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Malofur Mangrinder")
 local monster = {}
 
-monster.name = "Malofur Mangrinder"
 monster.description = "Malofur Mangrinder"
 monster.experience = 55000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 320000
 monster.maxHealth = 320000
 monster.race = "blood"
 monster.corpse = 30017
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1696,
+	bossRace = RARITY_NEMESIS,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -106,6 +119,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 60,
+	--	mitigation = ???,
 }
 
 monster.elements = {

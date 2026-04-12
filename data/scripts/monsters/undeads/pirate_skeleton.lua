@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pirate Skeleton")
 local monster = {}
 
-monster.name = "Pirate Skeleton"
 monster.description = "a pirate skeleton"
 monster.experience = 85
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 256
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Nargor Undead Cave, Goroma, Treasure Island, Drefia, The Cave, Chyllfroest.",
+}
 
 monster.health = 190
 monster.maxHealth = 190
 monster.race = "undead"
 monster.corpse = 6070
-monster.speed = 176
+monster.speed = 88
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 20,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

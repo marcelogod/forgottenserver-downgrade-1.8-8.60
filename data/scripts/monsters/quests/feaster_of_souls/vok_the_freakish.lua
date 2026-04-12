@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Vok the Freakish")
 local monster = {}
 
-monster.name = "Vok the Freakish"
 monster.description = "Vok the Freakish"
 monster.experience = 27000
 monster.outfit = {
@@ -18,12 +17,21 @@ monster.health = 32000
 monster.maxHealth = 32000
 monster.race = "undead"
 monster.corpse = 32610
-monster.speed = 284
+monster.speed = 142
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1892,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -80,6 +88,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 82,
+	--	mitigation = ???,
 }
 
 monster.elements = {

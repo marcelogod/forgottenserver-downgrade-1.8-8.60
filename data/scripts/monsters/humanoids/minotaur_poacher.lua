@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Minotaur Poacher")
 local monster = {}
 
-monster.name = "Minotaur Poacher"
 monster.description = "a minotaur poacher"
 monster.experience = 55
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 160
 monster.maxHealth = 160
 monster.race = "blood"
 monster.corpse = 5982
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 390
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,6 +80,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 6,
+	mitigation = 0.30,
 }
 
 monster.elements = {

@@ -1,9 +1,8 @@
 local mType = Game.createMonsterType("Cave Devourer")
 local monster = {}
 
-monster.name = "Cave Devourer"
 monster.description = "a cave devourer"
-monster.experience = 3380
+monster.experience = 2380
 monster.outfit = {
 	lookType = 1036,
 	lookHead = 0,
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1544
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Warzone 5",
+}
 
 monster.health = 4500
 monster.maxHealth = 4500
 monster.race = "blood"
 monster.corpse = 27559
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 305
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -71,7 +88,7 @@ monster.loot = {
 	{ name = "slime heart", chance = 13770, maxCount = 4 },
 	{ name = "cave devourer legs", chance = 17160 },
 	{ id = 3049, chance = 2540 }, -- stealth ring
-	{ name = "suspicious device", chance = 850 },
+	{ name = "suspicious device", chance = 420 },
 }
 
 monster.attacks = {
@@ -85,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 70,
+	mitigation = 2.02,
 }
 
 monster.elements = {

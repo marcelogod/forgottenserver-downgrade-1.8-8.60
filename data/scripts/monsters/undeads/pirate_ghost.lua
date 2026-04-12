@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pirate Ghost")
 local monster = {}
 
-monster.name = "Pirate Ghost"
 monster.description = "a pirate ghost"
 monster.experience = 250
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 257
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Drefia, Goroma, Nargor Undead Cave, hidden caves under Treasure Island, \z
+		single spawn at Liberty Bay ruins, Chyllfroest (unreachable).",
+}
 
 monster.health = 275
 monster.maxHealth = 275
 monster.race = "undead"
 monster.corpse = 5565
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -81,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 30,
+	mitigation = 0.78,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 40, maxDamage = 70, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

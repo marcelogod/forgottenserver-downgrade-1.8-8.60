@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Enraged Squirrel")
 local monster = {}
 
-monster.name = "Enraged Squirrel"
 monster.description = "an enraged squirrel"
 monster.experience = 15
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 35
 monster.maxHealth = 35
 monster.race = "blood"
 monster.corpse = 276
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 220
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 2,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Death Dragon")
 local monster = {}
 
-monster.name = "Death Dragon"
 monster.description = "a death dragon"
 monster.experience = 350
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 8350
 monster.maxHealth = 8350
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 700,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -97,6 +104,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 63,
 	armor = 45,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_RED, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ghost")
 local monster = {}
 
-monster.name = "Ghost"
 monster.description = "a ghost"
 monster.experience = 120
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 48
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Ghost Ship, Drefia, Ankrahmun Tombs, Mount Sternum Undead Cave between Thais and Kazordoon, \z
+		Dark Cathedral, under Treasure Island, Isle of the Kings, Grothmok tunnels (in Dwarven Mines), Goroma, \z
+		Ramoa, Lich Hell, Upper Spike.",
+}
 
 monster.health = 150
 monster.maxHealth = 150
 monster.race = "undead"
 monster.corpse = 5993
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -81,6 +97,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 10,
+	mitigation = 0.51,
 }
 
 monster.elements = {

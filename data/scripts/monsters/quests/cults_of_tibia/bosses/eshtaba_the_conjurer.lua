@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Eshtaba the Conjurer")
 local monster = {}
 
-monster.name = "Eshtaba the Conjurer"
 monster.description = "Eshtaba the Conjurer"
 monster.experience = 50000
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 30000
 monster.maxHealth = 30000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -76,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 35,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ice Overlord")
 local monster = {}
 
-monster.name = "Ice Overlord"
 monster.description = "Ice Overlord"
 monster.experience = 2800
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 4000
 monster.maxHealth = 4000
 monster.race = "undead"
 monster.corpse = 8137
-monster.speed = 390
+monster.speed = 195
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 20000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -64,13 +72,14 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -400 },
-	{ name = "speed", interval = 2000, chance = 18, speed = -800, radius = 6, effect = CONST_ME_ICETORNADO, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 18, speedChange = -800, radius = 6, effect = CONST_ME_ICETORNADO, target = false, duration = 5000 },
 	{ name = "combat", interval = 1000, chance = 9, type = COMBAT_ICEDAMAGE, minDamage = -50, maxDamage = -400, range = 7, shootEffect = CONST_ANI_SMALLICE, effect = CONST_ME_ICEATTACK, target = true },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 90, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

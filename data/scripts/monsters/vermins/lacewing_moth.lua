@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lacewing Moth")
 local monster = {}
 
-monster.name = "Lacewing Moth"
 monster.description = "a lacewing moth"
 monster.experience = 800
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1736
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Court of Summer at day.",
+}
 
 monster.health = 900
 monster.maxHealth = 900
 monster.race = "blood"
 monster.corpse = 30175
-monster.speed = 380
+monster.speed = 190
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -67,6 +85,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 42,
+	mitigation = 1.04,
 }
 
 monster.elements = {

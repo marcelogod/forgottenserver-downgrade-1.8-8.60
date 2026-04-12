@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Bloodtusk")
 local monster = {}
 
-monster.name = "The Bloodtusk"
 monster.description = "the Bloodtusk"
 monster.experience = 300
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 600
 monster.maxHealth = 600
 monster.race = "blood"
 monster.corpse = 6074
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -74,6 +80,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 57,
 	armor = 40,
+	--	mitigation = ???,
 }
 
 monster.elements = {

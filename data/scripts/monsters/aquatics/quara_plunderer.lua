@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Quara Plunderer")
 local monster = {}
 
-monster.name = "Quara Plunderer"
 monster.description = "a quara plunderer"
 monster.experience = 10800
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2542
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 1,
+	Locations = "Podzilla Bottom, Podzilla Underwater ",
+}
 
 monster.health = 13500
 monster.maxHealth = 13500
 monster.race = "undead"
 monster.corpse = 48388
-monster.speed = 410
+monster.speed = 205
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -62,16 +76,11 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "resinous fish fin", chance = 6900 },
-	{ name = "amber souvenir", chance = 6620 },
-	{ name = "blue gem", chance = 4820 },
-	{ id = 3039, chance = 4150 }, -- red gem
-	{ name = "haunted blade", chance = 1330 },
-	{ name = "quara eye", chance = 1060 },
-	{ name = "spellbook of mind control", chance = 820 },
-	{ name = "demon shield", chance = 670 },
-	{ name = "demonrage sword", chance = 270 },
-	{ name = "preserved purple seed", chance = 80 },
+	{ name = "Amber Souvenir", chance = 7040 },
+	{ name = "Resinous Fish Fin", chance = 6460 },
+	{ id = 3039, chance = 4940 }, -- red gem
+	{ id = 3041, chance = 4900 }, -- blue gem
+	{ name = "Haunted Blade", chance = 350 },
 	{ name = "platinum coin", chance = 10000, maxCount = 25 },
 }
 
@@ -85,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 95,
 	armor = 90,
+	mitigation = 2.75,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Kreebosh the Exile")
 local monster = {}
 
-monster.name = "Kreebosh the Exile"
 monster.description = "Kreebosh the Exile"
 monster.experience = 350
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 705
 monster.maxHealth = 705
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -69,7 +75,7 @@ monster.loot = {}
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -100 },
 	{ name = "combat", interval = 6000, chance = 80, type = COMBAT_FIREDAMAGE, minDamage = 0, maxDamage = -120, radius = 3, effect = CONST_ME_ENERGYHIT, target = false },
-	{ name = "speed", interval = 3500, chance = 35, speed = -450, range = 5, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 20000 },
+	{ name = "speed", interval = 3500, chance = 35, speedChange = -450, range = 5, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 20000 },
 	{ name = "combat", interval = 6000, chance = 40, type = COMBAT_PHYSICALDAMAGE, minDamage = -20, maxDamage = -100, range = 5, radius = 1, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_MORTAREA, target = true },
 	{ name = "combat", interval = 5000, chance = 20, type = COMBAT_ENERGYDAMAGE, minDamage = -40, maxDamage = -200, range = 5, radius = 1, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_FIREAREA, target = true },
 	{ name = "drunk", interval = 1000, chance = 20, range = 5, radius = 1, target = true, duration = 30000 },

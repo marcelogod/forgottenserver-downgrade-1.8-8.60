@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Warm Fire")
 local monster = {}
 
-monster.name = "Warm Fire"
 monster.description = "a warm fire"
 monster.experience = 220
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 200
 monster.maxHealth = 200
 monster.race = "fire"
 monster.corpse = 8136
-monster.speed = 94
+monster.speed = 47
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,6 +64,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 15,
 	armor = 15,
+	--	mitigation = ???,
 }
 
 monster.elements = {

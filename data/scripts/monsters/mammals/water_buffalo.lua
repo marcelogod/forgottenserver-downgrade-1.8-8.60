@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Water Buffalo")
 local monster = {}
 
-monster.name = "Water Buffalo"
 monster.description = "a water buffalo"
 monster.experience = 20
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 872
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 30,
+	Stars = 2,
+	Occurrence = 3,
+	Locations = "It raids every four hours, starting at server save, in groups of one to three at \z
+		various places around Venore swamp, especially near the southern production site.",
+}
 
 monster.health = 390
 monster.maxHealth = 390
 monster.race = "blood"
 monster.corpse = 17421
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +57,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -75,6 +91,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 35,
+	mitigation = 1.04,
 }
 
 monster.elements = {

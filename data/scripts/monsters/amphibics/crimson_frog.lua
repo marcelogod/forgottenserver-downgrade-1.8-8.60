@@ -1,26 +1,36 @@
 local mType = Game.createMonsterType("Crimson Frog")
 local monster = {}
 
-monster.name = "Crimson Frog"
 monster.description = "a crimson frog"
 monster.experience = 20
 monster.outfit = {
 	lookType = 226,
 	lookHead = 94,
 	lookBody = 78,
-	lookLegs = 77,
-	lookFeet = 112,
+	lookLegs = 94,
+	lookFeet = 78,
 	lookAddons = 0,
 	lookMount = 0,
 }
 
 monster.raceId = 270
+monster.Bestiary = {
+	class = "Amphibic",
+	race = BESTY_RACE_AMPHIBIC,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Meriana, Laguna Islands, and other Shattered Isles.",
+}
 
 monster.health = 60
 monster.maxHealth = 60
 monster.race = "blood"
 monster.corpse = 6079
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 305
 
 monster.changeTarget = {
@@ -28,24 +38,28 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
-	summonable = false,
+	summonable = true,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = true,
+	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = true,
 }
 
 monster.light = {
@@ -61,8 +75,8 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 75390, maxCount = 10 },
-	{ name = "worm", chance = 9760 },
+	{ name = "gold coin", chance = 76000, maxCount = 11 },
+	{ name = "worm", chance = 10000 },
 }
 
 monster.attacks = {
@@ -71,7 +85,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 5,
-	armor = 8,
+	armor = 5,
 }
 
 monster.elements = {

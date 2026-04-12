@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Werehyaena Shaman")
 local monster = {}
 
-monster.name = "Werehyaena Shaman"
 monster.description = "a werehyaena shaman"
 monster.experience = 2200
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1964
+monster.Bestiary = {
+	class = "Lycanthrope",
+	race = BESTY_RACE_LYCANTHROPE,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "This monster you can find in Hyaena Lairs.",
+}
 
 monster.health = 2500
 monster.maxHealth = monster.health
 monster.race = "blood"
 monster.corpse = 34189
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

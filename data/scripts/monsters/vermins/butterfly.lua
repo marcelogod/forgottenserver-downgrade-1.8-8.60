@@ -1,11 +1,10 @@
 local mType = Game.createMonsterType("Butterfly")
 local monster = {}
 
-monster.name = "Butterfly"
 monster.description = "a butterfly"
 monster.experience = 0
 monster.outfit = {
-	lookType = 213,
+	lookType = 227,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 213
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 25,
+	FirstUnlock = 5,
+	SecondUnlock = 10,
+	CharmsPoints = 1,
+	Stars = 0,
+	Occurrence = 0,
+	Locations = "Ab'Dendriel, Ab'Dendriel Surroundings, Carlin, Cormaya, Edron Surroundings, \z
+		Feyrist Meadows, Fibula, Fields of Glory, Green Claw Swamp, Issavi, Kazordoon Surroundings, Meriana, \z
+		Outlaw Camp, Port Hope Surroundings, Stonehome, Thais Surroundings, Venore Southern Swamp, Venore Surroundings.",
+}
 
 monster.health = 2
 monster.maxHealth = 2
 monster.race = "venom"
-monster.corpse = 4992
-monster.speed = 320
+monster.corpse = 4378
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 60,
+	random = 40,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 8,
 	runHealth = 2,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

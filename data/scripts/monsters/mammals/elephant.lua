@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Elephant")
 local monster = {}
 
-monster.name = "Elephant"
 monster.description = "an elephant"
 monster.experience = 160
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 211
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "East of Port Hope close to Grizzly Adams, deep in the jungle, \z
+		Arena and Zoo Quarter, Mammoth Shearing Factory.",
+}
 
 monster.health = 320
 monster.maxHealth = 320
 monster.race = "blood"
 monster.corpse = 6052
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 500
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -75,6 +91,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 20,
+	mitigation = 0.41,
 }
 
 monster.elements = {

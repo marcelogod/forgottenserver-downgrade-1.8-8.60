@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Amazon")
 local monster = {}
 
-monster.name = "Amazon"
 monster.description = "an amazon"
 monster.experience = 60
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 77
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Venore Amazon Camp, Carlin Amazon Camp, Amazon Tower, east of Carlin, underneath the Fields of Glory, west of Venore, Oasis Tomb, on the smallest of the Laguna Islands, Foreigner Quarter and Trade Quarter.",
+}
 
 monster.health = 110
 monster.maxHealth = 110
 monster.race = "blood"
 monster.corpse = 18042
-monster.speed = 172
+monster.speed = 86
 monster.manaCost = 390
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 10,
+	mitigation = 0.28,
 }
 
 monster.elements = {

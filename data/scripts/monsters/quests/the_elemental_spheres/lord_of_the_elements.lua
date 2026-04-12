@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lord of the Elements")
 local monster = {}
 
-monster.name = "Lord of the Elements"
 monster.description = "Lord of the Elements"
 monster.experience = 8000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 454,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 8000
 monster.maxHealth = 8000
 monster.race = "undead"
 monster.corpse = 8181
-monster.speed = 370
+monster.speed = 185
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -76,7 +89,6 @@ monster.loot = {
 	{ name = "platinum coin", chance = 50000, maxCount = 9 },
 	{ name = "earthborn titan armor", chance = 2063 },
 	{ name = "gold ingot", chance = 25000 },
-	{ name = "jade conical hat", chance = 800 },
 }
 
 monster.attacks = {
@@ -86,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_HEALING, minDamage = 100, maxDamage = 195, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "outfit", interval = 1500, chance = 40, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 3000, outfitMonster = "Energy Overlord" },
 	{ name = "outfit", interval = 1500, chance = 40, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 3000, outfitMonster = "Fire Overlord" },

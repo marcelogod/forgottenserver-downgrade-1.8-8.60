@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Faceless Bane")
 local monster = {}
 
-monster.name = "Faceless Bane"
 monster.description = "Faceless Bane"
 monster.experience = 20000
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 35000
 monster.maxHealth = 35000
 monster.race = "blood"
 monster.corpse = 30013
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -28,6 +27,18 @@ monster.changeTarget = {
 
 monster.reflects = {
 	{ type = COMBAT_DEATHDAMAGE, percent = 90 },
+}
+
+monster.bosstiary = {
+	bossRaceId = 1727,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -44,7 +55,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,

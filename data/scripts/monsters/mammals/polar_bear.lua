@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Polar Bear")
 local monster = {}
 
-monster.name = "Polar Bear"
 monster.description = "a polar bear"
 monster.experience = 28
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 42
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Ice Islands.",
+}
 
 monster.health = 85
 monster.maxHealth = 85
 monster.race = "blood"
 monster.corpse = 5987
-monster.speed = 156
+monster.speed = 78
 monster.manaCost = 315
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 5,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -72,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 7,
+	mitigation = 0.25,
 }
 
 monster.elements = {

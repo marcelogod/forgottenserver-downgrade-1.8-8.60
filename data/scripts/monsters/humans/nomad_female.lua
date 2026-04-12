@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Nomad Female")
 local monster = {}
 
 monster.name = "Nomad"
-monster.name = "Nomad Female"
 monster.description = "a nomad"
 monster.experience = 60
 monster.outfit = {
@@ -15,18 +14,35 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.raceId = 777
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 1,
+	Locations = "Drefia, Ankrahmun.",
+}
 
 monster.health = 160
 monster.maxHealth = 160
 monster.race = "blood"
 monster.corpse = 18181
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

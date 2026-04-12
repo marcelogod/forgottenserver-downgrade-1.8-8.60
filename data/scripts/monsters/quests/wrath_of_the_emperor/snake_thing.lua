@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Snake Thing")
 local monster = {}
 
-monster.name = "Snake Thing"
 monster.description = "Snake Thing"
 monster.experience = 8400
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 70000
 monster.maxHealth = 70000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -64,13 +72,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 35, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -500, length = 8, spread = 3, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_MANADRAIN, minDamage = 0, maxDamage = -2398, length = 8, spread = 3, effect = CONST_ME_SOUND_RED, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 30, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -30, maxDamage = -60, radius = 6, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 30, minDamage = -30, maxDamage = -60, radius = 6, effect = CONST_ME_POISONAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 45,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 150, maxDamage = 450, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

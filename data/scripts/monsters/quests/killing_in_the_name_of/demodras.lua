@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Demodras")
 local monster = {}
 
-monster.name = "Demodras"
 monster.description = "Demodras"
 monster.experience = 6000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 4500
 monster.maxHealth = 4500
 monster.race = "blood"
 monster.corpse = 5984
-monster.speed = 394
+monster.speed = 197
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 300,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -94,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 45,
+	mitigation = 1.99,
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_HEALING, minDamage = 400, maxDamage = 700, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Angry Sugar Fairy")
 local monster = {}
 
-monster.name = "Angry Sugar Fairy"
 monster.description = "an angry sugar fairy"
 monster.experience = 3100
 monster.outfit = {
@@ -15,16 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2552
+monster.Bestiary = {
+	class = "Fey",
+	race = BESTY_RACE_FEY,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Dessert Dungeons, Candy Carnival.",
+}
+
 monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "undead"
 monster.corpse = 48340
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -41,7 +59,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -83,13 +101,14 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -110 },
-	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ICEDAMAGE, minDamage = -100, maxDamage = -230, range = 6, shootEffect = CONST_ANI_SMALLICE, effect = CONST_ME_ICEATTACK, target = true },
+	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -100, maxDamage = -230, range = 6, shootEffect = CONST_ANI_SMALLICE, effect = CONST_ME_ICEATTACK, target = true },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ENERGYDAMAGE, minDamage = -130, maxDamage = -280, range = 5, radius = 3, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_ELECTRICALSPARK, target = true },
 }
 
 monster.defenses = {
 	defense = 37,
 	armor = 37,
+	mitigation = 1.10,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 100, maxDamage = 200, effect = CONST_ME_CACAO, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Time Guardian")
 local monster = {}
 
-monster.name = "The Time Guardian"
 monster.description = "The Time Guardian"
 monster.experience = 50000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 150000
 monster.maxHealth = 150000
 monster.race = "undead"
 monster.corpse = 25085
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1290,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -102,16 +115,15 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_ENERGYDAMAGE, minDamage = -600, maxDamage = -780, length = 9, spread = 0, effect = CONST_ME_ENERGYHIT, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_ENERGYDAMAGE, minDamage = -600, maxDamage = -780, length = 9, spread = 0, effect = CONST_ME_ENERGYAREA, target = false },
 	-- energy damage
-	{ name = "condition", interval = 2000, chance = 20, target = false, condition =
-	{ type = CONDITION_ENERGY, minDamage = -2000, maxDamage = -2000, radius = 7, effect = CONST_ME_BLOCKHIT } },
+	{ name = "condition", type = CONDITION_ENERGY, interval = 2000, chance = 20, minDamage = -2000, maxDamage = -2000, radius = 7, effect = CONST_ME_BLOCKHIT, target = false },
 	-- bleed
-	{ name = "condition", interval = 2000, chance = 20, target = false, condition =
-	{ type = CONDITION_BLEEDING, minDamage = -2000, maxDamage = -2000, length = 9, spread = 0, effect = CONST_ME_BLOCKHIT } },
+	{ name = "condition", type = CONDITION_BLEEDING, interval = 2000, chance = 20, minDamage = -2000, maxDamage = -2000, length = 9, spread = 0, effect = CONST_ME_BLOCKHIT, target = false },
 }
 
 monster.defenses = {
 	defense = 70,
 	armor = 70,
+	--	mitigation = ???,
 	{ name = "time guardian", interval = 2000, chance = 10, target = false },
 	{ name = "time guardiann", interval = 2000, chance = 10, target = false },
 }

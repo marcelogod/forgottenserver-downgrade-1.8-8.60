@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Druid's Apparition")
 local monster = {}
 
-monster.name = "Druid's Apparition"
 monster.description = "a druid's apparition"
 monster.experience = 28600
 monster.outfit = {
@@ -15,18 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 1946
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Mirrored Nightmare.",
+}
 
 monster.health = 25000
 monster.maxHealth = 25000
 monster.race = "blood"
 monster.corpse = 6081
-monster.speed = 470
+monster.speed = 235
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -43,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -89,6 +107,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	mitigation = 2.75,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 1000, maxDamage = 1100, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

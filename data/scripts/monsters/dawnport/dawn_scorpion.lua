@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dawn Scorpion")
 local monster = {}
 
-monster.name = "Dawn Scorpion"
 monster.description = "a dawn scorpion"
 monster.experience = 45
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 65
 monster.maxHealth = 65
 monster.race = "venom"
 monster.corpse = 5988
-monster.speed = 144
+monster.speed = 72
 monster.manaCost = 310
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 5,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 11,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Werebadger")
 local monster = {}
 
-monster.name = "Werebadger"
 monster.description = "a werebadger"
 monster.experience = 1600
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 1144
+monster.Bestiary = {
+	class = "Lycanthrope",
+	race = BESTY_RACE_LYCANTHROPE,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Grimvale: -1 floor from ground level, also seen on surface during full moon (12th-14th of every month). \z
+		Also in the were-beasts cave south-west of Edron and in the Last Sanctum.",
+}
 
 monster.health = 1700
 monster.maxHealth = 1700
 monster.race = "blood"
 monster.corpse = 22067
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 275,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -84,12 +102,13 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 50, attack = 60, condition = { type = CONDITION_POISON, totalDamage = 140, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_LIFEDRAIN, minDamage = -21, maxDamage = -150, range = 7, shootEffect = CONST_ANI_EARTH, effect = CONST_ME_CARNIPHILA, target = true },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -10, maxDamage = -100, length = 8, spread = 0, effect = CONST_ME_CARNIPHILA, target = false },
-	{ name = "speed", interval = 4000, chance = 20, speed = -100, radius = 7, effect = CONST_ME_POFF, target = true },
+	{ name = "speed", interval = 4000, chance = 20, minDamage = -0, maxDamage = -300, radius = 7, effect = CONST_ME_POFF, target = true },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 31,
+	mitigation = 0.75,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 50, maxDamage = 100, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 2000, chance = 20, effect = CONST_ME_MAGIC_BLUE },
 }

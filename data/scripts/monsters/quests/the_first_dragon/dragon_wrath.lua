@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dragon Wrath")
 local monster = {}
 
-monster.name = "Dragon Wrath"
 monster.description = "a dragon wrath"
 monster.experience = 4600
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 7800
 monster.maxHealth = 7800
 monster.race = "undead"
 monster.corpse = 10445
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -40,7 +39,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 366,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -63,8 +62,7 @@ monster.attacks = {
 	{ name = "ghastly dragon wave", interval = 2000, chance = 10, minDamage = -50, maxDamage = -250, target = false },
 	{ name = "ghastly dragon curse", interval = 2000, chance = 10, range = 7, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -920, maxDamage = -1260, range = 7, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_SMALLCLOUDS } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -920, maxDamage = -1260, range = 7, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_SMALLCLOUDS, target = false },
 	{ name = "ghastly dragon paralyze", interval = 2000, chance = 9, range = 7, target = false },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_LIFEDRAIN, minDamage = -90, maxDamage = -250, range = 7, effect = CONST_ME_MAGIC_RED, target = true },
 	{ name = "combat", interval = 2000, chance = 13, type = COMBAT_DEATHDAMAGE, minDamage = -70, maxDamage = -180, radius = 4, effect = CONST_ME_MORTAREA, target = false },

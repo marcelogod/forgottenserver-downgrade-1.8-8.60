@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Grave Robber")
 local monster = {}
 
-monster.name = "Grave Robber"
 monster.description = "a grave robber"
 monster.experience = 65
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 867
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 2,
+	Locations = "Horestis Tomb.",
+}
 
 monster.health = 165
 monster.maxHealth = 165
 monster.race = "blood"
 monster.corpse = 18130
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 435
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -74,13 +89,13 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -90 },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = true, condition =
-	{ type = CONDITION_POISON, minDamage = -100, maxDamage = -160, range = 7, radius = 1, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -100, maxDamage = -160, range = 7, radius = 1, shootEffect = CONST_ANI_POISON, target = true },
 }
 
 monster.defenses = {
 	defense = 15,
 	armor = 7,
+	mitigation = 0.38,
 }
 
 monster.elements = {

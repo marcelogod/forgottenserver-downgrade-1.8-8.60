@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bloated Man-Maggot")
 local monster = {}
 
-monster.name = "Bloated Man-Maggot"
 monster.description = "a bloated man-maggot"
 monster.experience = 21570
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2392
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Jaded Roots",
+}
 
 monster.health = 31700
 monster.maxHealth = 31700
 monster.race = "undead"
 monster.corpse = 43816
-monster.speed = 390
+monster.speed = 195
 monster.manaCost = 305
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -57,11 +74,11 @@ monster.voices = {}
 
 monster.loot = {
 	{ name = "crystal coin", chance = 12961, maxCount = 1 },
--- { name = "organic acid", chance = 11678, maxCount = 1 },
+	--{ name = "organic acid", chance = 11678, maxCount = 1 },
 	{ name = "might ring", chance = 10020, maxCount = 1 },
 	{ name = "small emerald", chance = 9133, maxCount = 5 },
 	{ name = "rotten roots", chance = 8637, maxCount = 1 },
--- { name = "bloated maggot", chance = 8133, maxCount = 1 },
+	--{ name = "bloated maggot", chance = 8133, maxCount = 1 },
 	{ name = "terra rod", chance = 8078, maxCount = 1 },
 	{ name = "butcher's axe", chance = 7967, maxCount = 1 },
 	{ name = "blue gem", chance = 7808, maxCount = 1 },
@@ -79,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 104,
 	armor = 104,
+	mitigation = 3.16,
 }
 
 monster.elements = {

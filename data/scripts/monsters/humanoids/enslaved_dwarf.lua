@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Enslaved Dwarf")
 local monster = {}
 
-monster.name = "Enslaved Dwarf"
 monster.description = "an enslaved dwarf"
 monster.experience = 2700
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 886
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Caves of the Lost and Lower Spike.",
+}
 
 monster.health = 3800
 monster.maxHealth = 3800
 monster.race = "blood"
 monster.corpse = 16063
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -101,6 +119,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 60,
+	mitigation = 1.88,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 396, maxDamage = 478, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 

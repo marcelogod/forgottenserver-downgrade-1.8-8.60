@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Quara Mantassin Scout")
 local monster = {}
 
-monster.name = "Quara Mantassin Scout"
 monster.description = "a quara mantassin scout"
 monster.experience = 100
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 242
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Malada, Water Elemental Cave near Port Hope, Hrodmir Quara Scout Caves, Quara Grotto, Oramond.",
+}
 
 monster.health = 220
 monster.maxHealth = 220
 monster.race = "blood"
 monster.corpse = 6064
-monster.speed = 140
+monster.speed = 70
 monster.manaCost = 480
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -61,14 +75,14 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 93980, maxCount = 30 },
-	{ name = "mantassin tail", chance = 7970 },
-	{ name = "chain armor", chance = 4990 },
-	{ name = "small sapphire", chance = 1010 },
-	{ id = 3114, chance = 970 }, -- skull
-	{ name = "two handed sword", chance = 800 },
-	{ id = 3049, chance = 700 }, -- stealth ring
-	{ name = "fish fin", chance = 370 },
+	{ name = "gold coin", chance = 94000, maxCount = 30 },
+	{ name = "mantassin tail", chance = 7780 },
+	{ name = "chain armor", chance = 5061 },
+	{ id = 3114, chance = 990 }, -- skull
+	{ name = "small sapphire", chance = 990 },
+	{ name = "two handed sword", chance = 810 },
+	{ id = 3049, chance = 710 }, -- stealth ring
+	{ name = "fish fin", chance = 360 },
 }
 
 monster.attacks = {
@@ -78,6 +92,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 7,
+	mitigation = 0.56,
 }
 
 monster.elements = {

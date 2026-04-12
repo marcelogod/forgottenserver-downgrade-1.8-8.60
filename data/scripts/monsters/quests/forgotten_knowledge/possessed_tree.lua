@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Possessed Tree")
 local monster = {}
 
-monster.name = "Possessed Tree"
 monster.description = "a possessed tree"
 monster.experience = 1300
 monster.outfit = {
@@ -26,6 +25,13 @@ monster.changeTarget = {
 	chance = 8,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -68,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 50,
+	mitigation = 0.91,
 }
 
 monster.elements = {

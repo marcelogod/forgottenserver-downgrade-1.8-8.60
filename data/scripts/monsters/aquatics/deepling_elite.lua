@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Deepling Elite")
 local monster = {}
 
-monster.name = "Deepling Elite"
 monster.description = "a deepling elite"
 monster.experience = 3000
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 862
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Fiehonja (Tanjis lair).",
+}
 
 monster.health = 3200
 monster.maxHealth = 3200
 monster.race = "blood"
 monster.corpse = 13713
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.faction = FACTION_DEEPLING
@@ -29,6 +39,13 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_DEATHLING }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -45,10 +62,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -62,21 +79,22 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 100000, maxCount = 186 },
-	{ name = "great health potion", chance = 25790 },
-	{ name = "eye of a deepling", chance = 25340 },
-	{ name = "deepling filet", chance = 25340 },
-	{ name = "vortex bolt", chance = 25080, maxCount = 5 },
-	{ name = "great mana potion", chance = 24370 },
-	{ name = "deepling warts", chance = 24330 },
-	{ name = "deeptags", chance = 20570 },
-	{ name = "deepling ridge", chance = 18710 },
-	{ name = "small emerald", chance = 7210, maxCount = 2 },
-	{ id = 3052, chance = 5530 }, -- life ring
-	{ name = "heavy trident", chance = 3450 },
-	{ name = "fish fin", chance = 2340 },
-	{ name = "warrior's shield", chance = 1150 },
-	{ name = "warrior's axe", chance = 880 },
+	{ name = "gold coin", chance = 100000, maxCount = 100 },
+	{ name = "gold coin", chance = 100000, maxCount = 86 },
+	{ name = "great health potion", chance = 25000 },
+	{ name = "eye of a deepling", chance = 25000 },
+	{ name = "deepling filet", chance = 25000 },
+	{ name = "vortex bolt", chance = 24800, maxCount = 5 },
+	{ name = "deepling warts", chance = 24400 },
+	{ name = "great mana potion", chance = 24200 },
+	{ name = "deeptags", chance = 20600 },
+	{ name = "deepling ridge", chance = 19500 },
+	{ name = "small emerald", chance = 6890, maxCount = 2 },
+	{ id = 3052, chance = 5360 }, -- life ring
+	{ name = "heavy trident", chance = 3680 },
+	{ name = "fish fin", chance = 2300 },
+	{ name = "warrior's shield", chance = 1534 },
+	{ name = "warrior's axe", chance = 820 },
 }
 
 monster.attacks = {
@@ -87,6 +105,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 45,
+	mitigation = 1.37,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 150, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

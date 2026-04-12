@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Quara Raider")
 local monster = {}
 
-monster.name = "Quara Raider"
 monster.description = "a quara raider"
 monster.experience = 8150
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2541
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 1,
+	Locations = "Podzilla Bottom, Podzilla Underwater ",
+}
 
 monster.health = 12500
 monster.maxHealth = 12500
 monster.race = "undead"
 monster.corpse = 48392
-monster.speed = 430
+monster.speed = 215
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 11,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -62,20 +76,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "amber souvenir", chance = 6920 },
-	{ id = 3039, chance = 5230 }, -- red gem
-	{ name = "resinous fish fin", chance = 3940 },
-	{ name = "skull staff", chance = 1510 },
-	{ id = 3041, chance = 1150 }, -- blue gem
-	{ name = "glacier robe", chance = 810 },
-	{ name = "quara pincers", chance = 610 },
-	{ name = "crystalline armor", chance = 480 },
-	{ name = "abyss hammer", chance = 160 },
-	{ name = "preserved light blue seed", chance = 70 },
-	{ name = "preserved violet seed", chance = 50 },
-	{ name = "preserved purple seed", chance = 20 },
-	{ name = "soul prism", chance = 20 },
-	{ name = "platinum coin", chance = 80000, maxCount = 25 },
+	{ name = "Amber Souvenir", chance = 7330 },
+	{ id = 3039, chance = 5340 }, -- red gem
+	{ name = "Resinous Fish Fin", chance = 4090 },
+	{ name = "Skull Staff", chance = 1480 },
+	{ id = 3041, chance = 1140 }, -- blue gem
+	{ name = "Glacier Robe", chance = 910 },
+	{ name = "Crystalline Armor", chance = 510 },
+	{ name = "Quara Pincers", chance = 510 },
+	{ name = "Abyss Hammer", chance = 170 },
+	{ name = "Preserved Light Blue Seed", chance = 110 },
+	{ name = "Preserved Purple Seed", chance = 110 },
+	{ name = "platinum coin", chance = 10000, maxCount = 25 },
 }
 
 monster.attacks = {
@@ -89,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 95,
 	armor = 95,
+	mitigation = 2.75,
 	{ name = "combat", interval = 2000, chance = 7, type = COMBAT_HEALING, minDamage = 800, maxDamage = 1000, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

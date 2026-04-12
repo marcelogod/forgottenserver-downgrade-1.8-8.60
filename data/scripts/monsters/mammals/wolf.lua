@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Wolf")
 local monster = {}
 
-monster.name = "Wolf"
 monster.description = "a wolf"
 monster.experience = 18
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 27
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "In almost all grass areas in Tibia, also found in Rookgaard and Dawnport.",
+}
 
 monster.health = 25
 monster.maxHealth = 25
 monster.race = "blood"
 monster.corpse = 5968
-monster.speed = 164
+monster.speed = 82
 monster.manaCost = 255
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 8,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -72,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.10,
 }
 
 monster.elements = {

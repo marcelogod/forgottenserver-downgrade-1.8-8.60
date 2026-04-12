@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Golden Servant Replica")
 local monster = {}
 
-monster.name = "Golden Servant Replica"
 monster.description = "a golden servant replica"
 monster.experience = 450
 monster.outfit = {
@@ -14,18 +13,35 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.raceId = 1327
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Replica Dungeon",
+}
 
 monster.health = 2000
 monster.maxHealth = 2000
 monster.race = "venom"
 monster.corpse = 12495
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +58,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 80,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -82,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 29,
+	mitigation = 0.88,
 	{ name = "combat", interval = 2000, chance = 13, type = COMBAT_HEALING, minDamage = 40, maxDamage = 70, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

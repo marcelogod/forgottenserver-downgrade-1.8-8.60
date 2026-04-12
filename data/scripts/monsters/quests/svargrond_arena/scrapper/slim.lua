@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Slim")
 local monster = {}
 
-monster.name = "Slim"
 monster.description = "Slim"
 monster.experience = 580
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1025
 monster.maxHealth = 1025
 monster.race = "undead"
 monster.corpse = 7349
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -70,6 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 38,
 	armor = 36,
+	--	mitigation = ???,
 }
 
 monster.elements = {

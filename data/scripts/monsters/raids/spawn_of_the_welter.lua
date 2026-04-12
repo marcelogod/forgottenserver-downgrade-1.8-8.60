@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Spawn of the Welter")
 local monster = {}
 
-monster.name = "Spawn of the Welter"
 monster.description = "Spawn of the Welter"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1850
 monster.maxHealth = 1850
 monster.race = "blood"
 monster.corpse = 6048
-monster.speed = 206
+monster.speed = 103
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +72,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 27,
+	mitigation = 1.08,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 260, maxDamage = 407, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "spawn of the welter heal", interval = 2000, chance = 20, target = false },
 }

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ahau")
 local monster = {}
 
-monster.name = "Ahau"
 monster.description = "Ahau"
 monster.experience = 17500
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 2346,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 9000
 monster.maxHealth = 9000
 monster.race = "blood"
 monster.corpse = 42069
-monster.speed = 700
+monster.speed = 350
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -63,22 +74,22 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 100000, maxCount = 250 },
-	{ name = "the living idol of tukh", chance = 80000 },
--- { name = "rotten feather", chance = 45950, maxCount = 3 },
-	{ name = "great health potion", chance = 43920, maxCount = 5 },
-	{ name = "great spirit potion", chance = 26350, maxCount = 3 },
-	{ name = "great mana potion", chance = 29730, maxCount = 6 },
--- { name = "ritual tooth", chance = 41890 },
-	{ name = "diamond", chance = 2700, maxCount = 8 },
-	{ name = "amber with a bug", chance = 3380 },
-	{ name = "amber", chance = 7430 },
-	{ id = 23533, chance = 3380 }, --ring of red plasma
-	{ id = 23531, chance = 1350 }, --ring of green plasma
-	{ id = 23529, chance = 3380 }, --ring of blue plasma
-	{ id = 23544, chance = 4730 }, --collar of red plasma
-	{ id = 23542, chance = 4050 }, --collar of blue plasma
-	{ id = 23543, chance = 3380 }, --collar of green plasma
+	{ name = "gold coin", chance = 100000, maxCount = 100 },
+	{ name = "the living idol of tukh", chance = 100000 },
+	--{ name = "rotten feather", chance = 50000 },
+	{ name = "great health potion", chance = 40000, maxCount = 5 },
+	{ name = "great spirit potion", chance = 25530, maxCount = 1 },
+	{ name = "great mana potion", chance = 34040, maxCount = 5 },
+	--{ name = "ritual tooth", chance = 32980 },
+	{ name = "diamond", chance = 5320, maxCount = 8 },
+	{ name = "amber with a bug", chance = 3190 },
+	{ name = "amber", chance = 5320 },
+	{ id = 23533, chance = 3500 }, --ring of red plasma
+	{ id = 23531, chance = 3500 }, --ring of green plasma
+	{ id = 23529, chance = 3500 }, --ring of blue plasma
+	{ id = 23544, chance = 3500 }, --collar of red plasma
+	{ id = 23542, chance = 3500 }, --collar of blue plasma
+	{ id = 23543, chance = 3500 }, --collar of green plasma
 	{ name = "broken iks headpiece", chance = 1000 },
 	{ name = "broken macuahuitl", chance = 1000 },
 	{ name = "broken iks faulds", chance = 1000 },
@@ -96,6 +107,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 64,
 	armor = 0,
+	--	mitigation = ???,
 }
 
 monster.elements = {

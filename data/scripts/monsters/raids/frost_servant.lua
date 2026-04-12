@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Frost Servant")
 local monster = {}
 
-monster.name = "Frost Servant"
 monster.description = "a frost servant"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 385
 monster.maxHealth = 385
 monster.race = "undead"
 monster.corpse = 7282
-monster.speed = 94
+monster.speed = 47
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	mitigation = 0.70,
 	{ name = "hirintror summon", interval = 2000, chance = 18, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Soul Sphere")
 local monster = {}
 
-monster.name = "Soul Sphere"
 monster.description = "a soul sphere"
 monster.experience = 0
 monster.outfit = {
@@ -25,6 +24,10 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -39,7 +42,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -57,6 +60,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 80,
 	armor = 90,
+	mitigation = 0.51,
 }
 
 monster.elements = {
@@ -78,5 +82,41 @@ monster.immunities = {
 	{ type = "invisible", condition = false },
 	{ type = "bleed", condition = false },
 }
+
+local moveTimeCount = 0
+local stop = false
+mType.onThink = function(monster, interval)
+	if stop then
+		return
+	end
+
+	moveTimeCount = moveTimeCount + interval
+	if moveTimeCount >= 3000 then
+		local currentPos = monster:getPosition()
+		local newPos = Position(currentPos.x - 1, currentPos.y, currentPos.z)
+
+		local nextTile = Tile(newPos)
+		if nextTile then
+			for _, creatureId in pairs(nextTile:getCreatures()) do
+				local tileMonster = Monster(creatureId)
+				if tileMonster and tileMonster:getName() == "Goshnar's Greed" then
+					tileMonster:setHealth(tileMonster:getMaxHealth())
+					stop = true
+					return
+				end
+			end
+		end
+
+		if not stop then
+			monster:teleportTo(newPos, true)
+			moveTimeCount = 0
+		end
+	end
+end
+
+mType.onAppear = function(monster)
+	moveTimeCount = 0
+	stop = false
+end
 
 mType:register(monster)

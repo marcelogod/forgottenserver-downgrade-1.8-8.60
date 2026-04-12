@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tame Terror Bird")
 local monster = {}
 
-monster.name = "Tame Terror Bird"
 monster.description = "a tame terror bird"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,17 @@ monster.health = 300
 monster.maxHealth = 300
 monster.race = "blood"
 monster.corpse = 6057
-monster.speed = 212
+monster.speed = 106
 monster.manaCost = 490
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -40,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -71,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 13,
 	armor = 13,
+	mitigation = 0.54,
 }
 
 monster.elements = {

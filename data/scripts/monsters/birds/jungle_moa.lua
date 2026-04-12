@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Jungle Moa")
 local monster = {}
 
-monster.name = "Jungle Moa"
 monster.description = "a jungle moa"
 monster.experience = 1200
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2257
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "All around Marapur",
+}
 
 monster.health = 1300
 monster.maxHealth = 1300
 monster.race = "blood"
 monster.corpse = 39208
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,14 +75,14 @@ monster.voices = {
 
 monster.loot = {
 	{ name = "Gold Coin", chance = 100000, minCount = 1, maxCount = 227 },
-	{ name = "Jungle Moa Claw", chance = 20520 },
-	{ name = "Meat", chance = 20050 },
-	{ name = "Cyan Crystal Fragment", chance = 11310 },
-	{ name = "Jungle Moa Feather", chance = 10560, minCount = 1, maxCount = 2 },
-	{ name = "Strong Mana Potion", chance = 9780, minCount = 1, maxCount = 2 },
-	{ name = "Jungle Moa Egg", chance = 8370 },
-	{ name = "Doublet", chance = 4420 },
-	{ name = "Spellbook of Enlightenment", chance = 1900 },
+	{ name = "Jungle Moa Claw", chance = 21100 },
+	{ name = "Meat", chance = 20140 },
+	{ name = "Cyan Crystal Fragment", chance = 11410 },
+	{ name = "Jungle Moa Feather", chance = 10480, minCount = 1, maxCount = 2 },
+	{ name = "Strong Mana Potion", chance = 9860, minCount = 1, maxCount = 2 },
+	{ name = "Jungle Moa Egg", chance = 8350 },
+	{ name = "Doublet", chance = 4540 },
+	{ name = "Spellbook of Enlightenment", chance = 1790 },
 }
 
 monster.attacks = {
@@ -81,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 110,
 	armor = 30,
+	mitigation = 1.04,
 }
 
 monster.elements = {

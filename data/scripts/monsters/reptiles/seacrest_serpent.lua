@@ -1,9 +1,8 @@
 local mType = Game.createMonsterType("Seacrest Serpent")
 local monster = {}
 
-monster.name = "Seacrest Serpent"
 monster.description = "a seacrest serpent"
-monster.experience = 2900
+monster.experience = 2600
 monster.outfit = {
 	lookType = 675,
 	lookHead = 0,
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1096
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 2,
+	Locations = "Seacrest Grounds when Quara Renegades are not spawning.",
+}
 
 monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "venom"
 monster.corpse = 21893
-monster.speed = 500
+monster.speed = 250
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 9,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -94,6 +111,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 31,
 	armor = 51,
+	mitigation = 1.21,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 145, maxDamage = 200, effect = CONST_ME_SOUND_BLUE, target = false },
 	{ name = "melee", interval = 2000, chance = 10, minDamage = 0, maxDamage = 0 },
 }

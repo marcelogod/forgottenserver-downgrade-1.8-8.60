@@ -1,9 +1,8 @@
 local mType = Game.createMonsterType("Crypt Warrior")
 local monster = {}
 
-monster.name = "Crypt Warrior"
 monster.description = "a crypt warrior"
-monster.experience = 6050
+monster.experience = 4200
 monster.outfit = {
 	lookType = 298,
 	lookHead = 0,
@@ -14,16 +13,32 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.Bestiary = {
+	class = "Undead",
+
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Bounac.",
+}
+
 monster.health = 7800
 monster.maxHealth = 7800
 monster.race = "undead"
 monster.corpse = 5972
-monster.speed = 310
+monster.speed = 155
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +55,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -76,6 +91,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 70,
+	mitigation = 2.02,
 }
 
 monster.elements = {

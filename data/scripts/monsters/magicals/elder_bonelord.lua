@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Elder Bonelord")
 local monster = {}
 
-monster.name = "Elder Bonelord"
 monster.description = "an elder bonelord"
 monster.experience = 280
 monster.outfit = {
@@ -15,17 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 108
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Hellgate, near the Hellgate Library, Deeper Banuta, behind piano in Cult Cave to the \z
+		northeast of Liberty Bay, Vandura Bonelord Cave, Goroma, Helheim, \z
+		underground of Fenrock (on the way to Beregar), Vengoth.",
+}
 
 monster.health = 500
 monster.maxHealth = 500
 monster.race = "blood"
 monster.corpse = 6037
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +61,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -93,12 +112,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -20, maxDamage = -40, range = 7, shootEffect = CONST_ANI_POISON, target = false },
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_LIFEDRAIN, minDamage = -45, maxDamage = -85, range = 7, effect = CONST_ME_MAGIC_RED, target = false },
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_MANADRAIN, minDamage = 0, maxDamage = -40, range = 7, target = false },
-	{ name = "speed", interval = 2000, chance = 10, speed = -600, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = -600, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000 },
 }
 
 monster.defenses = {
 	defense = 13,
 	armor = 13,
+	mitigation = 0.67,
 }
 
 monster.elements = {

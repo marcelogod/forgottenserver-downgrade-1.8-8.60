@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bovinus")
 local monster = {}
 
-monster.name = "Bovinus"
 monster.description = "Bovinus"
 monster.experience = 60
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 150
 monster.maxHealth = 150
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -65,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 11,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

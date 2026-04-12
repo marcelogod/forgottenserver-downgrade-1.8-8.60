@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Brittle Skeleton")
 local monster = {}
 
-monster.name = "Brittle Skeleton"
 monster.description = "a brittle skeleton"
 monster.experience = 35
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 50
 monster.maxHealth = 50
 monster.race = "undead"
 monster.corpse = 5972
-monster.speed = 146
+monster.speed = 73
 monster.manaCost = 300
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,6 +80,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 9,
 	armor = 2,
+	mitigation = 0.23,
 }
 
 monster.elements = {

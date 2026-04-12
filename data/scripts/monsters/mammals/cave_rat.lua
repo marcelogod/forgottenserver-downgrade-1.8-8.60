@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cave Rat")
 local monster = {}
 
-monster.name = "Cave Rat"
 monster.description = "a cave rat"
 monster.experience = 10
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 56
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Almost everywhere in tibia, they seem to have a nest-like place in Greenshore, \z
+		a semi-large spawn at the entrance to the Port Hope troll cave and in cave near Ankrahmun ship. \z
+		Also appears in Rat Plague in Thais and Rat Plague in Rookgaard.",
+}
 
 monster.health = 30
 monster.maxHealth = 30
 monster.race = "blood"
 monster.corpse = 5964
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 250
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 3,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -72,8 +88,9 @@ monster.attacks = {
 }
 
 monster.defenses = {
-	defense = 0,
+	defense = 5,
 	armor = 1,
+	mitigation = 0.10,
 }
 
 monster.elements = {

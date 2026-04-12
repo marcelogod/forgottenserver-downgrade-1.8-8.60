@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Woodling")
 local monster = {}
 
-monster.name = "Woodling"
 monster.description = "a woodling"
 monster.experience = 40
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 80
 monster.maxHealth = 80
 monster.race = "blood"
 monster.corpse = 21446
-monster.speed = 130
+monster.speed = 65
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -76,6 +79,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 2,
 	armor = 2,
+	--	mitigation = ???,
 }
 
 monster.elements = {

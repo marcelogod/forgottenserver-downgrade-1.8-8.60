@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cave Parrot")
 local monster = {}
 
-monster.name = "Cave Parrot"
 monster.description = "a cave parrot"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1307
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Desecrated Glade",
+}
 
 monster.health = 30
 monster.maxHealth = 30
 monster.race = "blood"
 monster.corpse = 6056
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 250
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 25,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -67,6 +81,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 6,
 	armor = 2,
+	mitigation = 0.15,
 }
 
 monster.elements = {

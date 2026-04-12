@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rocko")
 local monster = {}
 
-monster.name = "Rocko"
 monster.description = "Rocko"
 monster.experience = 3400
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "blood"
 monster.corpse = 6005
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 9,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -67,6 +73,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 18,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

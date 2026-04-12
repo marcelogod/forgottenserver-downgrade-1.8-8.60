@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Desperate White Deer")
 local monster = {}
 
-monster.name = "Desperate White Deer"
 monster.description = "a desperate white deer"
 monster.experience = 35
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 55
 monster.maxHealth = 55
 monster.race = "blood"
 monster.corpse = 12524
-monster.speed = 224
+monster.speed = 112
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 55,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -71,7 +74,8 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 15,
 	armor = 1,
-	{ name = "speed", interval = 2000, chance = 15, speed = 400, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
+	mitigation = 0.05,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 400, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
 }
 
 monster.elements = {

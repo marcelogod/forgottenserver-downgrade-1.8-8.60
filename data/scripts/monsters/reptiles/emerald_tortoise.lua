@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Emerald Tortoise")
 local monster = {}
 
-monster.name = "Emerald Tortoise"
 monster.description = "an emerald tortoise"
 monster.experience = 12129
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2268
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Sparkling Pools",
+}
 
 monster.health = 22300
 monster.maxHealth = 22300
 monster.race = "blood"
 monster.corpse = 39291
-monster.speed = 358
+monster.speed = 179
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -90,6 +104,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 110,
 	armor = 97,
+	mitigation = 2.57,
 }
 
 monster.elements = {

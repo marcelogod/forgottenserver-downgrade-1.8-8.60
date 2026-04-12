@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gladiator")
 local monster = {}
 
-monster.name = "Gladiator"
 monster.description = "a gladiator"
 monster.experience = 90
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 527
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Trade Quarter, Arena and Zoo Quarter.",
+}
 
 monster.health = 185
 monster.maxHealth = 185
 monster.race = "blood"
 monster.corpse = 18126
-monster.speed = 196
+monster.speed = 98
 monster.manaCost = 470
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,7 +96,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 14,
-	{ name = "speed", interval = 2000, chance = 15, speed = 215, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.78,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 215, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

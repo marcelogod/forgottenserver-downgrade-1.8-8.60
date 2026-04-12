@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Troll Champion")
 local monster = {}
 
-monster.name = "Troll Champion"
 monster.description = "a troll champion"
 monster.experience = 40
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 392
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Edron Troll-Goblin Peninsula, Ab'dendriel Shadow Caves, Thais South-East Troll Caves, \z
+		Dusalk's Troll Clan Cave, Island of Destiny in Paladin's guild.",
+}
 
 monster.health = 75
 monster.maxHealth = 75
 monster.race = "blood"
 monster.corpse = 861
-monster.speed = 138
+monster.speed = 69
 monster.manaCost = 350
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,6 +97,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 10,
+	mitigation = 0.28,
 }
 
 monster.elements = {

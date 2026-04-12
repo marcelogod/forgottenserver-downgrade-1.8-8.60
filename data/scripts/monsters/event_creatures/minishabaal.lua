@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Minishabaal")
 local monster = {}
 
-monster.name = "Minishabaal"
 monster.description = "Minishabaal"
 monster.experience = 4000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 6000
 monster.maxHealth = 6000
 monster.race = "blood"
 monster.corpse = 6363
-monster.speed = 700
+monster.speed = 350
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 350,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -101,8 +107,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	mitigation = 1.60,
 	{ name = "combat", interval = 1000, chance = 50, type = COMBAT_HEALING, minDamage = 155, maxDamage = 255, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 1000, chance = 12, speed = 320, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
+	{ name = "speed", interval = 1000, chance = 12, speedChange = 320, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
 	{ name = "invisible", interval = 4000, chance = 50, effect = CONST_ME_MAGIC_RED },
 }
 

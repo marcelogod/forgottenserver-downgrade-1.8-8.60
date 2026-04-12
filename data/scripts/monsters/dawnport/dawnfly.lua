@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dawnfly")
 local monster = {}
 
-monster.name = "Dawnfly"
 monster.description = "a dawnfly"
 monster.experience = 35
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 90
 monster.maxHealth = 90
 monster.race = "venom"
 monster.corpse = 21454
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -65,7 +68,6 @@ monster.loot = {
 	{ id = 266, chance = 3630 }, -- health potion
 	{ id = 268, chance = 3800 }, -- mana potion
 	{ id = 3448, chance = 14500, maxCount = 8 }, -- poison arrow
-	{ id = 51119, chance = 4120 }, -- simple jo staff
 }
 
 monster.attacks = {
@@ -76,7 +78,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 2,
 	armor = 3,
-	{ name = "speed", interval = 2000, chance = 11, speed = 238, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.25,
+	{ name = "speed", interval = 2000, chance = 11, speedChange = 238, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

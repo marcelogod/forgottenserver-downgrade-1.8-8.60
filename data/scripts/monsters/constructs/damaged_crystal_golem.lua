@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Damaged Crystal Golem")
 local monster = {}
 
-monster.name = "Damaged Crystal Golem"
 monster.description = "a damaged crystal golem"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 874
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 1,
+	Locations = "Golem Workshop in Gnomebase Alpha",
+}
 
 monster.health = 500
 monster.maxHealth = 500
 monster.race = "venom"
 monster.corpse = 16176
-monster.speed = 268
+monster.speed = 134
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 500,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -63,6 +81,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 5,
 	armor = 30,
+	mitigation = 0.86,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Muglex Clan Footman")
 local monster = {}
 
-monster.name = "Muglex Clan Footman"
 monster.description = "a muglex clan footman"
 monster.experience = 25
 monster.outfit = {
@@ -14,16 +13,22 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 50
 monster.maxHealth = 50
 monster.race = "blood"
 monster.corpse = 6002
-monster.speed = 120
+monster.speed = 60
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +45,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

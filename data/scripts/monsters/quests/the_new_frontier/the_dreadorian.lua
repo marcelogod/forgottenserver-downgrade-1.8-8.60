@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Dreadorian")
 local monster = {}
 
-monster.name = "The Dreadorian"
 monster.description = "The Dreadorian"
 monster.experience = 4000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 9000
 monster.maxHealth = 9000
 monster.race = "blood"
 monster.corpse = 6327
-monster.speed = 370
+monster.speed = 185
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 25,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 50, type = COMBAT_HEALING, minDamage = 100, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

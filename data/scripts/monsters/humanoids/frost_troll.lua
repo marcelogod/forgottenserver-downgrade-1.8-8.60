@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Frost Troll")
 local monster = {}
 
-monster.name = "Frost Troll"
 monster.description = "a frost troll"
 monster.experience = 23
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 53
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Ice Islands, Svargrond and Edron.",
+}
 
 monster.health = 55
 monster.maxHealth = 55
 monster.race = "blood"
 monster.corpse = 5998
-monster.speed = 140
+monster.speed = 70
 monster.manaCost = 300
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -78,6 +92,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 6,
+	mitigation = 0.23,
 }
 
 monster.elements = {

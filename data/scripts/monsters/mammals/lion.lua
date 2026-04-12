@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lion")
 local monster = {}
 
-monster.name = "Lion"
 monster.description = "a lion"
 monster.experience = 30
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 41
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Jakundaf Desert, Darama, Arena Quarter, Venore Amazon Camp.",
+}
 
 monster.health = 80
 monster.maxHealth = 80
 monster.race = "blood"
 monster.corpse = 5986
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 320
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

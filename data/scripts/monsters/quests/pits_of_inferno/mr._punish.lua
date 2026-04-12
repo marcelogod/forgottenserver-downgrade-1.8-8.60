@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mr. Punish")
 local monster = {}
 
-monster.name = "Mr. Punish"
 monster.description = "Mr. Punish"
 monster.experience = 9000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 303,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 22000
 monster.maxHealth = 22000
 monster.race = "undead"
 monster.corpse = 6330
-monster.speed = 470
+monster.speed = 235
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 2000,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,6 +81,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 72,
 	armor = 64,
+	--	mitigation = ???,
 }
 
 monster.elements = {

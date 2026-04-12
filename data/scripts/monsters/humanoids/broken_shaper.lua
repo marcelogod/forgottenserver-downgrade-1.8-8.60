@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Broken Shaper")
 local monster = {}
 
-monster.name = "Broken Shaper"
 monster.description = "a broken shaper"
 monster.experience = 1600
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1321
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Astral Shaper Dungeon, Astral Shaper Ruins, Old Masonry",
+}
 
 monster.health = 2200
 monster.maxHealth = 2200
 monster.race = "blood"
 monster.corpse = 25068
-monster.speed = 310
+monster.speed = 155
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -94,7 +111,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 37,
-	{ name = "speed", interval = 2000, chance = 10, speed = 336, effect = CONST_ME_MAGIC_RED, target = false, duration = 2000 },
+	mitigation = 1.46,
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 336, effect = CONST_ME_MAGIC_RED, target = false, duration = 2000 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 0, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

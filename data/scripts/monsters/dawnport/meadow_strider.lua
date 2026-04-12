@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Meadow Strider")
 local monster = {}
 
-monster.name = "Meadow Strider"
 monster.description = "a meadow strider"
 monster.experience = 50
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 100
 monster.maxHealth = 100
 monster.race = "blood"
 monster.corpse = 21450
-monster.speed = 136
+monster.speed = 68
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -78,7 +81,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 2,
 	armor = 1,
-	{ name = "speed", interval = 2000, chance = 13, speed = 192, effect = CONST_ME_HITAREA, target = false, duration = 5000 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 2000, chance = 13, speedChange = 192, effect = CONST_ME_HITAREA, target = false, duration = 5000 },
 }
 
 monster.elements = {

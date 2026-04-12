@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ancient Lion Knight")
 local monster = {}
 
-monster.name = "Ancient Lion Knight"
 monster.description = "an ancient lion knight"
 monster.experience = 8100
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 9100
 monster.maxHealth = 9100
 monster.race = "blood"
 monster.corpse = 28621
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.faction = FACTION_LIONUSURPERS
@@ -27,6 +26,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_LION }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -90,7 +93,6 @@ monster.loot = {
 	{ name = "lion wand", chance = 35 },
 	{ name = "lion amulet", chance = 35 },
 	{ name = "lion rod", chance = 35 },
-	{ name = "lion claws", chance = 35 },
 }
 
 monster.attacks = {
@@ -105,7 +107,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 0,
-	{ name = "speed", interval = 1000, chance = 10, speed = 160, effect = CONST_ME_POFF, target = false, duration = 4000 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 1000, chance = 10, speedChange = 160, effect = CONST_ME_POFF, target = false, duration = 4000 },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gnorre Chyllson")
 local monster = {}
 
-monster.name = "Gnorre Chyllson"
 monster.description = "Gnorre Chyllson"
 monster.experience = 4000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 7150
 monster.maxHealth = 7150
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 370
+monster.speed = 185
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -70,6 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 52,
 	armor = 51,
+	--	mitigation = ???,
 }
 
 monster.elements = {

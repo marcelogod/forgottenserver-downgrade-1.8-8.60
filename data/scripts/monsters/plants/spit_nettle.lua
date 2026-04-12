@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Spit Nettle")
 local monster = {}
 
-monster.name = "Spit Nettle"
 monster.description = "a spit nettle"
 monster.experience = 20
 monster.outfit = {
@@ -15,6 +14,18 @@ monster.outfit = {
 }
 
 monster.raceId = 221
+monster.Bestiary = {
+	class = "Plant",
+	race = BESTY_RACE_PLANT,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Tiquanda, Trapwood, the outskirts of Chor and Forbidden Lands, Alchemist Quarter in Yalahar, \z
+		Tiquanda Laboratory.",
+}
 
 monster.health = 150
 monster.maxHealth = 150
@@ -26,6 +37,10 @@ monster.manaCost = 0
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -69,13 +84,13 @@ monster.loot = {
 monster.attacks = {
 	{ name = "combat", interval = 1000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -15, maxDamage = -40, range = 7, shootEffect = CONST_ANI_POISON, target = true },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = true, condition =
-	{ type = CONDITION_POISON, minDamage = -40, maxDamage = -100, range = 7, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -40, maxDamage = -100, range = 7, shootEffect = CONST_ANI_POISON, target = true },
 }
 
 monster.defenses = {
 	defense = 0,
 	armor = 12,
+	mitigation = 0.86,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 8, maxDamage = 16, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

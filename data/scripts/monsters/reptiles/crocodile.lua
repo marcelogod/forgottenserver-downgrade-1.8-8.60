@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crocodile")
 local monster = {}
 
-monster.name = "Crocodile"
 monster.description = "a crocodile"
 monster.experience = 40
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 119
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "In the crocodile cave and the jungle east of Port Hope as well as the swamp to the north, \z
+		Fenrock, Arena and Zoo Quarter, Trade Quarter, Talahu, also located on Meriana and Laguna Islands.",
+}
 
 monster.health = 105
 monster.maxHealth = 105
 monster.race = "blood"
 monster.corpse = 6046
-monster.speed = 156
+monster.speed = 78
 monster.manaCost = 350
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -72,6 +88,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 13,
+	mitigation = 0.13,
 }
 
 monster.elements = {

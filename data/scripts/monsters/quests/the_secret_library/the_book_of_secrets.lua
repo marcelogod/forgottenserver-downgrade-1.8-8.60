@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Book of Secrets")
 local monster = {}
 
-monster.name = "The Book of Secrets"
 monster.description = "a The Book of Secrets"
 monster.experience = 0
 monster.outfit = {
@@ -12,12 +11,16 @@ monster.health = 8000
 monster.maxHealth = 8000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -34,7 +37,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,6 +64,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 33,
 	armor = 28,
+	--	mitigation = ???,
 }
 
 monster.elements = {

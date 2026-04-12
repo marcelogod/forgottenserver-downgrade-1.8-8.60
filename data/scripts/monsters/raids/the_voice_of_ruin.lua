@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Voice of Ruin")
 local monster = {}
 
-monster.name = "The Voice of Ruin"
 monster.description = "The Voice of Ruin"
 monster.experience = 3500
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 636,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 5500
 monster.maxHealth = 5500
 monster.race = "blood"
 monster.corpse = 10371
-monster.speed = 460
+monster.speed = 230
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 40,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -71,8 +82,7 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 80, attack = 100 },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -440, maxDamage = -820, length = 3, spread = 2, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -440, maxDamage = -820, length = 3, spread = 2, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -290, maxDamage = -540, radius = 3, effect = CONST_ME_HITBYPOISON, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -190, maxDamage = -480, length = 8, spread = 3, effect = CONST_ME_GREEN_RINGS, target = false },
 }
@@ -80,6 +90,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 45,
+	mitigation = 1.86,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 475, maxDamage = 625, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 

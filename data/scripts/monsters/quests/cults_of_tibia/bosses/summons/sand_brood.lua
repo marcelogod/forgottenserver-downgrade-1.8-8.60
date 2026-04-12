@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Sand Brood")
 local monster = {}
 
-monster.name = "Sand Brood"
 monster.description = "a sand brood"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 2100
 monster.maxHealth = 2100
 monster.race = "venom"
 monster.corpse = 6023
-monster.speed = 174
+monster.speed = 87
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

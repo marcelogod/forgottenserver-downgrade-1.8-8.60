@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Black Sheep")
 local monster = {}
 
-monster.name = "Black Sheep"
 monster.description = "a black sheep"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 13
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Femor Hills, cultist cave in Liberty Bay, Drefia.",
+}
 
 monster.health = 20
 monster.maxHealth = 20
 monster.race = "blood"
 monster.corpse = 5994
-monster.speed = 116
+monster.speed = 58
 monster.manaCost = 250
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 20,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -67,6 +82,7 @@ monster.loot = {
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.05,
 }
 
 monster.elements = {

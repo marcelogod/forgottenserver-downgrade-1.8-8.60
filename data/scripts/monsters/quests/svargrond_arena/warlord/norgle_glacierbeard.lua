@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Norgle Glacierbeard")
 local monster = {}
 
-monster.name = "Norgle Glacierbeard"
 monster.description = "Norgle Glacierbeard"
 monster.experience = 2100
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 4280
 monster.maxHealth = 4280
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 194
+monster.speed = 97
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -70,6 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 27,
 	armor = 25,
+	--	mitigation = ???,
 }
 
 monster.elements = {

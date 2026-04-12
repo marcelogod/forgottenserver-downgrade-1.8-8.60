@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pirat Artillerist")
 local monster = {}
 
-monster.name = "Pirat Artillerist"
 monster.description = "a pirat artillerist"
 monster.experience = 2800
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 2700
 monster.maxHealth = 2700
 monster.race = "blood"
 monster.corpse = 35372
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = true,
+	isBlockable = true,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -82,6 +88,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 65,
 	armor = 65,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 30, maxDamage = 60, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

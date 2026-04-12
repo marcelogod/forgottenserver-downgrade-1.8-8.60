@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Oberon's Bile")
 local monster = {}
 
-monster.name = "Oberon's Bile"
 monster.description = "Oberon's Bile"
 monster.experience = 20000
 monster.outfit = {
@@ -19,6 +18,10 @@ monster.changeTarget = {
 	chance = 10,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -33,7 +36,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

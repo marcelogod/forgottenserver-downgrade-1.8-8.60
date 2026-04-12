@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Fruit Drop")
 local monster = {}
 
-monster.name = "Fruit Drop"
 monster.description = "a fruit drop"
 monster.experience = 18
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2565
+monster.Bestiary = {
+	class = "Fey",
+	race = BESTY_RACE_FEY,
+	toKill = 25,
+	FirstUnlock = 5,
+	SecondUnlock = 10,
+	CharmsPoints = 1,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Candia",
+}
 
 monster.health = 63
 monster.maxHealth = 63
 monster.race = "undead"
 monster.corpse = 48366
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 63,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -69,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 8,
+	mitigation = 0.36,
 }
 
 monster.elements = {

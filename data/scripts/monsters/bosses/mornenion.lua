@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mornenion")
 local monster = {}
 
-monster.name = "Mornenion"
 monster.description = "Mornenion"
 monster.experience = 115
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 765,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 190
 monster.maxHealth = 190
 monster.race = "blood"
 monster.corpse = 6012
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -73,6 +81,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 7,
+	mitigation = 0.46,
 	{ name = "combat", interval = 5000, chance = 7, type = COMBAT_HEALING, minDamage = 25, maxDamage = 35, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Son of Verminor")
 local monster = {}
 
-monster.name = "Son of Verminor"
 monster.description = "a son of verminor"
 monster.experience = 5900
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 265
+monster.Bestiary = {
+	class = "Slime",
+	race = BESTY_RACE_SLIME,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Deep in the Pits of Inferno, in Verminor's throne room. Also in the Demon Forge (The Vats and The Hive).",
+}
 
 monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "venom"
 monster.corpse = 105
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -71,6 +89,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 48,
+	mitigation = 1.32,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 250, maxDamage = 350, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "outfit", interval = 5000, chance = 10, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 6000, outfitMonster = "rat" },
 	{ name = "outfit", interval = 5000, chance = 10, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 6000, outfitMonster = "larva" },

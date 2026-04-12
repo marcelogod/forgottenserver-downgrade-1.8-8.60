@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Feroxa")
 local monster = {}
 
-monster.name = "Feroxa"
 monster.description = "Feroxa"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,24 @@ monster.health = 100000
 monster.maxHealth = 100000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 2,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1149,
+	bossRace = RARITY_NEMESIS,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +51,13 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -69,7 +81,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 50,
-	{ name = "speed", interval = 2000, chance = 12, speed = 1250, effect = CONST_ME_THUNDER, target = false, duration = 10000 },
+	{ name = "speed", interval = 2000, chance = 12, speedChange = 1250, effect = CONST_ME_THUNDER, target = false, duration = 10000 },
 	{ name = "feroxa summon", interval = 2000, chance = 20, target = false },
 }
 

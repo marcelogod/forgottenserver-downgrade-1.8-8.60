@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Beast Hulking Prehemoth")
 local monster = {}
 
-monster.name = "Beast Hulking Prehemoth"
 monster.description = "a beast hulking prehemoth"
 monster.experience = 0
 monster.outfit = {
@@ -18,13 +17,17 @@ monster.health = 20700
 monster.maxHealth = 20700
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

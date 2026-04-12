@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Grorlam")
 local monster = {}
 
-monster.name = "Grorlam"
 monster.description = "Grorlam"
 monster.experience = 2400
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 205,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "blood"
 monster.corpse = 6005
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 3,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -71,8 +79,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 15,
+	mitigation = 1.60,
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_HEALING, minDamage = 100, maxDamage = 150, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 1000, chance = 6, speed = 270, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	{ name = "speed", interval = 1000, chance = 6, speedChange = 270, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

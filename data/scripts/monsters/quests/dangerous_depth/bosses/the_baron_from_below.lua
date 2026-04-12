@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Baron from Below")
 local monster = {}
 
-monster.name = "The Baron from Below"
 monster.description = "The Baron From Below"
 monster.experience = 50000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 350000
 monster.maxHealth = 350000
 monster.race = "blood"
 monster.corpse = 27633
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1518,
+	bossRace = RARITY_BANE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -98,7 +111,6 @@ monster.loot = {
 	{ name = "spellbook of warding", chance = 2080 },
 	{ name = "gnome sword", chance = 4170 },
 	{ name = "gnome armor", chance = 3390 },
-	{ name = "gnomish footwraps", chance = 3390 },
 }
 
 monster.attacks = {
@@ -113,6 +125,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 160,
 	armor = 160,
+	--	mitigation = ???,
 }
 
 monster.elements = {

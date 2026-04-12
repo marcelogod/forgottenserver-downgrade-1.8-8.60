@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Chakoya Tribewarden")
 local monster = {}
 
-monster.name = "Chakoya Tribewarden"
 monster.description = "a chakoya tribewarden"
 monster.experience = 40
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 319
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Inukaya, Chyllfroest, Chakoya Iceberg, Nibelor (during a quest).",
+}
 
 monster.health = 68
 monster.maxHealth = 68
 monster.race = "blood"
 monster.corpse = 7320
-monster.speed = 124
+monster.speed = 62
 monster.manaCost = 305
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -81,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 9,
+	mitigation = 0.33,
 }
 
 monster.elements = {

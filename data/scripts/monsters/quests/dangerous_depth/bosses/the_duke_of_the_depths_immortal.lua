@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Fire Empowered Duke")
 local monster = {}
 
-monster.name = "The Fire Empowered Duke"
 monster.description = "The Fire Empowered Duke"
 monster.experience = 40000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 350000
 monster.maxHealth = 350000
 monster.race = "blood"
 monster.corpse = 27641
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 50,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

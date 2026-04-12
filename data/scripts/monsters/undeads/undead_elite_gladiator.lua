@@ -1,9 +1,8 @@
 local mType = Game.createMonsterType("Undead Elite Gladiator")
 local monster = {}
 
-monster.name = "Undead Elite Gladiator"
 monster.description = "an undead elite gladiator"
-monster.experience = 5090
+monster.experience = 4740
 monster.outfit = {
 	lookType = 306,
 	lookHead = 0,
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1675
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Deep Desert.",
+}
 
 monster.health = 8000
 monster.maxHealth = 8000
 monster.race = "undead"
 monster.corpse = 8909
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -88,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 85,
+	mitigation = 2.40,
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_MAGIC_BLUE },
 }
 

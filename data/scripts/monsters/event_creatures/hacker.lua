@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hacker")
 local monster = {}
 
-monster.name = "Hacker"
 monster.description = "a hacker"
 monster.experience = 45
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 430
 monster.maxHealth = 430
 monster.race = "blood"
 monster.corpse = 5980
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 429,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -85,7 +91,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 12,
 	armor = 15,
-	{ name = "speed", interval = 1000, chance = 15, speed = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	mitigation = 0.36,
+	{ name = "speed", interval = 1000, chance = 15, speedChange = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 	{ name = "outfit", interval = 10000, chance = 15, effect = CONST_ME_MAGIC_RED, target = false, duration = 500, outfitMonster = "pig" },
 }
 

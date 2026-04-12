@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Biting Book")
 local monster = {}
 
-monster.name = "Biting Book"
 monster.description = "a biting book"
 monster.experience = 9350
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1656
+monster.Bestiary = {
+	class = "Inkborn",
+	race = BESTY_RACE_INKBORN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Secret Library earth, energy, fire and ice sections. Also two incarcerated in the Issavi prison, reachable from the city Library.",
+}
 
 monster.health = 6500
 monster.maxHealth = 6500
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 28609
-monster.speed = 480
+monster.speed = 240
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -75,6 +89,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 76,
+	mitigation = 1.88,
 }
 
 monster.elements = {

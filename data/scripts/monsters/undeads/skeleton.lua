@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Skeleton")
 local monster = {}
 
-monster.name = "Skeleton"
 monster.description = "a skeleton"
 monster.experience = 35
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 33
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "In many dungeons around Tibia, like the Ancient Temple and Ghostlands. \z
+		Also found in Rookgaard tombs and north east of Port Hope, in the jungle of Tiquanda, \z
+		beneath Fenrock and in the desert Tombs, Vengoth Castle.",
+}
 
 monster.health = 50
 monster.maxHealth = 50
 monster.race = "undead"
 monster.corpse = 5972
-monster.speed = 154
+monster.speed = 77
 monster.manaCost = 300
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -80,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 2,
+	mitigation = 0.23,
 }
 
 monster.elements = {

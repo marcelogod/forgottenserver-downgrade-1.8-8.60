@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dragon Egg")
 local monster = {}
 
-monster.name = "Dragon Egg"
 monster.description = "a dragon egg"
 monster.experience = 0
 monster.outfit = {
@@ -20,6 +19,10 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,12 +37,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -58,17 +62,18 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 5,
 	armor = 10,
+	mitigation = 0.00,
 }
 
 monster.heals = {
-	{ type = COMBAT_FIREDAMAGE, percent = 90 },
+	{ type = COMBAT_FIREDAMAGE, percent = 100 },
 }
 
 monster.elements = {
 	{ type = COMBAT_PHYSICALDAMAGE, percent = 0 },
 	{ type = COMBAT_ENERGYDAMAGE, percent = 0 },
 	{ type = COMBAT_EARTHDAMAGE, percent = 0 },
-	{ type = COMBAT_FIREDAMAGE, percent = 100 },
+	{ type = COMBAT_FIREDAMAGE, percent = 10 },
 	{ type = COMBAT_LIFEDRAIN, percent = 0 },
 	{ type = COMBAT_MANADRAIN, percent = 0 },
 	{ type = COMBAT_DROWNDAMAGE, percent = 0 },

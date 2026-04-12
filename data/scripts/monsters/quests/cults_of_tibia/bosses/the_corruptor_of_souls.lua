@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Corruptor of Souls")
 local monster = {}
 
-monster.name = "The Corruptor of Souls"
 monster.description = "The Corruptor Of Souls"
 monster.experience = 112000
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 290000
 monster.maxHealth = 290000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 450
+monster.speed = 225
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,19 +78,20 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	--	mitigation = ???,
 }
 
 monster.elements = {
-	{ type = COMBAT_PHYSICALDAMAGE, percent = 50 },
-	{ type = COMBAT_ENERGYDAMAGE, percent = 50 },
-	{ type = COMBAT_EARTHDAMAGE, percent = 50 },
-	{ type = COMBAT_FIREDAMAGE, percent = 50 },
-	{ type = COMBAT_LIFEDRAIN, percent = 50 },
-	{ type = COMBAT_MANADRAIN, percent = 50 },
-	{ type = COMBAT_DROWNDAMAGE, percent = 50 },
-	{ type = COMBAT_ICEDAMAGE, percent = 50 },
-	{ type = COMBAT_HOLYDAMAGE, percent = 50 },
-	{ type = COMBAT_DEATHDAMAGE, percent = 50 },
+	{ type = COMBAT_PHYSICALDAMAGE, percent = 100 },
+	{ type = COMBAT_ENERGYDAMAGE, percent = 100 },
+	{ type = COMBAT_EARTHDAMAGE, percent = 100 },
+	{ type = COMBAT_FIREDAMAGE, percent = 100 },
+	{ type = COMBAT_LIFEDRAIN, percent = 0 },
+	{ type = COMBAT_MANADRAIN, percent = 0 },
+	{ type = COMBAT_DROWNDAMAGE, percent = 0 },
+	{ type = COMBAT_ICEDAMAGE, percent = 100 },
+	{ type = COMBAT_HOLYDAMAGE, percent = 100 },
+	{ type = COMBAT_DEATHDAMAGE, percent = 100 },
 }
 
 monster.immunities = {

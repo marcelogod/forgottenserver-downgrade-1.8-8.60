@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Old Wasp")
 local monster = {}
 
 monster.name = "Wasp"
-monster.name = "Old Wasp"
 monster.description = "a wasp"
 monster.experience = 24
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 35
 monster.maxHealth = 35
 monster.race = "venom"
 monster.corpse = 5989
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

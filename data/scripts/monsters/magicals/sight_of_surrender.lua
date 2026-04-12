@@ -1,23 +1,49 @@
 local mType = Game.createMonsterType("Sight of Surrender")
 local monster = {}
 
-monster.name = "Sight of Surrender"
 monster.description = "a sight of surrender"
 monster.experience = 17000
-monster.outfit = { lookType = 583 }
+monster.outfit = {
+	lookType = 583,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
+	lookAddons = 0,
+	lookMount = 0,
+}
 
 monster.raceId = 1012
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Dark Grounds, Guzzlemaw Valley (if less than 100 Blowing Horns tasks \z
+		have been done the day before) and the Silencer Plateau (when Silencer Resonating Chambers are used there).",
+}
 
 monster.health = 28000
 monster.maxHealth = 28000
 monster.race = "undead"
 monster.corpse = 20144
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -34,10 +60,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = true,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -91,8 +118,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 70,
 	armor = 92,
+	mitigation = 2.31,
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_HEALING, minDamage = 550, maxDamage = 1100, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 520, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 520, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

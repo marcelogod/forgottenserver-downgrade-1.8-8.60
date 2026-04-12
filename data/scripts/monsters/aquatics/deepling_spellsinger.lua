@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Deepling Spellsinger")
 local monster = {}
 
-monster.name = "Deepling Spellsinger"
 monster.description = "a deepling spellsinger"
 monster.experience = 1000
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 772
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Fiehonja.",
+}
 
 monster.health = 850
 monster.maxHealth = 850
 monster.race = "blood"
 monster.corpse = 13771
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 0
 
 monster.faction = FACTION_DEEPLING
@@ -29,6 +39,13 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_DEATHLING }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -45,7 +62,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 60,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -64,19 +81,19 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "platinum coin", chance = 80000 },
-	{ name = "gold coin", chance = 75150, maxCount = 60 },
-	{ name = "spellsinger's seal", chance = 15220 },
-	{ name = "deepling filet", chance = 14930 },
-	{ name = "key to the drowned library", chance = 10700 },
-	{ id = 3578, chance = 3510 }, -- fish
-	{ name = "small sapphire", chance = 2960 },
-	{ name = "eye of a deepling", chance = 2520 },
-	{ id = 3052, chance = 2460 }, -- life ring
-	{ name = "deepling staff", chance = 2000 },
-	{ name = "necklace of the deep", chance = 760 },
-	{ name = "fish fin", chance = 500 },
-	{ name = "ornate crossbow", chance = 210 },
+	{ name = "platinum coin", chance = 80120 },
+	{ name = "gold coin", chance = 75110, maxCount = 60 },
+	{ name = "spellsinger's seal", chance = 15185 },
+	{ name = "deepling filet", chance = 14995 },
+	{ name = "key to the drowned library", chance = 10740 },
+	{ id = 3578, chance = 3448 }, -- fish
+	{ name = "small sapphire", chance = 2934 },
+	{ name = "eye of a deepling", chance = 2540 },
+	{ id = 3052, chance = 2459 }, -- life ring
+	{ name = "deepling staff", chance = 2020 },
+	{ name = "necklace of the deep", chance = 790 },
+	{ name = "fish fin", chance = 520 },
+	{ name = "ornate crossbow", chance = 220 },
 }
 
 monster.attacks = {
@@ -91,6 +108,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 42,
+	mitigation = 1.29,
 }
 
 monster.elements = {

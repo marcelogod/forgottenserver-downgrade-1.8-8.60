@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Juvenile Bashmu")
 local monster = {}
 
-monster.name = "Juvenile Bashmu"
 monster.description = "a juvenile bashmu"
 monster.experience = 4500
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 2101
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 1,
+	Locations = "Salt Caves",
+}
 
 monster.health = 7500
 monster.maxHealth = 7500
 monster.race = "blood"
 monster.corpse = 36967
-monster.speed = 390
+monster.speed = 195
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -42,7 +52,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

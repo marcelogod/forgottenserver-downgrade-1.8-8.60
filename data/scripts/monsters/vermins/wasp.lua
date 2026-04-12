@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Wasp")
 local monster = {}
 
-monster.name = "Wasp"
 monster.description = "a wasp"
 monster.experience = 24
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 44
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "South of Thais, west of Ab'Dendriel, northeastern Cormaya, \z
+		Green Claw Swamp between Kazordoon and Venore, Wasp Tower in Rookgaard, \z
+		Wasp Towers in Darashia, all over Tiquanda, and all over Vandura, roaming around Marapur.",
+}
 
 monster.health = 35
 monster.maxHealth = 35
 monster.race = "venom"
 monster.corpse = 5989
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 280
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 60,
+	random = 40,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -70,6 +87,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 4,
+	mitigation = 0.20,
 }
 
 monster.elements = {

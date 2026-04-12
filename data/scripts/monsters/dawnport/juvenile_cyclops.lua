@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Juvenile Cyclops")
 local monster = {}
 
-monster.name = "Juvenile Cyclops"
 monster.description = "a juvenile cyclops"
 monster.experience = 130
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 260
 monster.maxHealth = 260
 monster.race = "blood"
 monster.corpse = 5962
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 490
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -78,6 +81,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 22,
 	armor = 11,
+	mitigation = 0.62,
 }
 
 monster.elements = {

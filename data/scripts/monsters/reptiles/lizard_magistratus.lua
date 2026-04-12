@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lizard Magistratus")
 local monster = {}
 
-monster.name = "Lizard Magistratus"
 monster.description = "a lizard magistratus"
 monster.experience = 2000
 monster.outfit = {
@@ -14,19 +13,35 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
 
 monster.raceId = 655
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Razzachai.",
+}
 
 monster.health = 6250
 monster.maxHealth = 6250
 monster.race = "blood"
 monster.corpse = 6041
-monster.speed = 256
+monster.speed = 128
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,10 +58,11 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -79,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 25,
+	mitigation = 1.18,
 	{ name = "combat", interval = 2000, chance = 50, type = COMBAT_HEALING, minDamage = 200, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

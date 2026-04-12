@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Captured Dwarf")
 local monster = {}
 
-monster.name = "Captured Dwarf"
 monster.description = "a captured dwarf"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 100
 monster.maxHealth = 100
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -61,6 +67,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 5,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

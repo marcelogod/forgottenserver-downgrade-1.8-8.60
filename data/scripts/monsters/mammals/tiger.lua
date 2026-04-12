@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tiger")
 local monster = {}
 
-monster.name = "Tiger"
 monster.description = "a tiger"
 monster.experience = 40
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 125
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Tiquanda, Meriana, Arena and Zoo Quarter. Three unreachable ones are found in the Rookgaard Academy, \z
+		below Ankrahmun (during the Nomads Land Quest), and on Charles's ship.",
+}
 
 monster.health = 75
 monster.maxHealth = 75
 monster.race = "blood"
 monster.corpse = 6051
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 420
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -70,7 +86,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 5,
-	{ name = "speed", interval = 2000, chance = 15, speed = 200, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.38,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 200, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

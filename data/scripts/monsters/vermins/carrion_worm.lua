@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Carrion Worm")
 local monster = {}
 
-monster.name = "Carrion Worm"
 monster.description = "a carrion worm"
 monster.experience = 70
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 251
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Edron, Cormaya, Drillworm Caves, Venore Swamps, Liberty Bay, Vandura, Hellgate, \z
+	Fibula Dungeon, Stonehome, Kazordoon, Darashia Rotworm Caves, Port Hope, Ancient Temple, \z
+	Fenrock, Arena and Zoo Quarter.",
+}
 
 monster.health = 145
 monster.maxHealth = 145
 monster.race = "blood"
 monster.corpse = 6069
-monster.speed = 130
+monster.speed = 65
 monster.manaCost = 380
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -73,6 +89,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 8,
+	mitigation = 0.38,
 }
 
 monster.elements = {

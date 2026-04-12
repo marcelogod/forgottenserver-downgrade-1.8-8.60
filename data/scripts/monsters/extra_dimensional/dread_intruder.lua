@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dread Intruder")
 local monster = {}
 
-monster.name = "Dread Intruder"
 monster.description = "a dread intruder"
 monster.experience = 2400
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1260
+monster.Bestiary = {
+	class = "Extra Dimensional",
+	race = BESTY_RACE_EXTRA_DIMENSIONAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Otherworld",
+}
 
 monster.health = 4500
 monster.maxHealth = 4500
 monster.race = "venom"
 monster.corpse = 23478
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -83,15 +100,12 @@ monster.loot = {
 	{ id = 23542, chance = 230 }, -- collar of blue plasma
 	{ id = 23543, chance = 230 }, -- collar of green plasma
 	{ id = 23529, chance = 230 }, -- ring of blue plasma
-	{ id = 50150, chance = 560 }, -- ring of orange plasma
-	{ id = 50152, chance = 560 }, -- collar of orange plasma
 }
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -500 },
 	-- energy damage
-	{ name = "condition", interval = 2000, chance = 20, target = false, condition =
-	{ type = CONDITION_ENERGY, minDamage = -400, maxDamage = -600, radius = 5, effect = CONST_ME_ENERGYHIT } },
+	{ name = "condition", type = CONDITION_ENERGY, interval = 2000, chance = 20, minDamage = -400, maxDamage = -600, radius = 5, effect = CONST_ME_ENERGYHIT, target = false },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_DEATHDAMAGE, minDamage = -250, maxDamage = -400, range = 4, radius = 4, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_MORTAREA, target = true },
 	{ name = "dread intruder wave", interval = 2000, chance = 25, minDamage = -350, maxDamage = -550, target = false },
 }
@@ -99,6 +113,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 50,
+	mitigation = 1.54,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 80, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

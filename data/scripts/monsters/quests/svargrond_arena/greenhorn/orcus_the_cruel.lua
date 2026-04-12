@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orcus the Cruel")
 local monster = {}
 
-monster.name = "Orcus the Cruel"
 monster.description = "Orcus the Cruel"
 monster.experience = 280
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 480
 monster.maxHealth = 480
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -68,6 +74,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 39,
+	--	mitigation = ???,
 }
 
 monster.elements = {

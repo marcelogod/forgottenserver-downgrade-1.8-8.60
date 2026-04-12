@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Old Pig")
 local monster = {}
 
 monster.name = "Pig"
-monster.name = "Old Pig"
 monster.description = "a pig"
 monster.experience = 0
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 25
 monster.maxHealth = 25
 monster.race = "blood"
 monster.corpse = 6000
-monster.speed = 114
+monster.speed = 57
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 25,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

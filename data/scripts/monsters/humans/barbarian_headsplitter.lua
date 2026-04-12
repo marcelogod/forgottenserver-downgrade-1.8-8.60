@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Barbarian Headsplitter")
 local monster = {}
 
-monster.name = "Barbarian Headsplitter"
 monster.description = "a barbarian headsplitter"
 monster.experience = 85
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 333
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Krimhorn, Bittermor, Ragnir, and Fenrock.",
+}
 
 monster.health = 100
 monster.maxHealth = 100
 monster.race = "blood"
 monster.corpse = 18062
-monster.speed = 168
+monster.speed = 84
 monster.manaCost = 450
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -85,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 7,
+	mitigation = 0.36,
 }
 
 monster.elements = {

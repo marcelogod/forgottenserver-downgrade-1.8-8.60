@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Halloween Hare")
 local monster = {}
 
-monster.name = "The Halloween Hare"
 monster.description = "a The Halloween Hare"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 2000
 monster.maxHealth = 2000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 95,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 2,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -80,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 1244,
 	armor = 1244,
+	mitigation = 0.00,
 	{ name = "combat", interval = 1000, chance = 50, type = COMBAT_HEALING, minDamage = 1500, maxDamage = 2000, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

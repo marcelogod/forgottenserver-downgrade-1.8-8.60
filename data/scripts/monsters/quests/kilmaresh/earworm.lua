@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Earworm")
 local monster = {}
 
-monster.name = "Earworm"
 monster.description = "an earworm"
 monster.experience = 2000
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 4000
 monster.maxHealth = 4000
 monster.race = "blood"
 monster.corpse = 31662
-monster.speed = 154
+monster.speed = 77
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -79,6 +82,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 46,
 	armor = 46,
+	mitigation = 1.29,
 }
 
 monster.elements = {

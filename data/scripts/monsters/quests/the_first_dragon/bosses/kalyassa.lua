@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Kalyassa")
 local monster = {}
 
-monster.name = "Kalyassa"
 monster.description = "kalyassa"
 monster.experience = 9000
 monster.outfit = {
@@ -18,12 +17,24 @@ monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "blood"
 monster.corpse = 5984
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1389,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 800,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

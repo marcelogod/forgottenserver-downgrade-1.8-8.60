@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Giant Spider")
 local monster = {}
 
-monster.name = "Giant Spider"
 monster.description = "a giant spider"
 monster.experience = 900
 monster.outfit = {
@@ -15,17 +14,40 @@ monster.outfit = {
 }
 
 monster.raceId = 38
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Plains of Havoc, Point of no Return in Outlaw Camp, Ghostlands, Hellgate, \z
+	Mintwallin Secret Laboratory, Mad Mage Room deep below Ancient Temple, Mount Sternum Undead Cave, \z
+	Green Claw Swamp, Maze of Lost Souls, Crusader Helmet Quest in the Dwarf Mines, Mushroom Gardens, \z
+	west Drillworm Caves, Edron Hero Cave, Edron Orc Cave, on a hill near Drefia, \z
+	on a hill north-west of Ankrahmun (inaccessible), Forbidden Lands, Deeper Banuta, Malada, Ramoa, \z
+	 Arena and Zoo Quarter, second floor up of Cemetery Quarter, beneath Fenrock, Vengoth Castle, \z
+	 Vandura Mountain, in a cave in Robson Isle, Chyllfroest, Spider Caves, second floor of Krailos Spider Lair, Caverna Exanima.",
+}
 
 monster.health = 1300
 monster.maxHealth = 1300
 monster.race = "venom"
 monster.corpse = 5977
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 20,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +64,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -90,7 +112,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 30,
-	{ name = "speed", interval = 2000, chance = 15, speed = 390, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 1.04,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 390, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mushroom Sniffer")
 local monster = {}
 
-monster.name = "Mushroom Sniffer"
 monster.description = "a mushroom sniffer"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 870
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 25,
+	FirstUnlock = 5,
+	SecondUnlock = 10,
+	CharmsPoints = 1,
+	Stars = 0,
+	Occurrence = 0,
+	Locations = "Truffels Garden.",
+}
 
 monster.health = 250
 monster.maxHealth = 250
 monster.race = "blood"
 monster.corpse = 4116
-monster.speed = 110
+monster.speed = 55
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 25,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -66,6 +81,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 5,
 	armor = 20,
+	mitigation = 0.64,
 }
 
 monster.elements = {

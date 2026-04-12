@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("The Sinister Hermit Dirty")
 local monster = {}
 
 monster.name = "The Sinister Hermit"
-monster.name = "The Sinister Hermit Dirty"
 monster.description = "The Sinister Hermit"
 monster.experience = 0
 monster.outfit = {
@@ -19,12 +18,19 @@ monster.health = 30000
 monster.maxHealth = 30000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -41,7 +47,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lloyd")
 local monster = {}
 
-monster.name = "Lloyd"
 monster.description = "Lloyd"
 monster.experience = 50000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 1329,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 64000
 monster.maxHealth = 64000
 monster.race = "venom"
 monster.corpse = 24927
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -106,6 +119,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 55,
+	mitigation = 2.35,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 180, maxDamage = 250, target = false },
 }
 

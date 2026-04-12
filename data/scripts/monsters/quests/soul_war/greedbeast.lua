@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Greedbeast")
 local monster = {}
 
-monster.name = "Greedbeast"
 monster.description = "a greedbeast"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,17 @@ monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 400
+monster.speed = 200
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -56,17 +60,16 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -50, maxDamage = -90, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -25, maxDamage = -47, radius = 3, effect = CONST_ME_MAGIC_RED, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -200, maxDamage = -400, radius = 3, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -200, maxDamage = -400, radius = 3, effect = CONST_ME_POISONAREA, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -200, maxDamage = -400, length = 6, spread = 0, effect = CONST_ME_POISONAREA } },
-	{ name = "speed", interval = 2000, chance = 15, speed = -600, target = true, duration = 13000 },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -200, maxDamage = -400, length = 6, spread = 0, effect = CONST_ME_POISONAREA, target = false },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -600, target = true, duration = 13000 },
 }
 
 monster.defenses = {
 	defense = 70,
 	armor = 80,
+	mitigation = 1.15,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 50, maxDamage = 60, effect = CONST_ME_HITBYPOISON, target = false },
 }
 

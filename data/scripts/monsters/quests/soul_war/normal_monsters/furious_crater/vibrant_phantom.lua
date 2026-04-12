@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Vibrant Phantom")
 local monster = {}
 
-monster.name = "Vibrant Phantom"
 monster.description = "a vibrant phantom"
 monster.experience = 19700
 monster.outfit = {
@@ -15,18 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 1929
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Furious Crater.",
+}
 
+monster.events = {}
 
 monster.health = 27000
 monster.maxHealth = 27000
 monster.race = "undead"
 monster.corpse = 33813
-monster.speed = 460
+monster.speed = 230
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -43,7 +61,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -93,6 +111,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	mitigation = 2.45,
 }
 
 monster.elements = {

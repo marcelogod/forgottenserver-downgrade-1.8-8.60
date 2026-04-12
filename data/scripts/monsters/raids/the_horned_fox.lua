@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Horned Fox")
 local monster = {}
 
-monster.name = "The Horned Fox"
 monster.description = "the Horned Fox"
 monster.experience = 4400
 monster.outfit = {
@@ -18,12 +17,18 @@ monster.health = 7990
 monster.maxHealth = 7990
 monster.race = "blood"
 monster.corpse = 5983
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 20,
 }
 
 monster.flags = {
@@ -40,7 +45,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -90,8 +95,7 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -525 },
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -20, range = 7, shootEffect = CONST_ANI_BOLT, target = false },
 	-- poison
-	{ name = "condition", interval = 1000, chance = 40, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -10, maxDamage = -200, range = 10, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 1000, chance = 40, minDamage = -10, maxDamage = -200, range = 10, shootEffect = CONST_ANI_POISON, target = false },
 }
 
 monster.defenses = {

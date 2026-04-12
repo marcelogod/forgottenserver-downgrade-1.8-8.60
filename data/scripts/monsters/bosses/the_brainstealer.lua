@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Brainstealer")
 local monster = {}
 
-monster.name = "The Brainstealer"
 monster.description = "The Brainstealer"
 monster.experience = 72000
 monster.outfit = {
@@ -14,11 +13,16 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 2055,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 300000
 monster.maxHealth = monster.health
 monster.race = "undead"
 monster.corpse = 36843
-monster.speed = 850
+monster.speed = 425
 
 monster.summon = {
 	maxSummons = 2,
@@ -82,8 +86,6 @@ monster.loot = {
 	{ name = "gilded eldritch wand", chance = 80 },
 	{ name = "gilded eldritch rod", chance = 60 },
 	{ name = "gilded eldritch bow", chance = 50 },
-	{ name = "eldritch crescent moon spade", chance = 150 },
-	{ name = "eldritch monk boots", chance = 170 },
 	{ name = "eldritch crystal", chance = 30 },
 }
 
@@ -97,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 78,
 	armor = 78,
+	mitigation = 3.27,
 	{ name = "combat", type = COMBAT_HEALING, chance = 15, interval = 2000, minDamage = 1450, maxDamage = 5350, effect = CONST_ME_MAGIC_BLUE },
 }
 
@@ -125,5 +128,19 @@ monster.voices = {
 	{ text = "I will rule again and my realm of death will span the world!", yell = false },
 	{ text = "My lich-knights will conquer this world for me!", yell = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

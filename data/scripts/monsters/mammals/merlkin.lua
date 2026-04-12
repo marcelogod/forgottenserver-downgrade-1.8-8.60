@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Merlkin")
 local monster = {}
 
-monster.name = "Merlkin"
 monster.description = "a merlkin"
 monster.experience = 145
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 117
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Banuta, north-east of Port Hope.",
+}
 
 monster.health = 235
 monster.maxHealth = 235
 monster.race = "blood"
 monster.corpse = 6044
-monster.speed = 194
+monster.speed = 97
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -84,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 16,
+	mitigation = 1.04,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 30, maxDamage = 40, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

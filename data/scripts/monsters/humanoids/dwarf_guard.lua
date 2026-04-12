@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dwarf Guard")
 local monster = {}
 
-monster.name = "Dwarf Guard"
 monster.description = "a dwarf guard"
 monster.experience = 165
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 70
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Kazordoon Dwarf Mines, Dwacatra, Ferngrims Gate, Cyclopolis, Mount Sternum Undead Cave, \z
+		Stonehome Rotworm cave (near Edron), Maze of Lost Souls, Tiquanda Dwarf Cave, Beregar, Cormaya Dwarf Cave.",
+}
 
 monster.health = 245
 monster.maxHealth = 245
 monster.race = "blood"
 monster.corpse = 6013
-monster.speed = 206
+monster.speed = 103
 monster.manaCost = 650
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 20,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 15,
+	mitigation = 1.02,
 }
 
 monster.elements = {

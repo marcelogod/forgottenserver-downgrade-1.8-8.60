@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Last Planegazer")
 local monster = {}
 
-monster.name = "Last Planegazer"
 monster.description = "Last Planegazer"
 monster.experience = 10000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 50000
 monster.maxHealth = 50000
 monster.race = "blood"
 monster.corpse = 27613
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -78,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

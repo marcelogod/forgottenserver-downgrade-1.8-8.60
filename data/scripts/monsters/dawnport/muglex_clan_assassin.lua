@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Muglex Clan Assassin")
 local monster = {}
 
-monster.name = "Muglex Clan Assassin"
 monster.description = "a muglex clan assassin"
 monster.experience = 48
 monster.outfit = {
@@ -18,8 +17,11 @@ monster.health = 75
 monster.maxHealth = 75
 monster.race = "blood"
 monster.corpse = 6002
-monster.speed = 140
+monster.speed = 70
 monster.manaCost = 0
+monster.strategiesTarget = {
+	nearest = 100,
+}
 
 monster.flags = {
 	summonable = false,
@@ -35,7 +37,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -76,7 +78,7 @@ monster.defenses = {
 	defense = 5,
 	armor = 3,
 	{ name = "invisible", interval = 2000, chance = 11, effect = CONST_ME_MAGIC_BLUE },
-	{ name = "speed", interval = 2000, chance = 10, speed = 145, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 145, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Valkyrie")
 local monster = {}
 
-monster.name = "Valkyrie"
 monster.description = "a valkyrie"
 monster.experience = 85
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 12
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Amazon Camp (Venore), Amazon Camp (Carlin), Amazonia, \z
+		single respawn to the north west of Thais, Foreigner Quarter in Yalahar.",
+}
 
 monster.health = 190
 monster.maxHealth = 190
 monster.race = "blood"
 monster.corpse = 18242
-monster.speed = 176
+monster.speed = 88
 monster.manaCost = 450
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -88,6 +103,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 12,
 	armor = 12,
+	mitigation = 0.36,
 }
 
 monster.elements = {

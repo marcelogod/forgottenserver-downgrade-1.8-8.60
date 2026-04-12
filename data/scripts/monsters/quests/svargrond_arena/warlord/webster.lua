@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Webster")
 local monster = {}
 
-monster.name = "Webster"
 monster.description = "Webster"
 monster.experience = 1200
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 2950
 monster.maxHealth = 2950
 monster.race = "undead"
 monster.corpse = 7349
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -64,14 +70,15 @@ monster.loot = {}
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -250 },
-	{ name = "speed", interval = 3500, chance = 65, speed = -500, range = 1, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 40 },
+	{ name = "speed", interval = 3500, chance = 65, speedChange = -500, range = 1, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 40 },
 	{ name = "combat", interval = 3000, chance = 75, type = COMBAT_ENERGYDAMAGE, minDamage = -13, maxDamage = -80, range = 7, shootEffect = CONST_ANI_ENERGY, target = false },
 }
 
 monster.defenses = {
 	defense = 34,
 	armor = 29,
-	{ name = "speed", interval = 5000, chance = 100, speed = 500, effect = CONST_ME_MAGIC_RED, target = false, duration = 2500 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 5000, chance = 100, speedChange = 500, effect = CONST_ME_MAGIC_RED, target = false, duration = 2500 },
 }
 
 monster.elements = {

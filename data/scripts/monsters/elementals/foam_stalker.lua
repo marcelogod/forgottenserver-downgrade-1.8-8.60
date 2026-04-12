@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Foam Stalker")
 local monster = {}
 
-monster.name = "Foam Stalker"
 monster.description = "a foam stalker"
 monster.experience = 3120
 monster.outfit = {
@@ -9,12 +8,23 @@ monster.outfit = {
 }
 
 monster.raceId = 2259
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Great Pearl Fan Reef",
+}
 
 monster.health = 4500
 monster.maxHealth = 4500
 monster.race = "blood"
 monster.corpse = 39344
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -36,7 +46,7 @@ monster.flags = {
 	targetDistance = 2,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -78,7 +88,6 @@ monster.loot = {
 	{ name = "mercenary sword", chance = 4167 },
 	{ name = "knight legs", chance = 3649 },
 	{ name = "violet gem", chance = 3389 },
-	{ id = 50152, chance = 560 }, -- collar of orange plasma
 }
 
 monster.attacks = {
@@ -92,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 64,
 	armor = 64,
+	mitigation = 1.74,
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 80, maxDamage = 113 },
 }
 

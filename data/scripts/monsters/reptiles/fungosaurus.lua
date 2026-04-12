@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Fungosaurus")
 local monster = {}
 
-monster.name = "Fungosaurus"
 monster.description = "a fungosaurus"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 30000
 monster.maxHealth = 30000
 monster.race = "blood"
 monster.corpse = 39311
-monster.speed = 364
+monster.speed = 182
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -69,6 +72,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 110,
 	armor = 0,
+	--	mitigation = ???,
 }
 
 monster.elements = {

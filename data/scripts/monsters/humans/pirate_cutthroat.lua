@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pirate Cutthroat")
 local monster = {}
 
-monster.name = "Pirate Cutthroat"
 monster.description = "a pirate cutthroat"
 monster.experience = 175
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 248
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Nargor, Tyrsung on the ship, Yalahar, Krailos Steppe and The Cave.",
+}
 
 monster.health = 325
 monster.maxHealth = 325
 monster.race = "blood"
 monster.corpse = 18198
-monster.speed = 214
+monster.speed = 107
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -85,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 15,
+	mitigation = 0.72,
 }
 
 monster.elements = {

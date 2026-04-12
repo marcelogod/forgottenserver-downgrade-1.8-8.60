@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lucifuga Aranea")
 local monster = {}
 
-monster.name = "Lucifuga Aranea"
 monster.description = "a lucifuga aranea"
 monster.experience = 10000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 12000
 monster.maxHealth = 12000
 monster.race = "undead"
 monster.corpse = 7344
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -67,15 +73,16 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -250, condition = { type = CONDITION_POISON, totalDamage = 160, interval = 4000 } },
-	{ name = "speed", interval = 2000, chance = 15, speed = -800, range = 7, radius = 6, effect = CONST_ME_POFF, target = false, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -800, range = 7, radius = 6, effect = CONST_ME_POFF, target = false, duration = 15000 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_ICEDAMAGE, minDamage = -50, maxDamage = -100, range = 7, shootEffect = CONST_ANI_ICE, effect = CONST_ME_ICEAREA, target = true },
-	{ name = "speed", interval = 2000, chance = 20, speed = -600, range = 7, shootEffect = CONST_ANI_SNOWBALL, target = true, duration = 10000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -600, range = 7, shootEffect = CONST_ANI_SNOWBALL, target = true, duration = 10000 },
 }
 
 monster.defenses = {
 	defense = 40,
 	armor = 40,
-	{ name = "speed", interval = 2000, chance = 15, speed = 250, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 250, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

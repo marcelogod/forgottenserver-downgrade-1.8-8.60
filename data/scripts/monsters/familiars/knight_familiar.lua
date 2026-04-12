@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Knight familiar")
 local monster = {}
 
-monster.name = "Knight familiar"
 monster.description = "a knight familiar"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 308
+monster.speed = 154
 monster.manaCost = 1000
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -72,7 +78,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 55,
 	armor = 55,
-	{ name = "combat", interval = 2000, chance = 75, type = COMBAT_HEALING, minDamage = 300, maxDamage = 300, effect = CONST_ME_MAGIC_GREEN, target = false },
+	{ name = "combat", interval = 2000, chance = 75, type = COMBAT_HEALING, minDamage = 400, maxDamage = 400, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 
 monster.elements = {
@@ -90,7 +96,9 @@ monster.elements = {
 
 monster.immunities = {
 	{ type = "paralyze", condition = true },
+	{ type = "outfit", condition = false },
 	{ type = "invisible", condition = true },
+	{ type = "bleed", condition = false },
 }
 
 mType:register(monster)

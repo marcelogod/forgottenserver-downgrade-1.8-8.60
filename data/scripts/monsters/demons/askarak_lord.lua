@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Askarak Lord")
 local monster = {}
 
-monster.name = "Askarak Lord"
 monster.description = "an askarak lord"
 monster.experience = 1200
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 728
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Demonwar Crypt.",
+}
 
 monster.health = 2100
 monster.maxHealth = 2100
 monster.race = "venom"
 monster.corpse = 12821
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -85,12 +103,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -40, maxDamage = -80, range = 7, radius = 6, shootEffect = CONST_ANI_POISON, effect = CONST_ME_GREEN_RINGS, target = false },
 	{ name = "askarak wave", interval = 2000, chance = 15, minDamage = -95, maxDamage = -180, target = false },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -130, maxDamage = -180, length = 4, spread = 0, effect = CONST_ME_GREEN_RINGS, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -650, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 15000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -650, radius = 1, effect = CONST_ME_MAGIC_RED, target = true, duration = 15000 },
 }
 
 monster.defenses = {
 	defense = 20,
 	armor = 40,
+	mitigation = 1.18,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 120, maxDamage = 160, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bane Bringer")
 local monster = {}
 
-monster.name = "Bane Bringer"
 monster.description = "a bane bringer"
 monster.experience = 400
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 679
+monster.Bestiary = {
+	class = "Plant",
+	race = BESTY_RACE_PLANT,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 50,
+	Stars = 3,
+	Occurrence = 3,
+	Locations = "Green Claw Swamp underground, near the big witches' cauldron.",
+}
 
 monster.health = 2500
 monster.maxHealth = 2500
 monster.race = "venom"
 monster.corpse = 8953
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -72,6 +90,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 0,
 	armor = 17,
+	mitigation = 0.56,
 }
 
 monster.elements = {

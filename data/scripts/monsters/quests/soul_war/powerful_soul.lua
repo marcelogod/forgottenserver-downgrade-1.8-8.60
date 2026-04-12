@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Powerful Soul")
 local monster = {}
 
-monster.name = "Powerful Soul"
 monster.description = "a powerful soul"
 monster.experience = 0
 monster.outfit = {
@@ -18,13 +17,18 @@ monster.health = 30000
 monster.maxHealth = 30000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 1000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +45,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -60,6 +64,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 80,
 	armor = 90,
+	mitigation = 2,
 }
 
 monster.elements = {
@@ -81,5 +86,28 @@ monster.immunities = {
 	{ type = "invisible", condition = false },
 	{ type = "bleed", condition = false },
 }
+
+local transformTimeCount = 0
+mType.onThink = function(monster, interval)
+	transformTimeCount = transformTimeCount + interval
+	if transformTimeCount == 8000 then
+		CreateGoshnarsGreedMonster("Weak Soul", GreedMonsters[monster:getName()])
+		monster:remove()
+		local boss = Creature("Goshnar's Greed")
+		if boss then
+			for elementType, reflectPercent in pairs(SoulWarReflectDamageMap) do
+				boss:addReflectElement(elementType, reflectPercent)
+			end
+			boss:addDefense(10)
+			boss:setMaxHealth(boss:getMaxHealth() + 10000)
+			boss:addHealth(10000)
+		end
+		transformTimeCount = 0
+	end
+end
+
+mType.onAppear = function(monster)
+	transformTimeCount = 0
+end
 
 mType:register(monster)

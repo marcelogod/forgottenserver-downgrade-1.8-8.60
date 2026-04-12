@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Fire Elemental")
 local monster = {}
 
-monster.name = "Fire Elemental"
 monster.description = "a fire elemental"
 monster.experience = 220
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 49
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Cyclopolis, Hero Cave in Edron, Ankrahmun tombs, Serpentine Tower, Factory Quarter in Yalahar, \z
+		Deeper Banuta, Goroma inside the volcano and beneath Fenrock.",
+}
 
 monster.health = 280
 monster.maxHealth = 280
 monster.race = "fire"
 monster.corpse = 8136
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 690
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	random = 20,
 }
 
 monster.flags = {
@@ -42,10 +58,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -69,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 18,
+	mitigation = 0.51,
 }
 
 monster.elements = {

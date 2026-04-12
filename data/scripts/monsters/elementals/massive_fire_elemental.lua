@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Massive Fire Elemental")
 local monster = {}
 
-monster.name = "Massive Fire Elemental"
 monster.description = "a massive fire elemental"
 monster.experience = 1400
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 313
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Demon Forge, Deeper Banuta, Hero Cave, Hot Spot, Fury Dungeon.",
+}
 
 monster.health = 1800
 monster.maxHealth = 1800
 monster.race = "fire"
 monster.corpse = 6323
-monster.speed = 238
+monster.speed = 119
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	random = 20,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -83,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 57,
+	mitigation = 1.32,
 }
 
 monster.elements = {

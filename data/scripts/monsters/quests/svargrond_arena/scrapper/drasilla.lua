@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Drasilla")
 local monster = {}
 
-monster.name = "Drasilla"
 monster.description = "Drasilla"
 monster.experience = 700
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1260
 monster.maxHealth = 1260
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 100,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -71,6 +77,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 33,
 	armor = 32,
+	--	mitigation = ???,
 	{ name = "combat", interval = 6000, chance = 65, type = COMBAT_HEALING, minDamage = 20, maxDamage = 50, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

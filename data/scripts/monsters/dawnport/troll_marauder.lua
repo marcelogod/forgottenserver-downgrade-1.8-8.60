@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Troll Marauder")
 local monster = {}
 
-monster.name = "Troll Marauder"
 monster.description = "a troll marauder"
 monster.experience = 40
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 70
 monster.maxHealth = 70
 monster.race = "blood"
 monster.corpse = 861
-monster.speed = 120
+monster.speed = 60
 monster.manaCost = 350
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -77,6 +80,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 4,
 	armor = 8,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Brother Freeze")
 local monster = {}
 
-monster.name = "Brother Freeze"
 monster.description = "Brother Freeze"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "undead"
 monster.corpse = 7282
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -67,6 +70,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 33,
 	armor = 28,
+	--	mitigation = ???,
 }
 
 monster.elements = {

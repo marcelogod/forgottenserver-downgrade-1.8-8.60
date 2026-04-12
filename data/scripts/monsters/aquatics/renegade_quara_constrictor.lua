@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Renegade Quara Constrictor")
 local monster = {}
 
-monster.name = "Renegade Quara Constrictor"
 monster.description = "a renegade quara constrictor"
 monster.experience = 1250
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1097
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Seacrest Grounds when Seacrest Serpents are not spawning.",
+}
 
 monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "blood"
 monster.corpse = 6065
-monster.speed = 380
+monster.speed = 190
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 20,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -59,20 +76,20 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "platinum coin", chance = 80810, maxCount = 3 },
-	{ name = "quara tentacle", chance = 14560 },
-	{ name = "mind stone", chance = 7020 },
-	{ name = "great mana potion", chance = 6660 },
-	{ id = 3098, chance = 5330 }, -- ring of healing
-	{ name = "shrimp", chance = 4900, maxCount = 5 },
-	{ name = "small amethyst", chance = 4720, maxCount = 2 },
-	{ name = "assassin star", chance = 4510, maxCount = 7 },
-	{ name = "small ruby", chance = 4150, maxCount = 2 },
-	{ name = "vortex bolt", chance = 3270, maxCount = 10 },
-	{ name = "northwind rod", chance = 1030 },
-	{ name = "violet crystal shard", chance = 940 },
-	{ name = "fish fin", chance = 360 },
-	{ name = "piggy bank", chance = 240 },
+	{ name = "platinum coin", chance = 79280, maxCount = 3 },
+	{ name = "quara tentacle", chance = 15240 },
+	{ name = "mind stone", chance = 6880 },
+	{ id = 3098, chance = 5580 }, -- ring of healing
+	{ name = "great mana potion", chance = 5390, maxCount = 5 },
+	{ name = "shrimp", chance = 5300, maxCount = 4 },
+	{ name = "small amethyst", chance = 5200, maxCount = 2 },
+	{ name = "small ruby", chance = 4650, maxCount = 2 },
+	{ name = "assassin star", chance = 4460, maxCount = 7 },
+	{ name = "vortex bolt", chance = 3720, maxCount = 10 },
+	{ name = "violet crystal shard", chance = 1210 },
+	{ name = "northwind rod", chance = 740 },
+	{ name = "fish fin", chance = 370 },
+	{ name = "piggy bank", chance = 190 },
 }
 
 monster.attacks = {
@@ -84,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 35,
+	mitigation = 1.04,
 	{ name = "combat", interval = 3000, chance = 35, type = COMBAT_HEALING, minDamage = 150, maxDamage = 300, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

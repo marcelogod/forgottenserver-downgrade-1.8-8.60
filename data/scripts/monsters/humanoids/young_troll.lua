@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Young Troll")
 local monster = {}
 
-monster.name = "Young Troll"
 monster.description = "a young troll"
 monster.experience = 12
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 30
 monster.maxHealth = 30
 monster.race = "blood"
 monster.corpse = 5960
-monster.speed = 116
+monster.speed = 58
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Darklight Striker")
 local monster = {}
 
-monster.name = "Darklight Striker"
 monster.description = "a darklight striker"
 monster.experience = 22200
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2399
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Darklight Core",
+}
 
 monster.health = 29700
 monster.maxHealth = 29700
 monster.race = "undead"
 monster.corpse = 43844
-monster.speed = 420
+monster.speed = 210
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -55,7 +72,7 @@ monster.light = {
 
 monster.loot = {
 	{ name = "crystal coin", chance = 14380, maxCount = 1 },
--- { name = "unstable darklight matter", chance = 14492, maxCount = 1 },
+	--{ name = "unstable darklight matter", chance = 14492, maxCount = 1 },
 	{ name = "darklight core", chance = 9783, maxCount = 1 },
 	{ name = "small topaz", chance = 11140, maxCount = 3 },
 	{ name = "ice rapier", chance = 5104, maxCount = 1 },
@@ -77,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 112,
 	armor = 112,
+	mitigation = 3.10,
 }
 
 monster.elements = {

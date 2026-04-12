@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Salamander Trainer")
 local monster = {}
 
-monster.name = "Salamander Trainer"
 monster.description = "a salamander trainer"
 monster.experience = 70
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 220
 monster.maxHealth = 220
 monster.race = "blood"
 monster.corpse = 5960
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -71,6 +74,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 13,
 	armor = 7,
+	mitigation = 0.38,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 10, maxDamage = 25, effect = CONST_ME_MAGIC_GREEN, target = false },
 	{ name = "salamander trainer summon", interval = 2000, chance = 30, target = false },
 }

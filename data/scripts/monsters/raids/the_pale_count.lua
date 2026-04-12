@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Pale Count")
 local monster = {}
 
-monster.name = "The Pale Count"
 monster.description = "The Pale Count"
 monster.experience = 28000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 972,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 50000
 monster.maxHealth = 50000
 monster.race = "blood"
 monster.corpse = 18953
-monster.speed = 500
+monster.speed = 250
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -102,7 +113,7 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 80, attack = 120 },
-	{ name = "speed", interval = 1000, chance = 17, speed = -600, range = 7, radius = 4, effect = CONST_ME_MAGIC_RED, target = true, duration = 1500 },
+	{ name = "speed", interval = 1000, chance = 17, speedChange = -600, range = 7, radius = 4, effect = CONST_ME_MAGIC_RED, target = true, duration = 1500 },
 	{ name = "combat", interval = 2000, chance = 21, type = COMBAT_ICEDAMAGE, minDamage = -130, maxDamage = -350, range = 6, radius = 2, shootEffect = CONST_ANI_SMALLICE, effect = CONST_ME_GIANTICE, target = true },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_MANADRAIN, minDamage = -60, maxDamage = -120, range = 7, shootEffect = CONST_ANI_EARTH, effect = CONST_ME_CARNIPHILA, target = false },
 }
@@ -110,6 +121,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 75,
 	armor = 75,
+	--	mitigation = ???,
 }
 
 monster.elements = {

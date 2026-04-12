@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rift Worm")
 local monster = {}
 
-monster.name = "Rift Worm"
 monster.description = "a rift worm"
 monster.experience = 1195
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 2800
 monster.maxHealth = 2800
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

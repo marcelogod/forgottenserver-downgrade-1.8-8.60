@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Deepling Scout")
 local monster = {}
 
-monster.name = "Deepling Scout"
 monster.description = "a deepling scout"
 monster.experience = 160
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 734
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Fiehonja, Sunken Mines near Dwarf Mines.",
+}
 
 monster.health = 240
 monster.maxHealth = 240
 monster.race = "blood"
 monster.corpse = 12684
-monster.speed = 130
+monster.speed = 65
 monster.manaCost = 0
 
 monster.faction = FACTION_DEEPLING
@@ -29,6 +39,13 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_DEATHLING }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -45,7 +62,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -66,15 +83,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 75950, maxCount = 50 },
-	{ name = "hunting spear", chance = 15000, maxCount = 3 },
-	{ id = 3052, chance = 2020 }, -- life ring
-	{ name = "rusted armor", chance = 960 },
-	{ name = "heavy trident", chance = 480 },
-	{ name = "eye of a deepling", chance = 300 },
-	{ name = "fish fin", chance = 300 },
-	{ name = "small emerald", chance = 120 },
-	{ name = "flask of rust remover", chance = 110 },
+	{ name = "gold coin", chance = 75000, maxCount = 50 },
+	{ name = "hunting spear", chance = 15185, maxCount = 3 },
+	{ id = 3052, chance = 2127 }, -- life ring
+	{ name = "rusted armor", chance = 925 },
+	{ name = "heavy trident", chance = 505 },
+	{ name = "eye of a deepling", chance = 310 },
+	{ name = "fish fin", chance = 310 },
+	{ name = "small emerald", chance = 121 },
+	{ name = "flask of rust remover", chance = 111 },
 }
 
 monster.attacks = {
@@ -85,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 7,
+	mitigation = 0.56,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Jellyfish")
 local monster = {}
 
-monster.name = "Jellyfish"
 monster.description = "a jellyfish"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 781
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 1,
+	Locations = "Fiehonja, Krailos Steppe underwater cave.",
+}
 
 monster.health = 55
 monster.maxHealth = 55
 monster.race = "undead"
 monster.corpse = 13857
-monster.speed = 168
+monster.speed = 84
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
 }
 
 monster.light = {
@@ -60,7 +77,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "shrimp", chance = 8170, maxCount = 2 },
+	{ name = "shrimp", chance = 8333, maxCount = 2 },
 }
 
 monster.attacks = {
@@ -70,6 +87,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 11,
+	mitigation = 0.30,
 	{ name = "invisible", interval = 2000, chance = 15 },
 }
 

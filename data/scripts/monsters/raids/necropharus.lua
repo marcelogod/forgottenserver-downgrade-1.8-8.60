@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Necropharus")
 local monster = {}
 
-monster.name = "Necropharus"
 monster.description = "Necropharus"
 monster.experience = 1050
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 750
 monster.maxHealth = 750
 monster.race = "blood"
 monster.corpse = 18293
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -96,6 +99,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	mitigation = 1.18,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 0, maxDamage = 300, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

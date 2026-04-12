@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orc Berserker")
 local monster = {}
 
-monster.name = "Orc Berserker"
 monster.description = "an orc berserker"
 monster.experience = 195
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 8
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Orc Fort, Dwacatra, Orc Peninsula, Elvenbane, Edron Orc Cave, Plains of Havoc, below Point of No Return in Outlaw Camp, Maze of Lost Souls, Cyclopolis, Desert Dungeon, Ancient Temple, Foreigner Quarter, Zao Orc Land.",
+}
 
 monster.health = 210
 monster.maxHealth = 210
 monster.race = "blood"
 monster.corpse = 5980
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 590
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 60,
+	health = 40,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -79,7 +94,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 12,
-	{ name = "speed", interval = 2000, chance = 15, speed = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	mitigation = 0.30,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

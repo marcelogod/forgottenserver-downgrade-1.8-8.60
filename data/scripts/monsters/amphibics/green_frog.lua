@@ -1,26 +1,36 @@
 local mType = Game.createMonsterType("Green Frog")
 local monster = {}
 
-monster.name = "Green Frog"
 monster.description = "a green frog"
 monster.experience = 0
 monster.outfit = {
 	lookType = 224,
-	lookHead = 0,
-	lookBody = 0,
-	lookLegs = 0,
-	lookFeet = 0,
+	lookHead = 69,
+	lookBody = 66,
+	lookLegs = 69,
+	lookFeet = 66,
 	lookAddons = 0,
 	lookMount = 0,
 }
 
 monster.raceId = 267
+monster.Bestiary = {
+	class = "Amphibic",
+	race = BESTY_RACE_AMPHIBIC,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Meriana and other Shattered Isles, Port Hope caves, The Witches Cliff (only accessible during a quest).",
+}
 
 monster.health = 25
 monster.maxHealth = 25
 monster.race = "venom"
 monster.corpse = 6079
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 250
 
 monster.changeTarget = {
@@ -28,12 +38,16 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = true,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
-	pushable = false,
+	pushable = true,
 	rewardBoss = false,
 	illusionable = true,
 	canPushItems = false,
@@ -42,10 +56,10 @@ monster.flags = {
 	targetDistance = 6,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -62,11 +76,13 @@ monster.voices = {
 
 monster.loot = {}
 
-monster.attacks = {}
+monster.attacks = {
+	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -25, effect = CONST_ME_DRAWBLOOD },
+}
 
 monster.defenses = {
 	defense = 5,
-	armor = 2,
+	armor = 5,
 }
 
 monster.elements = {

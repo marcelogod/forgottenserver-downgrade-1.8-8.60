@@ -1,22 +1,35 @@
 local mType = Game.createMonsterType("Lovely Frazzlemaw")
 local monster = {}
 
-monster.name = "Lovely Frazzlemaw"
 monster.description = "a lovely frazzlemaw"
 monster.experience = 3400
-monster.outfit = { lookType = 594 }
+monster.outfit = {
+	lookType = 594,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
+	lookAddons = 0,
+	lookMount = 0,
+}
 
 monster.health = 4100
-
 monster.maxHealth = 4100
 monster.race = "blood"
 monster.corpse = 20233
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -33,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = true,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -90,8 +103,7 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -400, radius = 3, effect = CONST_ME_HITAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 13, type = COMBAT_LIFEDRAIN, minDamage = -100, maxDamage = -700, length = 5, spread = 0, effect = CONST_ME_EXPLOSIONAREA, target = true },
 	-- bleed
-	{ name = "condition", interval = 2000, chance = 16, target = true, condition =
-	{ type = CONDITION_BLEEDING, minDamage = -400, maxDamage = -600, radius = 2, shootEffect = CONST_ANI_LARGEROCK, effect = CONST_ME_STONES } },
+	{ name = "condition", type = CONDITION_BLEEDING, interval = 2000, chance = 16, minDamage = -400, maxDamage = -600, radius = 2, shootEffect = CONST_ANI_LARGEROCK, effect = CONST_ME_STONES, target = true },
 	{ name = "frazzlemaw paralyze", interval = 2000, chance = 15, target = false },
 }
 

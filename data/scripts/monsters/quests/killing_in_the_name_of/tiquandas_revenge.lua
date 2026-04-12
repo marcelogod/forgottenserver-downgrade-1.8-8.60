@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tiquandas Revenge")
 local monster = {}
 
-monster.name = "Tiquandas Revenge"
 monster.description = "Tiquandas Revenge"
 monster.experience = 2635
 monster.outfit = {
@@ -18,12 +17,17 @@ monster.health = 1800
 monster.maxHealth = 1800
 monster.race = "venom"
 monster.corpse = 6047
-monster.speed = 440
+monster.speed = 220
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -40,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 400,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,13 +74,14 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 70, attack = 40, condition = { type = CONDITION_POISON, totalDamage = 95, interval = 4000 } },
 	{ name = "combat", interval = 1000, chance = 25, type = COMBAT_EARTHDAMAGE, minDamage = -60, maxDamage = -200, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_HITBYPOISON, target = false },
-	{ name = "speed", interval = 1000, chance = 34, speed = -850, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_HITBYPOISON, target = false, duration = 30000 },
+	{ name = "speed", interval = 1000, chance = 34, speedChange = -850, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_HITBYPOISON, target = false, duration = 30000 },
 	{ name = "combat", interval = 1000, chance = 12, type = COMBAT_EARTHDAMAGE, minDamage = -40, maxDamage = -130, radius = 3, effect = CONST_ME_POISONAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 31,
 	armor = 30,
+	mitigation = 1.58,
 	{ name = "ultimate healing", interval = 1200, chance = 35, minDamage = 600, maxDamage = 800, target = false },
 }
 

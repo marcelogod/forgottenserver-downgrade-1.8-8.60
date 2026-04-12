@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cosmic Energy Prism C")
 local monster = {}
 
-monster.name = "Cosmic Energy Prism C"
 monster.description = "a cosmic energy prism C"
 monster.experience = 840
 monster.outfit = {
@@ -20,6 +19,10 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,12 +37,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -61,6 +65,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 50,
+	mitigation = 0.71,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 1000, maxDamage = 1000, effect = CONST_ME_MAGIC_RED, target = false },
 }
 

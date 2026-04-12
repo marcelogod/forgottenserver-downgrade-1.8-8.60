@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orc Marauder")
 local monster = {}
 
-monster.name = "Orc Marauder"
 monster.description = "an orc marauder"
 monster.experience = 205
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 614
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Zao Orc Land.",
+}
 
 monster.health = 235
 monster.maxHealth = 235
 monster.race = "blood"
 monster.corpse = 10334
-monster.speed = 390
+monster.speed = 195
 monster.manaCost = 490
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -81,7 +95,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 16,
-	{ name = "speed", interval = 2000, chance = 15, speed = 350, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.83,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 350, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

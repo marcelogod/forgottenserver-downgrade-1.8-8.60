@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cursed Gladiator")
 local monster = {}
 
-monster.name = "Cursed Gladiator"
 monster.description = "a cursed gladiator"
 monster.experience = 215
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 435
 monster.maxHealth = 435
 monster.race = "undead"
 monster.corpse = 7349
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -69,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	--	mitigation = ???,
 }
 
 monster.elements = {

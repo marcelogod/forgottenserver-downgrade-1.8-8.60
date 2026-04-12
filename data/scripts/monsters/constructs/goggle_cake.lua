@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Goggle Cake")
 local monster = {}
 
-monster.name = "Goggle Cake"
 monster.description = "a goggle cake"
 monster.experience = 2700
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2534
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Dessert Dungeons.",
+}
 
 monster.health = 2700
 monster.maxHealth = 2700
 monster.race = "undead"
 monster.corpse = 48271
-monster.speed = 244
+monster.speed = 122
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -93,6 +110,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 38,
 	armor = 38,
+	mitigation = 0.99,
 }
 
 monster.elements = {

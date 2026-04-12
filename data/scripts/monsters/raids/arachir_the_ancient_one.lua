@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Arachir the Ancient One")
 local monster = {}
 
-monster.name = "Arachir the Ancient One"
 monster.description = "Arachir the Ancient One"
 monster.experience = 1800
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 478,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 1600
 monster.maxHealth = 1600
 monster.race = "undead"
 monster.corpse = 8109
-monster.speed = 286
+monster.speed = 143
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -87,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	mitigation = 1.04,
 	{ name = "combat", interval = 1000, chance = 12, type = COMBAT_HEALING, minDamage = 100, maxDamage = 235, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "invisible", interval = 3000, chance = 25, effect = CONST_ME_MAGIC_BLUE },
 	{ name = "outfit", interval = 4500, chance = 30, target = false, duration = 4000, outfitMonster = "bat" },

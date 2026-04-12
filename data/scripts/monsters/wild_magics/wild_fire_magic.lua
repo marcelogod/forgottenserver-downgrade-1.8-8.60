@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Wild Fire Magic")
 local monster = {}
 
-monster.name = "Wild Fire Magic"
 monster.description = "a wild fire magic"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1
 monster.maxHealth = 1
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -63,6 +69,7 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 0,
 	armor = 0,
+	mitigation = 0.00,
 	{ name = "effect", interval = 100, chance = 100, radius = 1, effect = CONST_ME_FIREWORK_YELLOW, target = false },
 }
 

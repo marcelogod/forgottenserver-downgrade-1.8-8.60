@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mind-Wrecking Dream")
 local monster = {}
 
-monster.name = "Mind-Wrecking Dream"
 monster.description = "a mind-wrecking dream"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3900
 monster.maxHealth = 3900
 monster.race = "undead"
 monster.corpse = 8127
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -69,8 +75,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 35,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 130, maxDamage = 205, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 450, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

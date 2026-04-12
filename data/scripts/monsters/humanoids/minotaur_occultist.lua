@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Minotaur Occultist")
 local monster = {}
 
-monster.name = "Minotaur Occultist"
 monster.description = "a minotaur occultist"
 monster.experience = 100
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 125
 monster.maxHealth = 125
 monster.race = "blood"
 monster.corpse = 5981
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -78,6 +81,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 8,
+	mitigation = 0.40,
 }
 
 monster.elements = {

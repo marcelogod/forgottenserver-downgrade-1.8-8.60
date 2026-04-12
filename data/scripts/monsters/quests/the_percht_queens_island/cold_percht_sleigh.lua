@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cold Percht Sleigh")
 local monster = {}
 
-monster.name = "Cold Percht Sleigh"
 monster.description = "a cold percht sleigh"
 monster.experience = 500
 monster.outfit = {
@@ -26,6 +25,10 @@ monster.changeTarget = {
 	chance = 8,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

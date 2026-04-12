@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Scorpion")
 local monster = {}
 
-monster.name = "Scorpion"
 monster.description = "a scorpion"
 monster.experience = 45
 monster.outfit = {
@@ -15,17 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 43
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Near Thais Troll Cave, Plague Spike, Drefia, Jakundaf Desert, \z
+		Green Claw Swamp, beneath Folda, Maze of Lost Souls, Plains of Havoc, \z
+		Venore and Ankrahmun Dragon Lairs, beneath Edron Graveyard, Ancient Temple, \z
+		Hellgate, Mad Mage Room, Ankrahmun Tombs, Treasure Island, Mal'ouquah, Ramoa, \z
+		Cyclopolis, Ghostlands, Vengoth, Lion's Rock.",
+}
 
 monster.health = 45
 monster.maxHealth = 45
 monster.race = "venom"
 monster.corpse = 5988
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 310
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 60,
+	random = 40,
 }
 
 monster.flags = {
@@ -42,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 5,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -69,6 +88,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 14,
+	mitigation = 0.13,
 }
 
 monster.elements = {

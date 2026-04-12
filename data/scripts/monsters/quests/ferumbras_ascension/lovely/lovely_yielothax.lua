@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lovely Yielothax")
 local monster = {}
 
-monster.name = "Lovely Yielothax"
 monster.description = "a lovely yielothax"
 monster.experience = 1250
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "venom"
 monster.corpse = 12595
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -85,8 +91,7 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -75, maxDamage = -120, radius = 3, shootEffect = CONST_ANI_EARTH, effect = CONST_ME_HITBYPOISON, target = true },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -120, maxDamage = -215, radius = 3, effect = CONST_ME_HITBYPOISON, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 13, target = true, condition =
-	{ type = CONDITION_POISON, minDamage = -50, maxDamage = -50, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_HITBYPOISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 13, minDamage = -50, maxDamage = -50, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_HITBYPOISON, target = true },
 }
 
 monster.defenses = {

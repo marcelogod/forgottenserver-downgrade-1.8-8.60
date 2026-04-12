@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mimic")
 local monster = {}
 
-monster.name = "Mimic"
 monster.description = "a mimic"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 1200
 monster.maxHealth = 1200
 monster.race = "blood"
 monster.corpse = 2472
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 5,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -60,6 +63,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 3,
 	armor = 2,
+	mitigation = 0.00,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gryphon")
 local monster = {}
 
-monster.name = "Gryphon"
 monster.description = "a gryphon"
 monster.experience = 1000
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1819
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Kilmaresh Mountains",
+}
 
 monster.health = 3200
 monster.maxHealth = 3200
 monster.race = "blood"
 monster.corpse = 31398
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -69,6 +83,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 76,
 	armor = 76,
+	mitigation = 2.19,
 }
 
 monster.elements = {

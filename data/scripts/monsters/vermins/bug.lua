@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bug")
 local monster = {}
 
-monster.name = "Bug"
 monster.description = "a bug"
 monster.experience = 18
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 45
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "In many parts around Tibia, including Rookgaard.",
+}
 
 monster.health = 29
 monster.maxHealth = 29
 monster.race = "venom"
 monster.corpse = 5990
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 250
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -70,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 2,
+	mitigation = 0.07,
 }
 
 monster.elements = {

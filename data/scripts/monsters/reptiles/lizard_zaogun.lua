@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lizard Zaogun")
 local monster = {}
 
-monster.name = "Lizard Zaogun"
 monster.description = "a lizard zaogun"
 monster.experience = 1700
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 616
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Zzaion, Zao Palace, Muggy Plains, Zao Orc Land (in fort), Razzachai, Temple of Equilibrium.",
+}
 
 monster.health = 2955
 monster.maxHealth = 2955
 monster.race = "blood"
 monster.corpse = 10367
-monster.speed = 276
+monster.speed = 138
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -89,6 +103,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 42,
+	mitigation = 1.37,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 175, maxDamage = 275, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 

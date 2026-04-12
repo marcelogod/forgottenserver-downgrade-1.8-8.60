@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Reflection of Obujos")
 local monster = {}
 
-monster.name = "Reflection of Obujos"
 monster.description = "a reflection of obujos"
 monster.experience = 20000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 35000
 monster.maxHealth = 35000
 monster.race = "blood"
 monster.corpse = 13797
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 4,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -74,6 +80,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 15, type = COMBAT_HEALING, minDamage = 1000, maxDamage = 2100, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

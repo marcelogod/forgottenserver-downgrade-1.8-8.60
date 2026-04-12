@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Corym Charlatan")
 local monster = {}
 
-monster.name = "Corym Charlatan"
 monster.description = "a corym charlatan"
 monster.experience = 150
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 916
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Venore Corym Cave, Tiquanda Corym Cave, Corym Black Market, \z
+		Carlin Corym Cave/Dwarf Mines Diggers Depths Mine, Upper Spike.",
+}
 
 monster.health = 250
 monster.maxHealth = 250
 monster.race = "blood"
 monster.corpse = 17445
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 490
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 17,
+	mitigation = 0.62,
 }
 
 monster.elements = {

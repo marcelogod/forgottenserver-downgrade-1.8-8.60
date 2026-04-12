@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Elf Scout")
 local monster = {}
 
-monster.name = "Elf Scout"
 monster.description = "an elf scout"
 monster.experience = 75
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 64
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Yalahar Foreigner Quarter, Shadowthorn, northwest of Ab'Dendriel, north and west of Mount Sternum, \z
+		Hellgate, Maze of Lost Souls, near Knightwatch Tower in the Plains of Havoc. \z
+		Two may also spawn when a Desperate White Deer or an Enraged White Deer is killed.",
+}
 
 monster.health = 160
 monster.maxHealth = 160
 monster.race = "blood"
 monster.corpse = 6012
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 360
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -85,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 7,
+	mitigation = 0.46,
 }
 
 monster.elements = {

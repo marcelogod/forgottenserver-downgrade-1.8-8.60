@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Meandering Mushroom")
 local monster = {}
 
-monster.name = "Meandering Mushroom"
 monster.description = "a meandering mushroom"
 monster.experience = 21980
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2376
+monster.Bestiary = {
+	class = "Slime",
+	race = BESTY_RACE_SLIME,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Putrefactory.",
+}
 
 monster.health = 29100
 monster.maxHealth = 29100
 monster.race = "undead"
 monster.corpse = 43559
-monster.speed = 410
+monster.speed = 205
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 0,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -55,12 +72,12 @@ monster.light = {
 
 monster.loot = {
 	{ name = "crystal coin", chance = 11755, maxCount = 1 },
--- { name = "lichen gobbler", chance = 9121, maxCount = 1 },
+	--{ name = "lichen gobbler", chance = 9121, maxCount = 1 },
 	{ name = "white mushroom", chance = 12998, maxCount = 3 },
 	{ name = "rotten roots", chance = 9791, maxCount = 1 },
 	{ name = "wand of decay", chance = 14668, maxCount = 1 },
 	{ id = 3039, chance = 10406, maxCount = 1 }, -- red gem
--- { name = "worm sponge", chance = 10697, maxCount = 1 },
+	--{ name = "worm sponge", chance = 10697, maxCount = 1 },
 	{ name = "dark mushroom", chance = 12313, maxCount = 3 },
 	{ name = "yellow gem", chance = 13520, maxCount = 1 },
 	{ name = "brown mushroom", chance = 6422, maxCount = 3 },
@@ -78,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 115,
 	armor = 115,
+	mitigation = 3.19,
 }
 
 monster.elements = {

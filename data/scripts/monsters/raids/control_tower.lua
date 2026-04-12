@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Control Tower")
 local monster = {}
 
-monster.name = "Control Tower"
 monster.description = "a control tower"
 monster.experience = 3000
 monster.outfit = {
@@ -20,6 +19,13 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -34,7 +40,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = true,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -59,6 +65,7 @@ monster.loot = {
 monster.defenses = {
 	defense = 10,
 	armor = 10,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Thalas")
 local monster = {}
 
-monster.name = "Thalas"
 monster.description = "Thalas"
 monster.experience = 2950
 monster.outfit = {
@@ -18,12 +17,23 @@ monster.health = 4100
 monster.maxHealth = 4100
 monster.race = "undead"
 monster.corpse = 6025
-monster.speed = 420
+monster.speed = 210
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.bosstiary = {
+	bossRaceId = 89,
+	bossRace = RARITY_BANE,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	health = 10,
+	damage = 10,
 }
 
 monster.flags = {
@@ -40,7 +50,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -82,10 +92,9 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -900 },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_EARTHDAMAGE, minDamage = -150, maxDamage = -650, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "melee", interval = 3000, chance = 20, minDamage = -150, maxDamage = -650 },
-	{ name = "speed", interval = 1000, chance = 6, speed = -800, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000 },
+	{ name = "speed", interval = 1000, chance = 6, speedChange = -800, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000 },
 	-- poison
-	{ name = "condition", interval = 1000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -34, maxDamage = -35, radius = 5, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 1000, chance = 15, minDamage = -34, maxDamage = -35, radius = 5, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 3000, chance = 17, type = COMBAT_EARTHDAMAGE, minDamage = -55, maxDamage = -550, length = 8, spread = 3, effect = CONST_ME_POISONAREA, target = false },
 }
 

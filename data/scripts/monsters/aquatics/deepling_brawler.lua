@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Deepling Brawler")
 local monster = {}
 
-monster.name = "Deepling Brawler"
 monster.description = "a deepling brawler"
 monster.experience = 260
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 859
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Fiehonja.",
+}
 
 monster.health = 380
 monster.maxHealth = 380
 monster.race = "blood"
 monster.corpse = 12685
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.faction = FACTION_DEEPLING
@@ -29,6 +39,13 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_DEATHLING }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -45,10 +62,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 40,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -63,13 +80,12 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 96970, maxCount = 44 },
-	{ id = 3578, chance = 14980, maxCount = 3 }, -- fish
-	{ name = "deepling scales", chance = 10010 },
-	{ name = "eye of a deepling", chance = 8460 },
-	{ name = "heavy trident", chance = 970 },
-	{ name = "fish fin", chance = 840 },
-	{ name = "small emerald", chance = 520 },
+	{ name = "gold coin", chance = 96000, maxCount = 44 },
+	{ id = 3578, chance = 19730, maxCount = 3 }, -- fish
+	{ name = "deepling scales", chance = 14500 },
+	{ name = "eye of a deepling", chance = 6500 },
+	{ name = "heavy trident", chance = 2720 },
+	{ name = "fish fin", chance = 680 },
 }
 
 monster.attacks = {
@@ -80,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 18,
 	armor = 18,
+	mitigation = 0.72,
 }
 
 monster.elements = {

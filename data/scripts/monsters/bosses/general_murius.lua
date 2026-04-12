@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("General Murius")
 local monster = {}
 
-monster.name = "General Murius"
 monster.description = "General Murius"
 monster.experience = 450
 monster.outfit = {
@@ -14,16 +13,27 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 207,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 550
 monster.maxHealth = 550
 monster.race = "blood"
 monster.corpse = 21091
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 20,
 }
 
 monster.flags = {
@@ -40,7 +50,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -71,22 +81,18 @@ monster.voices = {
 monster.loot = {
 	{ name = "minotaur horn", chance = 100000, maxCount = 2 },
 	{ name = "minotaur leather", chance = 100000 },
-	{ name = "gold coin", chance = 97060, maxCount = 97 },
-	{ name = "platinum coin", chance = 97060, maxCount = 3 },
-	{ name = "brass armor", chance = 70590 },
-	{ name = "double axe", chance = 85290 },
-	{ name = "piercing bolt", chance = 35290, maxCount = 11 },
-	{ name = "meat", chance = 20590 },
-	{ name = "battle shield", chance = 29410 },
-	{ name = "chain legs", chance = 11760 },
-	{ id = 7401, chance = 20590 }, -- minotaur trophy
-	{ name = "power bolt", chance = 8820, maxCount = 7 },
-	{ name = "fishing rod", chance = 2940 },
-	{ name = "strong health potion", chance = 2940 },
-	{ name = "steel shield", chance = 7000 },
-	{ name = "chain armor", chance = 6000 },
-	{ name = "scale armor", chance = 8000 },
-	{ name = "wand of cosmic energy", chance = 5500 },
+	{ name = "gold coin", chance = 92310, maxCount = 97 },
+	{ name = "platinum coin", chance = 92310, maxCount = 3 },
+	{ name = "brass armor", chance = 76920 },
+	{ name = "double axe", chance = 76920 },
+	{ name = "piercing bolt", chance = 38460, maxCount = 11 },
+	{ name = "meat", chance = 30770 },
+	{ name = "battle shield", chance = 23080 },
+	{ name = "chain legs", chance = 23080 },
+	{ id = 7401, chance = 23080 }, -- minotaur trophy
+	{ name = "power bolt", chance = 23080, maxCount = 7 },
+	{ name = "fishing rod", chance = 7690 },
+	{ name = "strong health potion", chance = 7690 },
 }
 
 monster.attacks = {
@@ -98,8 +104,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 22,
 	armor = 16,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 15, type = COMBAT_HEALING, minDamage = 50, maxDamage = 100, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 275, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 275, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {
@@ -121,5 +128,19 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

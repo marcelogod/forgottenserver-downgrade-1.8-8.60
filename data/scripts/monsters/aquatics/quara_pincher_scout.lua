@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Quara Pincher Scout")
 local monster = {}
 
-monster.name = "Quara Pincher Scout"
 monster.description = "a quara pincher scout"
 monster.experience = 600
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 246
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Malada, Hrodmir Quara Scout Caves, Quara Grotto, Oramond.",
+}
 
 monster.health = 775
 monster.maxHealth = 775
 monster.race = "blood"
 monster.corpse = 6063
-monster.speed = 156
+monster.speed = 78
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -62,23 +76,25 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 89910, maxCount = 143 },
-	{ name = "quara pincers", chance = 9900 },
-	{ name = "plate armor", chance = 4970 },
-	{ name = "small ruby", chance = 3870, maxCount = 2 },
-	{ name = "halberd", chance = 2050 },
-	{ name = "fish fin", chance = 820 },
-	{ name = "life crystal", chance = 780 },
+	{ name = "gold coin", chance = 49000, maxCount = 100 },
+	{ name = "gold coin", chance = 40000, maxCount = 29 },
+	{ name = "quara pincers", chance = 9940 },
+	{ name = "plate armor", chance = 4170 },
+	{ name = "small ruby", chance = 3440 },
+	{ name = "halberd", chance = 2070 },
+	{ name = "fish fin", chance = 800 },
+	{ name = "life crystal", chance = 790 },
 }
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -240, effect = CONST_ME_DRAWBLOOD },
-	{ name = "speed", interval = 2000, chance = 20, speed = -600, range = 1, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -600, range = 1, effect = CONST_ME_MAGIC_RED, target = false, duration = 3000 },
 }
 
 monster.defenses = {
 	defense = 45,
 	armor = 70,
+	mitigation = 0.91,
 }
 
 monster.elements = {

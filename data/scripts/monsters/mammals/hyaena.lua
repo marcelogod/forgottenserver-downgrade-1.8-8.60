@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hyaena")
 local monster = {}
 
-monster.name = "Hyaena"
 monster.description = "a hyaena"
 monster.experience = 20
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 94
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Desert areas like those around Ankrahmun and Darashia.",
+}
 
 monster.health = 60
 monster.maxHealth = 60
 monster.race = "blood"
 monster.corpse = 6026
-monster.speed = 196
+monster.speed = 98
 monster.manaCost = 275
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -72,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 1,
+	mitigation = 0.13,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mountain Troll")
 local monster = {}
 
-monster.name = "Mountain Troll"
 monster.description = "a mountain troll"
 monster.experience = 12
 monster.outfit = {
@@ -14,16 +13,22 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 30
 monster.maxHealth = 30
 monster.race = "blood"
 monster.corpse = 5960
-monster.speed = 110
+monster.speed = 55
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +45,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -75,6 +80,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 2,
 	armor = 0,
+	mitigation = 0.10,
 }
 
 monster.elements = {

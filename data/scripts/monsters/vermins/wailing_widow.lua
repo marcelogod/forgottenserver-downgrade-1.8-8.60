@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Wailing Widow")
 local monster = {}
 
-monster.name = "Wailing Widow"
 monster.description = "a wailing widow"
 monster.experience = 450
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 632
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Zao Wailing Widow Cave, Northern Zao Plantations, Northern Brimstone Bug Cave, \z
+		Razzachai, Chyllfroest, Krailos Spider Lair.",
+}
 
 monster.health = 850
 monster.maxHealth = 850
 monster.race = "venom"
 monster.corpse = 10393
-monster.speed = 254
+monster.speed = 127
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	damage = 30,
 }
 
 monster.flags = {
@@ -42,7 +58,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -82,7 +98,7 @@ monster.defenses = {
 	defense = 0,
 	armor = 0,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 70, maxDamage = 100, effect = CONST_ME_SOUND_WHITE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 820, effect = CONST_ME_SOUND_YELLOW, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 820, effect = CONST_ME_SOUND_YELLOW, target = false, duration = 5000 },
 }
 
 monster.elements = {

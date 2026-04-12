@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cobra Scout")
 local monster = {}
 
-monster.name = "Cobra Scout"
 monster.description = "a cobra scout"
 monster.experience = 7310
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1776
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Cobra Bastion.",
+}
 
 monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "blood"
 monster.corpse = 31635
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -89,6 +103,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 81,
 	armor = 81,
+	mitigation = 2.16,
 }
 
 monster.elements = {

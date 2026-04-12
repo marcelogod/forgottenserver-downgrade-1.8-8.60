@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orc Rider")
 local monster = {}
 
-monster.name = "Orc Rider"
 monster.description = "an orc rider"
 monster.experience = 110
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 4
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Orc Fort, Orc Peninsula, near Dark Cathedral, Zao Orc Land.",
+}
 
 monster.health = 180
 monster.maxHealth = 180
 monster.race = "blood"
 monster.corpse = 6010
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 490
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 30,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -81,7 +96,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 9,
-	{ name = "speed", interval = 2000, chance = 15, speed = 200, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	mitigation = 0.51,
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 200, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

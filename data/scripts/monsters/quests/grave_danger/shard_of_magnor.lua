@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Shard of Magnor")
 local monster = {}
 
-monster.name = "Shard of Magnor"
 monster.description = "a shard of Magnor"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 20000
 monster.maxHealth = 20000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -68,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 78,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 14, type = COMBAT_HEALING, minDamage = 150, maxDamage = 350, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

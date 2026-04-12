@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Infernal Demon")
 local monster = {}
 
-monster.name = "Infernal Demon"
 monster.description = "an infernal demon"
 monster.experience = 17430
 monster.outfit = {
@@ -15,18 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 1938
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Claustrophobic Inferno.",
+}
 
+monster.events = {}
 
 monster.health = 32000
 monster.maxHealth = 32000
 monster.race = "blood"
 monster.corpse = 33901
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -43,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -92,6 +110,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 120,
 	armor = 120,
+	mitigation = 3.33,
 }
 
 monster.elements = {

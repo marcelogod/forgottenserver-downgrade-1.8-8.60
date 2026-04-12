@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Darakan the Executioner")
 local monster = {}
 
-monster.name = "Darakan the Executioner"
 monster.description = "Darakan the Executioner"
 monster.experience = 1600
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3480
 monster.maxHealth = 3480
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 204
+monster.speed = 102
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

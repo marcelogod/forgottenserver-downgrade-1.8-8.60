@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Brain Head")
 local monster = {}
 
-monster.name = "Brain Head"
 monster.description = "Brain Head"
 monster.experience = 0
 monster.outfit = {
@@ -17,6 +16,11 @@ monster.speed = 0
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1862,
+	bossRace = RARITY_ARCHFOE,
 }
 
 monster.flags = {
@@ -39,32 +43,26 @@ monster.flags = {
 }
 
 monster.loot = {
-	{ name = "crystal coin", chance = 100000, maxCount = 2 },
-	{ name = "white gem", chance = 44440, maxCount = 2 },
-	{ name = "supreme health potion", chance = 44440, maxCount = 6 },
-	{ name = "ultimate spirit potion", chance = 44440, maxCount = 6 },
-	{ name = "diamond", chance = 44440, maxCount = 1 },
-	{ name = "berserk potion", chance = 33330 },
-	{ name = "cursed bone", chance = 33330 },
-	{ name = "bullseye potion", chance = 22220, maxCount = 10 },
-	{ name = "mastermind potion", chance = 22220, maxCount = 10 },
-	{ name = "silver hand mirror", chance = 22220 },
-	{ name = "ultimate mana potion", chance = 11110, maxCount = 6 },
-	{ name = "death toll", chance = 11110 },
-	{ name = "ivory comb", chance = 11110 },
-	{ name = "angel figurine", chance = 11110 },
-	{ name = "giant amethyst", chance = 11110 },
-	{ name = "green gem", chance = 10110, maxCount = 2 },
-	{ name = "moonstone", chance = 12810 },
-	{ name = "giant topaz", chance = 12280, maxCount = 1 },
-	{ name = "ghost claw", chance = 3700 },
-	{ id = 32621, chance = 3200 }, -- ring of souls
-	{ name = "phantasmal axe", chance = 3700 },
-	{ name = "brain head's giant neuron", chance = 3100 },
-	{ name = "brain head's left hemisphere", chance = 3100 },
-	{ name = "brain head's right hemisphere", chance = 3100 },
-	{ name = "pair of old bracers", chance = 3100 },
+	{ name = "crystal coin", chance = 96300, maxCount = 3 },
+	{ name = "diamond", chance = 55560, maxCount = 2 },
+	{ name = "ultimate mana potion", chance = 51850, maxCount = 6 },
+	{ name = "white gem", chance = 51850, maxCount = 2 },
+	{ name = "supreme health potion", chance = 29630 },
+	{ name = "mastermind potion", chance = 22220 },
+	{ name = "cursed bone", chance = 22220 },
+	{ name = "berserk potion", chance = 18520 },
+	{ name = "death toll", chance = 18520, maxCount = 2 },
+	{ name = "ivory comb", chance = 18520 },
+	{ name = "bullseye potion", chance = 14810, maxCount = 10 },
+	{ name = "ultimate spirit potion", chance = 14810, maxCount = 6 },
+	{ name = "moonstone", chance = 14810 },
 	{ name = "spooky hood", chance = 8520 },
+	{ name = "silver hand mirror", chance = 7410 },
+	{ name = "amber with a dragonfly", chance = 7410 },
+	{ name = "phantasmal axe", chance = 3700 },
+	{ name = "ghost claw", chance = 3700 },
+	{ name = "giant amethyst", chance = 3700 },
+	{ id = 32621, chance = 3200 }, -- ring of souls
 }
 
 monster.attacks = {
@@ -75,6 +73,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 78,
 	armor = 78,
+	mitigation = 3.27,
 }
 
 monster.elements = {
@@ -102,5 +101,19 @@ monster.voices = {
 	{ text = "I will rule again and my realm of death will span the world!", yell = false },
 	{ text = "My lich-knights will conquer this world for me!", yell = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

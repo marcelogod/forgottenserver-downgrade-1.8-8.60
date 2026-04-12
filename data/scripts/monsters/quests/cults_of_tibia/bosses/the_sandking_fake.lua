@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("The Sandking Fake")
 local monster = {}
 
 monster.name = "The Sandking"
-monster.name = "The Sandking Fake"
 monster.description = "The Sandking"
 monster.experience = 0
 monster.outfit = {
@@ -19,12 +18,19 @@ monster.health = 50000
 monster.maxHealth = 50000
 monster.race = "venom"
 monster.corpse = 25866
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 30,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -41,7 +47,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -63,7 +69,7 @@ monster.loot = {}
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -400 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -500, range = 4, radius = 4, effect = CONST_ME_STONES, target = true },
-	{ name = "speed", interval = 2000, chance = 20, speed = -650, radius = 5, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -650, radius = 5, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.defenses = {

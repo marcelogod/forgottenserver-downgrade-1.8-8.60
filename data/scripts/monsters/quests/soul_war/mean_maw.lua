@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mean Maw")
 local monster = {}
 
-monster.name = "Mean Maw"
 monster.description = "a mean maw"
 monster.experience = 32500
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 24000
 monster.maxHealth = 24000
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -71,6 +77,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 80,
 	armor = 100,
+	--	mitigation = ???,
 }
 
 monster.elements = {

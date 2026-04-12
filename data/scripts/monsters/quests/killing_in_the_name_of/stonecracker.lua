@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Stonecracker")
 local monster = {}
 
-monster.name = "Stonecracker"
 monster.description = "Stonecracker"
 monster.experience = 3500
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 6500
 monster.maxHealth = 6500
 monster.race = "blood"
 monster.corpse = 5999
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,7 +83,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 40,
-	{ name = "speed", interval = 2000, chance = 10, speed = 360, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
+	mitigation = 1.94,
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 360, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 500, maxDamage = 600, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

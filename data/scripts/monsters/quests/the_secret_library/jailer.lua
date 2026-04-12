@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Jailer")
 local monster = {}
 
-monster.name = "Jailer"
 monster.description = "Jailer"
 monster.experience = 45
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1577,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 65
 monster.maxHealth = 65
 monster.race = "undead"
 monster.corpse = 5972
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = true,
+	isBlockable = true,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,6 +78,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 33,
 	armor = 28,
+	--	mitigation = ???,
 }
 
 monster.elements = {

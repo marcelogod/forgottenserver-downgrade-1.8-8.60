@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cockroach")
 local monster = {}
 
-monster.name = "Cockroach"
 monster.description = "a cockroach"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 1
 monster.maxHealth = 1
 monster.race = "venom"
 monster.corpse = 7763
-monster.speed = 180
+monster.speed = 90
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 5,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -63,6 +66,7 @@ monster.loot = {
 monster.defenses = {
 	defense = 5,
 	armor = 10,
+	mitigation = 0.01,
 }
 
 monster.elements = {

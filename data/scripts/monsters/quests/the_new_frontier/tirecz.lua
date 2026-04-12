@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tirecz")
 local monster = {}
 
-monster.name = "Tirecz"
 monster.description = "Tirecz"
 monster.experience = 6000
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 25000
 monster.maxHealth = 25000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -71,6 +79,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 19,
 	armor = 16,
+	--	mitigation = ???,
 }
 
 monster.elements = {

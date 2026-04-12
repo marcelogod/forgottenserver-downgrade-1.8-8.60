@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Massive Earth Elemental")
 local monster = {}
 
-monster.name = "Massive Earth Elemental"
 monster.description = "a massive earth elemental"
 monster.experience = 1100
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 455
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Forbidden Lands, on top of a hill in the northern part of the Arena and Zoo Quarter, \z
+		Lower Spike, Truffels Garden and Mushroom Gardens.",
+}
 
 monster.health = 1330
 monster.maxHealth = 1330
 monster.race = "undead"
 monster.corpse = 8105
-monster.speed = 370
+monster.speed = 185
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -80,17 +98,16 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -99, maxDamage = -145, range = 7, shootEffect = CONST_ANI_SMALLEARTH, effect = CONST_ME_GREEN_RINGS, target = true },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_PHYSICALDAMAGE, minDamage = -95, maxDamage = -169, range = 7, radius = 2, shootEffect = CONST_ANI_LARGEROCK, effect = CONST_ME_POFF, target = true },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 15, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -300, maxDamage = -320, length = 6, spread = 0, effect = CONST_ME_BIGPLANTS } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 15, minDamage = -300, maxDamage = -320, length = 6, spread = 0, effect = CONST_ME_BIGPLANTS, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 10, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -200, maxDamage = -220, radius = 5, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA } },
-	{ name = "speed", interval = 2000, chance = 20, speed = -330, range = 5, effect = CONST_ME_SMALLPLANTS, target = true, duration = 5000 },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 10, minDamage = -200, maxDamage = -220, radius = 5, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -330, range = 5, effect = CONST_ME_SMALLPLANTS, target = true, duration = 5000 },
 }
 
 monster.defenses = {
 	defense = 35,
 	armor = 60,
+	mitigation = 1.04,
 	{ name = "combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 150, maxDamage = 180, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

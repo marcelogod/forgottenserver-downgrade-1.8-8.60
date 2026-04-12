@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Grimgor Guteater")
 local monster = {}
 
-monster.name = "Grimgor Guteater"
 monster.description = "Grimgor Guteater"
 monster.experience = 670
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1155
 monster.maxHealth = 1155
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -67,6 +73,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 45,
+	--	mitigation = ???,
 }
 
 monster.elements = {

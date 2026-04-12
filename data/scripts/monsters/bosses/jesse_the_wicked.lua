@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Jesse the Wicked")
 local monster = {}
 
-monster.name = "Jesse the Wicked"
 monster.description = "Jesse the Wicked"
 monster.experience = 180
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 763,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 280
 monster.maxHealth = 280
 monster.race = "blood"
 monster.corpse = 18153
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -73,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	--	mitigation = ???,
 }
 
 monster.elements = {

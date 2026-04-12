@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Minotaur Invader")
 local monster = {}
 
-monster.name = "Minotaur Invader"
 monster.description = "a minotaur invader"
 monster.experience = 1600
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1109
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "Second floor Glooth Underground Factory, east side during the Oramond Minotaurs raid.",
+}
 
 monster.health = 1850
 monster.maxHealth = 1850
 monster.race = "blood"
 monster.corpse = 5983
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -75,6 +90,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 40,
+	mitigation = 1.76,
 }
 
 monster.elements = {

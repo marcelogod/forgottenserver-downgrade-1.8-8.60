@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Chayenne")
 local monster = {}
 
-monster.name = "Chayenne"
 monster.description = "Chayenne"
 monster.experience = 40000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 100000
 monster.maxHealth = 100000
 monster.race = "blood"
 monster.corpse = 6081
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -72,6 +78,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 15,
+	--	mitigation = ???,
 	{ name = "combat", interval = 1000, chance = 1, type = COMBAT_HEALING, minDamage = 0, maxDamage = 10000, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "combat", interval = 3500, chance = 30, type = COMBAT_HEALING, minDamage = 1000, maxDamage = 1000, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "outfit", interval = 2000, chance = 10, effect = CONST_ME_ENERGYHIT, target = false, duration = 10000, outfitMonster = "Devovorga" },

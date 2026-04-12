@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ladybug")
 local monster = {}
 
-monster.name = "Ladybug"
 monster.description = "a ladybug"
 monster.experience = 70
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 778
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 2,
+	Locations = "The Hive surface during the Hive Born World Change's third stage.",
+}
 
 monster.health = 255
 monster.maxHealth = 255
 monster.race = "venom"
 monster.corpse = 13845
-monster.speed = 104
+monster.speed = 52
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 60,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -72,6 +87,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 8,
+	mitigation = 0.64,
 }
 
 monster.elements = {

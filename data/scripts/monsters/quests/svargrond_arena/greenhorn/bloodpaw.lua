@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bloodpaw")
 local monster = {}
 
-monster.name = "Bloodpaw"
 monster.description = "Bloodpaw"
 monster.experience = 50
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 100
 monster.maxHealth = 100
 monster.race = "blood"
 monster.corpse = 7349
-monster.speed = 156
+monster.speed = 78
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 0,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -65,6 +71,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 8,
 	armor = 8,
+	--	mitigation = ???,
 }
 
 monster.elements = {

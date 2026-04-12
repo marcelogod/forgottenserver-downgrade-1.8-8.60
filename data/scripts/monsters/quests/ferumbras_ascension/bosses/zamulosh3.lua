@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Zamulosh3")
 local monster = {}
 
 monster.name = "Zamulosh"
-monster.name = "Zamulosh3"
 monster.description = "Zamulosh"
 monster.experience = 55000
 monster.outfit = {
@@ -15,16 +14,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 1000
 monster.maxHealth = 1000
 monster.race = "undead"
 monster.corpse = 22495
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -41,7 +49,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -60,7 +68,7 @@ monster.voices = {
 
 monster.attacks = {
 	{ name = "melee", interval = 3000, chance = 100, minDamage = -200, maxDamage = -300 },
-	{ name = "speed", interval = 1000, chance = 10, speed = -700, radius = 8, effect = CONST_ME_MAGIC_RED, target = false, duration = 8000 },
+	{ name = "speed", interval = 1000, chance = 10, speedChange = -700, radius = 8, effect = CONST_ME_MAGIC_RED, target = false, duration = 8000 },
 }
 
 monster.defenses = {

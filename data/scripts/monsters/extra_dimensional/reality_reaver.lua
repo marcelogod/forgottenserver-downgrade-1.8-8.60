@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Reality Reaver")
 local monster = {}
 
-monster.name = "Reality Reaver"
 monster.description = "a reality reaver"
 monster.experience = 2480
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1224
+monster.Bestiary = {
+	class = "Extra Dimensional",
+	race = BESTY_RACE_EXTRA_DIMENSIONAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Otherworld",
+}
 
 monster.health = 3900
 monster.maxHealth = 3900
 monster.race = "venom"
 monster.corpse = 23412
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -82,8 +99,6 @@ monster.loot = {
 	{ id = 23529, chance = 370 }, -- ring of blue plasma
 	{ id = 23544, chance = 300 }, -- collar of red plasma
 	{ id = 23531, chance = 220 }, -- ring of green plasma
-	{ id = 50150, chance = 560 }, -- ring of orange plasma
-	{ id = 50152, chance = 560 }, -- collar of orange plasma
 }
 
 monster.attacks = {
@@ -91,15 +106,15 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_ENERGYDAMAGE, minDamage = -180, maxDamage = -400, range = 5, radius = 5, shootEffect = CONST_ANI_ENERGYBALL, effect = CONST_ME_PURPLEENERGY, target = true },
 	{ name = "reality reaver wave", interval = 2000, chance = 20, minDamage = -200, maxDamage = -500, target = false },
 	-- energy damage
-	{ name = "condition", interval = 2000, chance = 20, target = false, condition =
-	{ type = CONDITION_ENERGY, minDamage = -400, maxDamage = -800, radius = 5, effect = CONST_ME_STUN } },
+	{ name = "condition", type = CONDITION_ENERGY, interval = 2000, chance = 20, minDamage = -400, maxDamage = -800, radius = 5, effect = CONST_ME_STUN, target = false },
 }
 
 monster.defenses = {
 	defense = 50,
 	armor = 51,
+	mitigation = 1.76,
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_POFF },
-	{ name = "speed", interval = 2000, chance = 10, speed = 380, effect = CONST_ME_HITAREA, target = false, duration = 8000 },
+	{ name = "speed", interval = 2000, chance = 10, speedChange = 380, effect = CONST_ME_HITAREA, target = false, duration = 8000 },
 }
 
 monster.elements = {

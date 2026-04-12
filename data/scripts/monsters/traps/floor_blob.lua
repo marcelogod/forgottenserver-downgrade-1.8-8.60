@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Floor Blob")
 local monster = {}
 
-monster.name = "Floor Blob"
 monster.description = "a floor blob"
 monster.experience = 0
 monster.outfit = {
@@ -26,6 +25,13 @@ monster.changeTarget = {
 	chance = 8,
 }
 
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -67,6 +73,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 11,
 	armor = 5,
+	mitigation = 0.00,
 }
 
 monster.elements = {

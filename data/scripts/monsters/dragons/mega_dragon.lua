@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mega Dragon")
 local monster = {}
 
-monster.name = "Mega Dragon"
 monster.description = "a mega dragon"
 monster.experience = 7810
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2459
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Nimmersatt's Breeding Ground",
+}
 
 monster.health = 7920
 monster.maxHealth = 7920
 monster.race = "blood"
 monster.corpse = 44663
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -86,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 76,
 	armor = 76,
+	mitigation = 1.96,
 }
 
 monster.elements = {

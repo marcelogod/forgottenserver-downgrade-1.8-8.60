@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Unstable Spark")
 local monster = {}
 
-monster.name = "Unstable Spark"
 monster.description = "an unstable spark"
 monster.experience = 1500
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 10500
 monster.maxHealth = 10500
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 278
+monster.speed = 139
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,
@@ -69,6 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 80,
 	armor = 70,
+	--	mitigation = ???,
 }
 
 monster.elements = {

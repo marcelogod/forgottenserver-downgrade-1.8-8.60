@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Pale Worm")
 local monster = {}
 
-monster.name = "The Pale Worm"
 monster.description = "The Pale Worm"
 monster.experience = 30000
 monster.outfit = {
@@ -18,13 +17,26 @@ monster.health = 420000
 monster.maxHealth = 420000
 monster.race = "undead"
 monster.corpse = 32702
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1881,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -41,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -86,9 +98,8 @@ monster.loot = {
 	{ name = "fabulous legs", chance = 150 },
 	{ name = "phantasmal axe", chance = 150 },
 	{ name = "ghost backpack", chance = 150 },
+	{ id = 32621, chance = 400 }, -- Ring of souls
 	{ name = "soulful legs", chance = 150 },
-	{ id = 32621, chance = 400 }, -- ring of souls
-	{ id = 50185, chance = 730 }, -- jade legs
 }
 
 monster.attacks = {
@@ -99,13 +110,14 @@ monster.attacks = {
 	{ name = "strength", interval = 1000, chance = 60, range = 7, shootEffect = CONST_ANI_LARGEROCK, effect = CONST_ME_ENERGYAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_ENERGYDAMAGE, minDamage = 0, maxDamage = -900, length = 5, spread = 3, effect = CONST_ME_ENERGYHIT, target = false },
 	{ name = "combat", interval = 1000, chance = 34, type = COMBAT_FIREDAMAGE, minDamage = -600, maxDamage = -1200, range = 7, radius = 7, shootEffect = CONST_ANI_FIRE, effect = CONST_ME_FIREAREA, target = true },
-	{ name = "speed", interval = 3000, chance = 40, speed = -700, effect = CONST_ME_MAGIC_RED, target = true, duration = 20000 },
+	{ name = "speed", interval = 3000, chance = 40, speedChange = -700, effect = CONST_ME_MAGIC_RED, target = true, duration = 20000 },
 }
 
 monster.defenses = {
 	defense = 150,
 	armor = 150,
-	{ name = "speed", interval = 10000, chance = 40, speed = 510, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 20000 },
+	--	mitigation = ???,
+	{ name = "speed", interval = 10000, chance = 40, speedChange = 510, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 20000 },
 	{ name = "combat", interval = 5000, chance = 60, type = COMBAT_HEALING, minDamage = 1000, maxDamage = 2500, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Berserker Chicken")
 local monster = {}
 
-monster.name = "Berserker Chicken"
 monster.description = "a berserker chicken"
 monster.experience = 220
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 561
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Isle of Evil.",
+}
 
 monster.health = 465
 monster.maxHealth = 465
 monster.race = "blood"
 monster.corpse = 6042
-monster.speed = 166
+monster.speed = 83
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
 }
 
 monster.light = {
@@ -62,7 +76,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 66220, maxCount = 75 },
+	{ name = "gold coin", chance = 50000, maxCount = 100 },
 }
 
 monster.attacks = {
@@ -74,7 +88,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 12,
 	armor = 12,
-	{ name = "speed", interval = 1000, chance = 40, speed = 400, effect = CONST_ME_MAGIC_RED, target = false, duration = 8000 },
+	mitigation = 0.28,
+	{ name = "speed", interval = 1000, chance = 40, speedChange = 400, effect = CONST_ME_MAGIC_RED, target = false, duration = 8000 },
 }
 
 monster.elements = {

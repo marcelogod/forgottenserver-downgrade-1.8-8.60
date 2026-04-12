@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Draken Warmaster")
 local monster = {}
 
-monster.name = "Draken Warmaster"
 monster.description = "a draken warmaster"
 monster.experience = 2400
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 617
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Zao Palace, Chazorai, Razzachai, and Zzaion.",
+}
 
 monster.health = 4150
 monster.maxHealth = 4150
 monster.race = "blood"
 monster.corpse = 10190
-monster.speed = 324
+monster.speed = 162
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Thieving Squirrel")
 local monster = {}
 
-monster.name = "Thieving Squirrel"
 monster.description = "a thieving squirrel"
 monster.experience = 15
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 55
 monster.maxHealth = 55
 monster.race = "blood"
 monster.corpse = 276
-monster.speed = 1000
+monster.speed = 500
 monster.manaCost = 220
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 55,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -67,6 +70,7 @@ monster.attacks = {}
 monster.defenses = {
 	defense = 5,
 	armor = 5,
+	mitigation = 0.10,
 	{ name = "invisible", interval = 2000, chance = 10, effect = CONST_ME_MAGIC_BLUE },
 }
 

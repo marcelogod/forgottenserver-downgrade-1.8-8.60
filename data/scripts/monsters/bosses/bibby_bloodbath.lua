@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bibby Bloodbath")
 local monster = {}
 
-monster.name = "Bibby Bloodbath"
 monster.description = "Bibby Bloodbath"
 monster.experience = 1500
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 900,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 1200
 monster.maxHealth = 1200
 monster.race = "blood"
 monster.corpse = 6008
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -61,32 +72,33 @@ monster.voices = {
 monster.loot = {
 	{ name = "gold coin", chance = 100000, maxCount = 100 },
 	{ name = "platinum coin", chance = 100000, maxCount = 10 },
-	{ name = "orcish axe", chance = 24000 },
-	{ name = "two handed sword", chance = 24000 },
-	{ name = "throwing star", chance = 21330, maxCount = 18 },
-	{ name = "mana potion", chance = 12000, maxCount = 3 },
-	{ name = "dark armor", chance = 10670 },
-	{ name = "health potion", chance = 4000, maxCount = 3 },
-	{ id = 3578, chance = 17330, maxCount = 1 }, -- fish
-	{ name = "meat", chance = 6670 },
-	{ name = "plate legs", chance = 2670 },
-	{ id = 3049, chance = 5330 }, -- stealth ring
-	{ name = "magma amulet", chance = 4000 },
+	{ name = "orcish axe", chance = 32910 },
+	{ name = "two handed sword", chance = 24680 },
+	{ name = "throwing star", chance = 19600, maxCount = 18 },
+	{ name = "mana potion", chance = 15200, maxCount = 3 },
+	{ name = "dark armor", chance = 14000 },
+	{ name = "health potion", chance = 12000, maxCount = 3 },
+	{ id = 3578, chance = 10300, maxCount = 1 }, -- fish
+	{ name = "meat", chance = 10300 },
+	{ name = "plate legs", chance = 8100 },
+	{ id = 3049, chance = 6960 }, -- stealth ring
+	{ name = "magma amulet", chance = 5700 },
 	{ name = "giant sword", chance = 3160 },
-	{ name = "crusader helmet", chance = 1330 },
+	{ name = "crusader helmet", chance = 1900 },
 	{ name = "butcher's axe", chance = 1270 },
-	{ id = 7395, chance = 1330 }, -- orc trophy
+	{ id = 7395, chance = 1270 }, -- orc trophy
 }
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -200 },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -200, length = 5, spread = 3, effect = CONST_ME_BLOCKHIT, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -300, radius = 3, effect = CONST_ME_BLOCKHIT, target = false, duration = 30000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -300, radius = 3, effect = CONST_ME_BLOCKHIT, target = false, duration = 30000 },
 }
 
 monster.defenses = {
 	defense = 35,
 	armor = 58,
+	--	mitigation = ???,
 	{ name = "invisible", interval = 2000, chance = 15, effect = CONST_ME_MAGIC_BLUE },
 }
 
@@ -109,5 +121,19 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

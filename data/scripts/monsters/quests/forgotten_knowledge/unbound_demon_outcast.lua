@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Unbound Demon Outcast")
 local monster = {}
 
-monster.name = "Unbound Demon Outcast"
 monster.description = "an unbound demon outcast"
 monster.experience = 6200
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 6900
 monster.maxHealth = 6900
 monster.race = "fire"
 monster.corpse = 20215
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -77,6 +80,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 49,
+	mitigation = 1.60,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 250, maxDamage = 425, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

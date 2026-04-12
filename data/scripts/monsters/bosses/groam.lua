@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Groam")
 local monster = {}
 
-monster.name = "Groam"
 monster.description = "Groam"
 monster.experience = 180
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 736,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 400
 monster.maxHealth = 400
 monster.race = "blood"
 monster.corpse = 12684
-monster.speed = 560
+monster.speed = 280
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 50,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 60,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -60,12 +71,11 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 83330, maxCount = 80 },
-	{ name = "hunting spear", chance = 29170, maxCount = 4 },
+	{ name = "gold coin", chance = 100000, maxCount = 50 },
+	{ name = "hunting spear", chance = 31250, maxCount = 4 },
 	{ id = 3052, chance = 25000 }, -- life ring
-	{ name = "rusted armor", chance = 8330 },
-	{ name = "fish fin", chance = 8330 },
-	{ name = "small emerald", chance = 11500 },
+	{ name = "rusted armor", chance = 6250 },
+	{ name = "fish fin", chance = 1500 },
 }
 
 monster.attacks = {
@@ -76,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 12,
+	--	mitigation = ???,
 }
 
 monster.elements = {
@@ -97,5 +108,19 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

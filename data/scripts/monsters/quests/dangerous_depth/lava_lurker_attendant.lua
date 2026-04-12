@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lava Lurker Attendant")
 local monster = {}
 
-monster.name = "Lava Lurker Attendant"
 monster.description = "a lava lurker attendant"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "fire"
 monster.corpse = 27586
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dirtbeard")
 local monster = {}
 
-monster.name = "Dirtbeard"
 monster.description = "Dirtbeard"
 monster.experience = 375
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 565,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 630
 monster.maxHealth = 630
 monster.race = "blood"
 monster.corpse = 18197
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -85,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 30,
+	mitigation = 0.40,
 }
 
 monster.elements = {

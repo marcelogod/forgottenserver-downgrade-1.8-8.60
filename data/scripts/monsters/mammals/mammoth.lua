@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mammoth")
 local monster = {}
 
-monster.name = "Mammoth"
 monster.description = "a mammoth"
 monster.experience = 160
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 260
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Formorgar Glacier, Tyrsung, around the Barbarian Settlements, Mammoth Shearing Factory, Chyllfroest.",
+}
 
 monster.health = 320
 monster.maxHealth = 320
 monster.race = "blood"
 monster.corpse = 6074
-monster.speed = 190
+monster.speed = 95
 monster.manaCost = 500
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -79,6 +93,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 20,
+	mitigation = 0.41,
 }
 
 monster.elements = {

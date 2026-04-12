@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Robby the Reckless")
 local monster = {}
 
-monster.name = "Robby the Reckless"
 monster.description = "Robby the Reckless"
 monster.experience = 110
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 764,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 155
 monster.maxHealth = 155
 monster.race = "blood"
 monster.corpse = 18217
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -72,6 +83,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
+	--	mitigation = ???,
 }
 
 monster.elements = {

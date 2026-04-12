@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Doctor Marrow")
 local monster = {}
 
-monster.name = "Doctor Marrow"
 monster.description = "Doctor Marrow"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,18 @@ monster.health = 120000
 monster.maxHealth = 120000
 monster.race = "blood"
 monster.corpse = 18074
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 60,
+	health = 30,
+	damage = 10,
 }
 
 monster.flags = {
@@ -41,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -69,6 +74,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 54,
 	armor = 59,
+	mitigation = 3.7,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 900, maxDamage = 2400, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 
@@ -91,5 +97,19 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

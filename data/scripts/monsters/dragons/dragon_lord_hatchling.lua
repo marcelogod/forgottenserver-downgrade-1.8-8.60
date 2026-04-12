@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Dragon Lord Hatchling")
 local monster = {}
 
-monster.name = "Dragon Lord Hatchling"
 monster.description = "a dragon lord hatchling"
 monster.experience = 645
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 386
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Thais Dragon Lair, Venore Dragon Lair, Edron Dragon Lair by the Fire Axe Quest, \z
+		on the way to Pythius the Rotten, Razzachai, Dragonblaze Peaks.",
+}
 
 monster.health = 750
 monster.maxHealth = 750
 monster.race = "blood"
 monster.corpse = 270
-monster.speed = 168
+monster.speed = 84
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 30,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

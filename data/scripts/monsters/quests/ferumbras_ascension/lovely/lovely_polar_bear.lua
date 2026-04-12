@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lovely Polar Bear")
 local monster = {}
 
-monster.name = "Lovely Polar Bear"
 monster.description = "a lovely polar bear"
 monster.experience = 28
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 85
 monster.maxHealth = 85
 monster.race = "blood"
 monster.corpse = 5987
-monster.speed = 156
+monster.speed = 78
 monster.manaCost = 315
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 5,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

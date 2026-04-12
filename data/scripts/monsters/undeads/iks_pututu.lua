@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Iks Pututu")
 local monster = {}
 
-monster.name = "Iks Pututu"
 monster.description = "an iks pututu"
 monster.experience = 980
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2343
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Iksupan",
+}
 
 monster.health = 1310
 monster.maxHealth = 1310
 monster.race = "blood"
 monster.corpse = 42061
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -67,10 +81,9 @@ monster.loot = {
 	{ name = "small sapphire", chance = 5810, maxCount = 3 },
 	{ name = "spellbook of enlightenment", chance = 1920 },
 	{ name = "opal", chance = 1850 },
--- { name = "gold-brocaded cloth", chance = 1780 },
+	--{ name = "gold-brocaded cloth", chance = 1780 },
 	{ name = "gold ingot", chance = 960 },
 	{ name = "broken iks headpiece", chance = 70 },
-	{ id = 50150, chance = 560 }, -- ring of orange plasma
 }
 
 monster.attacks = {
@@ -83,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 32,
+	mitigation = 1.18,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 51, maxDamage = 71, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Goshnar's Cruelty")
 local monster = {}
 
-monster.name = "Goshnar's Cruelty"
 monster.description = "Goshnar's Cruelty"
 monster.experience = 75000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 300000
 monster.maxHealth = 300000
 monster.race = "undead"
 monster.corpse = 33859
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 1902,
+	bossRace = RARITY_ARCHFOE,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -88,12 +101,14 @@ monster.attacks = {
 	{ name = "singlecloudchain", interval = 6000, chance = 40, minDamage = -1700, maxDamage = -2500, range = 6, effect = CONST_ME_ENERGYHIT, target = true },
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_PHYSICALDAMAGE, minDamage = -1000, maxDamage = -2500, range = 7, radius = 4, shootEffect = CONST_ANI_EXPLOSION, effect = CONST_ME_DRAWBLOOD, target = true },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_DEATHDAMAGE, minDamage = -1500, maxDamage = -3000, radius = 3, effect = CONST_ME_GROUNDSHAKER, target = false },
+	{ name = "cruelty transform elemental", chance = 50 },
 }
 
 monster.defenses = {
 	defense = 160,
 	armor = 160,
-	{ name = "speed", interval = 1000, chance = 20, speed = 500, effect = CONST_ME_MAGIC_RED, target = false, duration = 10000 },
+	mitigation = 5.40,
+	{ name = "speed", interval = 1000, chance = 20, speedChange = 500, effect = CONST_ME_MAGIC_RED, target = false, duration = 10000 },
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 1250, maxDamage = 3250, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 
@@ -116,5 +131,23 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+local firstTime = 0
+mType.onThink = function(monster, interval)
+	firstTime = firstTime + interval
+	-- Run only 15 seconds before creation
+	if firstTime >= 15000 then
+		monster:goshnarsDefenseIncrease("greedy-maw-action")
+	end
+end
+
+mType.onDisappear = function(monster, creature)
+	if creature:getName() == "Goshnar's Cruelty" then
+		local eyeCreature = Creature("A Greedy Eye")
+		if eyeCreature then
+			eyeCreature:remove()
+		end
+	end
+end
 
 mType:register(monster)

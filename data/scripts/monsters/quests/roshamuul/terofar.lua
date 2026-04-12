@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Terofar")
 local monster = {}
 
-monster.name = "Terofar"
 monster.description = "Terofar"
 monster.experience = 24000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 40000
 monster.maxHealth = 40000
 monster.race = "blood"
 monster.corpse = 6068
-monster.speed = 440
+monster.speed = 220
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -105,8 +111,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 65,
 	armor = 55,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_HEALING, minDamage = 300, maxDamage = 500, radius = 8, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 18, speed = 784, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 7000 },
+	{ name = "speed", interval = 2000, chance = 18, speedChange = 784, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 7000 },
 }
 
 monster.elements = {

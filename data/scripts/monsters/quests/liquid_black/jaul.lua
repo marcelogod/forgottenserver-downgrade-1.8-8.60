@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Jaul")
 local monster = {}
 
-monster.name = "Jaul"
 monster.description = "Jaul"
 monster.experience = 30000
 monster.outfit = {
@@ -14,16 +13,30 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
+monster.bosstiary = {
+	bossRaceId = 773,
+	bossRace = RARITY_BANE,
+}
+
 monster.health = 90000
 monster.maxHealth = 90000
 monster.race = "blood"
 monster.corpse = 13787
-monster.speed = 440
+monster.speed = 220
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 50,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 60,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -78,12 +91,13 @@ monster.attacks = {
 	{ name = "combat", interval = 1000, chance = 5, type = COMBAT_FIREDAMAGE, minDamage = -500, maxDamage = -1000, length = 8, spread = 3, effect = CONST_ME_HITBYFIRE, target = false },
 	{ name = "combat", interval = 1000, chance = 5, type = COMBAT_ICEDAMAGE, minDamage = -1000, maxDamage = -2000, length = 8, spread = 3, effect = CONST_ME_ICEAREA, target = false },
 	{ name = "combat", interval = 4000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -500, maxDamage = -1000, length = 8, spread = 3, effect = CONST_ME_WATERSPLASH, target = false },
-	{ name = "speed", interval = 1900, chance = 14, speed = -700, range = 7, radius = 1, target = true, duration = 15000 },
+	{ name = "speed", interval = 1900, chance = 14, speedChange = -700, range = 7, radius = 1, target = true, duration = 15000 },
 }
 
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	--	mitigation = ???,
 	{ name = "combat", interval = 5000, chance = 7, type = COMBAT_HEALING, minDamage = 12000, maxDamage = 19000, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

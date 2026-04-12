@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Remorseless Corruptor")
 local monster = {}
 
-monster.name = "The Remorseless Corruptor"
 monster.description = "The Remorseless Corruptor"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 290000
 monster.maxHealth = 290000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 400
+monster.speed = 200
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -70,6 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	--	mitigation = ???,
 }
 
 monster.elements = {

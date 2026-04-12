@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Damaged Worker Golem")
 local monster = {}
 
-monster.name = "Damaged Worker Golem"
 monster.description = "a damaged worker golem"
 monster.experience = 95
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 524
+monster.Bestiary = {
+	class = "Construct",
+	race = BESTY_RACE_CONSTRUCT,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Factory Quarter.",
+}
 
 monster.health = 260
 monster.maxHealth = 260
 monster.race = "venom"
 monster.corpse = 8887
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -83,6 +98,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 16,
+	mitigation = 0.33,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 5, maxDamage = 11, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

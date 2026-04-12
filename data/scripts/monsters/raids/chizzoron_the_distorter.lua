@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Chizzoron the Distorter")
 local monster = {}
 
-monster.name = "Chizzoron the Distorter"
 monster.description = "Chizzoron the Distorter"
 monster.experience = 4000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 629,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 16000
 monster.maxHealth = 16000
 monster.race = "blood"
 monster.corpse = 10399
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -89,6 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 85,
 	armor = 70,
+	--	mitigation = ???,
 }
 
 monster.elements = {

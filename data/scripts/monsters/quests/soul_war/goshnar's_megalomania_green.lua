@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Goshnar's Megalomania Green")
 local monster = {}
 
 monster.name = "Goshnar's Megalomania"
-monster.name = "Goshnar's Megalomania Green"
 monster.description = "Goshnar's Megalomania"
 monster.experience = 3000000
 monster.outfit = {
@@ -15,16 +14,29 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1969,
+	bossRace = RARITY_NEMESIS,
+}
+
 monster.health = 620000
 monster.maxHealth = 620000
 monster.race = "undead"
 monster.corpse = 33889
-monster.speed = 500
+monster.speed = 250
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.events = {}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	health = 10,
+	damage = 10,
 }
 
 monster.flags = {
@@ -41,7 +53,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -94,6 +106,7 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_DEATHDAMAGE, minDamage = -1050, maxDamage = -2020, length = 8, spread = 3, effect = CONST_ME_SMALLCLOUDS, target = false },
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_DEATHDAMAGE, minDamage = -950, maxDamage = -1400, radius = 3, effect = CONST_ME_MORTAREA, target = true },
 	{ name = "soulwars fear", interval = 35000, chance = 100, target = true },
+	{ name = "megalomania transform elemental", chance = 50 },
 	{ name = "combat", interval = 30000, chance = 100, type = COMBAT_LIFEDRAIN, minDamage = -1000, maxDamage = -1500, length = 8, radius = 5, spread = 0, effect = CONST_ME_PINK_ENERGY_SPARK, target = true },
 }
 

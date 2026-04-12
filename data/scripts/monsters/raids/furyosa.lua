@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Furyosa")
 local monster = {}
 
-monster.name = "Furyosa"
 monster.description = "Furyosa"
 monster.experience = 11500
 monster.outfit = {
@@ -18,12 +17,24 @@ monster.health = 25000
 monster.maxHealth = 25000
 monster.race = "blood"
 monster.corpse = 18118
-monster.speed = 270
+monster.speed = 135
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.bosstiary = {
+	bossRaceId = 987,
+	bossRace = RARITY_NEMESIS,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,

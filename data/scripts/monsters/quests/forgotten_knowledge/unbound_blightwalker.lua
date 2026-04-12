@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Unbound Blightwalker")
 local monster = {}
 
-monster.name = "Unbound Blightwalker"
 monster.description = "an unbound blightwalker"
 monster.experience = 5850
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 8900
 monster.maxHealth = 8900
 monster.race = "undead"
 monster.corpse = 6353
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 800,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -64,12 +67,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_LIFEDRAIN, minDamage = -65, maxDamage = -135, radius = 4, effect = CONST_ME_MAGIC_GREEN, target = false },
 	{ name = "drunk", interval = 2000, chance = 10, radius = 3, effect = CONST_ME_HITBYPOISON, target = false, duration = 5000 },
 	{ name = "blightwalker curse", interval = 2000, chance = 15, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -300, range = 7, shootEffect = CONST_ANI_POISON, target = true, duration = 30000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -300, range = 7, shootEffect = CONST_ANI_POISON, target = true, duration = 30000 },
 }
 
 monster.defenses = {
 	defense = 50,
 	armor = 63,
+	mitigation = 1.18,
 }
 monster.elements = {
 	{ type = COMBAT_PHYSICALDAMAGE, percent = -10 },

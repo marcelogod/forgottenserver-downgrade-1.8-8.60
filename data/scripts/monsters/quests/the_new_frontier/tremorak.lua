@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tremorak")
 local monster = {}
 
-monster.name = "Tremorak"
 monster.description = "Tremorak"
 monster.experience = 1300
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "undead"
 monster.corpse = 8105
-monster.speed = 290
+monster.speed = 145
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -64,13 +70,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 16, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -255, radius = 7, effect = CONST_ME_GROUNDSHAKER, target = false },
 	{ name = "combat", interval = 2000, chance = 16, type = COMBAT_EARTHDAMAGE, minDamage = 0, maxDamage = -405, length = 8, spread = 3, effect = CONST_ME_GROUNDSHAKER, target = false },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 16, target = true, condition =
-	{ type = CONDITION_POISON, minDamage = -10, maxDamage = -10, range = 7, shootEffect = CONST_ANI_POISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 16, range = 7, shootEffect = CONST_ANI_POISON, target = true },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 16, type = COMBAT_HEALING, minDamage = 75, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

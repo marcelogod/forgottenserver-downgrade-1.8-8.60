@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Empowered Glooth Horror")
 local monster = {}
 
-monster.name = "Empowered Glooth Horror"
 monster.description = "an empowered glooth horror"
 monster.experience = 2150
 monster.outfit = {
@@ -14,16 +13,25 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.health = 25000
 monster.maxHealth = 25000
 monster.race = "venom"
 monster.corpse = 21907
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 60000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +48,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 200,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -65,13 +73,13 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_DEATHDAMAGE, minDamage = -400, maxDamage = -600, range = 1, shootEffect = CONST_ANI_POISON, target = true },
 	{ name = "drunk", interval = 2000, chance = 8, radius = 8, effect = CONST_ME_HITBYPOISON, target = false, duration = 15000 },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 12, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -600, maxDamage = -900, radius = 8, effect = CONST_ME_HITBYPOISON } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 12, minDamage = -600, maxDamage = -900, radius = 8, effect = CONST_ME_HITBYPOISON, target = false },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 15,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 500, maxDamage = 700, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 

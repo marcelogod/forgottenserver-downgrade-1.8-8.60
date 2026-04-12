@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gorgo")
 local monster = {}
 
-monster.name = "Gorgo"
 monster.description = "Gorgo"
 monster.experience = 7000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 4500
 monster.maxHealth = 4500
 monster.race = "blood"
 monster.corpse = 9607
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 600,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -74,13 +80,14 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -450, condition = { type = CONDITION_POISON, totalDamage = 42, interval = 4000 } },
 	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_LIFEDRAIN, minDamage = -21, maxDamage = -350, range = 7, shootEffect = CONST_ANI_EARTH, effect = CONST_ME_CARNIPHILA, target = true },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -250, maxDamage = -500, length = 8, spread = 3, effect = CONST_ME_CARNIPHILA, target = false },
-	{ name = "speed", interval = 2000, chance = 25, speed = -1000, radius = 7, effect = CONST_ME_POFF, target = true },
+	{ name = "speed", interval = 2000, chance = 25, minDamage = -200, maxDamage = -300, radius = 7, effect = CONST_ME_POFF, target = true },
 	{ name = "outfit", interval = 2000, chance = 1, range = 7, target = true, duration = 3000, outfitMonster = "clay guardian" },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 30,
+	mitigation = 1.94,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 150, maxDamage = 300, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

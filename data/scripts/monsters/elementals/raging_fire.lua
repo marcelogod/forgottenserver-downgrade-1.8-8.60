@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Raging Fire")
 local monster = {}
 
-monster.name = "Raging Fire"
 monster.description = "a raging fire"
 monster.experience = 1500
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 1121
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 50,
+	Stars = 3,
+	Occurrence = 3,
+	Locations = "Jaccus Maxxen's Dungeon.",
+}
 
 monster.health = 1800
 monster.maxHealth = 1800
 monster.race = "fire"
 monster.corpse = 21815
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 80,
+	random = 20,
 }
 
 monster.flags = {
@@ -42,10 +57,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -71,6 +87,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 50,
+	mitigation = 1.32,
 }
 
 monster.elements = {

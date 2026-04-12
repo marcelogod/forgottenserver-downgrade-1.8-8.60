@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Marid")
 local monster = {}
 
-monster.name = "Marid"
 monster.description = "a marid"
 monster.experience = 410
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 104
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Kha'zeel, Magician Quarter, Djinn battle island through the Haunted Tomb.",
+}
 
 monster.health = 550
 monster.maxHealth = 550
 monster.race = "blood"
 monster.corpse = 6033
-monster.speed = 234
+monster.speed = 117
 monster.manaCost = 0
 
 monster.faction = FACTION_MARID
@@ -29,6 +39,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_EFREET }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -45,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -97,7 +111,7 @@ monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -90 },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_ENERGYDAMAGE, minDamage = -100, maxDamage = -250, range = 7, shootEffect = CONST_ANI_ENERGYBALL, target = false },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_LIFEDRAIN, minDamage = -30, maxDamage = -90, range = 7, effect = CONST_ME_MAGIC_RED, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = -650, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 1500 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = -650, range = 7, effect = CONST_ME_MAGIC_RED, target = false, duration = 1500 },
 	{ name = "drunk", interval = 2000, chance = 10, range = 7, shootEffect = CONST_ANI_ENERGY, target = false, duration = 6000 },
 	{ name = "outfit", interval = 2000, chance = 1, range = 7, effect = CONST_ME_MAGIC_BLUE, target = false, duration = 4000, outfitMonster = "rabbit" },
 	{ name = "djinn electrify", interval = 2000, chance = 15, range = 5, target = false },
@@ -107,6 +121,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 24,
+	mitigation = 0.91,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 50, maxDamage = 80, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

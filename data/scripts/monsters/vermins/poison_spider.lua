@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Poison Spider")
 local monster = {}
 
-monster.name = "Poison Spider"
 monster.description = "a poison spider"
 monster.experience = 22
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 36
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Found in various caves and plains around Tibia (including Rookgaard).",
+}
 
 monster.health = 26
 monster.maxHealth = 26
 monster.race = "venom"
 monster.corpse = 5974
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 270
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 6,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -70,6 +84,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 2,
+	mitigation = 0.15,
 }
 
 monster.elements = {

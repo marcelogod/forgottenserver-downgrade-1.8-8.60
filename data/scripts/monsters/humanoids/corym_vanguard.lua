@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Corym Vanguard")
 local monster = {}
 
-monster.name = "Corym Vanguard"
 monster.description = "a corym vanguard"
 monster.experience = 490
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 918
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Venore Corym Cave, Tiquanda Corym Cave, Corym Black Market, \z
+		Carlin Corym Cave/Dwarf Mines Diggers Depths Mine, Upper Spike.",
+}
 
 monster.health = 700
 monster.maxHealth = 700
 monster.race = "blood"
 monster.corpse = 17454
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -85,6 +103,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 29,
+	mitigation = 0.99,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 30, maxDamage = 60, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

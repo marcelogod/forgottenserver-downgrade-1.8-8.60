@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lavafungus")
 local monster = {}
 
-monster.name = "Lavafungus"
 monster.description = "a lavafungus"
 monster.experience = 6200
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2095
+monster.Bestiary = {
+	class = "Plant",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Grotto of the Lost.",
+}
 
 monster.health = 7200
 monster.maxHealth = 7200
 monster.race = "blood"
 monster.corpse = 36764
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -97,6 +111,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 70,
 	armor = 70,
+	mitigation = 1.60,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 270, maxDamage = 530, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Lesser Fire Devil")
 local monster = {}
 
-monster.name = "Lesser Fire Devil"
 monster.description = "a lesser fire devil"
 monster.experience = 110
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 175
 monster.maxHealth = 175
 monster.race = "blood"
 monster.corpse = 5985
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 530
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -73,6 +76,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 9,
 	armor = 9,
+	mitigation = 0.38,
 }
 
 monster.elements = {

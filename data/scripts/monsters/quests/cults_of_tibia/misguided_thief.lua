@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Misguided Thief")
 local monster = {}
 
-monster.name = "Misguided Thief"
 monster.description = "a misguided thief"
 monster.experience = 1600
 monster.outfit = {
@@ -15,18 +14,38 @@ monster.outfit = {
 }
 
 monster.raceId = 1413
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Misguided Camp accessible via Outlaw Camp's portal.",
+}
 
 monster.health = 1800
 monster.maxHealth = 1800
 monster.race = "blood"
 monster.corpse = 26125
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 390
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
 }
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
+}
+
+monster.events = {}
 
 monster.flags = {
 	summonable = false,
@@ -42,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -81,7 +100,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 35,
-	{ name = "combat", interval = 1000, chance = 20, type = COMBAT_HEALING, minDamage = 20, maxDamage = 140, effect = CONST_ME_MAGIC_BLUE, target = false },
+	{ name = "combat", interval = 1000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 450, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orc Cult Fanatic")
 local monster = {}
 
-monster.name = "Orc Cult Fanatic"
 monster.description = "an orc cult fanatic"
 monster.experience = 1100
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1506
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 1,
+	Locations = "Edron Orc Cave.",
+}
 
 monster.health = 1300
 monster.maxHealth = 1300
 monster.race = "blood"
 monster.corpse = 6001
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -84,6 +101,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 35,
 	armor = 22,
+	mitigation = 0.99,
 }
 
 monster.elements = {

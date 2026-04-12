@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Memory of a Carnisylvan")
 local monster = {}
 
-monster.name = "Memory of a Carnisylvan"
 monster.description = "a memory of a carnisylvan"
 monster.experience = 1850
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 3800
 monster.maxHealth = 3800
 monster.race = "blood"
 monster.corpse = 36890
-monster.speed = 104
+monster.speed = 52
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,10 +43,11 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
+	pet = false,
 }
 
 monster.light = {
@@ -71,7 +75,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 37,
 	armor = 37,
-	{ name = "speed", interval = 2000, chance = 8, speed = 250, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 5000 },
+	mitigation = 1.30,
+	{ name = "speed", interval = 2000, chance = 8, speedChange = 250, effect = CONST_ME_MAGIC_GREEN, target = false, duration = 5000 },
 }
 
 monster.elements = {

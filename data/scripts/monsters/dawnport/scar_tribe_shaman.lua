@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Scar Tribe Shaman")
 local monster = {}
 
-monster.name = "Scar Tribe Shaman"
 monster.description = "a scar tribe shaman"
 monster.experience = 85
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 115
 monster.maxHealth = 115
 monster.race = "blood"
 monster.corpse = 5978
-monster.speed = 156
+monster.speed = 78
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 50,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -83,6 +86,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 11,
 	armor = 6,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 25, maxDamage = 35, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orc")
 local monster = {}
 
-monster.name = "Orc"
 monster.description = "an orc"
 monster.experience = 25
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 5
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Ulderek's Rock, Edron Orc Cave, Ancient Temple, Ice Islands, Venore Orc Cave, \z
+		Rookgaard Orc Fortress, Rookgaard main cave, Fibula Dungeon, Elvenbane, Foreigner Quarter, Zao Orc Land.",
+}
 
 monster.health = 70
 monster.maxHealth = 70
 monster.race = "blood"
 monster.corpse = 5966
-monster.speed = 150
+monster.speed = 75
 monster.manaCost = 300
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -81,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 4,
+	mitigation = 0.20,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Priestess of the Wild Sun")
 local monster = {}
 
-monster.name = "Priestess of the Wild Sun"
 monster.description = "a priestess of the wild sun"
 monster.experience = 6400
 monster.outfit = {
@@ -14,13 +13,26 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.raceId = 1799
+monster.Bestiary = {
+	class = "Human",
+	race = BESTY_RACE_HUMAN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Issavi Sewers, Kilmaresh Mountains, Kilmaresh Catacombs.",
+}
 
 monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "blood"
 monster.corpse = 31419
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.faction = FACTION_FAFNAR
@@ -29,6 +41,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_ANUMA }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -45,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -91,6 +107,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 82,
 	armor = 82,
+	mitigation = 2.25,
 }
 
 monster.elements = {

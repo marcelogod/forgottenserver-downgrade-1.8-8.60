@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Nibblemaw")
 local monster = {}
 
-monster.name = "Nibblemaw"
 monster.description = "a nibblemaw"
 monster.experience = 2700
 monster.outfit = {
@@ -14,18 +13,38 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
+
 monster.raceId = 2531
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Chocolate Mines.",
+}
 
 monster.health = 2900
 monster.maxHealth = 2900
 monster.race = "blood"
 monster.corpse = 48259
-monster.speed = 236
+monster.speed = 118
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -87,6 +106,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 30,
 	armor = 48,
+	mitigation = 1.10,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 250, maxDamage = 225, effect = CONST_ME_HITBYPOISON, target = false },
 }
 

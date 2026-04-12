@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Cosmic Energy Prism B Invu")
 local monster = {}
 
 monster.name = "Cosmic Energy Prism B"
-monster.name = "Cosmic Energy Prism B Invu"
 monster.description = "cosmic energy prism B"
 monster.experience = 840
 monster.outfit = {
@@ -21,6 +20,10 @@ monster.changeTarget = {
 	chance = 0,
 }
 
+monster.strategiesTarget = {
+	nearest = 100,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = false,
@@ -35,7 +38,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

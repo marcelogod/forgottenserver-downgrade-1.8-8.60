@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Orc Cult Inquisitor")
 local monster = {}
 
-monster.name = "Orc Cult Inquisitor"
 monster.description = "an orc cult inquisitor"
 monster.experience = 1150
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1505
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Edron Orc Cave.",
+}
 
 monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "blood"
 monster.corpse = 5980
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -84,7 +101,8 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 40,
-	{ name = "speed", interval = 2000, chance = 30, speed = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	mitigation = 1.46,
+	{ name = "speed", interval = 2000, chance = 30, speedChange = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

@@ -2,7 +2,6 @@ local mType = Game.createMonsterType("Old Giant Spider")
 local monster = {}
 
 monster.name = "Giant Spider"
-monster.name = "Old Giant Spider"
 monster.description = "a giant spider"
 monster.experience = 900
 monster.outfit = {
@@ -19,12 +18,16 @@ monster.health = 1300
 monster.maxHealth = 1300
 monster.race = "venom"
 monster.corpse = 5977
-monster.speed = 240
+monster.speed = 120
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -41,7 +44,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -78,7 +81,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 25,
-	{ name = "speed", interval = 2000, chance = 15, speed = 390, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 390, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000 },
 }
 
 monster.elements = {

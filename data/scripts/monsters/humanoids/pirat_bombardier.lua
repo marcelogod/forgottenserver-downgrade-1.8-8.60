@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Pirat Bombardier")
 local monster = {}
 
-monster.name = "Pirat Bombardier"
 monster.description = "a pirat bombardier"
 monster.experience = 1700
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2038
+monster.Bestiary = {
+	class = "Humanoid",
+	race = BESTY_RACE_HUMANOID,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Pirat Mine, The Wreckoning",
+}
 
 monster.health = 2300
 monster.maxHealth = 2300
 monster.race = "blood"
 monster.corpse = 35384
-monster.speed = 370
+monster.speed = 185
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 50,
 	healthHidden = false,
-	ignoreSpawnBlock = true,
+	isBlockable = true,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = false,
@@ -64,7 +81,7 @@ monster.loot = {
 	{ name = "terra boots", chance = 6000 },
 	{ name = "pirat's tail", chance = 4000 },
 	{ name = "magma boots", chance = 3000 },
--- { name = "mouldy powder", chance = 4000 },
+	{ name = "mouldy powder", chance = 4000 },
 	{ id = 23529, chance = 2000 }, -- ring of blue plasma
 	{ name = "lightning boots", chance = 1000 },
 	{ name = "wood cape", chance = 1000 },
@@ -79,6 +96,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 65,
+	mitigation = 1.82,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 30, maxDamage = 60, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

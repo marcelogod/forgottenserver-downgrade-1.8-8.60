@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ancient Lion Warlock")
 local monster = {}
 
-monster.name = "Ancient Lion Warlock"
 monster.description = "an ancient lion warlock"
 monster.experience = 0
 monster.outfit = {
@@ -18,7 +17,7 @@ monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "blood"
 monster.corpse = 33965
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.faction = FACTION_LION
@@ -27,6 +26,10 @@ monster.enemyFactions = { FACTION_LIONUSURPERS }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -69,6 +72,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 50,
 	armor = 0,
+	--	mitigation = ???,
 }
 
 monster.elements = {

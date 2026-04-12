@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Diabolic Imp")
 local monster = {}
 
-monster.name = "Diabolic Imp"
 monster.description = "a diabolic imp"
 monster.experience = 2900
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 288
+monster.Bestiary = {
+	class = "Demon",
+	race = BESTY_RACE_DEMON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Inquisition, Pits of Inferno, Fenrock, Fury Dungeon and inside the Hellgore volcano \z
+	on Goroma during the Fire from the Earth Mini World Change.",
+}
 
 monster.health = 1950
 monster.maxHealth = 1950
 monster.race = "fire"
 monster.corpse = 6363
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 400,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -91,8 +109,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 25,
 	armor = 29,
+	mitigation = 1.46,
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 650, maxDamage = 800, effect = CONST_ME_MAGIC_BLUE, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 800, effect = CONST_ME_MAGIC_RED, target = false, duration = 2000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 800, effect = CONST_ME_MAGIC_RED, target = false, duration = 2000 },
 	{ name = "invisible", interval = 2000, chance = 10, effect = CONST_ME_TELEPORT },
 }
 

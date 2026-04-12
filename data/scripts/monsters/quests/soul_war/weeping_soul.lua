@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Weeping Soul")
 local monster = {}
 
-monster.name = "Weeping Soul"
 monster.description = "a weeping soul"
 monster.experience = 0
 monster.outfit = {
@@ -18,13 +17,20 @@ monster.health = 7000
 monster.maxHealth = 7000
 monster.race = "undead"
 monster.corpse = 33876
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 100
 monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 15,
+}
+
+monster.strategiesTarget = {
+	nearest = 60,
+	health = 10,
+	damage = 10,
+	random = 20,
 }
 
 monster.flags = {
@@ -41,7 +47,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,

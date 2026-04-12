@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Mitmah Vanguard")
 local monster = {}
 
-monster.name = "Mitmah Vanguard"
 monster.description = "Mitmah Vanguard"
 monster.experience = 300000
 monster.outfit = {
@@ -14,16 +13,28 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 2464,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 250000
 monster.maxHealth = 250000
 monster.race = "blood"
 monster.corpse = 44687
-monster.speed = 900
+monster.speed = 450
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 10000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +51,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -81,10 +92,10 @@ monster.loot = {
 	{ name = "white gem", chance = 311100 },
 	{ name = "yellow gem", chance = 251900 },
 	{ name = "blue gem", chance = 222200 },
--- { name = "crystal of the mitmah", chance = 451900 },
--- { name = "broken mitmah necklace", chance = 548100 },
--- { name = "broken mitmah chestplate", chance = 44400 },
--- { name = "splintered mitmah gem", chance = 3700 },
+	--{ name = "crystal of the mitmah", chance = 451900 },
+	--{ name = "broken mitmah necklace", chance = 548100 },
+	--{ name = "broken mitmah chestplate", chance = 44400 },
+	--{ name = "splintered mitmah gem", chance = 3700 },
 	{ name = "stoic iks boots", chance = 500 },
 	{ name = "stoic iks faulds", chance = 500 },
 	{ name = "stoic iks casque", chance = 500 },
@@ -93,7 +104,6 @@ monster.loot = {
 	{ name = "stoic iks sandals", chance = 500 },
 	{ name = "stoic iks headpiece", chance = 500 },
 	{ name = "stoic iks culet", chance = 500 },
-	{ name = "iks footwraps", chance = 500 },
 }
 
 monster.attacks = {
@@ -109,6 +119,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 64,
 	armor = 0,
+	--	mitigation = ???,
 }
 
 monster.elements = {

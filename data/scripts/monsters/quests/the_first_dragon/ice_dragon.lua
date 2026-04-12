@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ice Dragon")
 local monster = {}
 
-monster.name = "Ice Dragon"
 monster.description = "an ice dragon"
 monster.experience = 2300
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1380
+monster.Bestiary = {
+	class = "Dragon",
+	race = BESTY_RACE_DRAGON,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 2,
+	Locations = "The First Dragon's Lair.",
+}
 
 monster.health = 2500
 monster.maxHealth = 2500
 monster.race = "undead"
 monster.corpse = 25185
-monster.speed = 212
+monster.speed = 106
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 5,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 350,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -79,9 +97,9 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 78, attack = 50 },
-	{ name = "speed", interval = 2000, chance = 18, speed = -400, range = 7, radius = 4, effect = CONST_ME_ICETORNADO, target = true, duration = 20000 },
+	{ name = "speed", interval = 2000, chance = 18, minDamage = 0, maxDamage = -400, range = 7, radius = 4, effect = CONST_ME_ICETORNADO, target = true, duration = 20000 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_ICEDAMAGE, minDamage = -50, maxDamage = -120, range = 7, radius = 3, effect = CONST_ME_ICETORNADO, target = false },
-	{ name = "speed", interval = 2000, chance = 12, speed = -400, length = 7, spread = 3, effect = CONST_ME_ICEATTACK, target = false, duration = 20000 },
+	{ name = "speed", interval = 2000, chance = 12, minDamage = 0, maxDamage = -400, length = 7, spread = 3, effect = CONST_ME_ICEATTACK, target = false, duration = 20000 },
 	{ name = "combat", interval = 2000, chance = 12, type = COMBAT_LIFEDRAIN, minDamage = -150, maxDamage = -380, length = 8, spread = 3, effect = CONST_ME_POFF, target = false },
 }
 

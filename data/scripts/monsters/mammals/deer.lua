@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Deer")
 local monster = {}
 
-monster.name = "Deer"
 monster.description = "a deer"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 31
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Darama (Devourer, Kha'labal), in most grassy areas of Tibia, also found in \z
+		Rookgaard and on Tutorial Island. There are also 2 unreachable Deer found near Fiehonja's protection zone.",
+}
 
 monster.health = 25
 monster.maxHealth = 25
 monster.race = "blood"
 monster.corpse = 5970
-monster.speed = 196
+monster.speed = 98
 monster.manaCost = 260
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 20,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +57,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 25,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -69,8 +85,9 @@ monster.attacks = {
 }
 
 monster.defenses = {
-	defense = 0,
-	armor = 1,
+	defense = 5,
+	armor = 2,
+	mitigation = 0.05,
 }
 
 monster.elements = {

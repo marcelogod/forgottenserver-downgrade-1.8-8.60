@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Necromancer Servant")
 local monster = {}
 
-monster.name = "Necromancer Servant"
 monster.description = "a necromancer servant"
 monster.experience = 590
 monster.outfit = {
@@ -18,12 +17,18 @@ monster.health = 600
 monster.maxHealth = 600
 monster.race = "blood"
 monster.corpse = 18174
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
+
+monster.events = {}
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +45,7 @@ monster.flags = {
 	targetDistance = 4,
 	runHealth = 10,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -73,6 +78,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 11,
 	armor = 11,
+	mitigation = 0.94,
 }
 
 monster.elements = {

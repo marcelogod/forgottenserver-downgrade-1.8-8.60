@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Snake")
 local monster = {}
 
-monster.name = "Snake"
 monster.description = "a snake"
 monster.experience = 10
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 28
+monster.Bestiary = {
+	class = "Reptile",
+	race = BESTY_RACE_REPTILE,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "In almost all grassy areas of Tibia. Also found in Rookgaard.",
+}
 
 monster.health = 15
 monster.maxHealth = 15
 monster.race = "blood"
 monster.corpse = 3998
-monster.speed = 120
+monster.speed = 60
 monster.manaCost = 205
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +56,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -68,6 +83,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 0,
+	mitigation = 0.03,
 }
 
 monster.elements = {

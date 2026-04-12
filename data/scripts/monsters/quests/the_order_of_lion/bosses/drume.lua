@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Drume")
 local monster = {}
 
-monster.name = "Drume"
 monster.description = "Drume"
 monster.experience = 25000
 monster.outfit = {
@@ -14,11 +13,16 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.bosstiary = {
+	bossRaceId = 1957,
+	bossRace = RARITY_ARCHFOE,
+}
+
 monster.health = 80000
 monster.maxHealth = 80000
 monster.race = "blood"
 monster.corpse = 33973
-monster.speed = 260
+monster.speed = 130
 monster.manaCost = 0
 
 monster.faction = FACTION_LIONUSURPERS
@@ -38,6 +42,13 @@ monster.changeTarget = {
 	chance = 25,
 }
 
+monster.strategiesTarget = {
+	nearest = 50,
+	health = 20,
+	damage = 20,
+	random = 10,
+}
+
 monster.flags = {
 	summonable = false,
 	attackable = true,
@@ -52,7 +63,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -112,7 +123,6 @@ monster.loot = {
 	{ name = "lion wand", chance = 300 },
 	{ name = "lion amulet", chance = 300 },
 	{ name = "lion rod", chance = 300 },
-	{ name = "lion claws", chance = 300 },
 }
 
 monster.attacks = {
@@ -127,6 +137,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 60,
 	armor = 82,
+	--	mitigation = ???,
 	{ name = "combat", interval = 4000, chance = 40, type = COMBAT_HEALING, minDamage = 300, maxDamage = 800, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

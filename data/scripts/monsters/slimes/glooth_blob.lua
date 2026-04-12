@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Glooth Blob")
 local monster = {}
 
-monster.name = "Glooth Blob"
 monster.description = "a glooth blob"
 monster.experience = 700
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1054
+monster.Bestiary = {
+	class = "Slime",
+	race = BESTY_RACE_SLIME,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Oramond/Western Plains, Lower Rathleton, Glooth Factory, Underground Glooth Factory, Rathleton Sewers.",
+}
 
 monster.health = 750
 monster.maxHealth = 750
 monster.race = "venom"
 monster.corpse = 21108
-monster.speed = 160
+monster.speed = 80
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -79,8 +96,7 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 45, attack = 40, condition = { type = CONDITION_POISON, totalDamage = 280, interval = 4000 } },
 	-- poison
-	{ name = "condition", interval = 2000, chance = 13, target = false, condition =
-	{ type = CONDITION_POISON, minDamage = -400, maxDamage = -400, radius = 4, effect = CONST_ME_POISONAREA } },
+	{ name = "condition", type = CONDITION_POISON, interval = 2000, chance = 13, minDamage = -400, maxDamage = -480, radius = 4, effect = CONST_ME_POISONAREA, target = false },
 	{ name = "combat", interval = 2000, chance = 11, type = COMBAT_EARTHDAMAGE, minDamage = -85, maxDamage = -180, radius = 3, shootEffect = CONST_ANI_ENVENOMEDARROW, effect = CONST_ME_GREEN_RINGS, target = true },
 	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -60, maxDamage = -105, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = true },
 }
@@ -88,6 +104,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 30,
+	mitigation = 1.04,
 }
 
 monster.elements = {

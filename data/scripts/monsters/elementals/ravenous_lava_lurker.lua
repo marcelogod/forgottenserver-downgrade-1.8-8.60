@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Ravenous Lava Lurker")
 local monster = {}
 
-monster.name = "Ravenous Lava Lurker"
 monster.description = "a ravenous lava lurker"
 monster.experience = 4000
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1569
+monster.Bestiary = {
+	class = "Elemental",
+	race = BESTY_RACE_ELEMENTAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Gnome Deep Hub in the Gnomish area.",
+}
 
 monster.health = 5000
 monster.maxHealth = 5000
 monster.race = "fire"
 monster.corpse = 0
-monster.speed = 116
+monster.speed = 58
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,10 +59,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -71,6 +89,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 33,
 	armor = 45,
+	mitigation = 0.91,
 }
 
 monster.elements = {

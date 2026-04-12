@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hemming")
 local monster = {}
 
-monster.name = "Hemming"
 monster.description = "Hemming"
 monster.experience = 2850
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "blood"
 monster.corpse = 18289
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 300,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -94,8 +100,9 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 40,
+	mitigation = 1.03,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 50, maxDamage = 200, effect = CONST_ME_MAGIC_GREEN, target = false },
-	{ name = "speed", interval = 2000, chance = 15, speed = 300, range = 7, effect = CONST_ME_SOUND_PURPLE, target = false, duration = 5000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 300, range = 7, effect = CONST_ME_SOUND_PURPLE, target = false, duration = 5000 },
 }
 
 monster.elements = {

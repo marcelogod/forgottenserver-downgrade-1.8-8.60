@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Minion of Gaz'haragoth")
 local monster = {}
 
-monster.name = "Minion of Gaz'haragoth"
 monster.description = "a minion of Gaz'haragoth"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 5500
 monster.maxHealth = 5500
 monster.race = "undead"
 monster.corpse = 0
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,12 +46,13 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
 }
 
+monster.events = {}
 
 monster.light = {
 	level = 0,

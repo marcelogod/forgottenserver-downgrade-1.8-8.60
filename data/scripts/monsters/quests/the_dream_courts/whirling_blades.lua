@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Whirling Blades")
 local monster = {}
 
-monster.name = "Whirling Blades"
 monster.description = "a whirling blades"
 monster.experience = 0
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 1
 monster.maxHealth = 1
 monster.race = "undead"
 monster.corpse = 3138
-monster.speed = 78
+monster.speed = 39
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 20,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +72,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 199,
 	armor = 199,
+	--	mitigation = ???,
 }
 
 monster.elements = {

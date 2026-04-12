@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Blue Djinn")
 local monster = {}
 
-monster.name = "Blue Djinn"
 monster.description = "a blue djinn"
 monster.experience = 215
 monster.outfit = {
@@ -15,12 +14,23 @@ monster.outfit = {
 }
 
 monster.raceId = 80
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Kha'zeel, Magician Quarter, Forgotten Tomb.",
+}
 
 monster.health = 330
 monster.maxHealth = 330
 monster.race = "blood"
 monster.corpse = 6020
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.faction = FACTION_MARID
@@ -29,6 +39,10 @@ monster.enemyFactions = { FACTION_PLAYER, FACTION_EFREET }
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -45,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -93,6 +107,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 20,
+	mitigation = 0.78,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Tremor Worm")
 local monster = {}
 
-monster.name = "Tremor Worm"
 monster.description = "a tremor worm"
 monster.experience = 80000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 125000
 monster.maxHealth = 125000
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 170
+monster.speed = 85
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -69,6 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 100,
 	armor = 100,
+	--	mitigation = ???,
 }
 
 monster.elements = {

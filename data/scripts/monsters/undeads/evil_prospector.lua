@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Evil Prospector")
 local monster = {}
 
-monster.name = "Evil Prospector"
 monster.description = "an evil prospector"
 monster.experience = 9800
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 1885
+monster.Bestiary = {
+	class = "Undead",
+	race = BESTY_RACE_UNDEAD,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Barren Drift",
+}
 
 monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "undead"
 monster.corpse = 32610
-monster.speed = 440
+monster.speed = 220
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 3,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -81,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 100,
+	mitigation = 2.81,
 }
 
 monster.elements = {

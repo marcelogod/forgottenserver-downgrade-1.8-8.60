@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Crustacea Gigantica")
 local monster = {}
 
-monster.name = "Crustacea Gigantica"
 monster.description = "a crustacea gigantica"
 monster.experience = 1800
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 697
+monster.Bestiary = {
+	class = "Aquatic",
+	race = BESTY_RACE_AQUATIC,
+	toKill = 5,
+	FirstUnlock = 2,
+	SecondUnlock = 3,
+	CharmsPoints = 50,
+	Stars = 3,
+	Occurrence = 3,
+	Locations = "Calassa, Treasure Island , Seacrest Grounds. \z
+		In the Seacrest Grounds the spawns are Varying Monster Spawns in which the common creature is an Abyssal Calamary. \z
+		The chance to spawn a Crustacea Gigantica seems to be around 1%-2%.",
+}
 
 monster.health = 1600
 monster.maxHealth = 1600
 monster.race = "blood"
 monster.corpse = 12344
-monster.speed = 480
+monster.speed = 240
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,10 +58,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true
+	canWalkOnPoison = true,
 }
 
 monster.light = {
@@ -63,12 +79,13 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "gold coin", chance = 97350, maxCount = 175 },
-	{ name = "strong mana potion", chance = 7080 },
-	{ name = "giant crab pincer", chance = 4420, maxCount = 2 },
-	{ name = "strong health potion", chance = 2650 },
-	{ id = 3098, chance = 880 }, -- ring of healing
-	{ name = "great mana potion", chance = 2550 },
+	{ name = "gold coin", chance = 96000, maxCount = 100 },
+	{ name = "gold coin", chance = 56000, maxCount = 75 },
+	{ name = "strong mana potion", chance = 8885 },
+	{ name = "strong health potion", chance = 3880 },
+	{ name = "giant crab pincer", chance = 5000, maxCount = 2 },
+	{ id = 3098, chance = 3000 }, -- ring of healing
+	{ name = "great mana potion", chance = 1220 },
 }
 
 monster.attacks = {
@@ -78,6 +95,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 45,
 	armor = 40,
+	mitigation = 0.91,
 }
 
 monster.elements = {

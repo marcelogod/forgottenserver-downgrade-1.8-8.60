@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Werebear")
 local monster = {}
 
-monster.name = "Werebear"
 monster.description = "a werebear"
 monster.experience = 2100
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1142
+monster.Bestiary = {
+	class = "Lycanthrope",
+	race = BESTY_RACE_LYCANTHROPE,
+	toKill = 1000,
+	FirstUnlock = 50,
+	SecondUnlock = 500,
+	CharmsPoints = 25,
+	Stars = 3,
+	Occurrence = 0,
+	Locations = "Grimvale underground, were-beasts cave south-west of Edron and in the Last Sanctum east of Cormaya.",
+}
 
 monster.health = 2400
 monster.maxHealth = 2400
 monster.race = "blood"
 monster.corpse = 22010
-monster.speed = 220
+monster.speed = 110
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 275,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -86,13 +103,14 @@ monster.loot = {
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 50, maxDamage = -485 },
-	{ name = "speed", interval = 4000, chance = 20, speed = -100, radius = 7, effect = CONST_ME_POFF, target = true },
+	{ name = "speed", interval = 4000, chance = 20, minDamage = -0, maxDamage = -400, radius = 7, effect = CONST_ME_POFF, target = true },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_LIFEDRAIN, minDamage = -65, maxDamage = -335, radius = 4, effect = CONST_ME_MAGIC_GREEN, target = false },
 }
 
 monster.defenses = {
 	defense = 30,
 	armor = 38,
+	mitigation = 0.91,
 	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 50, maxDamage = 100, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 

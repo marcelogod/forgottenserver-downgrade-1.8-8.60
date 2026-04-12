@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Hateful Soul")
 local monster = {}
 
-monster.name = "Hateful Soul"
 monster.description = "a hateful soul"
 monster.experience = 5580
 monster.outfit = {
@@ -18,12 +17,16 @@ monster.health = 25000
 monster.maxHealth = 25000
 monster.race = "undead"
 monster.corpse = 33793
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -40,7 +43,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -66,6 +69,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 40,
 	armor = 82,
+	--	mitigation = ???,
 }
 
 monster.elements = {

@@ -1,9 +1,8 @@
 local mType = Game.createMonsterType("Chasm Spawn")
 local monster = {}
 
-monster.name = "Chasm Spawn"
 monster.description = "a chasm spawn"
-monster.experience = 3600
+monster.experience = 2700
 monster.outfit = {
 	lookType = 1037,
 	lookHead = 0,
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 1546
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Warzone 4",
+}
 
 monster.health = 4500
 monster.maxHealth = 4500
 monster.race = "blood"
 monster.corpse = 27563
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true,
@@ -72,7 +89,7 @@ monster.loot = {
 	{ name = "green crystal shard", chance = 7850 },
 	{ name = "violet crystal shard", chance = 4690 },
 	{ name = "mushroom backpack", chance = 610 },
-	{ name = "suspicious device", chance = 850 },
+	{ name = "suspicious device", chance = 520 },
 }
 
 monster.attacks = {
@@ -89,6 +106,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 74,
+	mitigation = 1.94,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("The Axeorcist")
 local monster = {}
 
-monster.name = "The Axeorcist"
 monster.description = "the Axeorcist"
 monster.experience = 3000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 5100
 monster.maxHealth = 5100
 monster.race = "blood"
 monster.corpse = 5980
-monster.speed = 250
+monster.speed = 125
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 9,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -69,7 +75,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 15,
 	armor = 15,
-	{ name = "speed", interval = 2000, chance = 15, speed = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
+	{ name = "speed", interval = 2000, chance = 15, speedChange = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000 },
 }
 
 monster.elements = {

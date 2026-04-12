@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Chicken")
 local monster = {}
 
-monster.name = "Chicken"
 monster.description = "a chicken"
 monster.experience = 0
 monster.outfit = {
@@ -15,17 +14,34 @@ monster.outfit = {
 }
 
 monster.raceId = 111
+monster.Bestiary = {
+	class = "Bird",
+	race = BESTY_RACE_BIRD,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Sabrehaven, Rookgaard, The McRonalds Farm in Thais, Northport, \z
+		Fibula, Carlin (killable but unreachable), Greenshore, Krimhorn, Orc Fortress, \z
+		Factory Quarter, also theres one in the farm near Edron.",
+}
 
 monster.health = 15
 monster.maxHealth = 15
 monster.race = "blood"
 monster.corpse = 6042
-monster.speed = 128
+monster.speed = 64
 monster.manaCost = 220
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,11 +58,10 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 15,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
-	isPreyable = true
 }
 
 monster.light = {
@@ -62,15 +77,16 @@ monster.voices = {
 }
 
 monster.loot = {
-	{ name = "meat", chance = 1760, maxCount = 2 },
-	{ id = 3606, chance = 860 }, -- egg
-	{ name = "worm", chance = 8790 },
-	{ name = "chicken feather", chance = 17950 },
+	{ name = "meat", chance = 2120, maxCount = 2 },
+	{ id = 3606, chance = 950 }, -- egg
+	{ name = "worm", chance = 10000, maxCount = 3 },
+	{ name = "chicken feather", chance = 20000 },
 }
 
 monster.defenses = {
-	defense = 0,
+	defense = 5,
 	armor = 1,
+	mitigation = 0.05,
 }
 
 monster.elements = {

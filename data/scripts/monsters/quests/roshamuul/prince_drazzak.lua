@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Prince Drazzak")
 local monster = {}
 
-monster.name = "Prince Drazzak"
 monster.description = "Prince Drazzak"
 monster.experience = 210000
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 330000
 monster.maxHealth = 330000
 monster.race = "fire"
 monster.corpse = 6068
-monster.speed = 480
+monster.speed = 240
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
 	chance = 25,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 2000,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -96,6 +102,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 65,
 	armor = 55,
+	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 1500, maxDamage = 3000, effect = CONST_ME_MAGIC_RED, target = false },
 }
 

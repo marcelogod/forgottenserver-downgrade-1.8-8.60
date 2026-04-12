@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("White Deer")
 local monster = {}
 
-monster.name = "White Deer"
 monster.description = "a white deer"
 monster.experience = 0
 monster.outfit = {
@@ -14,19 +13,35 @@ monster.outfit = {
 	lookMount = 0,
 }
 
+monster.events = {}
 
 monster.raceId = 720
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 2,
+	Locations = "Around AbDendriel, Carlin east from Lothar, Femor Hills and Ferngrims Gate, usually in pairs. They will appear when they're not overhunted.",
+}
 
 monster.health = 195
 monster.maxHealth = 195
 monster.race = "blood"
 monster.corpse = 0
-monster.speed = 208
+monster.speed = 104
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -43,10 +58,11 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 195,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = false,
+	isPreyExclusive = true,
 }
 
 monster.light = {
@@ -68,6 +84,7 @@ monster.loot = {}
 monster.defenses = {
 	defense = 5,
 	armor = 2,
+	mitigation = 0.56,
 }
 
 monster.elements = {

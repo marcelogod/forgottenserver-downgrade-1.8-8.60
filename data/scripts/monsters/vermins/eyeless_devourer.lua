@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Eyeless Devourer")
 local monster = {}
 
-monster.name = "Eyeless Devourer"
 monster.description = "an eyeless devourer"
 monster.experience = 6000
 monster.outfit = {
@@ -15,17 +14,32 @@ monster.outfit = {
 }
 
 monster.raceId = 2092
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 2500,
+	FirstUnlock = 100,
+	SecondUnlock = 1000,
+	CharmsPoints = 50,
+	Stars = 4,
+	Occurrence = 0,
+	Locations = "Antrum of the Fallen.",
+}
 
 monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "blood"
 monster.corpse = 36696
-monster.speed = 330
+monster.speed = 165
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 5000,
 	chance = 8,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +56,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -94,6 +108,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 63,
 	armor = 63,
+	mitigation = 1.82,
 }
 
 monster.elements = {

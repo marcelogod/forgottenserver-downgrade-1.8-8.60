@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Animated Cyclops")
 local monster = {}
 
-monster.name = "Animated Cyclops"
 monster.description = "an animated cyclops"
 monster.experience = 150
 monster.outfit = {
@@ -18,12 +17,19 @@ monster.health = 260
 monster.maxHealth = 260
 monster.race = "blood"
 monster.corpse = 5962
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -40,7 +46,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -79,6 +85,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 20,
 	armor = 20,
+	--	mitigation = ???,
 }
 
 monster.elements = {

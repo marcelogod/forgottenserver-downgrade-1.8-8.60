@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Cloak of Terror")
 local monster = {}
 
-monster.name = "Cloak of Terror"
 monster.description = "a cloak of terror"
 monster.experience = 19700
 monster.outfit = {
@@ -15,18 +14,37 @@ monster.outfit = {
 }
 
 monster.raceId = 1928
+monster.Bestiary = {
+	class = "Plant",
+	race = BESTY_RACE_PLANT,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Furious Crater.",
+}
 
+monster.events = {}
 
 monster.health = 28000
 monster.maxHealth = 28000
 monster.race = "undead"
 monster.corpse = 33801
-monster.speed = 500
+monster.speed = 250
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -43,7 +61,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -92,6 +110,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 107,
 	armor = 107,
+	mitigation = 3.19,
 }
 
 monster.elements = {
@@ -113,5 +132,9 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+mType.onThink = function(monster, interval)
+	monster:tryTeleportToPlayer("I am your terror!")
+end
 
 mType:register(monster)

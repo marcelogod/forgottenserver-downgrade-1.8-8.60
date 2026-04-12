@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Darklight Construct")
 local monster = {}
 
-monster.name = "Darklight Construct"
 monster.description = "a darklight construct"
 monster.experience = 22050
 monster.outfit = {
@@ -15,17 +14,35 @@ monster.outfit = {
 }
 
 monster.raceId = 2378
+monster.Bestiary = {
+	class = "Magical",
+	race = BESTY_RACE_MAGICAL,
+	toKill = 5000,
+	FirstUnlock = 200,
+	SecondUnlock = 2000,
+	CharmsPoints = 100,
+	Stars = 5,
+	Occurrence = 0,
+	Locations = "Darklight Core",
+}
 
 monster.health = 32200
 monster.maxHealth = 32200
 monster.race = "undead"
 monster.corpse = 43840
-monster.speed = 440
+monster.speed = 220
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +59,7 @@ monster.flags = {
 	targetDistance = 0,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
@@ -60,7 +77,7 @@ monster.loot = {
 	{ name = "small emerald", chance = 6646, maxCount = 3 },
 	{ name = "zaoan shoes", chance = 8614, maxCount = 1 },
 	{ name = "darklight core", chance = 5659, maxCount = 1 },
--- { name = "darklight obsidian axe", chance = 11129, maxCount = 1 },
+	--{ name = "darklight obsidian axe", chance = 11129, maxCount = 1 },
 	{ name = "magma amulet", chance = 13240, maxCount = 1 },
 	{ name = "small ruby", chance = 12458, maxCount = 3 },
 }
@@ -77,6 +94,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 117,
 	armor = 117,
+	mitigation = 2.98,
 }
 
 monster.elements = {

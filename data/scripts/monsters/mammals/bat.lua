@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Bat")
 local monster = {}
 
-monster.name = "Bat"
 monster.description = "a bat"
 monster.experience = 10
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 122
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 250,
+	FirstUnlock = 10,
+	SecondUnlock = 100,
+	CharmsPoints = 5,
+	Stars = 1,
+	Occurrence = 0,
+	Locations = "Dark Cathedral, Tiquanda, Drefia, Mount Sternum, Folda, Ghostlands, Kazordoon, \z
+		Femor Hills, Thais Bat Dungeon, Thais Bandit Cave and in many other caves.",
+}
 
 monster.health = 30
 monster.maxHealth = 30
 monster.race = "blood"
 monster.corpse = 6053
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 250
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 3,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -70,6 +85,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 5,
 	armor = 1,
+	mitigation = 0.15,
 }
 
 monster.elements = {

@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Rotworm")
 local monster = {}
 
-monster.name = "Rotworm"
 monster.description = "a rotworm"
 monster.experience = 40
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 26
+monster.Bestiary = {
+	class = "Vermin",
+	race = BESTY_RACE_VERMIN,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Almost everywhere, like Ancient Temple, Vandura, Folda dungeon, Fibula Dungeon, \z
+		caves connecting Edron and Cormaya, Venore Swamp Troll cave, Thais Troll cave, Ferngrims Gate, \z
+		Dwarf Mines, Hellgate, below the graves in eastern Rookgaard, spider cave in western Rookgaard, \z
+		cave northeast of Ab'Dendriel, Darashia Rotworm Caves, Liberty Bay, Fenrock, \z
+		below Green Claw Swamp and some other places.",
+}
 
 monster.health = 65
 monster.maxHealth = 65
 monster.race = "blood"
 monster.corpse = 5967
-monster.speed = 116
+monster.speed = 58
 monster.manaCost = 305
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 0,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -75,6 +93,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 8,
+	mitigation = 0.28,
 }
 
 monster.elements = {

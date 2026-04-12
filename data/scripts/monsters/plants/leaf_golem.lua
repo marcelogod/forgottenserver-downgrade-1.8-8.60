@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Leaf Golem")
 local monster = {}
 
-monster.name = "Leaf Golem"
 monster.description = "a leaf golem"
 monster.experience = 45
 monster.outfit = {
@@ -15,17 +14,36 @@ monster.outfit = {
 }
 
 monster.raceId = 979
+monster.Bestiary = {
+	class = "Plant",
+	race = BESTY_RACE_PLANT,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Leaf dungeon in Hellgate, Lair of the Treeling Witch, Forest Fury Camp and in the \z
+		Forest Fury version of the Forsaken Mine.",
+}
 
 monster.health = 90
 monster.maxHealth = 90
 monster.race = "undead"
 monster.corpse = 19041
-monster.speed = 136
+monster.speed = 68
 monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 70,
+	health = 10,
+	damage = 10,
+	random = 10,
 }
 
 monster.flags = {
@@ -42,7 +60,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -72,12 +90,13 @@ monster.loot = {
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -90 },
 	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -15, range = 7, shootEffect = CONST_ANI_SMALLSTONE, target = true },
-	{ name = "speed", interval = 2000, chance = 20, speed = -600, radius = 3, effect = CONST_ME_SMALLPLANTS, target = false, duration = 9000 },
+	{ name = "speed", interval = 2000, chance = 20, speedChange = -600, radius = 3, effect = CONST_ME_SMALLPLANTS, target = false, duration = 9000 },
 }
 
 monster.defenses = {
 	defense = 10,
 	armor = 11,
+	mitigation = 0.41,
 }
 
 monster.elements = {

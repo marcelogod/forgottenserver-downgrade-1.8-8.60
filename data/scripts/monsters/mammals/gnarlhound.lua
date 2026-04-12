@@ -1,7 +1,6 @@
 local mType = Game.createMonsterType("Gnarlhound")
 local monster = {}
 
-monster.name = "Gnarlhound"
 monster.description = "a gnarlhound"
 monster.experience = 60
 monster.outfit = {
@@ -15,17 +14,33 @@ monster.outfit = {
 }
 
 monster.raceId = 630
+monster.Bestiary = {
+	class = "Mammal",
+	race = BESTY_RACE_MAMMAL,
+	toKill = 500,
+	FirstUnlock = 25,
+	SecondUnlock = 250,
+	CharmsPoints = 15,
+	Stars = 2,
+	Occurrence = 0,
+	Locations = "Zao Steppe, Raging Mage Tower, Gnarlhound Caves. \z
+		Four inaccessible ones can be seen in Telas's basement.",
+}
 
 monster.health = 198
 monster.maxHealth = 198
 monster.race = "blood"
 monster.corpse = 10333
-monster.speed = 410
+monster.speed = 205
 monster.manaCost = 465
 
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10,
+}
+
+monster.strategiesTarget = {
+	nearest = 100,
 }
 
 monster.flags = {
@@ -42,7 +57,7 @@ monster.flags = {
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
+	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false,
@@ -74,6 +89,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 10,
 	armor = 10,
+	mitigation = 0.25,
 }
 
 monster.elements = {
