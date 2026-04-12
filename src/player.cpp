@@ -3693,7 +3693,7 @@ int32_t Player::getStepSpeed() const
 
 	const int32_t minSpeed = ConfigManager::getInteger(ConfigManager::PLAYER_MIN_SPEED);
 	const int32_t maxSpeed = ConfigManager::getInteger(ConfigManager::PLAYER_MAX_SPEED);
-	return std::max<int32_t>(minSpeed, std::min<int32_t>(maxSpeed, getSpeed() * 2));
+	return std::max<int32_t>(minSpeed, std::min<int32_t>(maxSpeed, getSpeed()));
 }
 
 void Player::updateBaseSpeed()

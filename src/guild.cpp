@@ -3,6 +3,8 @@
 
 #include "otpch.h"
 
+#include <algorithm>
+
 #include "guild.h"
 #include "game.h"
 #include "tools.h"
@@ -35,6 +37,76 @@ uint64_t parseUint64OrZero(std::string_view value)
 		return std::stoull(std::string(value));
 	} catch (...) {
 		return 0;
+	}
+}
+
+struct GuildWarRefreshContext {
+	Guild_ptr guild;
+	std::vector<Player*> members;
+	bool temporaryGuild = false;
+};
+
+GuildWarRefreshContext prepareGuildWarRefreshContext(uint32_t guildId)
+{
+	GuildWarRefreshContext context;
+	context.guild = g_game.getGuild(guildId);
+
+	if (!context.guild) {
+		context.guild = IOGuild::loadGuild(guildId);
+		if (context.guild) {
+			g_game.addGuild(context.guild);
+			context.temporaryGuild = true;
+		}
+	}
+
+	auto addMember = [&context](Player* member) {
+		if (!member || std::find(context.members.begin(), context.members.end(), member) != context.members.end()) {
+			return;
+		}
+		context.members.push_back(member);
+	};
+
+	if (context.guild) {
+		for (Player* member : context.guild->getMembersOnline()) {
+			addMember(member);
+		}
+	}
+
+	for (const auto& playerEntry : g_game.getPlayers()) {
+		Player* onlinePlayer = playerEntry.second;
+		const auto& onlinePlayerGuild = onlinePlayer->getGuild();
+		if (onlinePlayerGuild && onlinePlayerGuild->getId() == guildId) {
+			addMember(onlinePlayer);
+		}
+	}
+
+	return context;
+}
+
+void refreshWarStateForGuilds(uint32_t firstGuildId, uint32_t secondGuildId)
+{
+	auto firstContext = prepareGuildWarRefreshContext(firstGuildId);
+	auto secondContext = prepareGuildWarRefreshContext(secondGuildId);
+
+	std::vector<Player*> membersToRefresh;
+	membersToRefresh.reserve(firstContext.members.size() + secondContext.members.size());
+	membersToRefresh.insert(membersToRefresh.end(), firstContext.members.begin(), firstContext.members.end());
+	membersToRefresh.insert(membersToRefresh.end(), secondContext.members.begin(), secondContext.members.end());
+
+	for (Player* member : membersToRefresh) {
+		member->reloadWarList(true);
+	}
+
+	for (Player* member : membersToRefresh) {
+		g_game.updateCreatureEmblem(member);
+	}
+
+	if (firstContext.temporaryGuild && firstContext.guild && firstContext.guild->getMembersOnline().empty()) {
+		g_game.removeGuild(firstContext.guild->getId());
+	}
+
+	if (secondContext.temporaryGuild && secondContext.guild && secondContext.guild->getMembersOnline().empty()) {
+		g_game.removeGuild(secondContext.guild->getId());
 	}
 }
 
@@ -274,28 +346,11 @@ void IOGuild::guildWar(Player* player, const std::string& param)
 
 			updateQuery << "`status` = 1, `started` = " << std::time(nullptr) << ", `ended` = " << newEnd;
 			msg = fmt::format("accepted the war against {:s}.", enemyName);
+			updateQuery << " WHERE `id` = " << warId;
 			
 			if (db.executeQuery(updateQuery.str())) {
 				g_game.broadcastMessage(fmt::format("{:s} has {:s}", guild->getName(), msg), MESSAGE_EVENT_ORANGE);
-				
-				for (Player* member : guild->getMembersOnline()) {
-					member->reloadWarList(false);
-				}
-				
-				std::vector<Player*> enemyMembers;
-				if (auto enemyGuild = g_game.getGuild(enemyId)) {
-					for (Player* member : enemyGuild->getMembersOnline()) {
-						member->reloadWarList(false);
-						enemyMembers.push_back(member);
-					}
-				}
-
-				for (Player* member : guild->getMembersOnline()) {
-					g_game.updateCreatureEmblem(member);
-				}
-				for (Player* member : enemyMembers) {
-					g_game.updateCreatureEmblem(member);
-				}
+				refreshWarStateForGuilds(guild->getId(), enemyId);
 			}
 			return;
 			
@@ -335,28 +390,11 @@ void IOGuild::guildWar(Player* player, const std::string& param)
 			// Setting status to 5 (ended).
 			updateQuery << "`status` = 5, `ended` = " << std::time(nullptr);
 			msg = fmt::format("ended the war with {:s}.", enemyName);
+			updateQuery << " WHERE `id` = " << warId;
 			
 			if (db.executeQuery(updateQuery.str())) {
 				g_game.broadcastMessage(fmt::format("{:s} has {:s}", guild->getName(), msg), MESSAGE_EVENT_ORANGE);
-
-				for (Player* member : guild->getMembersOnline()) {
-					member->reloadWarList(false);
-				}
-				
-				std::vector<Player*> enemyMembers;
-				if (auto enemyGuild = g_game.getGuild(enemyId)) {
-					for (Player* member : enemyGuild->getMembersOnline()) {
-						member->reloadWarList(false);
-						enemyMembers.push_back(member);
-					}
-				}
-
-				for (Player* member : guild->getMembersOnline()) {
-					g_game.updateCreatureEmblem(member);
-				}
-				for (Player* member : enemyMembers) {
-					g_game.updateCreatureEmblem(member);
-				}
+				refreshWarStateForGuilds(guild->getId(), enemyId);
 			}
 			return;
 		
@@ -523,15 +561,6 @@ void IOGuild::registerGuildWarKill(Player* killer, Player* victim)
 			MESSAGE_EVENT_ORANGE
 		);
 
-		// Reload war lists for all members
-		for (Player* member : killerGuild->getMembersOnline()) {
-			member->reloadWarList(false);
-			g_game.updateCreatureEmblem(member);
-		}
-		
-		for (Player* member : victimGuild->getMembersOnline()) {
-			member->reloadWarList(false);
-			g_game.updateCreatureEmblem(member);
-		}
+		refreshWarStateForGuilds(killerGuild->getId(), victimGuild->getId());
 	}
 }

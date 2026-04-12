@@ -154,7 +154,7 @@ public:
 	int64_t getEventStepTicks(bool onlyDelay = false) const;
 	int64_t getStepDuration(Direction dir) const;
 	int64_t getStepDuration() const;
-	virtual int32_t getStepSpeed() const { return getSpeed() * 2; }
+	virtual int32_t getStepSpeed() const { return getSpeed(); }
 	int32_t getSpeed() const { return baseSpeed + varSpeed; }
 	void setSpeed(int32_t varSpeedDelta)
 	{
