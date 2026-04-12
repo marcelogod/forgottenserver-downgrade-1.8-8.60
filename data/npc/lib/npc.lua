@@ -15,15 +15,14 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks,
 	local item = 0
 	local itemType = ItemType(itemid)
 	if itemType:isStackable() then
-		if inBackpacks then
-			stuff = Game.createItem(backpack, 1)
-			item = stuff:addItem(itemid, math.min(itemType:getStackSize(), amount))
-		else
-			stuff = Game.createItem(itemid, math.min(itemType:getStackSize(), amount))
-		end
-		return
-			Player(cid):addItemEx(stuff, ignoreCap) ~= RETURNVALUE_NOERROR and 0 or
-				amount, 0
+		   if inBackpacks then
+			   local stuff = Game.createItem(backpack, 1)
+			   item = stuff:addItem(itemid, math.min(itemType:getStackSize(), amount))
+			   return Player(cid):addItemEx(stuff, ignoreCap) ~= RETURNVALUE_NOERROR and 0 or amount, 0
+		   else
+			   local stuff = Game.createItem(itemid, math.min(itemType:getStackSize(), amount))
+			   return Player(cid):addItemEx(stuff, ignoreCap) ~= RETURNVALUE_NOERROR and 0 or amount, 0
+		   end
 	end
 
 	local a = 0
