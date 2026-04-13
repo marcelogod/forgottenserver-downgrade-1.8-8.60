@@ -68,6 +68,7 @@ enum Boolean
 	ADMIN_LOGS,
 	GUILD_WAR_ANNOUNCE_KILLS,
 	POTION_CAN_EXHAUST_ITEM,
+	SLOW_TASK_WARNING,
 
 	LAST_BOOLEAN /* this must be the last one */
 };

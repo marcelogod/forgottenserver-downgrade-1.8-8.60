@@ -96,6 +96,7 @@ void Dispatcher::threadMain()
                 if (static_cast<uint64_t>(elapsed) > SLOW_TASK_THRESHOLD_NS && !task->skipSlowDetection) {
                     ++slowTaskCount;
                     auto elapsedMs = elapsed / 1'000'000;
+                    // Log slow task warning (optional, can be disabled)
                     if (!task->description.empty()) {
                         LOG_WARN(">> Slow task detected: {}ms [{}] {}", elapsedMs, task->description, task->extraDescription);
                     } else {

@@ -23,6 +23,7 @@
 #include "signals.h"
 #include "luascript.h"
 #include "thread_pool.h"
+#include "zones.h"
 
 #include <fmt/format.h>
 #include <fmt/color.h>
@@ -184,6 +185,12 @@ void mainLoader(const std::shared_ptr<ServiceManager>& services)
 	LOG_INFO(">> Loading imbuements");
 	if (!Imbuements::getInstance().loadFromXml()) {
 		startupErrorMessage("Unable to load imbuements!");
+		return;
+	}
+
+	LOG_INFO(">> Loading zones");
+	if (!Zones::load()) {
+		startupErrorMessage("Unable to load zones!");
 		return;
 	}
 

@@ -341,6 +341,7 @@ bool ConfigManager::load()
 	booleans[Boolean::ADMIN_LOCALHOST_ONLY] = getGlobalBoolean(L, "adminLocalhostOnly", true);
 	booleans[Boolean::ADMIN_REQUIRE_LOGIN] = getGlobalBoolean(L, "adminRequireLogin", true);
 	booleans[Boolean::ADMIN_LOGS] = getGlobalBoolean(L, "adminLogs", false);
+	booleans[Boolean::SLOW_TASK_WARNING] = getGlobalBoolean(L, "slowTaskWarning", true);
 
 	strings[String::DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	strings[String::SERVER_NAME] = getGlobalString(L, "serverName", "");

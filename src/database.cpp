@@ -44,10 +44,19 @@ static tfs::detail::Mysql_ptr connectToDatabase(const bool retryIfError)
 
 		// Disable SSL enforcement and verification
 		{
-			bool ssl_enforce = false;
-			bool ssl_verify = false;
-			mysql_options(handle.get(), MYSQL_OPT_SSL_ENFORCE, &ssl_enforce);
-			mysql_options(handle.get(), MYSQL_OPT_SSL_VERIFY_SERVER_CERT, &ssl_verify);
+#if defined(MYSQL_OPT_SSL_MODE) && defined(SSL_MODE_DISABLED)
+			const auto sslMode = SSL_MODE_DISABLED;
+			mysql_options(handle.get(), MYSQL_OPT_SSL_MODE, &sslMode);
+#else
+#if defined(MYSQL_OPT_SSL_ENFORCE)
+			bool sslEnforce = false;
+			mysql_options(handle.get(), MYSQL_OPT_SSL_ENFORCE, &sslEnforce);
+#endif
+#if defined(MYSQL_OPT_SSL_VERIFY_SERVER_CERT)
+			bool sslVerify = false;
+			mysql_options(handle.get(), MYSQL_OPT_SSL_VERIFY_SERVER_CERT, &sslVerify);
+#endif
+#endif
 		}
 
 		// connects to database

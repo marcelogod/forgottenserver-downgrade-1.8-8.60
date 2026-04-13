@@ -61,6 +61,7 @@ set(tfs_SRC
     ${CMAKE_CURRENT_LIST_DIR}/luaparty.cpp
     ${CMAKE_CURRENT_LIST_DIR}/luaplayer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/luaposition.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/luazone.cpp
 	${CMAKE_CURRENT_LIST_DIR}/logger.cpp
 	${CMAKE_CURRENT_LIST_DIR}/luascript.cpp
     ${CMAKE_CURRENT_LIST_DIR}/luaspells.cpp
@@ -120,6 +121,7 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/weapons.cpp
 	${CMAKE_CURRENT_LIST_DIR}/wildcardtree.cpp
 	${CMAKE_CURRENT_LIST_DIR}/xtea.cpp
+	${CMAKE_CURRENT_LIST_DIR}/zones.cpp
 )
 
 set(tfs_HDR
@@ -216,6 +218,7 @@ set(tfs_HDR
 	${CMAKE_CURRENT_LIST_DIR}/weapons.h
 	${CMAKE_CURRENT_LIST_DIR}/wildcardtree.h
 	${CMAKE_CURRENT_LIST_DIR}/xtea.h
+	${CMAKE_CURRENT_LIST_DIR}/zones.h
 )
 
 set(tfs_MAIN ${CMAKE_CURRENT_LIST_DIR}/main.cpp PARENT_SCOPE)

@@ -2524,6 +2524,7 @@ void LuaScriptInterface::registerFunctions()
 	registerGame();
 	registerVariant();
 	registerPosition();
+	registerZone();
 	registerTile();
 	registerNetworkMessage();
 	registerItem();
@@ -2655,6 +2656,7 @@ void LuaScriptInterface::registerClass(const std::string& className, const std::
 	    {"WeaponMelee", LuaData_Weapon},
 	    {"XMLDocument", LuaData_XMLDocument},
 	    {"XMLNode", LuaData_XMLNode},
+	    {"Zone", LuaData_Zone},
 	};
 
 	// className.metatable['t'] = type

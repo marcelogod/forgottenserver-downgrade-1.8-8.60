@@ -26,3 +26,4 @@ dofile("data/lib/core/spells.lua")
 dofile("data/lib/core/boosted_list.lua")
 
 dofile("data/lib/core/house_autowrap.lua")
+dofile("data/lib/core/familiar.lua")

@@ -61,6 +61,7 @@ enum LuaDataType
 
 	LuaData_XMLDocument,
 	LuaData_XMLNode,
+	LuaData_Zone,
 };
 
 template <class T>
@@ -112,6 +113,7 @@ class Weapon;
 class WeaponDistance;
 class WeaponMelee;
 class WeaponWand;
+class Zone;
 
 struct Group;
 struct LootBlock;
@@ -182,6 +184,7 @@ inline constexpr LuaDataType LuaDataTypeByClass<const WeaponWand> = LuaData_Weap
 
 NEW_LUA_DATA_TYPE(XMLDocument)
 NEW_LUA_DATA_TYPE(XMLNode)
+NEW_LUA_DATA_TYPE(Zone)
 
 struct LuaTimerEventDesc
 {
@@ -367,6 +370,7 @@ protected:
 	void registerGame();
 	void registerVariant();
 	void registerPosition();
+	void registerZone();
 	void registerTile();
 	void registerNetworkMessage();
 	void registerItem();

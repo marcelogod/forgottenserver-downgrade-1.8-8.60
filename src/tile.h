@@ -184,6 +184,7 @@ public:
 	bool hasPropertyGlobal(const Item* exclude, ITEMPROPERTY prop) const;
 
 	bool hasFlag(uint32_t flag) const { return hasBitSet(flag, this->flags); }
+	uint32_t getFlags() const { return flags; }
 	void setFlag(uint32_t flag) { this->flags |= flag; }
 	void resetFlag(uint32_t flag) { this->flags &= ~flag; }
 

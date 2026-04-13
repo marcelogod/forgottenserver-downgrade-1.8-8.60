@@ -5,6 +5,7 @@
 
 #include "game.h"
 #include "luascript.h"
+#include "zones.h"
 
 extern Game g_game;
 
@@ -101,6 +102,44 @@ int luaPositionSendDistanceEffect(lua_State* L)
 	pushBoolean(L, true);
 	return 1;
 }
+
+int luaPositionGetZones(lua_State* L)
+{
+	// position:getZones()
+	const auto zoneIds = Zones::getZonesByPosition(getPosition(L, 1));
+	lua_createtable(L, static_cast<int>(zoneIds.size()), 0);
+
+	int index = 0;
+	for (uint16_t zoneId : zoneIds) {
+		lua_pushinteger(L, zoneId);
+		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
+int luaPositionHasZone(lua_State* L)
+{
+	// position:hasZone([zoneId | zone])
+	const auto zoneIds = Zones::getZonesByPosition(getPosition(L, 1));
+	if (lua_gettop(L) < 2) {
+		pushBoolean(L, !zoneIds.empty());
+		return 1;
+	}
+
+	uint16_t expectedZoneId = 0;
+	if (isNumber(L, 2)) {
+		expectedZoneId = getInteger<uint16_t>(L, 2);
+	} else if (isType<Zone>(L, 2)) {
+		const auto zone = getSharedPtr<Zone>(L, 2);
+		if (zone) {
+			expectedZoneId = zone->getId();
+		}
+	}
+
+	pushBoolean(L, expectedZoneId != 0 &&
+	                      std::find(zoneIds.begin(), zoneIds.end(), expectedZoneId) != zoneIds.end());
+	return 1;
+}
 } // namespace
 
 void LuaScriptInterface::registerPosition()
@@ -113,4 +152,6 @@ void LuaScriptInterface::registerPosition()
 
 	registerMethod("Position", "sendMagicEffect", luaPositionSendMagicEffect);
 	registerMethod("Position", "sendDistanceEffect", luaPositionSendDistanceEffect);
+	registerMethod("Position", "getZones", luaPositionGetZones);
+	registerMethod("Position", "hasZone", luaPositionHasZone);
 }
