@@ -991,11 +991,25 @@ void Monster::onThink(uint32_t interval)
 			addEventWalk();
 
 			if (isSummon()) {
+				Creature* master = getMaster();
+				if (master) {
+					if (master->getTile()->hasFlag(TILESTATE_PROTECTIONZONE)) {
+						g_game.removeCreature(this, false);
+						g_game.addMagicEffect(getPosition(), CONST_ME_POFF, getInstanceID());
+						return;
+					}
+
+					if (!getPosition().isInRange(master->getPosition(), 7, 7, 0)) {
+						g_game.internalTeleport(this, master->getPosition());
+						g_game.addMagicEffect(master->getPosition(), CONST_ME_TELEPORT, getInstanceID());
+					}
+				}
+
 				auto ac = attackedCreature.lock();
 				if (!ac) {
-					if (getMaster() && getMaster()->getAttackedCreature()) {
+					if (master && master->getAttackedCreature()) {
 						// This happens if the monster is summoned during combat
-						selectTarget(getMaster()->getAttackedCreature());
+						selectTarget(master->getAttackedCreature());
 					} else if (getMaster() != followCreature.lock().get()) {
 						// Our master has not ordered us to attack anything, lets follow him around instead.
 						setFollowCreature(getMaster());
