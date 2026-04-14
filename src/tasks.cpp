@@ -8,6 +8,7 @@
 
 #include "game.h"
 #include "logger.h"
+#include "configmanager.h"
 
 extern Game g_game;
 
@@ -95,12 +96,14 @@ void Dispatcher::threadMain()
 
                 if (static_cast<uint64_t>(elapsed) > SLOW_TASK_THRESHOLD_NS && !task->skipSlowDetection) {
                     ++slowTaskCount;
-                    auto elapsedMs = elapsed / 1'000'000;
-                    // Log slow task warning (optional, can be disabled)
-                    if (!task->description.empty()) {
-                        LOG_WARN(">> Slow task detected: {}ms [{}] {}", elapsedMs, task->description, task->extraDescription);
-                    } else {
-                        LOG_WARN(">> Slow task detected: {}ms [unknown]", elapsedMs);
+                    if (getBoolean(ConfigManager::SLOW_TASK_WARNING)) {
+                        auto elapsedMs = elapsed / 1'000'000;
+                        // Log slow task warning (optional, can be disabled)
+                        if (!task->description.empty()) {
+                            LOG_WARN(">> Slow task detected: {}ms [{}] {}", elapsedMs, task->description, task->extraDescription);
+                        } else {
+                            LOG_WARN(">> Slow task detected: {}ms [unknown]", elapsedMs);
+                        }
                     }
                 }
 #endif
