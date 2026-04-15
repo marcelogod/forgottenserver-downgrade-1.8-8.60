@@ -10,7 +10,7 @@
 class Player;
 class Party;
 
-using PlayerVector = std::vector<Player*>;
+using PlayerVector = std::vector<std::weak_ptr<Player>>;
 
 enum SharedExpStatus_t : uint8_t {
 	SHAREDEXP_OK,
@@ -27,7 +27,7 @@ public:
 
 	explicit Party(Player* leader);
 
-	Player* getLeader() const { return leader; }
+	Player* getLeader() const { return leader.lock().get(); }
 	PlayerVector& getMembers() { return memberList; }
 	const PlayerVector& getInvitees() const { return inviteList; }
 	size_t getMemberCount() const { return memberList.size(); }
@@ -68,7 +68,7 @@ private:
 	PlayerVector memberList;
 	PlayerVector inviteList;
 
-	Player* leader;
+	std::weak_ptr<Player> leader;
 
 	bool sharedExpActive = false;
 	bool sharedExpEnabled = false;

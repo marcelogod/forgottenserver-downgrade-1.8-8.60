@@ -4169,13 +4169,15 @@ void Game::checkSereneStatus()
 				}
 			}
 			if (!hasNearbyPartyMembers) {
-				for (Player* member : const_cast<Party*>(party)->getMembers()) {
-					if (member == player) continue;
-					const Position& mpos = member->getPosition();
-					if (pos.z == mpos.z && std::max(
-						std::abs(pos.x - mpos.x), std::abs(pos.y - mpos.y)) <= 10) {
-						hasNearbyPartyMembers = true;
-						break;
+				for (auto& weakMember : const_cast<Party*>(party)->getMembers()) {
+					if (Player* member = weakMember.lock().get()) {
+						if (member == player) continue;
+						const Position& mpos = member->getPosition();
+						if (pos.z == mpos.z && std::max(
+							std::abs(pos.x - mpos.x), std::abs(pos.y - mpos.y)) <= 10) {
+							hasNearbyPartyMembers = true;
+							break;
+						}
 					}
 				}
 			}

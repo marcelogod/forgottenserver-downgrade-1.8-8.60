@@ -12,7 +12,7 @@
 
 extern Game g_game;
 
-Party::Party(Player* leader) : leader(leader) {}
+Party::Party(Player* leader) : leader(g_game.getPlayerWeakRef(leader)) {}
 
 std::shared_ptr<Party> Party::create(Player* leader)
 {
@@ -28,36 +28,50 @@ void Party::disband()
 		return;
 	}
 
-	Player* currentLeader = leader;
-	leader = nullptr;
+	Player* currentLeader = leader.lock().get();
+	leader.reset();
 
-	currentLeader->setParty(nullptr);
-	currentLeader->sendClosePrivate(CHANNEL_PARTY);
-	g_game.updatePlayerShield(currentLeader);
-	currentLeader->sendCreatureSkull(currentLeader);
-	currentLeader->sendTextMessage(MESSAGE_INFO_DESCR, "Your party has been disbanded.");
+	if (currentLeader) {
+		currentLeader->setParty(nullptr);
+		currentLeader->sendClosePrivate(CHANNEL_PARTY);
+		g_game.updatePlayerShield(currentLeader);
+		currentLeader->sendCreatureSkull(currentLeader);
+		currentLeader->sendTextMessage(MESSAGE_INFO_DESCR, "Your party has been disbanded.");
+	}
 
-	for (Player* invitee : inviteList) {
-		invitee->removePartyInvitation(this);
-		currentLeader->sendCreatureShield(invitee);
+	for (auto& inviteeWeak : inviteList) {
+		if (Player* invitee = inviteeWeak.lock().get()) {
+			invitee->removePartyInvitation(this);
+			if (currentLeader) {
+				currentLeader->sendCreatureShield(invitee);
+			}
+		}
 	}
 	inviteList.clear();
 
-	for (Player* member : memberList) {
-		member->setParty(nullptr);
-		member->sendClosePrivate(CHANNEL_PARTY);
-		member->sendTextMessage(MESSAGE_INFO_DESCR, "Your party has been disbanded.");
+	for (auto& memberWeak : memberList) {
+		if (Player* member = memberWeak.lock().get()) {
+			member->setParty(nullptr);
+			member->sendClosePrivate(CHANNEL_PARTY);
+			member->sendTextMessage(MESSAGE_INFO_DESCR, "Your party has been disbanded.");
+		}
 	}
 
-	for (Player* member : memberList) {
+	for (auto& memberWeak : memberList) {
+		Player* member = memberWeak.lock().get();
+		if (!member) continue;
 		g_game.updatePlayerShield(member);
 
-		for (Player* otherMember : memberList) {
-			otherMember->sendCreatureSkull(member);
+		for (auto& otherMemberWeak : memberList) {
+			if (Player* otherMember = otherMemberWeak.lock().get()) {
+				otherMember->sendCreatureSkull(member);
+			}
 		}
 
-		member->sendCreatureSkull(currentLeader);
-		currentLeader->sendCreatureSkull(member);
+		if (currentLeader) {
+			member->sendCreatureSkull(currentLeader);
+			currentLeader->sendCreatureSkull(member);
+		}
 	}
 	memberList.clear();
 	self.reset();
@@ -69,7 +83,9 @@ bool Party::leaveParty(Player* player, bool forceRemove /* = false */)
 		return false;
 	}
 
-	if (player->getParty() != this && leader != player) {
+	Player* currentLeader = leader.lock().get();
+
+	if (player->getParty() != this && currentLeader != player) {
 		return false;
 	}
 
@@ -79,40 +95,63 @@ bool Party::leaveParty(Player* player, bool forceRemove /* = false */)
 	}
 
 	bool missingLeader = false;
-	if (leader == player) {
+	if (currentLeader == player || !currentLeader) {
 		if (!memberList.empty()) {
-			if (memberList.size() == 1 && inviteList.empty()) {
+			Player* nextLeader = nullptr;
+			size_t validMembersCount = 0;
+			
+			for (auto& memberWeak : memberList) {
+				if (Player* validMember = memberWeak.lock().get()) {
+					if (validMember != player) {
+						if (!nextLeader) nextLeader = validMember;
+						validMembersCount++;
+					}
+				}
+			}
+
+			if (validMembersCount == 0 || (validMembersCount == 1 && inviteList.empty() && currentLeader == player)) {
 				missingLeader = true;
+			} else if (nextLeader) {
+				passPartyLeadership(nextLeader, true);
+				currentLeader = leader.lock().get();
 			} else {
-				passPartyLeadership(memberList.front(), true);
+				missingLeader = true;
 			}
 		} else {
 			missingLeader = true;
 		}
 	}
 
-	// since we already passed the leadership, we remove the player from the list
-	auto it = std::find(memberList.begin(), memberList.end(), player);
+	auto it = std::remove_if(memberList.begin(), memberList.end(),
+		[player](const std::weak_ptr<Player>& weakPlayer) {
+			return weakPlayer.expired() || weakPlayer.lock().get() == player;
+		});
 	if (it != memberList.end()) {
-		memberList.erase(it);
+		memberList.erase(it, memberList.end());
 	}
 
 	player->setParty(nullptr);
 	player->sendClosePrivate(CHANNEL_PARTY);
 	g_game.updatePlayerShield(player);
 
-	for (Player* member : memberList) {
-		member->sendCreatureSkull(player);
-		player->sendPlayerPartyIcons(member);
+	for (auto& memberWeak : memberList) {
+		if (Player* member = memberWeak.lock().get()) {
+			member->sendCreatureSkull(player);
+			player->sendPlayerPartyIcons(member);
+		}
 	}
 
-	leader->sendCreatureSkull(player);
+	if (currentLeader) {
+		currentLeader->sendCreatureSkull(player);
+		player->sendPlayerPartyIcons(currentLeader);
+	}
+	
 	player->sendCreatureSkull(player);
-	player->sendPlayerPartyIcons(leader);
 
-	// remove pending invitation icons from the screen
-	for (Player* invitee : inviteList) {
-		player->sendCreatureShield(invitee);
+	for (auto& inviteeWeak : inviteList) {
+		if (Player* invitee = inviteeWeak.lock().get()) {
+			player->sendCreatureShield(invitee);
+		}
 	}
 
 	player->sendTextMessage(MESSAGE_INFO_DESCR, "You have left the party.");
@@ -132,7 +171,9 @@ bool Party::leaveParty(Player* player, bool forceRemove /* = false */)
 
 bool Party::passPartyLeadership(Player* player, bool forceRemove /* = false*/)
 {
-	if (!player || leader == player || player->getParty() != this) {
+	Player* currentLeader = leader.lock().get();
+
+	if (!player || currentLeader == player || player->getParty() != this) {
 		return false;
 	}
 
@@ -140,34 +181,44 @@ bool Party::passPartyLeadership(Player* player, bool forceRemove /* = false*/)
 		return false;
 	}
 
-	// Remove it before to broadcast the message correctly
-	auto it = std::find(memberList.begin(), memberList.end(), player);
+	auto it = std::remove_if(memberList.begin(), memberList.end(),
+		[player](const std::weak_ptr<Player>& weakPlayer) {
+			return weakPlayer.expired() || weakPlayer.lock().get() == player;
+		});
 	if (it != memberList.end()) {
-		memberList.erase(it);
+		memberList.erase(it, memberList.end());
 	}
 
 	broadcastPartyMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} is now the leader of the party.", player->getName()),
 	                      true);
 
-	Player* oldLeader = leader;
-	leader = player;
+	Player* oldLeader = currentLeader;
+	leader = g_game.getPlayerWeakRef(player);
 
-	memberList.insert(memberList.begin(), oldLeader);
+	if (oldLeader) {
+		memberList.insert(memberList.begin(), g_game.getPlayerWeakRef(oldLeader));
+	}
 
 	updateSharedExperience();
 
-	for (Player* member : memberList) {
-		member->sendCreatureShield(oldLeader);
-		member->sendCreatureShield(leader);
+	for (auto& memberWeak : memberList) {
+		if (Player* member = memberWeak.lock().get()) {
+			if (oldLeader) member->sendCreatureShield(oldLeader);
+			member->sendCreatureShield(player);
+		}
 	}
 
-	for (Player* invitee : inviteList) {
-		invitee->sendCreatureShield(oldLeader);
-		invitee->sendCreatureShield(leader);
+	for (auto& inviteeWeak : inviteList) {
+		if (Player* invitee = inviteeWeak.lock().get()) {
+			if (oldLeader) invitee->sendCreatureShield(oldLeader);
+			invitee->sendCreatureShield(player);
+		}
 	}
 
-	leader->sendCreatureShield(oldLeader);
-	leader->sendCreatureShield(leader);
+	if (oldLeader) {
+		player->sendCreatureShield(oldLeader);
+	}
+	player->sendCreatureShield(player);
 
 	player->sendTextMessage(MESSAGE_INFO_DESCR, "You are now the leader of the party.");
 	return true;
@@ -175,50 +226,47 @@ bool Party::passPartyLeadership(Player* player, bool forceRemove /* = false*/)
 
 bool Party::joinParty(Player& player)
 {
-	// check if lua scripts allow the player to join
+	Player* currentLeader = leader.lock().get();
+	if (!currentLeader) return false;
+
 	if (!g_events->eventPartyOnJoin(this, &player)) {
 		return false;
 	}
 
-	// first player accepted the invitation
-	// the party gets officially formed
-	// the leader can no longer take invitations from others
 	if (memberList.empty()) {
-		leader->clearPartyInvitations();
+		currentLeader->clearPartyInvitations();
 	}
 
-	// add player to the party
-	memberList.push_back(&player);
+	memberList.push_back(g_game.getPlayerWeakRef(&player));
 	player.setParty(this);
 	broadcastPartyMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has joined the party.", player.getName()));
 
-	// remove player pending invitations to this and other parties
 	player.clearPartyInvitations();
 
-	// update player icon on the screen
 	g_game.updatePlayerShield(&player);
 
-	for (Player* member : memberList) {
-		member->sendCreatureSkull(&player);
-		player.sendPlayerPartyIcons(member);
+	for (auto& memberWeak : memberList) {
+		if (Player* member = memberWeak.lock().get()) {
+			member->sendCreatureSkull(&player);
+			player.sendPlayerPartyIcons(member);
+		}
 	}
 
-	// update player-leader party icons
-	leader->sendCreatureSkull(&player);
-	player.sendPlayerPartyIcons(leader);
+	currentLeader->sendCreatureSkull(&player);
+	player.sendPlayerPartyIcons(currentLeader);
 
-	// update player own skull
 	player.sendCreatureSkull(&player);
 
-	// show the new member who else is invited
-	for (Player* invitee : inviteList) {
-		player.sendCreatureShield(invitee);
+	for (auto& inviteeWeak : inviteList) {
+		if (Player* invitee = inviteeWeak.lock().get()) {
+			player.sendCreatureShield(invitee);
+		}
 	}
 
 	player.removePartyInvitation(this);
 	updateSharedExperience();
 
-	const std::string& leaderName = leader->getName();
+	const std::string& leaderName = currentLeader->getName();
 	player.sendTextMessage(
 	    MESSAGE_INFO_DESCR,
 	    fmt::format("You have joined {:s}'{:s} party. Open the party channel to communicate with your companions.",
@@ -228,15 +276,26 @@ bool Party::joinParty(Player& player)
 
 bool Party::removeInvite(Player& player, bool removeFromPlayer /* = true*/)
 {
-	auto it = std::find(inviteList.begin(), inviteList.end(), &player);
-	if (it == inviteList.end()) {
-		return false;
+	bool found = false;
+	auto remove_it = std::remove_if(inviteList.begin(), inviteList.end(),
+		[&player, &found](const std::weak_ptr<Player>& weakPlayer) {
+			if (weakPlayer.expired()) return true;
+			if (weakPlayer.lock().get() == &player) {
+				found = true;
+				return true;
+			}
+			return false;
+		});
+		
+	inviteList.erase(remove_it, inviteList.end());
+
+	if (!found) return false;
+
+	Player* currentLeader = leader.lock().get();
+	if (currentLeader) {
+		currentLeader->sendCreatureShield(&player);
+		player.sendCreatureShield(currentLeader);
 	}
-
-	inviteList.erase(it);
-
-	leader->sendCreatureShield(&player);
-	player.sendCreatureShield(leader);
 
 	if (removeFromPlayer) {
 		player.removePartyInvitation(this);
@@ -255,9 +314,12 @@ void Party::revokeInvitation(Player& player)
 		return;
 	}
 
-	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has revoked {:s} invitation.", leader->getName(),
-	                                                       leader->getSex() == PLAYERSEX_FEMALE ? "her" : "his"));
-	leader->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("Invitation for {:s} has been revoked.", player.getName()));
+	Player* currentLeader = leader.lock().get();
+	if (currentLeader) {
+		player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has revoked {:s} invitation.", currentLeader->getName(),
+		                                                       currentLeader->getSex() == PLAYERSEX_FEMALE ? "her" : "his"));
+		currentLeader->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("Invitation for {:s} has been revoked.", player.getName()));
+	}
 	removeInvite(player);
 }
 
@@ -266,65 +328,90 @@ bool Party::invitePlayer(Player& player)
 	if (isPlayerInvited(&player)) {
 		return false;
 	}
+	
+	Player* currentLeader = leader.lock().get();
+	if (!currentLeader) return false;
 
 	if (empty()) {
-		leader->sendTextMessage(
+		currentLeader->sendTextMessage(
 		    MESSAGE_INFO_DESCR,
 		    fmt::format("{:s} has been invited. Open the party channel to communicate with your members.",
 		                player.getName()));
-		g_game.updatePlayerShield(leader);
-		leader->sendCreatureSkull(leader);
+		g_game.updatePlayerShield(currentLeader);
+		currentLeader->sendCreatureSkull(currentLeader);
 	} else {
-		leader->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has been invited.", player.getName()));
+		currentLeader->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has been invited.", player.getName()));
 	}
 
-	// add player to invite lists
-	inviteList.push_back(&player);
+	inviteList.push_back(g_game.getPlayerWeakRef(&player));
 	player.addPartyInvitation(this);
 
-	// update leader-invitee party status
-	leader->sendCreatureShield(&player);
-	player.sendCreatureShield(leader);
+	currentLeader->sendCreatureShield(&player);
+	player.sendCreatureShield(currentLeader);
 
-	// update the invitation status for other members
-	for (Player* member : memberList) {
-		member->sendCreatureShield(&player);
+	for (auto& memberWeak : memberList) {
+		if (Player* member = memberWeak.lock().get()) {
+			member->sendCreatureShield(&player);
+		}
 	}
 
-	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has invited you to {:s} party.", leader->getName(),
-	                                                       leader->getSex() == PLAYERSEX_FEMALE ? "her" : "his"));
+	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has invited you to {:s} party.", currentLeader->getName(),
+	                                                       currentLeader->getSex() == PLAYERSEX_FEMALE ? "her" : "his"));
 	return true;
 }
 
 bool Party::isPlayerInvited(const Player* player) const
 {
-	return std::find(inviteList.begin(), inviteList.end(), player) != inviteList.end();
+	for (const auto& inviteeWeak : inviteList) {
+		if (inviteeWeak.lock().get() == player) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Party::updateAllPartyIcons()
 {
-	for (Player* member : memberList) {
-		for (Player* otherMember : memberList) {
-			member->sendCreatureShield(otherMember);
+	Player* currentLeader = leader.lock().get();
+	
+	for (auto& memberWeak : memberList) {
+		Player* member = memberWeak.lock().get();
+		if (!member) continue;
+		
+		for (auto& otherMemberWeak : memberList) {
+			if (Player* otherMember = otherMemberWeak.lock().get()) {
+				member->sendCreatureShield(otherMember);
+			}
 		}
 
-		member->sendCreatureShield(leader);
-		leader->sendCreatureShield(member);
+		if (currentLeader) {
+			member->sendCreatureShield(currentLeader);
+			currentLeader->sendCreatureShield(member);
+		}
 	}
-	leader->sendCreatureShield(leader);
+	
+	if (currentLeader) {
+		currentLeader->sendCreatureShield(currentLeader);
+	}
 }
 
 void Party::broadcastPartyMessage(MessageClasses msgClass, std::string_view msg, bool sendToInvitations /*= false*/)
 {
-	for (Player* member : memberList) {
-		member->sendTextMessage(msgClass, msg);
+	for (auto& memberWeak : memberList) {
+		if (Player* member = memberWeak.lock().get()) {
+			member->sendTextMessage(msgClass, msg);
+		}
 	}
 
-	leader->sendTextMessage(msgClass, msg);
+	if (Player* currentLeader = leader.lock().get()) {
+		currentLeader->sendTextMessage(msgClass, msg);
+	}
 
 	if (sendToInvitations) {
-		for (Player* invitee : inviteList) {
-			invitee->sendTextMessage(msgClass, msg);
+		for (auto& inviteeWeak : inviteList) {
+			if (Player* invitee = inviteeWeak.lock().get()) {
+				invitee->sendTextMessage(msgClass, msg);
+			}
 		}
 	}
 }
@@ -364,7 +451,8 @@ const char* getSharedExpReturnMessage(SharedExpStatus_t value)
 
 bool Party::setSharedExperience(Player* player, bool sharedExpActive)
 {
-	if (!player || leader != player) {
+	Player* currentLeader = leader.lock().get();
+	if (!player || currentLeader != player) {
 		return false;
 	}
 
@@ -377,9 +465,9 @@ bool Party::setSharedExperience(Player* player, bool sharedExpActive)
 	if (sharedExpActive) {
 		SharedExpStatus_t sharedExpStatus = getSharedExperienceStatus();
 		this->sharedExpEnabled = sharedExpStatus == SHAREDEXP_OK;
-		leader->sendTextMessage(MESSAGE_INFO_DESCR, getSharedExpReturnMessage(sharedExpStatus));
+		currentLeader->sendTextMessage(MESSAGE_INFO_DESCR, getSharedExpReturnMessage(sharedExpStatus));
 	} else {
-		leader->sendTextMessage(MESSAGE_INFO_DESCR, "Shared Experience has been deactivated.");
+		currentLeader->sendTextMessage(MESSAGE_INFO_DESCR, "Shared Experience has been deactivated.");
 	}
 
 	updateAllPartyIcons();
@@ -391,10 +479,15 @@ void Party::shareExperience(uint64_t experience, Creature* source /* = nullptr*/
 	uint64_t shareExperience = experience;
 	g_events->eventPartyOnShareExperience(this, shareExperience);
 
-	for (Player* member : memberList) {
-		member->onGainSharedExperience(shareExperience, source);
+	for (auto& memberWeak : memberList) {
+		if (Player* member = memberWeak.lock().get()) {
+			member->onGainSharedExperience(shareExperience, source);
+		}
 	}
-	leader->onGainSharedExperience(shareExperience, source);
+	
+	if (Player* currentLeader = leader.lock().get()) {
+		currentLeader->onGainSharedExperience(shareExperience, source);
+	}
 }
 
 bool Party::canUseSharedExperience(const Player* player) const
@@ -408,10 +501,15 @@ SharedExpStatus_t Party::getMemberSharedExperienceStatus(const Player* player) c
 		return SHAREDEXP_EMPTYPARTY;
 	}
 
-	uint32_t highestLevel = leader->getLevel();
-	for (Player* member : memberList) {
-		if (member->getLevel() > highestLevel) {
-			highestLevel = member->getLevel();
+	Player* currentLeader = leader.lock().get();
+	if (!currentLeader) return SHAREDEXP_MEMBERINACTIVE;
+
+	uint32_t highestLevel = currentLeader->getLevel();
+	for (const auto& memberWeak : memberList) {
+		if (Player* member = memberWeak.lock().get()) {
+			if (member->getLevel() > highestLevel) {
+				highestLevel = member->getLevel();
+			}
 		}
 	}
 
@@ -423,7 +521,7 @@ SharedExpStatus_t Party::getMemberSharedExperienceStatus(const Player* player) c
 	const int32_t range  = getInteger(ConfigManager::EXP_SHARE_RANGE);
 	const int32_t floors = getInteger(ConfigManager::EXP_SHARE_FLOORS);
 
-	if (!leader->getPosition().isInRange(player->getPosition(), range, range, floors)) {
+	if (!currentLeader->getPosition().isInRange(player->getPosition(), range, range, floors)) {
 		return SHAREDEXP_TOOFARAWAY;
 	}
 
@@ -444,15 +542,20 @@ SharedExpStatus_t Party::getMemberSharedExperienceStatus(const Player* player) c
 
 SharedExpStatus_t Party::getSharedExperienceStatus()
 {
-	SharedExpStatus_t leaderStatus = getMemberSharedExperienceStatus(leader);
+	Player* currentLeader = leader.lock().get();
+	if (!currentLeader) return SHAREDEXP_MEMBERINACTIVE;
+
+	SharedExpStatus_t leaderStatus = getMemberSharedExperienceStatus(currentLeader);
 	if (leaderStatus != SHAREDEXP_OK) {
 		return leaderStatus;
 	}
 
-	for (Player* member : memberList) {
-		SharedExpStatus_t memberStatus = getMemberSharedExperienceStatus(member);
-		if (memberStatus != SHAREDEXP_OK) {
-			return memberStatus;
+	for (auto& memberWeak : memberList) {
+		if (Player* member = memberWeak.lock().get()) {
+			SharedExpStatus_t memberStatus = getMemberSharedExperienceStatus(member);
+			if (memberStatus != SHAREDEXP_OK) {
+				return memberStatus;
+			}
 		}
 	}
 	return SHAREDEXP_OK;
@@ -478,7 +581,9 @@ void Party::clearPlayerPoints(Player* player)
 bool Party::canOpenCorpse(uint32_t ownerId) const
 {
 	if (Player* player = g_game.getPlayerByID(ownerId)) {
-		return leader->getID() == ownerId || player->getParty() == this;
+		Player* currentLeader = leader.lock().get();
+		if (currentLeader && currentLeader->getID() == ownerId) return true;
+		return player->getParty() == this;
 	}
 	return false;
 }

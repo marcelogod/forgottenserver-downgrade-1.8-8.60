@@ -94,10 +94,12 @@ int luaPartyGetMembers(lua_State* L)
 
 	int index = 0;
 	lua_createtable(L, party->getMemberCount(), 0);
-	for (Player* player : party->getMembers()) {
-		pushUserdata<Player>(L, player);
-		setMetatable(L, -1, "Player");
-		lua_rawseti(L, -2, ++index);
+	for (auto& weakMember : party->getMembers()) {
+		if (Player* player = weakMember.lock().get()) {
+			pushUserdata<Player>(L, player);
+			setMetatable(L, -1, "Player");
+			lua_rawseti(L, -2, ++index);
+		}
 	}
 	return 1;
 }
@@ -122,10 +124,12 @@ int luaPartyGetInvitees(lua_State* L)
 		lua_createtable(L, party->getInvitationCount(), 0);
 
 		int index = 0;
-		for (Player* player : party->getInvitees()) {
-			pushUserdata<Player>(L, player);
-			setMetatable(L, -1, "Player");
-			lua_rawseti(L, -2, ++index);
+		for (auto& weakInvitee : party->getInvitees()) {
+			if (Player* player = weakInvitee.lock().get()) {
+				pushUserdata<Player>(L, player);
+				setMetatable(L, -1, "Player");
+				lua_rawseti(L, -2, ++index);
+			}
 		}
 	} else {
 		lua_pushnil(L);

@@ -578,6 +578,14 @@ public:
 		return {};
 	}
 
+	std::weak_ptr<Player> getPlayerWeakRef(const Player* player) const {
+		if (!player) return {};
+		auto it = creatureSharedRefs.find(player->getID());
+		if (it != creatureSharedRefs.end()) return std::static_pointer_cast<Player>(it->second);
+		return {};
+	}
+
+
 private:
 	std::unordered_map<uint32_t, int64_t> storageMap;
 
