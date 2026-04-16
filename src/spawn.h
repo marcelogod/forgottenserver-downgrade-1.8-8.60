@@ -100,7 +100,6 @@ private:
 	std::forward_list<std::unique_ptr<Npc>> npcList;
 	std::forward_list<std::shared_ptr<Spawn>> spawnList;
 	
-	std::vector<Npc*> activeNpcs;
 	std::string filename;
 	bool loaded = false;
 	bool started = false;
