@@ -118,7 +118,6 @@ public:
 private:
 	std::unordered_map<uint16_t, ChatChannel> normalChannels;
 	std::unordered_map<uint16_t, PrivateChatChannel> privateChannels;
-	// Party has no stable id. We keep Party* as observer key but aggressively clean empty channels.
 	std::unordered_map<Party*, ChatChannel> partyChannels;
 	std::unordered_map<uint32_t, ChatChannel> guildChannels;
 

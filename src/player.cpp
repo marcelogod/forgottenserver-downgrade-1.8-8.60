@@ -4520,21 +4520,32 @@ void Player::sendPlayerPartyIcons(Player* player)
 
 bool Player::addPartyInvitation(Party* party)
 {
-	auto it = std::find(invitePartyList.begin(), invitePartyList.end(), party);
-	if (it != invitePartyList.end()) {
-		return false;
+	for (const auto& weakParty : invitePartyList) {
+		if (auto shared = weakParty.lock()) {
+			if (shared.get() == party) {
+				return false;
+			}
+		}
 	}
 
-	invitePartyList.push_front(party);
+	invitePartyList.push_front(party->shared_from_this());
 	return true;
 }
 
-void Player::removePartyInvitation(Party* party) { invitePartyList.remove(party); }
+void Player::removePartyInvitation(Party* party)
+{
+	invitePartyList.remove_if([party](const std::weak_ptr<Party>& weakParty) {
+		if (weakParty.expired()) return true;
+		return weakParty.lock().get() == party;
+	});
+}
 
 void Player::clearPartyInvitations()
 {
-	for (Party* invitingParty : invitePartyList) {
-		invitingParty->removeInvite(*this, false);
+	for (const auto& weakParty : invitePartyList) {
+		if (auto invitingParty = weakParty.lock()) {
+			invitingParty->removeInvite(*this, false);
+		}
 	}
 	invitePartyList.clear();
 }

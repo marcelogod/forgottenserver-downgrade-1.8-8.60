@@ -1261,7 +1261,7 @@ private:
 
 	std::list<ShopInfo> shopItemList;
 
-	std::forward_list<Party*> invitePartyList;
+	std::forward_list<std::weak_ptr<Party>> invitePartyList;
 	std::forward_list<uint32_t> modalWindows;
 	std::forward_list<std::string> learnedInstantSpellList;
 

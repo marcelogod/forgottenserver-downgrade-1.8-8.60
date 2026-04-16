@@ -55,6 +55,7 @@ public:
 	void setMotd(std::string_view motd) { this->motd = motd; }
 
 private:
+	
 	std::list<Player*> membersOnline;
 	std::vector<GuildRank_ptr> ranks;
 	std::string name;
