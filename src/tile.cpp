@@ -1385,7 +1385,6 @@ void Tile::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t 
 	Creature* creature = thing->getCreature();
 	Item* item;
 	if (creature) {
-		creature->incrementReferenceCounter();
 		item = nullptr;
 	} else {
 		item = thing->getItem();

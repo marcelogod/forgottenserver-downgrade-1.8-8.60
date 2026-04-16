@@ -1227,13 +1227,15 @@ int luaCreatureSetInstanceIdRaw(lua_State *L)
 int LuaScriptInterface::luaCreatureGC(lua_State* L)
 {
 	Creature** creaturePtr = getRawUserdata<Creature>(L, 1);
-	if (creaturePtr && *creaturePtr) {
-		Creature* creature = *creaturePtr;
+	if (creaturePtr) {
 		*creaturePtr = nullptr;
-
-		if (Creature::isAlive(creature)) {
-			creature->releaseLuaReferences();
+	}
+	if (getAssociatedValue(L, 1, 1)) {
+		auto* weakPtr = static_cast<std::weak_ptr<Creature>*>(lua_touserdata(L, -1));
+		if (weakPtr) {
+			std::destroy_at(weakPtr);
 		}
+		lua_pop(L, 1);
 	}
 	return 0;
 }

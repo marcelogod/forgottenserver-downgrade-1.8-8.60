@@ -437,6 +437,7 @@ public:
 	void cleanup();
 	void shutdown();
 	void ReleaseCreature(Creature* creature);
+	void ReleaseCreature(std::shared_ptr<Creature> creature);
 	void ReleaseItem(Item* item);
 	void ReleaseItem(std::shared_ptr<Item> item);
 
@@ -571,11 +572,25 @@ public:
 		return {};
 	}
 
-	std::shared_ptr<Creature> getCreatureSharedRef(const Creature* creature) const {
-		if (!creature) return {};
-		auto it = creatureSharedRefs.find(creature->getID());
+	std::shared_ptr<Creature> getCreatureSharedRef(uint32_t creatureId) const {
+		auto it = creatureSharedRefs.find(creatureId);
 		if (it != creatureSharedRefs.end()) return it->second;
 		return {};
+	}
+
+	std::shared_ptr<Creature> getCreatureSharedRef(const Creature* creature) const {
+		if (!creature) return {};
+		return getCreatureSharedRef(creature->getID());
+	}
+
+	template <typename T>
+	std::shared_ptr<T> getCreatureSharedRef(uint32_t creatureId) const {
+		return std::static_pointer_cast<T>(getCreatureSharedRef(creatureId));
+	}
+
+	template <typename T>
+	std::shared_ptr<T> getCreatureSharedRef(const T* creature) const {
+		return std::static_pointer_cast<T>(getCreatureSharedRef(static_cast<const Creature*>(creature)));
 	}
 
 	std::weak_ptr<Player> getPlayerWeakRef(const Player* player) const {
@@ -603,9 +618,9 @@ private:
 	std::map<uint32_t, uint32_t> stages;
 	std::unordered_map<uint32_t, std::unordered_map<uint32_t, int32_t>> accountStorageMap;
 
-	std::vector<Creature*> checkCreatureLists[EVENT_CREATURECOUNT];
+	std::vector<std::shared_ptr<Creature>> checkCreatureLists[EVENT_CREATURECOUNT];
 
-	std::vector<Creature*> ToReleaseCreatures;
+	std::vector<std::shared_ptr<Creature>> ToReleaseCreatures;
 	std::vector<std::shared_ptr<Item>> ToReleaseItems;
 
 	size_t lastBucket = 0;

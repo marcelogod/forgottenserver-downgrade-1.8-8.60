@@ -201,12 +201,11 @@ void Spawns::startup()
 	}
 
 	for (auto& npc : npcList) {
-		if (g_game.placeCreature(npc.get(), npc->getMasterPos(), false, true)) {
-			activeNpcs.push_back(npc.get());
-			npc.release();
+		std::shared_ptr<Npc> npcRef(npc.release());
+		if (g_game.placeCreature(npcRef.get(), npcRef->getMasterPos(), false, true)) {
+			activeNpcs.push_back(npcRef.get());
 		} else {
-			LOG_WARN(fmt::format("[Warning - Spawns::startup] Couldn't spawn npc \"{}\" on position: {}.", npc->getName(), npc->getMasterPos()));
-			// unique_ptr deletes automatically on clear() below
+			LOG_WARN(fmt::format("[Warning - Spawns::startup] Couldn't spawn npc \"{}\" on position: {}.", npcRef->getName(), npcRef->getMasterPos()));
 		}
 	}
 	npcList.clear();
@@ -272,9 +271,8 @@ Spawn::~Spawn()
 	pendingSpawnEvents.clear();
 
 	for (const auto& it : spawnedMap) {
-		Monster* monster = it.second;
+		Monster* monster = it.second.get();
 		monster->setSpawn(nullptr);
-		monster->decrementReferenceCounter();
 	}
 }
 
@@ -332,8 +330,8 @@ bool Spawn::spawnMonster(uint32_t spawnId, const spawnBlock_t& sb, bool startup 
 bool Spawn::spawnMonster(uint32_t spawnId, const std::shared_ptr<MonsterType>& mType, const Position& pos, Direction dir,
                          bool startup /*= false*/)
 {
-	auto monster_ptr = std::make_unique<Monster>(mType);
-	Monster* monster = monster_ptr.get();
+	auto monsterRef = std::make_shared<Monster>(mType);
+	Monster* monster = monsterRef.get();
 
 	if (!g_events->eventMonsterOnSpawn(monster, pos, startup, false)) {
     	return false;
@@ -342,8 +340,8 @@ bool Spawn::spawnMonster(uint32_t spawnId, const std::shared_ptr<MonsterType>& m
 	Position finalPos = pos;
 	if (startup) {
 		// No need to send out events to the surrounding since there is no one out there to listen!
-		if (!g_game.internalPlaceCreature(monster_ptr.get(), pos, true)) {
-			LOG_WARN(fmt::format("[Warning - Spawns::startup] Couldn't spawn monster \"{}\" on position: {}.", monster_ptr->getName(), finalPos ));
+		if (!g_game.internalPlaceCreature(monsterRef.get(), pos, true)) {
+			LOG_WARN(fmt::format("[Warning - Spawns::startup] Couldn't spawn monster \"{}\" on position: {}.", monsterRef->getName(), finalPos ));
 			return false;
 		}
 	} else {
@@ -380,20 +378,12 @@ bool Spawn::spawnMonster(uint32_t spawnId, const std::shared_ptr<MonsterType>& m
 		}
 	}
 
-	auto [it, inserted] = spawnedMap.insert({spawnId, monster_ptr.get()});
+	auto [it, inserted] = spawnedMap.insert({spawnId, g_game.getCreatureSharedRef<Monster>(monster)});
 	if (!inserted) {
-		// spawnId already occupied — need to safely remove creature without double free.
-		// Release ownership first to avoid unique_ptr deleting it.
-		monster_ptr.release();
-
-		// Remove from game (this will handle deletion via refcount).
 		g_game.removeCreature(monster);
 		return false;
 	}
 
-	// Insert succeeded: transfer ownership out of unique_ptr.
-	monster_ptr.release();
-	monster->incrementReferenceCounter(); // +1 ref for spawnedMap entry
 	monster->setDirection(dir);
 	monster->setSpawn(shared_from_this());
 	monster->setMasterPos(finalPos);
@@ -521,14 +511,14 @@ void Spawn::scheduleSpawn(uint32_t spawnId, uint32_t interval, bool blocked)
 void Spawn::cleanup()
 {
 	std::erase_if(spawnedMap, [this](auto& it) {
-		auto& [spawnId, monster] = it;
-		if (!monster->isRemoved()) {
+		auto& [spawnId, monsterRef] = it;
+		Monster* monster = monsterRef.get();
+		if (!monster || !monster->isRemoved()) {
 			return false;
 		}
 		if (auto mapIt = spawnMap.find(spawnId); mapIt != spawnMap.end()) {
 			mapIt->second.lastSpawn = monster->getRemovedTime();
 		}
-		monster->decrementReferenceCounter();
 		return true;
 	});
 }
@@ -536,9 +526,8 @@ void Spawn::cleanup()
 void Spawn::clearMonsters()
 {
 	for (const auto& it : spawnedMap) {
-		Monster* monster = it.second;
+		Monster* monster = it.second.get();
 		monster->setSpawn(nullptr);
-		monster->decrementReferenceCounter();
 	}
 	spawnedMap.clear();
 }
@@ -573,8 +562,7 @@ bool Spawn::addMonster(const std::string& name, const Position& pos, Direction d
 void Spawn::removeMonster(Monster* monster)
 {
 	for (auto it = spawnedMap.begin(), end = spawnedMap.end(); it != end; ++it) {
-		if (it->second == monster) {
-			monster->decrementReferenceCounter();
+		if (it->second.get() == monster) {
 			spawnedMap.erase(it);
 			break;
 		}

@@ -114,6 +114,7 @@ class WeaponDistance;
 class WeaponMelee;
 class WeaponWand;
 class Zone;
+class Game;
 
 struct Group;
 struct LootBlock;
@@ -126,6 +127,8 @@ using Combat_ptr = std::shared_ptr<Combat>;
 
 using XMLDocument = pugi::xml_document;
 using XMLNode = pugi::xml_node;
+
+extern Game g_game;
 
 inline constexpr int32_t EVENT_ID_LOADING = 1;
 inline constexpr int32_t EVENT_ID_USER = 1000;
@@ -235,8 +238,8 @@ public:
 	static bool removeResult(uint32_t id);
 
 	void setNpc(Npc* npc);
-	void setNpc(const std::shared_ptr<Npc>& npc) { curNpc = npc; }
-	Npc* getNpc() const { return curNpc.get(); }
+	void setNpc(const std::shared_ptr<Npc>& npc) { curNpc = npc.get(); }
+	Npc* getNpc() const { return curNpc; }
 
 	Thing* getThingByUID(uint32_t uid);
 	Item* getItemByUID(uint32_t uid);
@@ -250,7 +253,7 @@ private:
 	LuaScriptInterface* interface;
 
 	// for npc scripts
-	std::shared_ptr<Npc> curNpc;
+	Npc* curNpc = nullptr;
 
 	// temporary item list
 	static std::multimap<ScriptEnvironment*, std::shared_ptr<Item>> tempItems;
@@ -754,6 +757,27 @@ inline T** getRawUserdata(lua_State* L, int32_t arg, const bool checkType = true
 template <class T>
 inline T* getUserdata(lua_State* L, int32_t arg, const bool checkType = true)
 {
+	if constexpr (std::is_base_of_v<Creature, T>) {
+		if (checkType && !isType<T>(L, arg)) {
+			return nullptr;
+		}
+
+		T** userdata = static_cast<T**>(lua_touserdata(L, arg));
+		if (!userdata || !*userdata) {
+			return nullptr;
+		}
+
+		if (lua_getiuservalue(L, arg, 1) != LUA_TNONE) {
+			auto* weakPtr = static_cast<std::weak_ptr<Creature>*>(lua_touserdata(L, -1));
+			auto creatureRef = weakPtr ? weakPtr->lock() : std::shared_ptr<Creature>{};
+			lua_pop(L, 1);
+			if (creatureRef) {
+				return static_cast<T*>(creatureRef.get());
+			}
+		}
+		return *userdata;
+	}
+
 	T** userdata = getRawUserdata<T>(L, arg, checkType);
 	if (!userdata) {
 		return nullptr;
@@ -765,6 +789,12 @@ template <class T>
 inline std::shared_ptr<T>& getSharedPtr(lua_State* L, int32_t arg)
 {
 	return *static_cast<std::shared_ptr<T>*>(lua_touserdata(L, arg));
+}
+
+template <class T>
+inline void pushCreatureWeakPtr(lua_State* L, std::weak_ptr<T> value, int nuvalue = 1)
+{
+	new (lua_newuserdatauv(L, sizeof(std::weak_ptr<T>), nuvalue)) std::weak_ptr<T>(std::move(value));
 }
 
 template <class T>

@@ -77,7 +77,7 @@ public:
 	ConstIterator begin() const { return vec.begin(); }
 	Iterator end() { return vec.end(); }
 	ConstIterator end() const { return vec.end(); }
-	void emplace_back(std::shared_ptr<Creature> c) { vec.emplace_back(std::move(c)); partitioned_ = false; }
+	void emplace_back(std::shared_ptr<Creature> c) { if (c) { vec.emplace_back(std::move(c)); partitioned_ = false; } }
 
 private:
 	Vec vec;

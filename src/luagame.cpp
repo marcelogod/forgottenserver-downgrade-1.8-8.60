@@ -550,11 +550,12 @@ int luaGameCreateMonster(lua_State* L)
 {
 	// Game.createMonster(monsterName, position[, extended = false[, force = false[, magicEffect =
 	// CONST_ME_TELEPORT[, instanceId = 0]]]])
-	auto monster = Monster::createMonster(getString(L, 1));
-	if (!monster) {
+	auto monsterUnique = Monster::createMonster(getString(L, 1));
+	if (!monsterUnique) {
 		lua_pushnil(L);
 		return 1;
 	}
+	auto monster = std::shared_ptr<Monster>(monsterUnique.release());
 
 	const Position& position = getPosition(L, 2);
 	bool extended = getBoolean(L, 3, false);
@@ -568,7 +569,6 @@ int luaGameCreateMonster(lua_State* L)
 		if (g_game.placeCreature(monster.get(), position, extended, force, magicEffect)) {
 			pushUserdata<Monster>(L, monster.get());
 			setCreatureMetatable(L, -1, monster.get());
-			monster.release();
 		} else {
 			lua_pushnil(L);
 		}
@@ -581,11 +581,12 @@ int luaGameCreateMonster(lua_State* L)
 int luaGameCreateNpc(lua_State* L)
 {
 	// Game.createNpc(npcName, position[, extended = false[, force = false[, magicEffect = CONST_ME_TELEPORT[, instanceId = 0]]]])
-	auto npc = Npc::createNpc(getString(L, 1));
-	if (!npc) {
+	auto npcUnique = Npc::createNpc(getString(L, 1));
+	if (!npcUnique) {
 		lua_pushnil(L);
 		return 1;
 	}
+	auto npc = std::shared_ptr<Npc>(npcUnique.release());
 
 	const Position& position = getPosition(L, 2);
 	bool extended = getBoolean(L, 3, false);
@@ -598,9 +599,7 @@ int luaGameCreateNpc(lua_State* L)
 	if (g_game.placeCreature(npc.get(), position, extended, force, magicEffect)) {
 		pushUserdata<Npc>(L, npc.get());
 		setCreatureMetatable(L, -1, npc.get());
-		npc.release();
 	} else {
-		// unique_ptr automatically deletes
 		lua_pushnil(L);
 	}
 	return 1;

@@ -1376,10 +1376,14 @@ int NpcScriptInterface::luaNpcCloseShopWindow(lua_State* L)
 	return 1;
 }
 
-NpcEventsHandler::NpcEventsHandler(const std::string& file, Npc* npc) :
-    scriptInterface(Npcs::scriptInterface), npc(makeNpcScriptHandle(npc))
+NpcEventsHandler::NpcEventsHandler(const std::string& file, Npc* npcPtr) :
+    scriptInterface(Npcs::scriptInterface), npc(npcPtr)
 {
-	loaded = scriptInterface->loadFile("data/npc/scripts/" + file, this->npc) == 0;
+	// Create a temporary shared_ptr for loadFile; it goes out of scope here
+	// so enable_shared_from_this can be properly re-initialized when the
+	// owning shared_ptr is created later.
+	auto npcHandle = makeNpcScriptHandle(npcPtr);
+	loaded = scriptInterface->loadFile("data/npc/scripts/" + file, npcHandle) == 0;
 	if (!loaded) {
 		LOG_WARN(fmt::format("[Warning - NpcScript::NpcScript] Can not load script: {}", file));
 		LOG_WARN(scriptInterface->getLastLuaError());
@@ -1398,7 +1402,7 @@ NpcEventsHandler::NpcEventsHandler() : scriptInterface(Npcs::scriptInterface) {}
 
 void NpcEventsHandler::setNpc(Npc* n)
 {
-	npc = makeNpcScriptHandle(n);
+	npc = n;
 }
 
 NpcEventsHandler::~NpcEventsHandler()

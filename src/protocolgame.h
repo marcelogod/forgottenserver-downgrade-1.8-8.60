@@ -305,7 +305,7 @@ private:
 	bool isSpyActive() const { return spyActive_; }
 
 	std::unordered_set<uint32_t> knownCreatureSet;
-	CreatureRef<Player> player;
+	std::shared_ptr<Player> player;
 
 	uint32_t eventConnect = 0;
 	uint32_t challengeTimestamp = 0;

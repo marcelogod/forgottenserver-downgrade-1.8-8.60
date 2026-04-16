@@ -914,12 +914,6 @@ public:
 		return attributes;
 	}
 
-	// Legacy ref-counting stubs — shared_ptr handles lifetime now.
-	// Kept as no-ops until all call sites are cleaned up.
-	void incrementReferenceCounter() {}
-	void decrementReferenceCounter() {}
-
-
 	Cylinder* getParent() const override { return parent; }
 	void setParent(Cylinder* cylinder) override { parent = cylinder; }
 	Cylinder* getTopParent();

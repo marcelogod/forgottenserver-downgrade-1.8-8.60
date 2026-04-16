@@ -120,7 +120,7 @@ void ScriptEnvironment::clearTempItems()
 
 void ScriptEnvironment::setNpc(Npc* npc)
 {
-	curNpc = makeScriptNpcHandle(npc);
+	curNpc = npc;
 }
 
 bool ScriptEnvironment::setCallbackId(int32_t callbackId, LuaScriptInterface* scriptInterface)
@@ -827,8 +827,10 @@ void Lua::setCreatureMetatable(lua_State* L, int32_t index, const Creature* crea
 		luaL_getmetatable(L, "Npc");
 	}
 	lua_setmetatable(L, index - 1);
-	const_cast<Creature*>(creature)->incrementReferenceCounter();
-	const_cast<Creature*>(creature)->incrementLuaRefCount();
+
+	new (lua_newuserdatauv(L, sizeof(std::weak_ptr<Creature>), 0)) std::weak_ptr<Creature>(
+	    g_game.getCreatureWeakRef(creature));
+	lua_setiuservalue(L, index - 1, 1);
 }
 
 // Is
@@ -3652,6 +3654,19 @@ int LuaScriptInterface::luaResultFree(lua_State* L)
 int LuaScriptInterface::luaUserdataCompare(lua_State* L)
 {
 	// userdataA == userdataB
+	const LuaDataType typeA = Lua::getUserdataType(L, 1);
+	const LuaDataType typeB = Lua::getUserdataType(L, 2);
+
+	if (typeA >= LuaData_Creature && typeA <= LuaData_Npc && typeB >= LuaData_Creature && typeB <= LuaData_Npc) {
+		Lua::pushBoolean(L, Lua::getCreature(L, 1) == Lua::getCreature(L, 2));
+		return 1;
+	}
+
+	if (typeA >= LuaData_Item && typeA <= LuaData_Teleport && typeB >= LuaData_Item && typeB <= LuaData_Teleport) {
+		Lua::pushBoolean(L, Lua::getThing(L, 1) == Lua::getThing(L, 2));
+		return 1;
+	}
+
 	Lua::pushBoolean(L, Lua::getUserdata<void>(L, 1, false) == Lua::getUserdata<void>(L, 2, false));
 	return 1;
 }

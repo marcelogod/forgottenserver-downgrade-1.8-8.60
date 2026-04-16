@@ -1325,14 +1325,15 @@ void Monster::onThinkDefense(uint32_t interval)
 				continue;
 			}
 
-			auto summon = Monster::createMonster(summonBlock.name);
-			if (summon) {
+			auto summonUnique = Monster::createMonster(summonBlock.name);
+			if (summonUnique) {
+				auto summon = std::shared_ptr<Monster>(summonUnique.release());
 				summon->setInstanceID(getInstanceID());
 				if (g_game.placeCreature(summon.get(), getPosition(), false, summonBlock.force, summonBlock.effect)) {
-					Monster* rawSummon = summon.release();
-					rawSummon->setDropLoot(false);
-					rawSummon->setSkillLoss(false);
-					rawSummon->setMaster(this);
+					auto summonRef = g_game.getCreatureSharedRef<Monster>(summon.get());
+					summonRef->setDropLoot(false);
+					summonRef->setSkillLoss(false);
+					summonRef->setMaster(this);
 					if (summonBlock.masterEffect != CONST_ME_NONE) {
 						g_game.addMagicEffect(getPosition(), summonBlock.masterEffect, getInstanceID());
 					}

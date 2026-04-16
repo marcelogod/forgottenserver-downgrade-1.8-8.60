@@ -9,6 +9,9 @@
 
 void SpectatorVec::partitionByType()
 {
+	vec.erase(std::remove_if(vec.begin(), vec.end(),
+		[](const auto& c) { return !c; }), vec.end());
+
 	auto playersEnd = std::partition(vec.begin(), vec.end(),
 		[](const auto& c) { return c->getPlayer() != nullptr; });
 	auto monstersEnd = std::partition(playersEnd, vec.end(),

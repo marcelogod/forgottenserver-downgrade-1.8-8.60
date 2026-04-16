@@ -90,7 +90,6 @@ public:
 
 	Creature* getCreature() override final { return this; }
 	const Creature* getCreature() const override final { return this; }
-	int32_t getReferenceCounter() const { return referenceCounter; }
 
 	static bool isAlive(const Creature* c) { return liveCreatures.count(c) > 0; }
 	virtual Player* getPlayer() { return nullptr; }
@@ -217,10 +216,7 @@ public:
 
 	void removeMaster()
 	{
-		if (auto m = master.lock()) {
-			master.reset();
-			decrementReferenceCounter();
-		}
+		master.reset();
 	}
 
 	bool isSummon() const { return !master.expired(); }
@@ -355,28 +351,6 @@ public:
 	               int32_t maxTargetDist, bool fullPathSearch = true, bool clearSight = true,
 	               int32_t maxSearchDist = 0) const;
 
-	void incrementReferenceCounter() { ++referenceCounter; }
-	void decrementReferenceCounter()
-	{
-		if (referenceCounter == 0) {
-			assert(false && "Creature::decrementReferenceCounter called with refcount already at 0");
-			return;
-		}
-		if (--referenceCounter == 0) {
-			delete this;
-		}
-	}
-
-	void incrementLuaRefCount() { ++luaRefCount; }
-	void releaseLuaReferences()
-	{
-		int refs = luaRefCount;
-		luaRefCount = 0;
-		for (int i = 0; i < refs; ++i) {
-			decrementReferenceCounter();
-		}
-	}
-
 	virtual void setStorageValue(uint32_t key, std::optional<int64_t> value, bool isSpawn = false);
 	virtual std::optional<int64_t> getStorageValue(uint32_t key) const;
 	decltype(auto) getStorageMap() const { return storageMap; }
@@ -415,8 +389,6 @@ protected:
 	std::weak_ptr<Creature> followCreature;
 
 	uint64_t lastStep = 0;
-	uint32_t referenceCounter = 0;
-	uint32_t luaRefCount = 0;
 	uint32_t id = 0;
 	uint32_t scriptEventsBitField = 0;
 	uint32_t eventWalk = 0;
@@ -487,42 +459,6 @@ private:
 };
 
 template <typename T>
-class CreatureRef
-{
-public:
-	CreatureRef() = default;
-	~CreatureRef() { reset(); }
-
-	// Non-copyable — explicit acquire() required for clarity
-	CreatureRef(const CreatureRef&) = delete;
-	CreatureRef& operator=(const CreatureRef&) = delete;
-
-	CreatureRef(CreatureRef&& o) noexcept : ptr(o.ptr) { o.ptr = nullptr; }
-	CreatureRef& operator=(CreatureRef&& o) noexcept {
-		if (this != &o) { reset(); ptr = o.ptr; o.ptr = nullptr; }
-		return *this;
-	}
-
-	// Acquire a new target (increment new, decrement old)
-	void acquire(T* p) {
-		if (p == ptr) return;
-		if (p) p->incrementReferenceCounter();
-		if (ptr) ptr->decrementReferenceCounter();
-		ptr = p;
-	}
-
-	// Release without returning (decrement + nullify)
-	void reset() {
-		if (ptr) { ptr->decrementReferenceCounter(); ptr = nullptr; }
-	}
-
-	T* operator->() const { return ptr; }
-	T& operator*() const { return *ptr; }
-	explicit operator bool() const { return ptr != nullptr; }
-	operator T*() const { return ptr; } // implicit conversion for backward compat
-
-private:
-	T* ptr = nullptr;
-};
+using CreatureRef = std::shared_ptr<T>;
 
 #endif

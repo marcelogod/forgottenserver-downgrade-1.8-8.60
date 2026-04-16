@@ -49,7 +49,7 @@ public:
 
 private:
 	// map of the spawned creatures
-	using SpawnedMap = std::unordered_map<uint32_t, Monster*>;
+	using SpawnedMap = std::unordered_map<uint32_t, std::shared_ptr<Monster>>;
 	SpawnedMap spawnedMap;
 
 	// map of creatures in the spawn

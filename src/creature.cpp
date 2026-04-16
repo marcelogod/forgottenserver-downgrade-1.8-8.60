@@ -1045,19 +1045,17 @@ bool Creature::setMaster(Creature* newMaster)
 	}
 
 	if (newMaster) {
-		incrementReferenceCounter();
 		newMaster->summons.push_back(shared_from_this());
 	}
 
 	Creature* oldMaster = master.lock().get();
-	master = newMaster ? newMaster->shared_from_this() : std::shared_ptr<Creature>();
+	master = newMaster ? newMaster->shared_from_this() : std::weak_ptr<Creature>();
 
 	if (oldMaster) {
 		auto it = std::find_if(oldMaster->summons.begin(), oldMaster->summons.end(),
 			[this](const std::shared_ptr<Creature>& sp) { return sp.get() == this; });
 		if (it != oldMaster->summons.end()) {
 			oldMaster->summons.erase(it);
-			decrementReferenceCounter();
 		}
 	}
 	return true;

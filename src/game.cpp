@@ -563,14 +563,20 @@ bool Game::internalPlaceCreature(Creature* creature, const Position& pos, bool e
 	}
 
 	creature->setID();
-	creatureSharedRefs[creature->getID()] = std::shared_ptr<Creature>(creature, [](Creature*) {});
+	std::shared_ptr<Creature> creatureRef = creature->weak_from_this().lock();
+	if (!creatureRef) {
+		// The caller must already hold a shared_ptr to this creature.
+		// Creating a new shared_ptr here would produce a second control block
+		// for the same raw pointer, leading to double-free / use-after-free.
+		return false;
+	}
+	creatureSharedRefs[creature->getID()] = creatureRef;
 
 	if (!map.placeCreature(pos, creature, extendedPos, forced)) {
 		creatureSharedRefs.erase(creature->getID());
 		return false;
 	}
 
-	creature->incrementReferenceCounter();
 	creature->addList();
 
 	return true;
@@ -583,6 +589,8 @@ bool Game::placeCreature(Creature* creature, const Position& pos, bool extendedP
 		return false;
 	}
 
+	auto creatureRef = getCreatureSharedRef(creature);
+
 	SpectatorVec spectators;
 	map.getSpectators(spectators, creature->getPosition(), true);
 	for (const auto& spectator : spectators.players()) {
@@ -594,9 +602,7 @@ bool Game::placeCreature(Creature* creature, const Position& pos, bool extendedP
 
 	for (const auto& spectator : spectators) {
 		if (spectator->compareInstance(creature->getInstanceID())) {
-			spectator->incrementReferenceCounter();
 			spectator->onCreatureAppear(creature, true);
-			spectator->decrementReferenceCounter();
 		}
 	}
 
@@ -610,6 +616,11 @@ bool Game::placeCreature(Creature* creature, const Position& pos, bool extendedP
 bool Game::removeCreature(Creature* creature, bool isLogout /* = true*/)
 {
 	if (creature->isRemoved()) {
+		return false;
+	}
+
+	auto creatureRef = getCreatureSharedRef(creature);
+	if (!creatureRef) {
 		return false;
 	}
 
@@ -661,7 +672,7 @@ bool Game::removeCreature(Creature* creature, bool isLogout /* = true*/)
 	// destructor runs late due to refcount chain dependencies.
 	creature->damageMap.clear();
 
-	ReleaseCreature(creature);
+	ReleaseCreature(creatureRef);
 
 	removeCreatureCheck(creature);
 
@@ -4076,8 +4087,7 @@ void Game::addCreatureCheck(Creature* creature)
 	}
 
 	creature->inCheckCreaturesVector = true;
-	checkCreatureLists[uniform_random(0, EVENT_CREATURECOUNT - 1)].push_back(creature);
-	creature->incrementReferenceCounter();
+	checkCreatureLists[uniform_random(0, EVENT_CREATURECOUNT - 1)].push_back(getCreatureSharedRef(creature));
 }
 
 void Game::removeCreatureCheck(Creature* creature)
@@ -4097,7 +4107,8 @@ void Game::checkCreatures(size_t index)
 	size_t i = 0;
 
 	while (i < checkCreatureList.size()) {
-		Creature* creature = checkCreatureList[i];
+		auto creatureRef = checkCreatureList[i];
+		Creature* creature = creatureRef.get();
 
 		if (!creature) {
 			checkCreatureList[i] = checkCreatureList.back();
@@ -4119,7 +4130,6 @@ void Game::checkCreatures(size_t index)
 			creature->inCheckCreaturesVector = false;
 			checkCreatureList[i] = checkCreatureList.back();
 			checkCreatureList.pop_back();
-			ReleaseCreature(creature);
 		}
 	}
 
@@ -5305,25 +5315,12 @@ void Game::shutdown()
 		}
 	}
 
-	for (auto creature : ToReleaseCreatures) {
-		if (creature && Creature::isAlive(creature)) {
-			creature->releaseLuaReferences();
-		}
-	}
-
-	for (auto& checkCreatureList : checkCreatureLists) {
-		for (Creature* creature : checkCreatureList) {
-			if (Creature::isAlive(creature)) {
-				creature->releaseLuaReferences();
-			}
-		}
-	}
-
 	ScriptEnvironment::clearTempItems();
 	cleanup();
 
 	for (auto& checkCreatureList : checkCreatureLists) {
-		for (Creature* creature : checkCreatureList) {
+		for (const auto& creatureRef : checkCreatureList) {
+			Creature* creature = creatureRef.get();
 			if (Creature::isAlive(creature)) {
 				creature->attackedCreature.reset();
 				creature->followCreature.reset();
@@ -5334,10 +5331,10 @@ void Game::shutdown()
 	}
 
 	for (auto& checkCreatureList : checkCreatureLists) {
-		for (Creature* creature : checkCreatureList) {
+		for (const auto& creatureRef : checkCreatureList) {
+			Creature* creature = creatureRef.get();
 			if (Creature::isAlive(creature)) {
 				creature->inCheckCreaturesVector = false;
-				creature->decrementReferenceCounter();
 			}
 		}
 		checkCreatureList.clear();
@@ -5378,18 +5375,19 @@ void Game::shutdown()
 void Game::cleanup()
 {
 	// free memory
-	for (auto creature : ToReleaseCreatures) {
-		if (!creature || !Creature::isAlive(creature)) {
-			continue;
-		}
-		creature->decrementReferenceCounter();
-	}
 	ToReleaseCreatures.clear();
 
 	ToReleaseItems.clear(); // shared_ptrs destroyed, items freed
 }
 
-void Game::ReleaseCreature(Creature* creature) { ToReleaseCreatures.push_back(creature); }
+void Game::ReleaseCreature(Creature* creature)
+{
+	if (auto creatureRef = getCreatureSharedRef(creature)) {
+		ToReleaseCreatures.push_back(std::move(creatureRef));
+	}
+}
+
+void Game::ReleaseCreature(std::shared_ptr<Creature> creature) { ToReleaseCreatures.push_back(std::move(creature)); }
 
 void Game::ReleaseItem(Item* item) { ToReleaseItems.push_back(item->shared_from_this()); }
 

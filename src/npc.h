@@ -72,7 +72,7 @@ public:
 	void onThink() const;
 
 	void setNpc(Npc* n);
-	void setNpc(const std::shared_ptr<Npc>& n) { npc = n; }
+	void setNpc(const std::shared_ptr<Npc>& n) { npc = n.get(); }
 
 	bool isLoaded() const;
 
@@ -91,7 +91,7 @@ public:
 	bool loaded = false;
 
 private:
-	std::shared_ptr<Npc> npc;
+	Npc* npc = nullptr;
 };
 
 class NpcType

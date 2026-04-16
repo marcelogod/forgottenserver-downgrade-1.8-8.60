@@ -151,11 +151,11 @@ void ProtocolGame::login(uint32_t characterId, uint32_t accountId, OperatingSyst
 		name = foundPlayer->getName();
 	}
 	if (!foundPlayer || name == "Account Manager" || getBoolean(ConfigManager::ALLOW_CLONES)) {
-		player.acquire(new Player(getThis()));
+		player = std::make_shared<Player>(getThis());
 		player->setGUID(characterId);
 		player->setID();
 
-		if (!IOLoginData::preloadPlayer(player)) {
+		if (!IOLoginData::preloadPlayer(player.get())) {
 			disconnectClient("Your character could not be loaded.");
 			return;
 		}
@@ -234,15 +234,15 @@ void ProtocolGame::login(uint32_t characterId, uint32_t accountId, OperatingSyst
 			return;
 		}
 
-		if (!IOLoginData::loadPlayerById(player, player->getGUID())) {
+		if (!IOLoginData::loadPlayerById(player.get(), player->getGUID())) {
 			disconnectClient("Your character could not be loaded.");
 			return;
 		}
 
 		player->setOperatingSystem(operatingSystem);
 
-		if (!g_game.placeCreature(player, player->getLoginPosition())) {
-			if (!g_game.placeCreature(player, player->getTemplePosition(), false, true)) {
+		if (!g_game.placeCreature(player.get(), player->getLoginPosition())) {
+			if (!g_game.placeCreature(player.get(), player->getTemplePosition(), false, true)) {
 				disconnectClient("Temple position is wrong. Contact the administrator.");
 				return;
 			}
@@ -337,7 +337,7 @@ void ProtocolGame::spectate(const std::string& name, const std::string& password
 		return;
 	}
 
-	player.acquire(foundPlayer);
+	player = g_game.getCreatureSharedRef<Player>(foundPlayer);
 	isSpectator = true;
 
 	do {
@@ -346,7 +346,7 @@ void ProtocolGame::spectate(const std::string& name, const std::string& password
 	} while (spectatorNames.contains(asLowerCaseString(spectator_name)));
 	spectatorNames.insert(asLowerCaseString(spectator_name));
 
-	sendAddCreature(player, player->getPosition(), 0, CONST_ME_NONE);
+	sendAddCreature(player.get(), player->getPosition(), 0, CONST_ME_NONE);
 	sendCastChannel();
 	syncOpenContainers();
 
@@ -380,7 +380,7 @@ void ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem)
 		return;
 	}
 
-	player.acquire(foundPlayer);
+	player = g_game.getCreatureSharedRef<Player>(foundPlayer);
 
 	player->clearModalWindows();
 	g_chat->removeUserFromAllChannels(*player);
@@ -392,7 +392,7 @@ void ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem)
 	} else {
 		player->client->setOwner(getThis());
 	}
-	sendAddCreature(player, player->getPosition(), 0);
+	sendAddCreature(player.get(), player->getPosition(), 0);
 	sendDllCheck();
 	player->lastIP = player->getIP();
 	player->lastLoginSaved = std::max<time_t>(time(nullptr), player->lastLoginSaved + 1);
@@ -400,7 +400,7 @@ void ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem)
 	player->lastPing = OTSYS_TIME();
 	acceptPackets = true;
 
-	g_creatureEvents->playerReconnect(player);
+	g_creatureEvents->playerReconnect(player.get());
 }
 
 void ProtocolGame::logout(bool displayEffect, bool forced)
@@ -425,7 +425,7 @@ void ProtocolGame::logout(bool displayEffect, bool forced)
 			}
 
 			// scripting event - onLogout
-			if (!g_creatureEvents->playerLogout(player)) {
+			if (!g_creatureEvents->playerLogout(player.get())) {
 				// Let the script handle the error message
 				return;
 			}
@@ -439,7 +439,7 @@ void ProtocolGame::logout(bool displayEffect, bool forced)
 	player->client->clear();
 	disconnect();
 
-	g_game.removeCreature(player);
+	g_game.removeCreature(player.get());
 }
 
 void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
@@ -960,7 +960,7 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 			}
 
 			if (!isOTC && isStacked && count == 9 && !playerAdded) {
-				creature = player;
+				creature = player.get();
 			}
 
 			if (creature->getID() == player->getID()) {
@@ -1082,7 +1082,7 @@ bool ProtocolGame::canSee(const Creature* c) const
 	}
 
 	// Spy mode: bypass instance check (GOD sees target's instance)
-	if (!spyActive_ && c != player && !player->compareInstance(c->getInstanceID())) {
+	if (!spyActive_ && c != player.get() && !player->compareInstance(c->getInstanceID())) {
 		return false;
 	}
 
@@ -1631,7 +1631,7 @@ void ProtocolGame::sendCreatureEmblem(const Creature* creature)
 	}
 	// Remove creature from client and re-add to update
 	Position pos = creature->getPosition();
-	int32_t stackpos = creature->getTile()->getClientIndexOfCreature(player, creature);
+	int32_t stackpos = creature->getTile()->getClientIndexOfCreature(player.get(), creature);
 	sendRemoveTileThing(pos, stackpos);
 	NetworkMessage msg;
 	msg.addByte(0x6A);
@@ -2465,7 +2465,7 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 		return;
 	}
 
-	if (creature != player) {
+	if (creature != player.get()) {
 		if (stackpos != -1 && stackpos < MAX_STACKPOS_THINGS) {
 			NetworkMessage msg;
 			msg.addByte(0x6A);
@@ -2575,7 +2575,7 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Position& ne
 		return;
 	}
 
-	if (creature == player) {
+	if (creature == player.get()) {
 		if (teleport || oldStackPos >= MAX_STACKPOS_THINGS) {
 			sendRemoveTileThing(oldPos, oldStackPos);
 			sendMapDescription(newPos);
@@ -3116,7 +3116,7 @@ void ProtocolGame::RemoveTileThing(NetworkMessage& msg, const Position& pos, uin
 void ProtocolGame::MoveUpCreature(NetworkMessage& msg, const Creature* creature, const Position& newPos,
                                   const Position& oldPos)
 {
-	if (creature != player && !(spyActive_ && creature->getID() == spyTargetCreatureId_)) {
+	if (creature != player.get() && !(spyActive_ && creature->getID() == spyTargetCreatureId_)) {
 		return;
 	}
 
@@ -3169,7 +3169,7 @@ void ProtocolGame::MoveUpCreature(NetworkMessage& msg, const Creature* creature,
 void ProtocolGame::MoveDownCreature(NetworkMessage& msg, const Creature* creature, const Position& newPos,
                                     const Position& oldPos)
 {
-	if (creature != player && !(spyActive_ && creature->getID() == spyTargetCreatureId_)) {
+	if (creature != player.get() && !(spyActive_ && creature->getID() == spyTargetCreatureId_)) {
 		return;
 	}
 
@@ -3338,7 +3338,7 @@ void ProtocolGame::spectatorTurn(uint8_t direction)
 	}
 
 	Player* _player = g_game.getPlayerByName(candidates[(index + dir) % candidates.size()]);
-	if (!_player || player == _player) {
+	if (!_player || player.get() == _player) {
 		return;
 	}
 
@@ -3348,10 +3348,10 @@ void ProtocolGame::spectatorTurn(uint8_t direction)
 	}
 
 	player->client->removeSpectator(getThis());
-	player.acquire(_player);
+	player = g_game.getCreatureSharedRef<Player>(_player);
 
 	knownCreatureSet.clear();
-	sendAddCreature(player, player->getPosition(), 0, CONST_ME_NONE);
+	sendAddCreature(player.get(), player->getPosition(), 0, CONST_ME_NONE);
 	sendCastChannel();
 	syncOpenContainers();
 
@@ -3437,17 +3437,17 @@ void ProtocolGame::parseSwitchCast(uint8_t direction)
 		return;
 	}
 
-	auto it = std::find(casters.begin(), casters.end(), player);
+	auto it = std::find(casters.begin(), casters.end(), player.get());
 	if (it == casters.end()) {
 		if (!casters.empty()) {
 			Player* newCaster = casters[0];
-			if (newCaster && newCaster != player) {
+			if (newCaster && newCaster != player.get()) {
 				player->client->removeSpectator(getThis());
 				player->client->sendCastMessage(spectator_name, spectator_name + " has left the cast.", TALKTYPE_CHANNEL_O);
 					knownCreatureSet.clear();
-				player.acquire(newCaster);
+				player = g_game.getCreatureSharedRef<Player>(newCaster);
 				player->client->addSpectator(getThis());
-				sendAddCreature(player, player->getPosition(), 0, CONST_ME_NONE);
+				sendAddCreature(player.get(), player->getPosition(), 0, CONST_ME_NONE);
 				syncOpenContainers();
 				player->client->sendCastMessage(spectator_name, spectator_name + " has joined the cast.", TALKTYPE_CHANNEL_O);
 				sendMagicEffect(player->getPosition(), CONST_ME_TELEPORT);
@@ -3470,16 +3470,16 @@ void ProtocolGame::parseSwitchCast(uint8_t direction)
 	}
 
 	Player* newCaster = casters[newIndex];
-	if (!newCaster || newCaster == player) {
+	if (!newCaster || newCaster == player.get()) {
 		return;
 	}
 
 	player->client->removeSpectator(getThis());
 	player->client->sendCastMessage(spectator_name, spectator_name + " has left the cast.", TALKTYPE_CHANNEL_O);
 	knownCreatureSet.clear();
-	player.acquire(newCaster);
+	player = g_game.getCreatureSharedRef<Player>(newCaster);
 	player->client->addSpectator(getThis());
-	sendAddCreature(player, player->getPosition(), 0, CONST_ME_NONE);
+	sendAddCreature(player.get(), player->getPosition(), 0, CONST_ME_NONE);
 	syncOpenContainers();
 	player->client->sendCastMessage(spectator_name, spectator_name + " has joined the cast.", TALKTYPE_CHANNEL_O);
 	sendMagicEffect(player->getPosition(), CONST_ME_TELEPORT);
