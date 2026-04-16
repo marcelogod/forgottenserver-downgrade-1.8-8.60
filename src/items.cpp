@@ -340,13 +340,14 @@ bool Items::reload()
 	clear();
 	loadFromOtb("data/items/items.otb");
 
+	g_moveEvents->reload();
+	g_weapons->reload();
+
 	if (!loadFromXml()) {
 		return false;
 	}
 
 	g_scripts->loadScripts("items", false, true);
-	g_moveEvents->reload();
-	g_weapons->reload();
 	g_weapons->loadDefaults();
 	return true;
 }

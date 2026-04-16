@@ -37,9 +37,9 @@ const Weapon* Weapons::getWeapon(const Item* item) const
 void Weapons::clear(bool fromLua)
 {
 	for (auto it = weapons.begin(); it != weapons.end();) {
-		if (it->second->fromItem) {
+		if (fromLua && it->second->fromItem) {
 			++it;
-		} else if (fromLua == it->second->fromLua) {
+		} else if (fromLua == it->second->fromLua || it->second->fromItem) {
 			it = weapons.erase(it);
 		} else {
 			++it;
