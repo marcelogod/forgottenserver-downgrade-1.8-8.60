@@ -21,6 +21,7 @@ x64/
 build/
 build-release/
 build-debug/
+build-asan*/
 [Bb]in/
 [Oo]bj/
 cmake-build-*/

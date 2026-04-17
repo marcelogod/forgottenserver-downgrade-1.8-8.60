@@ -17,6 +17,8 @@
 #include "raids.h"
 #include "wildcardtree.h"
 
+#include <absl/container/flat_hash_map.h>
+
 class ServiceManager;
 class Creature;
 class Monster;
@@ -561,7 +563,8 @@ public:
 
 	void setStorageValue(uint32_t key, std::optional<int64_t> value);
 	std::optional<int64_t> getStorageValue(uint32_t key) const;
-	decltype(auto) getStorageMap() const { return storageMap; }
+	using StorageMap = absl::flat_hash_map<uint32_t, int64_t>;
+	const StorageMap& getStorageMap() const { return storageMap; }
 
 	void sendOfflineTrainingDialog(Player* player);
 
@@ -602,7 +605,7 @@ public:
 
 
 private:
-	std::unordered_map<uint32_t, int64_t> storageMap;
+	StorageMap storageMap;
 
 	bool playerSaySpell(Player* player, SpeakClasses type, std::string_view text);
 	void playerWhisper(Player* player, std::string_view text);

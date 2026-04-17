@@ -233,12 +233,8 @@ public:
 	void removeMaster();
 
 	bool isSummon() const { return !master.expired(); }
-	std::shared_ptr<Creature> getMasterShared() const { return master.lock(); }
-	Creature* getMaster() const
-	{
-		auto creature = getMasterShared();
-		return creature.get();
-	}
+	std::shared_ptr<Creature> getMaster() const { return master.lock(); }
+	std::shared_ptr<Creature> getMasterShared() const { return getMaster(); }
 
 	const SummonList& getSummons() const { return summons; }
 
@@ -371,7 +367,8 @@ public:
 
 	virtual void setStorageValue(uint32_t key, std::optional<int64_t> value, bool isSpawn = false);
 	virtual std::optional<int64_t> getStorageValue(uint32_t key) const;
-	decltype(auto) getStorageMap() const { return storageMap; }
+	using StorageMap = absl::flat_hash_map<uint32_t, int64_t>;
+	const StorageMap& getStorageMap() const { return storageMap; }
 
 	// for lua module
 	CreatureEventList getCreatureEvents(CreatureEventType_t type) const;
@@ -471,7 +468,7 @@ protected:
 	friend class LuaScriptInterface;
 
 private:
-	std::unordered_map<uint32_t, int64_t> storageMap;
+	StorageMap storageMap;
 
 	static std::unordered_set<const Creature*> liveCreatures;
 };

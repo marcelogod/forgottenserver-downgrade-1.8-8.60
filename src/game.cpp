@@ -656,7 +656,7 @@ bool Game::removeCreature(Creature* creature, bool isLogout /* = true*/)
 		spectator->onRemoveCreature(creature, isLogout);
 	}
 
-	Creature* master = creature->getMaster();
+	auto master = creature->getMaster();
 	if (master && !master->isRemoved()) {
 		creature->setMaster(nullptr);
 	}
@@ -691,7 +691,7 @@ bool Game::removeCreature(Creature* creature, bool isLogout /* = true*/)
 
 	for (const auto& summon : summonRefs) {
 		summon->setSkillLoss(false);
-		if (summon->getMaster() == creature) {
+		if (summon->getMaster().get() == creature) {
 			summon->removeMaster();
 		}
 		removeCreature(summon.get());

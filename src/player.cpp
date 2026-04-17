@@ -3941,7 +3941,7 @@ void Player::onTargetCreatureGainHealth(const std::shared_ptr<Creature>& target,
 
 		if (target->getPlayer()) {
 			tmpPlayer = target->getPlayer();
-		} else if (Creature* targetMaster = target->getMaster()) {
+		} else if (auto targetMaster = target->getMaster()) {
 			if (Player* targetMasterPlayer = targetMaster->getPlayer()) {
 				tmpPlayer = targetMasterPlayer;
 			}
@@ -4061,7 +4061,7 @@ bool Player::lastHitIsPlayer(Creature* lastHitCreature)
 		return true;
 	}
 
-	Creature* lastHitMaster = lastHitCreature->getMaster();
+	auto lastHitMaster = lastHitCreature->getMaster();
 	return lastHitMaster && lastHitMaster->getPlayer();
 }
 

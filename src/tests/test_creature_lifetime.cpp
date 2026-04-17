@@ -4,7 +4,9 @@
 
 #include "../creature.h"
 
+#include <absl/container/flat_hash_map.h>
 #include <boost/test/unit_test.hpp>
+#include <type_traits>
 
 namespace {
 
@@ -48,7 +50,7 @@ BOOST_AUTO_TEST_CASE(summon_lifecycle_uses_weak_owner_links)
 	auto summon = makeTestCreature();
 
 	BOOST_TEST(summon->setMaster(master.get()));
-	BOOST_TEST(summon->getMaster() == master.get());
+	BOOST_TEST(summon->getMaster() == master);
 	BOOST_TEST(master->getSummonCount() == 1U);
 
 	summon.reset();
@@ -81,7 +83,39 @@ BOOST_AUTO_TEST_CASE(changing_master_detaches_from_previous_owner)
 	BOOST_TEST(summon->setMaster(oldMaster.get()));
 	BOOST_TEST(summon->setMaster(newMaster.get()));
 
-	BOOST_TEST(summon->getMaster() == newMaster.get());
+	BOOST_TEST(summon->getMaster() == newMaster);
 	BOOST_TEST(oldMaster->getSummonCount() == 0U);
 	BOOST_TEST(newMaster->getSummonCount() == 1U);
+}
+
+BOOST_AUTO_TEST_CASE(master_getter_returns_shared_reference)
+{
+	auto master = makeTestCreature();
+	auto summon = makeTestCreature();
+
+	BOOST_TEST(summon->setMaster(master.get()));
+
+	auto masterRef = summon->getMaster();
+	BOOST_TEST(masterRef == master);
+	BOOST_TEST(masterRef.use_count() >= 2);
+}
+
+BOOST_AUTO_TEST_CASE(creature_storage_uses_flat_hash_map_and_preserves_values)
+{
+	static_assert(std::is_same_v<Creature::StorageMap, absl::flat_hash_map<uint32_t, int64_t>>);
+
+	auto creature = makeTestCreature();
+	Creature::StorageMap storage;
+	storage.insert_or_assign(100, 2500);
+	storage.insert_or_assign(200, -7);
+
+	BOOST_TEST(storage.at(100) == 2500);
+	BOOST_TEST(storage.at(200) == -7);
+	BOOST_TEST(storage.size() == 2U);
+	BOOST_TEST(!creature->getStorageValue(100).has_value());
+
+	storage.erase(100);
+
+	BOOST_TEST(!storage.contains(100));
+	BOOST_TEST(storage.size() == 1U);
 }

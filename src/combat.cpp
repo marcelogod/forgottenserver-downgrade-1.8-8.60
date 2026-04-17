@@ -360,10 +360,10 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 				return g_events->eventCreatureOnTargetCombat(attacker, target);
 			}
 
-			const Creature* targetMaster = target->getMaster();
+			auto targetMaster = target->getMaster();
 
 			if (!targetMaster || !targetMaster->getPlayer()) {
-				const Creature* attackerMaster = attacker->getMaster();
+				auto attackerMaster = attacker->getMaster();
 
 				if (!attackerMaster || !attackerMaster->getPlayer()) {
 					return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE;

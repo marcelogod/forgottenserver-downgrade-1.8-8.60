@@ -323,14 +323,14 @@ int luaCreatureGetMaster(lua_State* L)
 		return 1;
 	}
 
-	Creature* master = creature->getMaster();
+	auto master = creature->getMaster();
 	if (!master) {
 		lua_pushnil(L);
 		return 1;
 	}
 
-	pushUserdata<Creature>(L, master);
-	setCreatureMetatable(L, -1, master);
+	pushUserdata<Creature>(L, master.get());
+	setCreatureMetatable(L, -1, master.get());
 	return 1;
 }
 
