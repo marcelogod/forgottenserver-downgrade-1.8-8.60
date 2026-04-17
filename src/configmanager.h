@@ -69,6 +69,7 @@ enum Boolean
 	GUILD_WAR_ANNOUNCE_KILLS,
 	POTION_CAN_EXHAUST_ITEM,
 	SLOW_TASK_WARNING,
+	REMOVE_SUMMONS_ON_PZ,
 
 	LAST_BOOLEAN /* this must be the last one */
 };

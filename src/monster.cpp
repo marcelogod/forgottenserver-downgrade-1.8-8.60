@@ -996,9 +996,11 @@ void Monster::onThink(uint32_t interval)
 				auto master = getMaster();
 				if (master) {
 					if (master->getTile()->hasFlag(TILESTATE_PROTECTIONZONE)) {
-						g_game.removeCreature(this, false);
-						g_game.addMagicEffect(getPosition(), CONST_ME_POFF, getInstanceID());
-						return;
+						if (ConfigManager::getBoolean(ConfigManager::REMOVE_SUMMONS_ON_PZ)) {
+							g_game.removeCreature(this, false);
+							g_game.addMagicEffect(getPosition(), CONST_ME_POFF, getInstanceID());
+							return;
+						}
 					}
 
 					if (!getPosition().isInRange(master->getPosition(), 7, 7, 0)) {

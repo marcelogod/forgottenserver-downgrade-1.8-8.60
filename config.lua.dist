@@ -215,6 +215,7 @@ manaLossColour = 5
 offlineTrainingThreshold = 600
 checkDuplicateStorageKeys = false
 npcsUsingBankMoney = true
+removeSummonsOnPz = false
 
 -- Protection Zone and No-PvP pushing restrictions
 -- true = restricted (cannot push), false = unrestricted (standard behavior)
