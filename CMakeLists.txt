@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.20)
 
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
@@ -113,9 +113,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 ### LINUX RELEASE OPTIMIZATIONS ###
 if (NOT WIN32)
-    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -mtune=native -flto -fomit-frame-pointer -DNDEBUG")
-    set(CMAKE_C_FLAGS_RELEASE "-O3 -march=native -mtune=native -flto -fomit-frame-pointer -DNDEBUG")
-    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-flto -fuse-linker-plugin")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG")
+    set(CMAKE_C_FLAGS_RELEASE "-O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG")
 
     # Profile-Guided Optimization (2 steps)
     # Step 1: cmake -DCMAKE_BUILD_TYPE=Release -DPGO_GENERATE=ON ..
@@ -165,6 +164,20 @@ endif()
 
 # Option to disable unity builds
 option(ENABLE_UNITY_BUILD "Enable unity build" ON)
+if (ENABLE_UNITY_BUILD)
+    set(CMAKE_UNITY_BUILD ON)
+endif()
+
+### INTERPROCEDURAL OPTIMIZATION ###
+include(CheckIPOSupported)
+check_ipo_supported(RESULT result OUTPUT error)
+if (result)
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO TRUE)
+else ()
+    message(STATUS "IPO is not supported: ${error}")
+endif ()
+### END INTERPROCEDURAL OPTIMIZATION ###
 
 add_subdirectory(src)
 
@@ -181,16 +194,6 @@ if (USE_MIMALLOC AND NOT WIN32)
 endif()
 
 target_include_directories(tfs PUBLIC)
-
-### INTERPROCEDURAL OPTIMIZATION ###
-include(CheckIPOSupported)
-check_ipo_supported(RESULT result OUTPUT error)
-if (result)
-    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-else ()
-    message(STATUS "IPO is not supported: ${error}")
-endif ()
-### END INTERPROCEDURAL OPTIMIZATION ###
 
 ### Git Version ###
 # Define the two required variables before including

@@ -21,6 +21,7 @@ public:
 
 	[[nodiscard]] MatrixArea flip() const;
 	[[nodiscard]] MatrixArea mirror() const;
+	[[nodiscard]] MatrixArea transpose() const;
 	[[nodiscard]] MatrixArea rotate90() const;
 	[[nodiscard]] MatrixArea rotate180() const;
 	[[nodiscard]] MatrixArea rotate270() const;

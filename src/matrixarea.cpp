@@ -24,6 +24,18 @@ MatrixArea MatrixArea::mirror() const
 	return {{cols - centerX - 1, centerY}, rows, cols, std::move(newArr)};
 }
 
+MatrixArea MatrixArea::transpose() const
+{
+	Container newArr(arr.size());
+	for (uint32_t row = 0; row < rows; ++row) {
+		for (uint32_t col = 0; col < cols; ++col) {
+			newArr[col * rows + row] = (*this)(row, col);
+		}
+	}
+	auto&& [centerX, centerY] = center;
+	return {{centerY, centerX}, cols, rows, std::move(newArr)};
+}
+
 MatrixArea MatrixArea::rotate90() const
 {
 	Container newArr(arr.size());

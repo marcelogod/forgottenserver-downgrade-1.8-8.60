@@ -231,11 +231,16 @@ target_link_libraries(tfslib PRIVATE
 	fmt::fmt
 	spdlog::spdlog
 	pugixml::pugixml
+	absl::flat_hash_map
 	${CMAKE_THREAD_LIBS_INIT}
 	${Crypto++_LIBRARIES}
 	${LUA_LIBRARIES}
 	${MYSQL_CLIENT_LIBS}
 	)
-set_target_properties(tfslib PROPERTIES UNITY_BUILD ON)
+set_target_properties(tfslib PROPERTIES UNITY_BUILD ${ENABLE_UNITY_BUILD})
 
 add_custom_target(format COMMAND /usr/bin/clang-format -style=file -i ${tfs_HDR} ${tfs_SRC} ${tfs_MAIN})
+
+if (BUILD_TESTING)
+	add_subdirectory(tests)
+endif()

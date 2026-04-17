@@ -231,11 +231,7 @@ public:
 	                             bool ignoreResistances = false);
 
 	bool setMaster(Creature* newMaster);
-
-	void removeMaster()
-	{
-		master.reset();
-	}
+	void removeMaster();
 
 	bool isSummon() const { return !master.expired(); }
 	std::shared_ptr<Creature> getMasterShared() const { return master.lock(); }

@@ -29,8 +29,11 @@ Creature::~Creature()
 
 	attackedCreature.reset();
 	followCreature.reset();
+	removeMaster();
 
-	for (const auto& summonRef : summons) {
+	SummonList summonRefs;
+	summonRefs.swap(summons);
+	for (const auto& summonRef : summonRefs) {
 		if (auto summon = summonRef.lock()) {
 			summon->setAttackedCreature(nullptr);
 			summon->removeMaster();
@@ -1063,8 +1066,12 @@ void Creature::onGainExperience(uint64_t gainExp, const std::shared_ptr<Creature
 bool Creature::setMaster(Creature* newMaster)
 {
 	auto oldMaster = master.lock();
-	if (!newMaster && !oldMaster) {
-		return false;
+	if (!newMaster) {
+		if (!oldMaster) {
+			return false;
+		}
+		removeMaster();
+		return true;
 	}
 
 	if (oldMaster.get() == newMaster) {
@@ -1072,30 +1079,37 @@ bool Creature::setMaster(Creature* newMaster)
 	}
 
 	if (oldMaster) {
-		std::erase_if(oldMaster->summons, [this](const std::weak_ptr<Creature>& summon) {
-			auto lockedSummon = summon.lock();
-			return !lockedSummon || lockedSummon.get() == this;
-		});
+		removeMaster();
 	}
 
-	if (newMaster) {
-		auto& newMasterSummons = newMaster->summons;
-		std::erase_if(newMasterSummons, [](const std::weak_ptr<Creature>& summon) { return summon.expired(); });
+	auto& newMasterSummons = newMaster->summons;
+	std::erase_if(newMasterSummons, [](const std::weak_ptr<Creature>& summon) { return summon.expired(); });
 
-		const bool alreadySummoned = std::any_of(newMasterSummons.begin(), newMasterSummons.end(),
-		                                         [this](const std::weak_ptr<Creature>& summon) {
-			                                         auto lockedSummon = summon.lock();
-			                                         return lockedSummon && lockedSummon.get() == this;
-		                                         });
-		if (!alreadySummoned) {
-			newMasterSummons.emplace_back(shared_from_this());
-		}
-
-		master = newMaster->shared_from_this();
-	} else {
-		master.reset();
+	const bool alreadySummoned = std::any_of(newMasterSummons.begin(), newMasterSummons.end(),
+	                                         [this](const std::weak_ptr<Creature>& summon) {
+		                                         auto lockedSummon = summon.lock();
+		                                         return lockedSummon && lockedSummon.get() == this;
+	                                         });
+	if (!alreadySummoned) {
+		newMasterSummons.emplace_back(shared_from_this());
 	}
+
+	master = newMaster->shared_from_this();
 	return true;
+}
+
+void Creature::removeMaster()
+{
+	auto oldMaster = master.lock();
+	master.reset();
+	if (!oldMaster) {
+		return;
+	}
+
+	std::erase_if(oldMaster->summons, [this](const std::weak_ptr<Creature>& summon) {
+		auto lockedSummon = summon.lock();
+		return !lockedSummon || lockedSummon.get() == this;
+	});
 }
 
 bool Creature::addCondition(Condition_ptr condition, bool force /* = false*/)

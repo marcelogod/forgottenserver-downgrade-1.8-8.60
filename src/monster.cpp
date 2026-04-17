@@ -2115,14 +2115,14 @@ void Monster::death(Creature*)
 
 	setAttackedCreature(nullptr);
 
-	for (const auto& summonRef : summons) {
+	SummonList summonRefs;
+	summonRefs.swap(summons);
+	for (const auto& summonRef : summonRefs) {
 		if (auto summon = summonRef.lock()) {
 			summon->changeHealth(-summon->getHealth());
 			summon->removeMaster();
 		}
 	}
-
-	summons.clear();
 
 	clearTargetList();
 	clearFriendList();
