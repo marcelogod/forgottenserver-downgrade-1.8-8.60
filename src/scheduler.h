@@ -17,8 +17,9 @@ public:
 
 	[[nodiscard]] constexpr uint32_t getDelay() const noexcept { return delay; }
 
-private:
 	SchedulerTask(uint32_t delay, TaskFunc&& f, const std::string& description, const std::string& extraDescription) : Task(std::move(f), description, extraDescription), delay(delay) {}
+
+private:
 	
 	uint32_t eventId = 0;
 	uint32_t delay = 0;

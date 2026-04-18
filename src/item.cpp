@@ -25,10 +25,9 @@ extern Vocations g_vocations;
 Items Item::items;
 
 // Global registry to track valid Item pointers.
-// Heap-allocated to avoid Static Destruction Order Fiasco:
-// the Map QTree destroys Items after static locals are torn down.
+// Explicitly reset in clearGlobalRegistry() before static item teardown.
 // Freed explicitly in clearGlobalRegistry(); null-checked after that.
-static std::unordered_set<Item*>* g_validItems = new std::unordered_set<Item*>();
+static std::unique_ptr<std::unordered_set<Item*>> g_validItems = std::make_unique<std::unordered_set<Item*>>();
 
 std::shared_ptr<Item> Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 {
@@ -164,7 +163,7 @@ Item::Item(const Item& i) : Thing(), std::enable_shared_from_this<Item>(), id(i.
 {
 	if (g_validItems) g_validItems->insert(this);
 	if (i.attributes) {
-		attributes.reset(new ItemAttributes(*i.attributes));
+		attributes = std::make_unique<ItemAttributes>(*i.attributes);
 	}
 }
 
@@ -180,15 +179,14 @@ bool isValidItemPointer(Item* item)
 
 void Item::clearGlobalRegistry()
 {
-	delete g_validItems;
-	g_validItems = nullptr;
+	g_validItems.reset();
 }
 
 std::shared_ptr<Item> Item::clone() const
 {
 	auto item = Item::CreateItem(id, count);
 	if (item && attributes) {
-		item->attributes.reset(new ItemAttributes(*attributes));
+		item->attributes = std::make_unique<ItemAttributes>(*attributes);
 		if (item->getDuration() > 0) {
 			item->setDecaying(DECAYING_TRUE);
 			g_game.toDecayItems.push_front(item);

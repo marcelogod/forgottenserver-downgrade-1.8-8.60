@@ -78,5 +78,5 @@ void Scheduler::shutdown() noexcept
 
 std::unique_ptr<SchedulerTask> createSchedulerTaskWithStats(uint32_t delay, TaskFunc&& f, const std::string& description, const std::string& extraDescription)
 {
-	return std::unique_ptr<SchedulerTask>(new SchedulerTask(delay, std::move(f), description, extraDescription));
+	return std::make_unique<SchedulerTask>(delay, std::move(f), description, extraDescription);
 }

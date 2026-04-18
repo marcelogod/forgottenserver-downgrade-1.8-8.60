@@ -275,15 +275,15 @@ void ServicePort::open(uint16_t port)
 
 	try {
 		if (getBoolean(ConfigManager::BIND_ONLY_GLOBAL_ADDRESS)) {
-			acceptor.reset(new boost::asio::ip::tcp::acceptor(
+			acceptor = std::make_unique<boost::asio::ip::tcp::acceptor>(
 			    io_context,
 			    boost::asio::ip::tcp::endpoint(boost::asio::ip::address(boost::asio::ip::make_address_v4(
 			                                       std::string{getString(ConfigManager::IP)})),
-			                                   serverPort)));
+			                                   serverPort));
 		} else {
-			acceptor.reset(new boost::asio::ip::tcp::acceptor(
+			acceptor = std::make_unique<boost::asio::ip::tcp::acceptor>(
 			    io_context, boost::asio::ip::tcp::endpoint(
-			                    boost::asio::ip::address(boost::asio::ip::address_v4(INADDR_ANY)), serverPort)));
+			                    boost::asio::ip::address(boost::asio::ip::address_v4(INADDR_ANY)), serverPort));
 		}
 
 		acceptor->set_option(boost::asio::ip::tcp::no_delay(true));

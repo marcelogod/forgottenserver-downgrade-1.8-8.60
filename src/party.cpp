@@ -16,7 +16,7 @@ Party::Party(Player* leader) : leader(g_game.getPlayerWeakRef(leader)) {}
 
 std::shared_ptr<Party> Party::create(Player* leader)
 {
-	auto party = std::shared_ptr<Party>(new Party(leader));
+	auto party = std::make_shared<Party>(leader);
 	party->self = party;
 	leader->setParty(party.get());
 	return party;

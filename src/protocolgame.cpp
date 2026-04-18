@@ -906,10 +906,10 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 			break;
 
 		default:
-			// we cannot pass an unique_ptr as capture here because
+			// we cannot pass a unique_ptr as capture here because
 			// std::function requires the callable object to be *copyable*
-			g_dispatcher.addTask([=, playerID = player->getID(), msg = new NetworkMessage(msg)]() {
-				g_game.parsePlayerNetworkMessage(playerID, recvbyte, NetworkMessage_ptr(msg));
+			g_dispatcher.addTask([=, playerID = player->getID(), message = std::make_shared<NetworkMessage>(msg)]() {
+				g_game.parsePlayerNetworkMessage(playerID, recvbyte, std::make_unique<NetworkMessage>(*message));
 			});
 			break;
 	}
