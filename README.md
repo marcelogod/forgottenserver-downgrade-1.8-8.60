@@ -51,7 +51,7 @@
 | [Extended Protocol](#-extended-options--modified-860-cip-clients) | [Reward Boss](#-reward-boss-system) | [House Protection](#️-house-protection-system) | [Client Config](#-client-configuration-otcv8--mehah) | [Project Status](#-project-status) |
 | | [Guild Wars](#️-guild-war-system) | [AutoLoot](#️-autoloot-system) | [Linux Tuning](#-linux-server-tuning) | [Downloads](#-downloads--client-updater) |
 | | [Harmony (Monk)](#-harmony-system--monk-vocation) | [Offline Training](#-offline-training-system) | | [Donations](#-support-the-project) |
-| | | [Live Cast](#-live-cast-system) | | |
+| [Token Protect](#-token-item-protection) | | [Live Cast](#-live-cast-system) | | |
 
 </div>
 
@@ -228,6 +228,32 @@ Enhanced decay system for better server performance. Optimized item decay proces
 | `/kick <name>` | Caster | Kick a spectator |
 | `/mute <name>` | Caster | Mute a spectator |
 | `/ban <name>` | Caster | Ban a spectator |
+
+</details>
+
+---
+
+### 🔒 Token Item Protection
+
+<details>
+<summary><b>Click to expand</b></summary>
+
+Prevent character theft and account hacks with the **Token Protection System**. When enabled, your items are locked to your character, making it impossible for unauthorized users to move them out of your inventory or houses.
+
+**Key Features:**
+- **Anti-Theft**: Prevents moving items from your character or house to other locations.
+- **Smart Filtering**: You can still move "trash" items like Gold, Worms, Food, and Flowers.
+- **Normal Gameplay**: Full support for swapping items, moving to Depot, and organizing backpacks.
+- **Lending Safety**: Safely lend your character to friends without risk of losing gear.
+
+| Command | Description |
+|---------|-------------|
+| `!token set, YOUR_TOKEN` | Set your secret security token (only while disabled) |
+| `!token on` | Enable the protection system |
+| `!token off, YOUR_TOKEN` | Disable protection using your secret token |
+
+> [!IMPORTANT]
+> Keep your token secret! It is only required to **disable** the protection. You cannot set a new token while protection is active.
 
 </details>
 
