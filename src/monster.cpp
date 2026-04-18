@@ -1001,11 +1001,11 @@ void Monster::onThink(uint32_t interval)
 							g_game.addMagicEffect(getPosition(), CONST_ME_POFF, getInstanceID());
 							return;
 						}
-					}
-
-					if (!getPosition().isInRange(master->getPosition(), 7, 7, 0)) {
-						g_game.internalTeleport(this, master->getPosition());
-						g_game.addMagicEffect(master->getPosition(), CONST_ME_TELEPORT, getInstanceID());
+					} else {
+						if (!getPosition().isInRange(master->getPosition(), 7, 7, 0)) {
+							g_game.internalTeleport(this, master->getPosition());
+							g_game.addMagicEffect(master->getPosition(), CONST_ME_TELEPORT, getInstanceID());
+						}
 					}
 				}
 
@@ -1213,9 +1213,7 @@ void Monster::onThinkTarget(uint32_t interval)
 		if (auto target = getAttackedCreatureShared();
 		    target && target->getPlayer() && target->getPlayer()->getProtectionTime() > 0) {
 			setAttackedCreature(nullptr);
-			// OPTIMIZATION: Removed updateTargetList() here — it triggers
-			// a full getSpectators scan. The target list will be naturally
-			// updated on the next think cycle.
+			updateTargetList();
 			followCreature.reset();
 		}
 

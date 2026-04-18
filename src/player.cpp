@@ -1696,6 +1696,10 @@ void Player::onThink(uint32_t interval)
 	}
 
 	int64_t timeNow = OTSYS_TIME();
+	if (protectionTime > 0) {
+		--protectionTime;
+	}
+
 	if (timeNow - lastPing >= 5000) {
 		lastPing = timeNow;
 		if (client) {

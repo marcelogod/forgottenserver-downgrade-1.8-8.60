@@ -88,6 +88,12 @@ bool ScriptingManager::loadScriptSystems()
 		LOG_WARN("[Warning - ScriptingManager::loadScriptSystems] Can not load " "data/global.lua");
 	}
 
+#if defined(LUAJIT_VERSION)
+	LOG_INFO(fmt::format(">> Using {}", LUAJIT_VERSION));
+#else
+	LOG_INFO(fmt::format(">> Using {}", LUA_VERSION));
+#endif
+
 	scripts_ = std::make_unique<Scripts>();
 	g_scripts = scripts_.get();
 	LOG_INFO(">> Loading lua libs");

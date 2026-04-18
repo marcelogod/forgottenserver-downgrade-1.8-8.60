@@ -66,9 +66,15 @@ endif ()
 find_package(OpenSSL 3.0.0 REQUIRED COMPONENTS Crypto)
 find_package(ZLIB REQUIRED)
 find_package(absl CONFIG REQUIRED)
-find_package(simdutf CONFIG QUIET)
+
+set(SIMDUTF_HINTS)
+if (UNIX AND DEFINED ENV{HOME})
+    list(APPEND SIMDUTF_HINTS "$ENV{HOME}/.local")
+endif()
+
+find_package(simdutf CONFIG QUIET HINTS ${SIMDUTF_HINTS})
 if (NOT simdutf_FOUND)
-    message(FATAL_ERROR "simdutf was not found. Use the vcpkg manifest dependency or configure -Dsimdutf_DIR=<path-to-simdutf>/share/simdutf.")
+    message(FATAL_ERROR "simdutf was not found. Install it via the vcpkg manifest, add its install prefix to CMAKE_PREFIX_PATH, or configure -Dsimdutf_DIR=<prefix>/lib/cmake/simdutf (for example: -Dsimdutf_DIR=$HOME/.local/lib/cmake/simdutf).")
 endif()
 
 find_package(fmt 8.1.1 CONFIG)
