@@ -16,6 +16,7 @@
 #include "spy.h"
 #include "talkaction.h"
 #include "logger.h"
+#include "zones.h"
 #include <fmt/format.h>
 
 extern Vocations g_vocations;
@@ -112,6 +113,149 @@ int luaGameGetMonsters(lua_State* L)
 
 		pushUserdata<Monster>(L, monster.get());
 		setCreatureMetatable(L, -1, monster.get());
+		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
+enum class ZoneCreatureFilter
+{
+	All,
+	Players,
+	Npcs,
+	Monsters
+};
+
+bool acceptsZoneCreature(const Creature* creature, ZoneCreatureFilter filter)
+{
+	switch (filter) {
+		case ZoneCreatureFilter::Players:
+			return creature->getPlayer() != nullptr;
+		case ZoneCreatureFilter::Npcs:
+			return creature->getNpc() != nullptr;
+		case ZoneCreatureFilter::Monsters:
+			return creature->getMonster() != nullptr;
+		case ZoneCreatureFilter::All:
+			return true;
+	}
+	return false;
+}
+
+std::vector<Creature*> getCreaturesInZone(ZoneId zoneId, ZoneCreatureFilter filter)
+{
+	std::vector<Creature*> creatures;
+	const auto zone = Zones::getZone(zoneId);
+	if (!zone) {
+		return creatures;
+	}
+
+	for (const Position& position : zone->getPositions()) {
+		Tile* tile = g_game.map.getTile(position);
+		if (!tile) {
+			continue;
+		}
+
+		const CreatureVector* tileCreatures = tile->getCreatures();
+		if (!tileCreatures) {
+			continue;
+		}
+
+		for (const auto& creatureRef : *tileCreatures) {
+			Creature* creature = creatureRef.get();
+			if (!creature || creature->isRemoved() || !acceptsZoneCreature(creature, filter)) {
+				continue;
+			}
+
+			creatures.emplace_back(creature);
+		}
+	}
+
+	return creatures;
+}
+
+int pushZoneCreatures(lua_State* L, ZoneCreatureFilter filter)
+{
+	const auto zoneId = getInteger<ZoneId>(L, 1);
+	const auto creatures = getCreaturesInZone(zoneId, filter);
+
+	lua_createtable(L, static_cast<int>(creatures.size()), 0);
+
+	int index = 0;
+	for (Creature* creature : creatures) {
+		pushUserdata<Creature>(L, creature);
+		setCreatureMetatable(L, -1, creature);
+		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
+int luaGameGetCreaturesInZone(lua_State* L)
+{
+	// Game.getCreaturesInZone(zoneId)
+	return pushZoneCreatures(L, ZoneCreatureFilter::All);
+}
+
+int luaGameGetPlayersInZone(lua_State* L)
+{
+	// Game.getPlayersInZone(zoneId)
+	return pushZoneCreatures(L, ZoneCreatureFilter::Players);
+}
+
+int luaGameGetNpcsInZone(lua_State* L)
+{
+	// Game.getNpcsInZone(zoneId)
+	return pushZoneCreatures(L, ZoneCreatureFilter::Npcs);
+}
+
+int luaGameGetMonstersInZone(lua_State* L)
+{
+	// Game.getMonstersInZone(zoneId)
+	return pushZoneCreatures(L, ZoneCreatureFilter::Monsters);
+}
+
+int luaGameGetPositionsInZone(lua_State* L)
+{
+	// Game.getPositionsInZone(zoneId)
+	const auto zoneId = getInteger<ZoneId>(L, 1);
+	const auto zone = Zones::getZone(zoneId);
+	if (!zone) {
+		lua_createtable(L, 0, 0);
+		return 1;
+	}
+
+	const auto& positions = zone->getPositions();
+	lua_createtable(L, static_cast<int>(positions.size()), 0);
+
+	int index = 0;
+	for (const Position& position : positions) {
+		pushPosition(L, position);
+		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
+int luaGameGetTilesInZone(lua_State* L)
+{
+	// Game.getTilesInZone(zoneId)
+	const auto zoneId = getInteger<ZoneId>(L, 1);
+	const auto zone = Zones::getZone(zoneId);
+	if (!zone) {
+		lua_createtable(L, 0, 0);
+		return 1;
+	}
+
+	const auto& positions = zone->getPositions();
+	lua_createtable(L, static_cast<int>(positions.size()), 0);
+
+	int index = 0;
+	for (const Position& position : positions) {
+		Tile* tile = g_game.map.getTile(position);
+		if (!tile) {
+			continue;
+		}
+
+		pushUserdata<Tile>(L, tile);
+		setMetatable(L, -1, "Tile");
 		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
@@ -997,6 +1141,12 @@ void LuaScriptInterface::registerGame()
 	registerMethod("Game", "getSpawnRate", luaGameGetSpawnRate);
 	registerMethod("Game", "getNpcs", luaGameGetNpcs);
 	registerMethod("Game", "getMonsters", luaGameGetMonsters);
+	registerMethod("Game", "getCreaturesInZone", luaGameGetCreaturesInZone);
+	registerMethod("Game", "getPlayersInZone", luaGameGetPlayersInZone);
+	registerMethod("Game", "getNpcsInZone", luaGameGetNpcsInZone);
+	registerMethod("Game", "getMonstersInZone", luaGameGetMonstersInZone);
+	registerMethod("Game", "getPositionsInZone", luaGameGetPositionsInZone);
+	registerMethod("Game", "getTilesInZone", luaGameGetTilesInZone);
 	registerMethod("Game", "loadMap", luaGameLoadMap);
 
 	registerMethod("Game", "getExperienceStage", luaGameGetExperienceStage);

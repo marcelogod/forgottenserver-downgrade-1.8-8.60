@@ -188,7 +188,7 @@ void mainLoader(const std::shared_ptr<ServiceManager>& services)
 		return;
 	}
 
-	LOG_INFO(">> Loading zones");
+	LOG_INFO(">> Preparing native OTBM zones");
 	if (!Zones::load()) {
 		startupErrorMessage("Unable to load zones!");
 		return;

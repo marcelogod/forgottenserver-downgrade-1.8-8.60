@@ -6,6 +6,7 @@
 #include "bed.h"
 #include "mapcache.h"
 #include "logger.h"
+#include "zones.h"
 
 /*
 OTBM_ROOTV1
@@ -258,6 +259,7 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
             std::unique_ptr<Tile> tilePtr;
             Tile* tile = nullptr;
             std::shared_ptr<Item> ground_item;
+            std::vector<ZoneId> zoneIds;
             uint32_t tileflags = TILESTATE_NONE;
 
             uint32_t houseId;
@@ -296,6 +298,20 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 
                         if ((flags & tfs::to_underlying(OTBM_TileFlag_t::NOLOGOUT)) != 0) {
                             tileflags |= TILESTATE_NOLOGOUT;
+                        }
+
+                        if ((flags & tfs::to_underlying(OTBM_TileFlag_t::ZONE)) != 0) {
+                            ZoneId zoneId = 0;
+                            do {
+                                if (!tilePropStream.read<ZoneId>(zoneId)) {
+                                    setLastErrorString(fmt::format("[x:{:d}, y:{:d}, z:{:d}] Failed to read tile zone id.", x, y, z));
+                                    return false;
+                                }
+
+                                if (zoneId != 0) {
+                                    zoneIds.emplace_back(zoneId);
+                                }
+                            } while (zoneId != 0);
                         }
                         break;
                     }
@@ -385,6 +401,7 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 
             if (tile) {
                 tile->setFlag(static_cast<tileflags_t>(tileflags));
+                tile->setZoneIds(std::move(zoneIds));
             }
 
             if (tilePtr) {

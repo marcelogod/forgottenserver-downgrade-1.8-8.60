@@ -14,12 +14,15 @@
 #include "monster.h"
 #include "spectators.h"
 #include "logger.h"
+#include "zones.h"
 #include <fmt/format.h>
 
 extern Game g_game;
 
 bool Map::loadMap(const std::string& identifier, bool loadHouses)
 {
+	Zones::clear();
+
 	IOMap loader;
 	if (!loader.loadMap(this, identifier)) {
 		LOG_ERROR(fmt::format("[Fatal - Map::loadMap] {}", loader.getLastErrorString()));
@@ -132,6 +135,10 @@ void Map::setTile(uint16_t x, uint16_t y, uint8_t z, std::unique_ptr<Tile> newTi
 	auto& tilePair = floor->tiles[offsetX][offsetY];
 	auto& tile = tilePair.first;
 	if (tile) {
+		if (!newTile->getZoneIds().empty()) {
+			tile->setZoneIds(newTile->getZoneIds());
+		}
+
 		TileItemVector* items = newTile->getItemList();
 		if (items) {
 			for (auto it = items->rbegin(), end = items->rend(); it != end; ++it) {
@@ -150,6 +157,10 @@ void Map::setTile(uint16_t x, uint16_t y, uint8_t z, std::unique_ptr<Tile> newTi
 		tile = std::move(newTile);
 		// Clear cache since we now have real tile
 		tilePair.second = nullptr;
+	}
+
+	if (tile) {
+		Zones::registerPositionZones(Position(x, y, z), tile->getZoneIds());
 	}
 }
 
@@ -170,6 +181,8 @@ void Map::removeTile(uint16_t x, uint16_t y, uint8_t z)
 	}
 
 	auto& tilePair = floor->tiles[x & FLOOR_MASK][y & FLOOR_MASK];
+	Zones::unregisterPosition(Position(x, y, z));
+
 	auto& tile = tilePair.first;
 	if (tile) {
 		if (const CreatureVector* creatures = tile->getCreatures()) {
@@ -1351,4 +1364,9 @@ void Map::setBasicTile(uint16_t x, uint16_t y, uint8_t z, const std::shared_ptr<
 
 	Floor* floor = leaf->createFloor(z);
 	floor->setTileCache(x, y, basicTile);
+	if (basicTile) {
+		Zones::registerPositionZones(Position(x, y, z), basicTile->zoneIds);
+	} else {
+		Zones::unregisterPosition(Position(x, y, z));
+	}
 }

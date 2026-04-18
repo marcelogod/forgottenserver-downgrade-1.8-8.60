@@ -5,142 +5,60 @@
 
 #include "zones.h"
 
-#include "configmanager.h"
+#include "game.h"
 #include "logger.h"
-#include "pugicast.h"
-#include "tools.h"
+#include "tile.h"
+
+#include <algorithm>
+
+extern Game g_game;
 
 namespace {
 std::map<ZoneId, Zones::ZonePtr> g_zones;
 std::multimap<Position, ZoneId> g_positionZones;
+
+std::vector<ZoneId> normalizeZoneIds(std::vector<ZoneId> zoneIds)
+{
+	zoneIds.erase(std::remove(zoneIds.begin(), zoneIds.end(), ZoneId{}), zoneIds.end());
+	std::sort(zoneIds.begin(), zoneIds.end());
+	zoneIds.erase(std::unique(zoneIds.begin(), zoneIds.end()), zoneIds.end());
+	return zoneIds;
+}
 }
 
 Zone::Zone(ZoneId id, std::vector<Position> positions) : id(id), positions(std::move(positions)) {}
 
-bool Zones::registerZone(const Zones::ZonePtr& zone)
+void Zone::addPosition(const Position& position)
 {
-	if (!zone) {
-		return false;
+	if (std::find(positions.begin(), positions.end(), position) == positions.end()) {
+		positions.emplace_back(position);
 	}
-
-	if (zone->getId() == 0) {
-		LOG_WARN("[Warning - Zones::registerZone] Zone id 0 is not allowed.");
-		return false;
-	}
-
-	if (zone->getPositions().empty()) {
-		LOG_WARN("[Warning - Zones::registerZone] Zone {} has no positions and was skipped.", zone->getId());
-		return false;
-	}
-
-	const auto [it, inserted] = g_zones.emplace(zone->getId(), zone);
-	if (!inserted) {
-		LOG_WARN("[Warning - Zones::registerZone] Duplicate zone id {} skipped.", zone->getId());
-		return false;
-	}
-
-	for (const Position& position : zone->getPositions()) {
-		g_positionZones.emplace(position, zone->getId());
-	}
-
-	return true;
 }
 
-bool Zones::loadFile(const std::filesystem::path& path)
+void Zone::removePosition(const Position& position)
 {
-	pugi::xml_document doc;
-	const auto result = doc.load_file(path.string().c_str());
-	if (!result) {
-		printXMLError("Zones::loadFile", path.string(), result);
-		return false;
+	positions.erase(std::remove(positions.begin(), positions.end(), position), positions.end());
+}
+
+Zones::ZonePtr Zones::getOrCreateZone(ZoneId id)
+{
+	if (id == 0) {
+		return nullptr;
 	}
 
-	auto parseZoneNode = [&path](const pugi::xml_node& zoneNode) {
-		const auto idAttribute = zoneNode.attribute("id");
-		if (!idAttribute) {
-			LOG_WARN("[Warning - Zones::loadFile] Missing zone id in '{}'.", path.string());
-			return;
-		}
-
-		const auto zoneId = pugi::cast<ZoneId>(idAttribute.value());
-		if (zoneId == 0) {
-			LOG_WARN("[Warning - Zones::loadFile] Zone id 0 is invalid in '{}'.", path.string());
-			return;
-		}
-
-		std::vector<Position> positions;
-		for (const auto& positionNode : zoneNode.children("position")) {
-			const auto xAttribute = positionNode.attribute("x");
-			const auto yAttribute = positionNode.attribute("y");
-			const auto zAttribute = positionNode.attribute("z");
-
-			if (!xAttribute || !yAttribute || !zAttribute) {
-				LOG_WARN("[Warning - Zones::loadFile] Zone {} in '{}' has a position with missing coordinates.",
-				         zoneId, path.string());
-				continue;
-			}
-
-			positions.emplace_back(pugi::cast<uint16_t>(xAttribute.value()), pugi::cast<uint16_t>(yAttribute.value()),
-			                       pugi::cast<uint8_t>(zAttribute.value()));
-		}
-
-		registerZone(std::make_shared<Zone>(zoneId, std::move(positions)));
-	};
-
-	if (const auto root = doc.child("zones")) {
-		for (const auto& zoneNode : root.children("zone")) {
-			parseZoneNode(zoneNode);
-		}
-		return true;
+	if (const auto zone = getZone(id)) {
+		return zone;
 	}
 
-	if (const auto zoneNode = doc.child("zone")) {
-		parseZoneNode(zoneNode);
-		return true;
-	}
-
-	LOG_ERROR("[Zones::loadFile] Invalid root node in '{}'. Expected <zones> or <zone>.", path.string());
-	return false;
+	auto zone = std::make_shared<Zone>(id);
+	g_zones.emplace(id, zone);
+	return zone;
 }
 
 bool Zones::load()
 {
-	clear();
-
-	const std::string mapName{ConfigManager::getString(ConfigManager::MAP_NAME)};
-	const auto xmlFile = std::filesystem::path("data/world") / (mapName + "-zones.xml");
-	const auto xmlDirectory = std::filesystem::path("data/world") / (mapName + "-zones");
-
-	bool loadedAny = false;
-	bool success = true;
-
-	if (std::filesystem::exists(xmlFile) && std::filesystem::is_regular_file(xmlFile)) {
-		loadedAny = true;
-		success = loadFile(xmlFile) && success;
-	}
-
-	if (std::filesystem::exists(xmlDirectory) && std::filesystem::is_directory(xmlDirectory)) {
-		std::vector<std::filesystem::path> files;
-		for (const auto& entry : std::filesystem::recursive_directory_iterator(xmlDirectory)) {
-			if (entry.is_regular_file() && entry.path().extension() == ".xml") {
-				files.emplace_back(entry.path());
-			}
-		}
-
-		std::sort(files.begin(), files.end());
-		for (const auto& file : files) {
-			loadedAny = true;
-			success = loadFile(file) && success;
-		}
-	}
-
-	if (!loadedAny) {
-		LOG_INFO(">> No zone definition file found for map '{}'.", mapName);
-		return true;
-	}
-
-	LOG_INFO(">> Loaded {} zone(s).", count());
-	return success;
+	LOG_INFO(">> Native OTBM zone metadata will be indexed while loading the map.");
+	return true;
 }
 
 void Zones::clear()
@@ -151,8 +69,8 @@ void Zones::clear()
 
 bool Zones::reload()
 {
-	clear();
-	return load();
+	LOG_WARN("[Warning - Zones::reload] XML zone reload is deprecated. Native zones are rebuilt when the OTBM map is loaded.");
+	return true;
 }
 
 size_t Zones::count() { return g_zones.size(); }
@@ -189,9 +107,22 @@ Zones::ZonePtr Zones::createZone(ZoneId id, std::vector<Position> positions)
 		return existingZone;
 	}
 
-	const auto zone = std::make_shared<Zone>(id, std::move(positions));
-	if (!registerZone(zone)) {
+	if (positions.empty()) {
+		LOG_WARN("[Warning - Zones::createZone] Zone {} has no positions and was skipped.", id);
 		return nullptr;
+	}
+
+	const auto zone = getOrCreateZone(id);
+	for (const Position& position : positions) {
+		std::vector<ZoneId> zoneIds = getZonesByPosition(position);
+		zoneIds.emplace_back(id);
+
+		if (Tile* tile = g_game.map.getTile(position)) {
+			tile->addZoneId(id);
+			zoneIds = tile->getZoneIds();
+		}
+
+		registerPositionZones(position, std::move(zoneIds));
 	}
 
 	return zone;
@@ -206,5 +137,45 @@ std::vector<ZoneId> Zones::getZonesByPosition(const Position& position)
 	}
 
 	std::sort(zoneIds.begin(), zoneIds.end());
+	zoneIds.erase(std::unique(zoneIds.begin(), zoneIds.end()), zoneIds.end());
 	return zoneIds;
+}
+
+void Zones::unregisterPosition(const Position& position)
+{
+	std::vector<ZoneId> previousZoneIds;
+	const auto [begin, end] = g_positionZones.equal_range(position);
+	for (auto it = begin; it != end; ++it) {
+		previousZoneIds.emplace_back(it->second);
+	}
+
+	if (previousZoneIds.empty()) {
+		return;
+	}
+
+	g_positionZones.erase(begin, end);
+	for (ZoneId zoneId : previousZoneIds) {
+		if (const auto it = g_zones.find(zoneId); it != g_zones.end()) {
+			it->second->removePosition(position);
+			if (it->second->getPositions().empty()) {
+				g_zones.erase(it);
+			}
+		}
+	}
+}
+
+void Zones::registerPositionZones(const Position& position, std::vector<ZoneId> zoneIds)
+{
+	zoneIds = normalizeZoneIds(std::move(zoneIds));
+	unregisterPosition(position);
+
+	for (ZoneId zoneId : zoneIds) {
+		const auto zone = getOrCreateZone(zoneId);
+		if (!zone) {
+			continue;
+		}
+
+		zone->addPosition(position);
+		g_positionZones.emplace(position, zoneId);
+	}
 }

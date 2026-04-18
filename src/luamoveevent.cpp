@@ -299,6 +299,26 @@ int luaMoveEventUniqueId(lua_State* L)
 	return 1;
 }
 
+int luaMoveEventZoneId(lua_State* L)
+{
+	// moveevent:zoneid(ids)
+	MoveEvent* moveevent = getUserdata<MoveEvent>(L, 1);
+	if (moveevent) {
+		int parameters = lua_gettop(L) - 1;
+		if (parameters > 1) {
+			for (int i = 0; i < parameters; ++i) {
+				moveevent->addZoneId(getInteger<ZoneId>(L, 2 + i));
+			}
+		} else {
+			moveevent->addZoneId(getInteger<ZoneId>(L, 2));
+		}
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int luaMoveEventPosition(lua_State* L)
 {
 	// moveevent:position(positions)
@@ -346,6 +366,8 @@ void LuaScriptInterface::registerMoveEvents()
 	registerMethod("MoveEvent", "id", luaMoveEventItemId);
 	registerMethod("MoveEvent", "aid", luaMoveEventActionId);
 	registerMethod("MoveEvent", "uid", luaMoveEventUniqueId);
+	registerMethod("MoveEvent", "zoneid", luaMoveEventZoneId);
+	registerMethod("MoveEvent", "zoneId", luaMoveEventZoneId);
 	registerMethod("MoveEvent", "position", luaMoveEventPosition);
 	registerMethod("MoveEvent", "premium", luaMoveEventPremium);
 	registerMethod("MoveEvent", "vocation", luaMoveEventVocation);

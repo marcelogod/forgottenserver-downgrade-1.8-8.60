@@ -15,6 +15,8 @@
 #include "fileloader.h"
 #include "logger.h"
 
+#include <algorithm>
+
 // Static cache storage with weak_ptr for automatic cleanup
 std::unordered_map<size_t, std::weak_ptr<BasicItem>> MapCache::itemCache;
 std::unordered_map<size_t, std::weak_ptr<BasicTile>> MapCache::tileCache;
@@ -489,8 +491,22 @@ std::shared_ptr<BasicTile> MapCache::parseBasicTile(void* loaderptr, const void*
                     if ((flags & tfs::to_underlying(OTBM_TileFlag_t::NOPVPZONE)) != 0) tile->flags |= TILESTATE_NOPVPZONE;
                     if ((flags & tfs::to_underlying(OTBM_TileFlag_t::PVPZONE)) != 0) tile->flags |= TILESTATE_PVPZONE;
                     if ((flags & tfs::to_underlying(OTBM_TileFlag_t::NOLOGOUT)) != 0) tile->flags |= TILESTATE_NOLOGOUT;
+                    if ((flags & tfs::to_underlying(OTBM_TileFlag_t::ZONE)) != 0) {
+                        ZoneId zoneId = 0;
+                        do {
+                            if (!propStream.read<ZoneId>(zoneId)) {
+                                LOG_ERROR("[MapCache] Failed to read tile zone id");
+                                return nullptr;
+                            }
+
+                            if (zoneId != 0) {
+                                tile->zoneIds.emplace_back(zoneId);
+                            }
+                        } while (zoneId != 0);
+                    }
                 } else {
                     LOG_ERROR("[MapCache] Failed to read tile flags");
+                    return nullptr;
                 }
                 break;
             }
@@ -527,6 +543,9 @@ std::shared_ptr<BasicTile> MapCache::parseBasicTile(void* loaderptr, const void*
             }
         }
     }
+
+    std::sort(tile->zoneIds.begin(), tile->zoneIds.end());
+    tile->zoneIds.erase(std::unique(tile->zoneIds.begin(), tile->zoneIds.end()), tile->zoneIds.end());
     
     return tryGetTileFromCache(tile);
 }
@@ -648,6 +667,7 @@ std::unique_ptr<Tile> createTileFromBasic(const std::shared_ptr<BasicTile>& basi
     
     // Set flags
     tile->setFlag(static_cast<tileflags_t>(basicTile->flags));
+    tile->setZoneIds(basicTile->zoneIds);
     
     return tile;
 }

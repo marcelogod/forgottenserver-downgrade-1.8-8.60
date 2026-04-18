@@ -58,7 +58,8 @@ enum class OTBM_TileFlag_t : uint32_t {
     PROTECTIONZONE = 1 << 0,
     NOPVPZONE = 1 << 2,
     NOLOGOUT = 1 << 3,
-    PVPZONE = 1 << 4
+    PVPZONE = 1 << 4,
+    ZONE = 1 << 6
 };
 
 #pragma pack(1)

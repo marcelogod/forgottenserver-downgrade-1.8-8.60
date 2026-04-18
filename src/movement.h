@@ -72,12 +72,14 @@ private:
 
 	void addEvent(MoveEvent moveEvent, const Position& pos, MovePosListMap& map);
 	MoveEvent* getEvent(const Tile* tile, MoveEvent_t eventType);
+	uint32_t fireZoneStepEvents(Creature* creature, const Tile* tile, MoveEvent_t eventType, const Position& pos);
 
 	MoveEvent* getEvent(Item* item, MoveEvent_t eventType, slots_t slot);
 
 	MoveListMap uniqueIdMap;
 	MoveListMap actionIdMap;
 	MoveListMap itemIdMap;
+	MoveListMap zoneIdMap;
 	MovePosListMap positionMap;
 
 	LuaScriptInterface scriptInterface;
@@ -96,14 +98,14 @@ public:
 	MoveEvent_t getEventType() const;
 	void setEventType(MoveEvent_t type);
 
-	uint32_t fireStepEvent(Creature* creature, Item* item, const Position& pos);
+	uint32_t fireStepEvent(Creature* creature, Item* item, const Position& pos, ZoneId zoneId = 0);
 	uint32_t fireAddRemItem(Item* item, Item* tileItem, const Position& pos);
 	ReturnValue fireEquip(Player* player, Item* item, slots_t slot, bool isCheck);
 
 	uint32_t getSlot() const { return slot; }
 
 	// scripting
-	bool executeStep(Creature* creature, Item* item, const Position& pos);
+	bool executeStep(Creature* creature, Item* item, const Position& pos, ZoneId zoneId = 0);
 	bool executeEquip(Player* player, Item* item, slots_t slot, bool isCheck);
 	bool executeAddRemItem(Item* item, Item* tileItem, const Position& pos);
 	//
@@ -156,6 +158,15 @@ public:
 	void clearUniqueIdRange() { uniqueIdRange.clear(); }
 	void addUniqueId(uint16_t id) { uniqueIdRange.emplace_back(id); }
 
+	auto stealZoneIdRange()
+	{
+		std::vector<uint16_t> ret{};
+		std::swap(zoneIdRange, ret);
+		return ret;
+	}
+	void clearZoneIdRange() { zoneIdRange.clear(); }
+	void addZoneId(uint16_t id) { zoneIdRange.emplace_back(id); }
+
 	auto stealPosList()
 	{
 		std::vector<Position> ret{};
@@ -206,6 +217,7 @@ private:
 	std::vector<uint16_t> itemIdRange;
 	std::vector<uint16_t> actionIdRange;
 	std::vector<uint16_t> uniqueIdRange;
+	std::vector<uint16_t> zoneIdRange;
 	std::vector<Position> posList;
 };
 

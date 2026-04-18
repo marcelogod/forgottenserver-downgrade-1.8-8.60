@@ -7,7 +7,6 @@
 #include "position.h"
 
 #include <cstdint>
-#include <filesystem>
 #include <map>
 #include <memory>
 #include <vector>
@@ -21,6 +20,8 @@ public:
 
 	ZoneId getId() const { return id; }
 	const std::vector<Position>& getPositions() const { return positions; }
+	void addPosition(const Position& position);
+	void removePosition(const Position& position);
 
 private:
 	ZoneId id;
@@ -41,10 +42,11 @@ public:
 	static ZonePtr getZone(ZoneId id);
 	static ZonePtr createZone(ZoneId id, std::vector<Position> positions);
 	static std::vector<ZoneId> getZonesByPosition(const Position& position);
+	static void registerPositionZones(const Position& position, std::vector<ZoneId> zoneIds);
+	static void unregisterPosition(const Position& position);
 
 private:
-	static bool registerZone(const ZonePtr& zone);
-	static bool loadFile(const std::filesystem::path& path);
+	static ZonePtr getOrCreateZone(ZoneId id);
 };
 
 #endif // FS_ZONES_H

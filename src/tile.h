@@ -8,6 +8,7 @@
 #include "item.h"
 #include "spectators.h"
 #include "tools.h"
+#include "zones.h"
 
 class Creature;
 class Teleport;
@@ -250,6 +251,13 @@ public:
 	Item* getGround() const { return ground.get(); }
 	void setGround(const std::shared_ptr<Item>& item) { ground = item; }
 
+	const std::vector<ZoneId>& getZoneIds() const { return zoneIds; }
+	bool hasZoneId(ZoneId zoneId) const;
+	bool hasZone() const { return !zoneIds.empty(); }
+	void setZoneIds(std::vector<ZoneId> newZoneIds);
+	void addZoneId(ZoneId zoneId);
+	void clearZoneIds() { zoneIds.clear(); }
+
 private:
 	void onAddTileItem(Item* item);
 	void onUpdateTileItem(Item* oldItem, const ItemType& oldType, Item* newItem, const ItemType& newType);
@@ -260,6 +268,7 @@ private:
 
 	std::shared_ptr<Item> ground;
 	Position tilePos;
+	std::vector<ZoneId> zoneIds;
 	uint32_t flags = 0;
 };
 

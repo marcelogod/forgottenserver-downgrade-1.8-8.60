@@ -4,6 +4,8 @@
 #ifndef FS_MAPCACHE_H
 #define FS_MAPCACHE_H
 
+#include "zones.h"
+
 class Item;
 class Tile;
 class House;
@@ -102,6 +104,7 @@ struct BasicItem {
 struct BasicTile {
     std::shared_ptr<BasicItem> ground{nullptr};
     std::vector<std::shared_ptr<BasicItem>> items;
+    std::vector<ZoneId> zoneIds;
     
     uint32_t flags{0};
     uint32_t houseId{0};
@@ -109,7 +112,7 @@ struct BasicTile {
     bool isStatic{false};
     
     bool isEmpty(bool ignoreFlag = false) const {
-        return (ignoreFlag || flags == 0) && ground == nullptr && items.empty();
+        return (ignoreFlag || flags == 0) && ground == nullptr && items.empty() && zoneIds.empty();
     }
     
     bool isHouse() const {
@@ -125,6 +128,12 @@ struct BasicTile {
         if (flags > 0) hash_combine(h, flags);
         if (houseId > 0) hash_combine(h, houseId);
         if (isStatic) hash_combine(h, 1);
+        if (!zoneIds.empty()) {
+            hash_combine(h, zoneIds.size());
+            for (ZoneId zoneId : zoneIds) {
+                hash_combine(h, zoneId);
+            }
+        }
         
         if (ground != nullptr) {
             hash_combine(h, ground->hash());
@@ -146,7 +155,8 @@ struct BasicTile {
      * Equality operator for hash collision detection
      */
     bool operator==(const BasicTile& other) const {
-        if (flags != other.flags || houseId != other.houseId || isStatic != other.isStatic) {
+        if (flags != other.flags || houseId != other.houseId || isStatic != other.isStatic ||
+            zoneIds != other.zoneIds) {
             return false;
         }
         

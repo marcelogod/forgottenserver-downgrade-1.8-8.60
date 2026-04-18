@@ -6,6 +6,7 @@
 #include "game.h"
 #include "luascript.h"
 #include "tile.h"
+#include "zones.h"
 
 extern Game g_game;
 
@@ -597,6 +598,54 @@ int luaTileHasFlag(lua_State* L)
 	return 1;
 }
 
+int luaTileGetZoneIds(lua_State* L)
+{
+	// tile:getZoneIds()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if (!tile) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	const auto& zoneIds = tile->getZoneIds();
+	lua_createtable(L, static_cast<int>(zoneIds.size()), 0);
+
+	int index = 0;
+	for (ZoneId zoneId : zoneIds) {
+		lua_pushinteger(L, zoneId);
+		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
+int luaTileHasZone(lua_State* L)
+{
+	// tile:hasZone([zoneId | zone])
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if (!tile) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	if (lua_gettop(L) < 2) {
+		pushBoolean(L, tile->hasZone());
+		return 1;
+	}
+
+	ZoneId expectedZoneId = 0;
+	if (isNumber(L, 2)) {
+		expectedZoneId = getInteger<ZoneId>(L, 2);
+	} else if (isType<Zone>(L, 2)) {
+		const auto zone = getSharedPtr<Zone>(L, 2);
+		if (zone) {
+			expectedZoneId = zone->getId();
+		}
+	}
+
+	pushBoolean(L, expectedZoneId != 0 && tile->hasZoneId(expectedZoneId));
+	return 1;
+}
+
 int luaTileQueryAdd(lua_State* L)
 {
 	// tile:queryAdd(thing[, flags])
@@ -768,6 +817,9 @@ void LuaScriptInterface::registerTile()
 
 	registerMethod("Tile", "hasProperty", luaTileHasProperty);
 	registerMethod("Tile", "hasFlag", luaTileHasFlag);
+	registerMethod("Tile", "getZoneIds", luaTileGetZoneIds);
+	registerMethod("Tile", "getZoneId", luaTileGetZoneIds);
+	registerMethod("Tile", "hasZone", luaTileHasZone);
 
 	registerMethod("Tile", "queryAdd", luaTileQueryAdd);
 	registerMethod("Tile", "addItem", luaTileAddItem);

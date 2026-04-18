@@ -17,6 +17,8 @@
 #include "teleport.h"
 #include "trashholder.h"
 
+#include <algorithm>
+
 extern Game g_game;
 
 StaticTile real_nullptr_tile(0xFFFF, 0xFFFF, 0xFF);
@@ -1654,4 +1656,29 @@ Item* Tile::getUseItem(int32_t index) const
 	}
 
 	return items->begin()->get();
+}
+
+void Tile::setZoneIds(std::vector<ZoneId> newZoneIds)
+{
+	newZoneIds.erase(std::remove(newZoneIds.begin(), newZoneIds.end(), ZoneId{}), newZoneIds.end());
+	std::sort(newZoneIds.begin(), newZoneIds.end());
+	newZoneIds.erase(std::unique(newZoneIds.begin(), newZoneIds.end()), newZoneIds.end());
+	zoneIds = std::move(newZoneIds);
+}
+
+void Tile::addZoneId(ZoneId zoneId)
+{
+	if (zoneId == 0) {
+		return;
+	}
+
+	const auto it = std::lower_bound(zoneIds.begin(), zoneIds.end(), zoneId);
+	if (it == zoneIds.end() || *it != zoneId) {
+		zoneIds.insert(it, zoneId);
+	}
+}
+
+bool Tile::hasZoneId(ZoneId zoneId) const
+{
+	return std::binary_search(zoneIds.begin(), zoneIds.end(), zoneId);
 }

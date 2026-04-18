@@ -59,6 +59,7 @@ void MoveEvents::clear(bool fromLua)
 	clearMap(itemIdMap, fromLua);
 	clearMap(actionIdMap, fromLua);
 	clearMap(uniqueIdMap, fromLua);
+	clearMap(zoneIdMap, fromLua);
 	clearPosMap(positionMap, fromLua);
 
 	reInitState(fromLua);
@@ -75,6 +76,7 @@ bool MoveEvents::registerLuaFunction(MoveEvent* event)
 	const auto& ids = moveEvent->stealItemIdRange();
 	moveEvent->clearUniqueIdRange();
 	moveEvent->clearActionIdRange();
+	moveEvent->clearZoneIdRange();
 	moveEvent->clearPosList();
 
 	if (ids.empty()) {
@@ -115,10 +117,11 @@ bool MoveEvents::registerLuaEvent(MoveEvent* event)
 	const auto& ids = moveEvent->stealItemIdRange();
 	const auto& uids = moveEvent->stealUniqueIdRange();
 	const auto& aids = moveEvent->stealActionIdRange();
+	const auto& zoneIds = moveEvent->stealZoneIdRange();
 	const auto& poss = moveEvent->stealPosList();
 
-	if (ids.empty() && uids.empty() && aids.empty() && poss.empty()) {
-		LOG_WARN("[Warning - MoveEvents::registerLuaEvent] No itemid, uniqueid, actionid or pos specified.");
+	if (ids.empty() && uids.empty() && aids.empty() && zoneIds.empty() && poss.empty()) {
+		LOG_WARN("[Warning - MoveEvents::registerLuaEvent] No itemid, uniqueid, actionid, zoneid or pos specified.");
 		return false;
 	}
 
@@ -153,6 +156,10 @@ bool MoveEvents::registerLuaEvent(MoveEvent* event)
 
 	for (const auto& id : aids) {
 		addEvent(*moveEvent, id, actionIdMap);
+	}
+
+	for (const auto& id : zoneIds) {
+		addEvent(*moveEvent, id, zoneIdMap);
 	}
 
 	for (const auto& pos : poss) {
@@ -293,6 +300,23 @@ MoveEvent* MoveEvents::getEvent(const Tile* tile, MoveEvent_t eventType)
 	return nullptr;
 }
 
+uint32_t MoveEvents::fireZoneStepEvents(Creature* creature, const Tile* tile, MoveEvent_t eventType, const Position& pos)
+{
+	uint32_t ret = 1;
+	for (ZoneId zoneId : tile->getZoneIds()) {
+		const auto it = zoneIdMap.find(zoneId);
+		if (it == zoneIdMap.end()) {
+			continue;
+		}
+
+		std::list<MoveEvent>& moveEventList = it->second.moveEvent[eventType];
+		for (MoveEvent& moveEvent : moveEventList) {
+			ret &= moveEvent.fireStepEvent(creature, nullptr, pos, zoneId);
+		}
+	}
+	return ret;
+}
+
 uint32_t MoveEvents::onCreatureMove(Creature* creature, const Tile* tile, MoveEvent_t eventType)
 {
 	const Position& pos = tile->getPosition();
@@ -303,6 +327,7 @@ uint32_t MoveEvents::onCreatureMove(Creature* creature, const Tile* tile, MoveEv
 	if (moveEvent) {
 		ret &= moveEvent->fireStepEvent(creature, nullptr, pos);
 	}
+	ret &= fireZoneStepEvents(creature, tile, eventType, pos);
 
 	for (size_t i = tile->getFirstIndex(), j = tile->getLastIndex(); i < j; ++i) {
 		Thing* thing = tile->getThing(i);
@@ -724,15 +749,15 @@ MoveEvent_t MoveEvent::getEventType() const { return eventType; }
 
 void MoveEvent::setEventType(MoveEvent_t type) { eventType = type; }
 
-uint32_t MoveEvent::fireStepEvent(Creature* creature, Item* item, const Position& pos)
+uint32_t MoveEvent::fireStepEvent(Creature* creature, Item* item, const Position& pos, ZoneId zoneId)
 {
 	if (scripted) {
-		return executeStep(creature, item, pos);
+		return executeStep(creature, item, pos, zoneId);
 	}
 	return stepFunction(creature, item, pos);
 }
 
-bool MoveEvent::executeStep(Creature* creature, Item* item, const Position& pos)
+bool MoveEvent::executeStep(Creature* creature, Item* item, const Position& pos, ZoneId zoneId)
 {
 	// onStepIn(creature, item, pos, fromPosition)
 	// onStepOut(creature, item, pos, fromPosition)
@@ -752,6 +777,10 @@ bool MoveEvent::executeStep(Creature* creature, Item* item, const Position& pos)
 	Lua::pushThing(L, item);
 	Lua::pushPosition(L, pos);
 	Lua::pushPosition(L, creature->getLastPosition());
+	if (zoneId != 0) {
+		lua_pushinteger(L, zoneId);
+		return scriptInterface->callFunction(5);
+	}
 
 	return scriptInterface->callFunction(4);
 }

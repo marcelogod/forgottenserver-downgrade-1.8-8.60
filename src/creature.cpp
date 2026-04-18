@@ -1589,6 +1589,15 @@ bool Creature::getPathTo(const Position& targetPos, std::vector<Direction>& dirL
 	return getPathTo(targetPos, dirList, fpp);
 }
 
+const std::vector<ZoneId>& Creature::getZoneIds() const
+{
+	static const std::vector<ZoneId> emptyZoneIds;
+	if (const Tile* currentTile = getTile()) {
+		return currentTile->getZoneIds();
+	}
+	return emptyZoneIds;
+}
+
 void Creature::setStorageValue(uint32_t key, std::optional<int64_t> value, bool isSpawn)
 {
 	auto oldValue = getStorageValue(key);

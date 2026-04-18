@@ -1062,6 +1062,26 @@ int luaCreatureGetZone(lua_State* L)
 	return 1;
 }
 
+int luaCreatureGetZoneIds(lua_State* L)
+{
+	// creature:getZoneIds()
+	const Creature* creature = getUserdata<const Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	const auto& zoneIds = creature->getZoneIds();
+	lua_createtable(L, static_cast<int>(zoneIds.size()), 0);
+
+	int index = 0;
+	for (ZoneId zoneId : zoneIds) {
+		lua_pushinteger(L, zoneId);
+		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
 int luaCreatureGetStorageValue(lua_State* L)
 {
 	// creature:getStorageValue(key[, defaultValue = 0])
@@ -1333,6 +1353,7 @@ void LuaScriptInterface::registerCreature()
 	registerMethod("Creature", "move", luaCreatureMove);
 
 	registerMethod("Creature", "getZone", luaCreatureGetZone);
+	registerMethod("Creature", "getZoneIds", luaCreatureGetZoneIds);
 
 	registerMethod("Creature", "getStorageValue", luaCreatureGetStorageValue);
 	registerMethod("Creature", "setStorageValue", luaCreatureSetStorageValue);

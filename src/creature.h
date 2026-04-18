@@ -199,7 +199,14 @@ public:
 	void setCurrentOutfit(Outfit_t outfit) { currentOutfit = outfit; }
 	const Outfit_t getDefaultOutfit() const { return defaultOutfit; }
 	bool isInvisible() const;
-	ZoneType_t getZone() const { return getTile()->getZone(); }
+	ZoneType_t getZone() const
+	{
+		if (const Tile* currentTile = getTile()) {
+			return currentTile->getZone();
+		}
+		return ZONE_NORMAL;
+	}
+	const std::vector<ZoneId>& getZoneIds() const;
 
 	// walk functions
 	void startAutoWalk();
