@@ -14,9 +14,9 @@ using namespace Lua;
 // Loot
 int luaCreateLoot(lua_State* L)
 {
-	// Loot() will create a new loot item
-	Loot* loot = new Loot();
-	pushUserdata<Loot>(L, loot);
+	// Loot() will create a Lua-owned loot item
+	auto loot = std::make_unique<Loot>();
+	pushUserdata<Loot>(L, loot.release());
 	setMetatable(L, -1, "Loot");
 	return 1;
 }

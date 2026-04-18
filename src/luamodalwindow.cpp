@@ -17,7 +17,8 @@ int luaModalWindowCreate(lua_State* L)
 	const std::string& title = getString(L, 3);
 	uint32_t id = getInteger<uint32_t>(L, 2);
 
-	pushUserdata<ModalWindow>(L, new ModalWindow(id, title, message));
+	auto window = std::make_unique<ModalWindow>(id, title, message);
+	pushUserdata<ModalWindow>(L, window.release());
 	setMetatable(L, -1, "ModalWindow");
 	return 1;
 }

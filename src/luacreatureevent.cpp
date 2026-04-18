@@ -23,10 +23,10 @@ int luaCreateCreatureEvent(lua_State* L)
 		return 1;
 	}
 
-	CreatureEvent* creature = new CreatureEvent(LuaScriptInterface::getScriptEnv()->getScriptInterface());
+	auto creature = std::make_unique<CreatureEvent>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 	creature->setName(getString(L, 2));
 	creature->fromLua = true;
-	pushUserdata<CreatureEvent>(L, creature);
+	pushUserdata<CreatureEvent>(L, creature.release());
 	setMetatable(L, -1, "CreatureEvent");
 	return 1;
 }

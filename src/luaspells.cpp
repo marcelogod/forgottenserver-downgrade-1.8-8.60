@@ -16,7 +16,7 @@ using namespace Lua;
 int luaSpellCreate(lua_State* L)
 {
 	// Spell(words, name or id) to get an existing spell
-	// Spell(type) ex: Spell(SPELL_INSTANT) or Spell(SPELL_RUNE) to create a new spell
+	// Spell(type) ex: Spell(SPELL_INSTANT) or Spell(SPELL_RUNE) to create a Lua-owned spell
 	if (lua_gettop(L) == 1) {
 		LOG_ERROR("[Error - Spell::luaSpellCreate] There is no parameter set!");
 		lua_pushnil(L);
@@ -66,18 +66,18 @@ int luaSpellCreate(lua_State* L)
 	}
 
 	if (spellType == SPELL_INSTANT) {
-		InstantSpell* spell = new InstantSpell(LuaScriptInterface::getScriptEnv()->getScriptInterface());
+		auto spell = std::make_unique<InstantSpell>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 		spell->fromLua = true;
-		pushUserdata<Spell>(L, spell);
-		setMetatable(L, -1, "Spell");
 		spell->spellType = SPELL_INSTANT;
+		pushUserdata<Spell>(L, spell.release());
+		setMetatable(L, -1, "Spell");
 		return 1;
 	} else if (spellType == SPELL_RUNE) {
-		RuneSpell* spell = new RuneSpell(LuaScriptInterface::getScriptEnv()->getScriptInterface());
+		auto spell = std::make_unique<RuneSpell>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 		spell->fromLua = true;
-		pushUserdata<Spell>(L, spell);
-		setMetatable(L, -1, "Spell");
 		spell->spellType = SPELL_RUNE;
+		pushUserdata<Spell>(L, spell.release());
+		setMetatable(L, -1, "Spell");
 		return 1;
 	}
 

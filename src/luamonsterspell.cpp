@@ -14,9 +14,9 @@ using namespace Lua;
 // MonsterSpell
 int luaCreateMonsterSpell(lua_State* L)
 {
-	// MonsterSpell() will create a new Monster Spell
-	MonsterSpell* spell = new MonsterSpell();
-	pushUserdata<MonsterSpell>(L, spell);
+	// MonsterSpell() will create a Lua-owned MonsterSpell
+	auto spell = std::make_unique<MonsterSpell>();
+	pushUserdata<MonsterSpell>(L, spell.release());
 	setMetatable(L, -1, "MonsterSpell");
 	return 1;
 }

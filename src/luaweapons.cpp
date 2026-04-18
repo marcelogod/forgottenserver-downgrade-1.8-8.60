@@ -28,28 +28,28 @@ int luaCreateWeapon(lua_State* L)
 		case WEAPON_SWORD:
 		case WEAPON_AXE:
 		case WEAPON_CLUB: {
-			WeaponMelee* weapon = new WeaponMelee(LuaScriptInterface::getScriptEnv()->getScriptInterface());
-			pushUserdata<WeaponMelee>(L, weapon);
-			setMetatable(L, -1, "Weapon");
+			auto weapon = std::make_unique<WeaponMelee>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 			weapon->weaponType = type;
 			weapon->fromLua = true;
+			pushUserdata<WeaponMelee>(L, weapon.release());
+			setMetatable(L, -1, "Weapon");
 			break;
 		}
 		case WEAPON_DISTANCE:
 		case WEAPON_AMMO: {
-			WeaponDistance* weapon = new WeaponDistance(LuaScriptInterface::getScriptEnv()->getScriptInterface());
-			pushUserdata<WeaponDistance>(L, weapon);
-			setMetatable(L, -1, "Weapon");
+			auto weapon = std::make_unique<WeaponDistance>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 			weapon->weaponType = type;
 			weapon->fromLua = true;
+			pushUserdata<WeaponDistance>(L, weapon.release());
+			setMetatable(L, -1, "Weapon");
 			break;
 		}
 		case WEAPON_WAND: {
-			WeaponWand* weapon = new WeaponWand(LuaScriptInterface::getScriptEnv()->getScriptInterface());
-			pushUserdata<WeaponWand>(L, weapon);
-			setMetatable(L, -1, "Weapon");
+			auto weapon = std::make_unique<WeaponWand>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 			weapon->weaponType = type;
 			weapon->fromLua = true;
+			pushUserdata<WeaponWand>(L, weapon.release());
+			setMetatable(L, -1, "Weapon");
 			break;
 		}
 		default: {

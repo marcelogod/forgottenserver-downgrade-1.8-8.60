@@ -14,7 +14,8 @@ using namespace Lua;
 int luaNetworkMessageCreate(lua_State* L)
 {
 	// NetworkMessage([player])
-	pushUserdata<NetworkMessage>(L, new NetworkMessage);
+	auto message = std::make_unique<NetworkMessage>();
+	pushUserdata<NetworkMessage>(L, message.release());
 	setMetatable(L, -1, "NetworkMessage");
 
 	if (const auto player = getPlayer(L, 1)) {

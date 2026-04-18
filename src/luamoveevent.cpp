@@ -23,9 +23,9 @@ int luaCreateMoveEvent(lua_State* L)
 		return 1;
 	}
 
-	MoveEvent* moveevent = new MoveEvent(LuaScriptInterface::getScriptEnv()->getScriptInterface());
+	auto moveevent = std::make_unique<MoveEvent>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 	moveevent->fromLua = true;
-	pushUserdata<MoveEvent>(L, moveevent);
+	pushUserdata<MoveEvent>(L, moveevent.release());
 	setMetatable(L, -1, "MoveEvent");
 	return 1;
 }

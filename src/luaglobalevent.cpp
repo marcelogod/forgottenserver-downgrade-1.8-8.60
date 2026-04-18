@@ -24,11 +24,11 @@ int luaCreateGlobalEvent(lua_State* L)
 		return 1;
 	}
 
-	GlobalEvent* global = new GlobalEvent(LuaScriptInterface::getScriptEnv()->getScriptInterface());
+	auto global = std::make_unique<GlobalEvent>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 	global->setName(getString(L, 2));
 	global->setEventType(GLOBALEVENT_NONE);
 	global->fromLua = true;
-	pushUserdata<GlobalEvent>(L, global);
+	pushUserdata<GlobalEvent>(L, global.release());
 	setMetatable(L, -1, "GlobalEvent");
 	return 1;
 }

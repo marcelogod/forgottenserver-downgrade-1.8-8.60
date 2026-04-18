@@ -21,12 +21,12 @@ int luaCreateTalkaction(lua_State* L)
 		return 1;
 	}
 
-	TalkAction* talk = new TalkAction(LuaScriptInterface::getScriptEnv()->getScriptInterface());
+	auto talk = std::make_unique<TalkAction>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 	for (int i = 2; i <= lua_gettop(L); i++) {
 		talk->setWords(getString(L, i));
 	}
 	talk->fromLua = true;
-	pushUserdata<TalkAction>(L, talk);
+	pushUserdata<TalkAction>(L, talk.release());
 	setMetatable(L, -1, "TalkAction");
 	return 1;
 }

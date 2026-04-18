@@ -21,9 +21,9 @@ int luaCreateAction(lua_State* L)
 		return 1;
 	}
 
-	Action* action = new Action(LuaScriptInterface::getScriptEnv()->getScriptInterface());
+	auto action = std::make_unique<Action>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 	action->fromLua = true;
-	pushUserdata<Action>(L, action);
+	pushUserdata<Action>(L, action.release());
 	setMetatable(L, -1, "Action");
 	return 1;
 }
