@@ -810,12 +810,19 @@ int luaGameCreateMonsterType(lua_State* L)
 		monsterType->info.lootItems.clear();
 		monsterType->info.attackSpells.clear();
 		monsterType->info.defenseSpells.clear();
+		monsterType->info.summons.clear();
+		monsterType->info.voiceVector.clear();
+		monsterType->info.elementMap.clear();
 		monsterType->info.scripts.clear();
+		monsterType->info.enemyFactions.clear();
+		monsterType->info.damageImmunities = 0;
+		monsterType->info.conditionImmunities = 0;
 		monsterType->info.thinkEvent = -1;
 		monsterType->info.creatureAppearEvent = -1;
 		monsterType->info.creatureDisappearEvent = -1;
 		monsterType->info.creatureMoveEvent = -1;
 		monsterType->info.creatureSayEvent = -1;
+		monsterType->info.playerAttackEvent = -1;
 	}
 
 	pushUserdata<MonsterType>(L, monsterType);
