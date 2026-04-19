@@ -63,5 +63,7 @@
     "http",
     "libmariadb"
   ],
-  "builtin-baseline": "215a2535590f1f63788ac9bd2ed58ad15e6afdff"
+    "overrides": [
+    { "name": "lua", "version": "5.4.6#0" } ],
+  "builtin-baseline": "62159a45e18f3a9ac0548628dcaf74fcb60c6ff9"
 }

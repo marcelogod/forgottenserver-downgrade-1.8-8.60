@@ -87,6 +87,11 @@
     <ClCompile Include="..\src\save_manager.cpp" />
     <ClCompile Include="..\src\thread_pool.cpp" />
     <ClCompile Include="..\src\imbuement.cpp" />
+    <ClCompile Include="..\src\familiar.cpp" />
+    <ClCompile Include="..\src\luazone.cpp" />
+    <ClCompile Include="..\src\spectators.cpp" />
+    <ClCompile Include="..\src\spy.cpp" />
+    <ClCompile Include="..\src\zones.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\luaactions.cpp">
@@ -289,6 +294,9 @@
     <ClInclude Include="..\src\save_manager.h" />
     <ClInclude Include="..\src\thread_pool.h" />
     <ClInclude Include="..\src\imbuement.h" />
+    <ClInclude Include="..\src\familiar.h" />
+    <ClInclude Include="..\src\spy.h" />
+    <ClInclude Include="..\src\zones.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="theforgottenserver.rc" />
