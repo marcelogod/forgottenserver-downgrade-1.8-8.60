@@ -1005,7 +1005,7 @@ void Monster::onThink(uint32_t interval)
 							return;
 						}
 					} else {
-						if (!getPosition().isInRange(master->getPosition(), 7, 7, 0)) {
+						if (ConfigManager::getBoolean(ConfigManager::TELEPORT_SUMMON) && !getPosition().isInRange(master->getPosition(), 7, 7, 0)) {
 							g_game.internalTeleport(this, master->getPosition());
 							g_game.addMagicEffect(master->getPosition(), CONST_ME_TELEPORT, getInstanceID());
 						}

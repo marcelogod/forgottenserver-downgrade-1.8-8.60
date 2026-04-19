@@ -70,6 +70,7 @@ enum Boolean
 	POTION_CAN_EXHAUST_ITEM,
 	SLOW_TASK_WARNING,
 	REMOVE_SUMMONS_ON_PZ,
+	TELEPORT_SUMMON,
 
 	LAST_BOOLEAN /* this must be the last one */
 };

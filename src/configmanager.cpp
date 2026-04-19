@@ -337,6 +337,7 @@ bool ConfigManager::load()
 	booleans[Boolean::STAMINA_PZ] = getGlobalBoolean(L, "staminaPz", false);
 	booleans[Boolean::PUSH_CREATURE_ZONE] = getGlobalBoolean(L, "pushCreatureZone", false);
 	booleans[Boolean::REMOVE_SUMMONS_ON_PZ] = getGlobalBoolean(L, "removeSummonsOnPz", false);
+	booleans[Boolean::TELEPORT_SUMMON] = getGlobalBoolean(L, "teleportSummon", false);
 
 	// Admin Config
 	booleans[Boolean::ADMIN_LOCALHOST_ONLY] = getGlobalBoolean(L, "adminLocalhostOnly", true);
