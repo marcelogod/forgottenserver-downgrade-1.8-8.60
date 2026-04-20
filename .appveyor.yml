@@ -1,6 +1,5 @@
 version: '{build}'
 image: Visual Studio 2022
-shallow_clone: true
 
 platform:
   - x64
@@ -17,13 +16,22 @@ only_commits:
     - /vc17/
     - .appveyor.yml
     - /cmake/
+    - vcpkg.json
+    - vcpkg-configuration.json
+    - CMakeLists.txt
 
 environment:
   VCPKG_ROOT: C:\Tools\vcpkg
   VCPKG_DEFAULT_TRIPLET: x64-windows
 
 install:
-  - cmd: vcpkg install
+  - cmd: cd /d %VCPKG_ROOT%
+  - cmd: git fetch --all --tags --prune
+  - cmd: git pull
+  - cmd: bootstrap-vcpkg.bat
+  - cmd: vcpkg version
+  - cmd: cd /d %APPVEYOR_BUILD_FOLDER%
+  - cmd: vcpkg install --triplet %VCPKG_DEFAULT_TRIPLET%
 
 before_build:
   - if not exist build mkdir build
@@ -49,5 +57,4 @@ artifacts:
   - path: TFS.zip
 
 test: off
-
 deploy: off
