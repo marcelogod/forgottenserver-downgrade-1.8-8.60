@@ -3820,6 +3820,9 @@ bool LuaEnvironment::closeState()
 
 	for (auto& timerEntry : timerEvents) {
 		LuaTimerEventDesc timerEventDesc = std::move(timerEntry.second);
+		
+		g_scheduler.stopEvent(timerEventDesc.eventId);
+		
 		for (int32_t parameter : timerEventDesc.parameters) {
 			luaL_unref(luaState, LUA_REGISTRYINDEX, parameter);
 		}
@@ -3984,8 +3987,8 @@ void LuaEnvironment::executeTimerEvent(uint32_t eventIndex)
 			case LuaData_Item:
 			case LuaData_Container:
 			case LuaData_Teleport: {
-				Item** itemPtr = static_cast<Item**>(lua_touserdata(luaState, -1));
-				if (itemPtr && *itemPtr && (*itemPtr)->isRemoved()) {
+				auto& itemPtr = Lua::getSharedPtr<Item>(luaState, -1);
+				if (!itemPtr || itemPtr->isRemoved()) {
 					lua_pushnil(luaState);
 					lua_replace(luaState, -2);
 				}
