@@ -503,7 +503,7 @@ local multiplier = 1 + (harmony * 0.6)
 
 ## 🛠️ Compilation
 
-### 🐧 Ubuntu 22.04 / 24.04 / WSL2
+### 🐧 Ubuntu 22.04 / 24.04
 
 > [!IMPORTANT]
 > Requires **Boost 1.75+** and **Lua 5.4**
@@ -523,9 +523,11 @@ sudo apt install -y \
   libabsl-dev
 ```
 
-#### Step 2 — Install simdutf manually
+#### Step 2 — Install simdutf manually (Linux only)
 
-> **Note:** `simdutf` may not be available as a ready-to-use development package in some Ubuntu 24.04 / WSL2 environments. Install it manually into `$HOME/.local`:
+> **Note:** `simdutf` is not available as a ready-to-use development package via `apt` on Ubuntu 22.04+. You must install it manually into `$HOME/.local`:
+>
+> ⚠️ **Windows users**: Skip this step — `simdutf` is automatically installed via vcpkg (see `vcpkg.json`)
 
 ```bash
 cd ~
@@ -551,11 +553,12 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DDISABLE_STATS=1 \
       -DENABLE_SLOW_TASK_DETECTION=OFF \
       -DUSE_MIMALLOC=ON \
-      -Dsimdutf_DIR=$HOME/.local/lib/cmake/simdutf \
       ..
 
 cmake --build . -- -j"$(nproc)"
 ```
+
+> **Note:** CMake automatically detects `simdutf` installed in `$HOME/.local` (no need to specify `-Dsimdutf_DIR`). If you installed it elsewhere, add: `-Dsimdutf_DIR=/your/path/lib/cmake/simdutf`
 
 | CMake Flag | Effect |
 |------------|--------|
@@ -563,7 +566,6 @@ cmake --build . -- -j"$(nproc)"
 | `-DDISABLE_STATS=1` | Removes runtime stats collection overhead |
 | `-DENABLE_SLOW_TASK_DETECTION=OFF` | Removes per-task timing overhead |
 | `-DUSE_MIMALLOC=ON` | Microsoft's mimalloc allocator — faster than glibc malloc |
-| `-Dsimdutf_DIR=$HOME/.local/lib/cmake/simdutf` | Points CMake to the manually installed simdutf |
 
 **Alternative — run mimalloc without recompiling:**
 ```bash
@@ -587,6 +589,8 @@ sudo nice -n -10 ./tfs
 Recommended: **vcpkg** for dependency management.
 
 > 📖 See the full [Windows Compilation Wiki Guide](https://github.com/MillhioreBT/forgottenserver-downgrade/wiki/Compiling-on-Windows-(vcpkg))
+
+**Note:** All dependencies including `simdutf` are automatically installed via vcpkg (see `vcpkg.json`). No manual installation required.
 
 ---
 
