@@ -400,7 +400,7 @@ const uint8_t fluidMap[] = {
 
 enum SquareColor_t : uint8_t
 {
-	SQ_COLOR_BLACK = 0,
+	SQ_COLOR_YELLOW = 210,
 };
 
 enum TextColor_t : uint8_t

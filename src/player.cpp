@@ -2194,7 +2194,7 @@ BlockType_t Player::blockHit(const std::shared_ptr<Creature>& attacker, CombatTy
 	    Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor, field, ignoreResistances);
 
 	if (attacker && combatType != COMBAT_HEALING) {
-		sendCreatureSquare(attacker.get(), SQ_COLOR_BLACK);
+		sendCreatureSquare(attacker.get(), SQ_COLOR_YELLOW);
 	}
 
 	if (blockType != BLOCK_NONE) {
