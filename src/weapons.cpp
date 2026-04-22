@@ -350,7 +350,7 @@ void Weapon::onUsedWeapon(Player* player, Item* item, Tile* destTile) const
 		player->changeSoul(-static_cast<int32_t>(soul));
 	}
 
-	if (breakChance != 0 && uniform_random(1, 100) <= breakChance) {
+	if (getBoolean(ConfigManager::REMOVE_WEAPON_AMMO) && breakChance != 0 && uniform_random(1, 100) <= breakChance) {
 		Weapon::decrementItemCount(item);
 		return;
 	}
@@ -371,7 +371,9 @@ void Weapon::onUsedWeapon(Player* player, Item* item, Tile* destTile) const
 		}
 
 		case WEAPONACTION_MOVE:
-			g_game.internalMoveItem(item->getParent(), destTile, INDEX_WHEREEVER, item, 1, nullptr, FLAG_NOLIMIT);
+			if (getBoolean(ConfigManager::REMOVE_WEAPON_AMMO)) {
+				g_game.internalMoveItem(item->getParent(), destTile, INDEX_WHEREEVER, item, 1, nullptr, FLAG_NOLIMIT);
+			}
 			break;
 
 		default:
