@@ -223,6 +223,12 @@ ReturnValue Container::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 		return RETURNVALUE_THISISIMPOSSIBLE;
 	}
 
+	uint32_t corpseOwner = getCorpseOwner();
+	if (corpseOwner != 0 && corpseOwner != static_cast<uint32_t>(std::numeric_limits<int32_t>::max()) && 
+		getID() != ITEM_MALE_CORPSE && getID() != ITEM_FEMALE_CORPSE && actor && actor->getPlayer()) {
+		return RETURNVALUE_CANNOTPLACEITEMINMONSTERCORPSE;
+	}
+
 	if (getWeaponType() == WEAPON_QUIVER && item->getWeaponType() != WEAPON_AMMO) {
 		return RETURNVALUE_QUIVERAMMOONLY;
 	}

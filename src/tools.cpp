@@ -1294,6 +1294,9 @@ std::string_view getReturnMessage(ReturnValue value)
 		case RETURNVALUE_QUIVERAMMOONLY:
 			return "This quiver only holds arrows and bolts.";
 
+		case RETURNVALUE_CANNOTPLACEITEMINMONSTERCORPSE:
+			return "You cannot place items inside monster corpses.";
+
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";
 	}

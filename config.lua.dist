@@ -276,7 +276,6 @@ experienceStages = {
 	{ minlevel = 201, maxlevel = 500, multiplier = 1}
 }
 
-
 -- Skill stages (skill level based multiplier)
 -- NOTE: to use a flat skill multiplier (rateSkill), set skillStages to nil
 -- minlevel and multiplier are MANDATORY
