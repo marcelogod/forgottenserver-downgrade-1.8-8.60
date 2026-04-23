@@ -112,13 +112,10 @@ local config = {
 local function onGetFormulaValues(player, weaponDamage)
 	local basePower = 70
 
-	--[[
 	local helmetItem = player:getSlotItem(CONST_SLOT_HEAD)
 	if helmetItem and helmetItem:getId() == 50274 then -- coned hat of enlightenment
 		basePower = math.floor(basePower * 1.06) -- 6%
 	end
-	]]
-	--
 
 	local skill = player:getSkillLevel(SKILL_FIRST)
 	local attackValue = calculateAttackValue(player, skill, weaponDamage)
@@ -184,8 +181,8 @@ spell:mana(180)
 spell:isPremium(true)
 spell:blockWalls(true)
 spell:needWeapon(false)
-spell:groupCooldown(2 * 1000)
 spell:cooldown(4 * 1000)
+spell:groupCooldown(2 * 1000)
 spell:needLearn(false)
 spell:vocation("monk", "exalted monk")
 spell:register()

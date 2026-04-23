@@ -49,40 +49,42 @@ function spell.onCastSpell(creature, var)
 		end
 	end
 
-	return combat:execute(creature, var)
-
-	--[[
 	local success = combat:execute(creature, var)
+	if not success then
+		return false
+	end
 
-	local infoParty = {
-		playerGuid = 0,
-		lifePercent = 100,
-	}
+	local player = creature:getPlayer()
+	if not player then
+		return true
+	end
 
 	local party = player:getParty()
 	if party then
+		local targetMember = nil
+		local lowestHealthPercent = 100
+
 		for _, member in ipairs(party:getMembers()) do
-			local percentageHealth = (member:getHealth() * 100) / member:getMaxHealth()
-			logger.info("[TESTE] O membro da party {} tem {}% de life", member:getName(), percentageHealth)
-			if percentageHealth < infoParty.lifePercent then
-				logger.info("[TESTE] a porcentagem de {}% do jogador {} foi salva como a menor da party por enquanto", percentageHealth, member:getName())
-				infoParty.playerGuid = member:getGuid()
+			if player:getPosition():getDistance(member:getPosition()) <= 7 then
+				local percentageHealth = (member:getHealth() * 100) / member:getMaxHealth()
+				if percentageHealth < lowestHealthPercent then
+					lowestHealthPercent = percentageHealth
+					targetMember = member
+				end
 			end
 		end
 
-		if infoParty.playerGuid ~= 0 then
-			local memberParty = Player(infoParty.playerGuid)
-			if memberParty then
-				local lifeAdd = infoParty.lifePercent * (memberParty:getMaxHealth() / 100)
-				--memberParty:addHealth(lifeAdd)
-				logger.info("[TESTE] O jogador {} teve a menor porcentagem de {}% da party", memberParty:getName(), percentageHealth)
-			end
+		if targetMember and lowestHealthPercent < 100 then
+			local minHeal = (player:getLevel() / 5) + (player:getMagicLevel() * 3.5) + 20
+			local maxHeal = (player:getLevel() / 5) + (player:getMagicLevel() * 5.0) + 30
+			local healAmount = math.random(minHeal, maxHeal)
+
+			targetMember:addHealth(healAmount)
+			targetMember:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
 		end
 	end
 
-	return success
-	]]
-	--
+	return true
 end
 
 spell:group("attack")
@@ -97,7 +99,7 @@ spell:isPremium(true)
 spell:needTarget(true)
 spell:blockWalls(true)
 spell:needWeapon(false)
-spell:cooldown(24 * 1000)
+spell:cooldown(12 * 1000)
 spell:groupCooldown(2 * 1000)
 spell:needLearn(false)
 spell:vocation("monk", "exalted monk")
