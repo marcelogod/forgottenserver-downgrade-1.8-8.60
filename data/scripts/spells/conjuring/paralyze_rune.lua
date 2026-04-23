@@ -1,5 +1,3 @@
--- gerado por Spell Converter
--- script original
 local spell = Spell("instant")
 function spell.onCastSpell(creature, variant)
 	return creature:conjureItem(3147, 3165, 1)

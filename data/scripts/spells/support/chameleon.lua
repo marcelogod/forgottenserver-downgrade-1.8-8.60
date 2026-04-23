@@ -1,5 +1,3 @@
--- gerado por Spell Converter
--- script original
 local spell = Spell("rune")
 function spell.onCastSpell(creature, variant, isHotkey)
 	local position, item = variant:getPosition()

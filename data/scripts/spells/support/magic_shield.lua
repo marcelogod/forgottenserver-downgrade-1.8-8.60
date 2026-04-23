@@ -1,5 +1,3 @@
--- gerado por Spell Converter
--- script original
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
 combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
@@ -20,7 +18,7 @@ spell:level(14)
 spell:mana(50)
 spell:isSelfTarget(true)
 spell:cooldown(2 * 1000)
-spell:groupCooldown(2 * 1000)
+spell:groupCooldown(0 * 1000)
 spell:needLearn(false)
 spell:isAggressive(false)
 spell:vocation("sorcerer", "master sorcerer", "druid", "elder druid")

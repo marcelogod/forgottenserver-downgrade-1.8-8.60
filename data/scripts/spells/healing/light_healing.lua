@@ -1,5 +1,3 @@
--- gerado por Spell Converter
--- script original
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_HEALING)
 combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
@@ -28,7 +26,7 @@ spell:level(8)
 spell:mana(20)
 spell:isSelfTarget(true)
 spell:cooldown(1 * 1000)
-spell:groupCooldown(2 * 1000)
+spell:groupCooldown(1 * 1000)
 spell:needLearn(false)
 spell:isAggressive(false)
 spell:vocation("druid", "elder druid", "paladin", "royal paladin", "sorcerer", "master sorcerer", "monk", "exalted monk")

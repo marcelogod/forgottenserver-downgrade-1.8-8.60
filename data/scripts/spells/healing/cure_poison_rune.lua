@@ -1,5 +1,3 @@
--- gerado por Spell Converter
--- script original
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
 combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_POISON)
@@ -19,7 +17,7 @@ spell:name("Cure Poison Rune")
 spell:level(15)
 spell:needCasterTargetOrDirection(true)
 spell:cooldown(2 * 1000)
-spell:groupCooldown(2 * 1000)
+spell:groupCooldown(1 * 1000)
 spell:needLearn(false)
 spell:isAggressive(false)
 spell:allowFarUse(true)

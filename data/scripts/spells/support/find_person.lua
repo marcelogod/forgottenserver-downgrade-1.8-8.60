@@ -1,5 +1,3 @@
--- gerado por Spell Converter
--- script original
 local LEVEL_LOWER = 1
 local LEVEL_SAME = 2
 local LEVEL_HIGHER = 3

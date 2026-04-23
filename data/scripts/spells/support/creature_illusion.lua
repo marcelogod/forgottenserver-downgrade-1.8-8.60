@@ -1,5 +1,3 @@
--- gerado por Spell Converter
--- script original
 local condition = Condition(CONDITION_OUTFIT)
 condition:setTicks(180000)
 

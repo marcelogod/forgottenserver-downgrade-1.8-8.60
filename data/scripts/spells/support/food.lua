@@ -1,5 +1,3 @@
--- gerado por Spell Converter
--- script original
 local foods = {
 	2666, -- meat
 	2671, -- ham

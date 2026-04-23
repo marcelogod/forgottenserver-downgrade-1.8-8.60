@@ -1,5 +1,3 @@
--- gerado por Spell Converter
--- script original
 local function levitate(creature, parameter)
 	local fromPosition = creature:getPosition()
 	parameter = parameter:trim():lower()

@@ -1,5 +1,3 @@
--- gerado por Spell Converter
--- script original
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_GREEN)
 combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
@@ -26,7 +24,7 @@ spell:mana(400)
 spell:isPremium(true)
 spell:isSelfTarget(true)
 spell:cooldown(2 * 1000)
-spell:groupCooldown(2 * 1000)
+spell:groupCooldown(0 * 1000)
 spell:needLearn(false)
 spell:isAggressive(false)
 spell:vocation("paladin", "royal paladin")
