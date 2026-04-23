@@ -73,8 +73,13 @@ This eliminates the traditional ServerID/ClientID mismatch, making content creat
 > 🗺️ **To edit maps compatible with this ClientID system, use the modified RME:**  
 > **[⬇️ Download RME-CLIENTID](https://github.com/Mateuzkl/RME-CLIENTID)**
 
-> 📋 **Converting existing maps from ServerID to ClientID?**  
-> **[📖 Read the Map Conversion Tutorial](https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60/wiki/Map-Conversion-Tutorial-%E2%80%90-ServerID-to-ClientID)**
+### 📚 Map Tutorials
+
+| Tutorial | Description |
+|----------|-------------|
+| [📋 ServerID → ClientID Conversion](https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60/wiki/Map-Conversion-Tutorial-%E2%80%90-ServerID-to-ClientID) | Convert standard TFS maps to ClientID format |
+| [🗺️ Import Canary/Crystal Maps](https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60/wiki/Importing-Canary-Crystal-Maps-to-RME-8.60) | Downgrade and import modern server maps |
+| [🇧🇷 Importar Mapas Canary/Crystal](https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60/wiki/%F0%9F%97%BA%EF%B8%8F-Importando-Mapas-Canary-Crystal-para-RME-8.60) | Tutorial em português |
 
 ---
 
