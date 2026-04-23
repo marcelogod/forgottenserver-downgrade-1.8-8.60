@@ -47,12 +47,11 @@
 | 🧬 Core Engine | ⚔️ Combat & RPG | 🌍 World Systems | 🏗️ Infrastructure | 📚 Docs & Support |
 |:-:|:-:|:-:|:-:|:-:|
 | [ClientID .dat](#-clientid-implementation) | [Forge System](#-forge-system-item-fusion) | [Instance System](#-instance-system) | [Compilation](#️-compilation) | [📖 Full Wiki Docs](https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60/wiki) |
-| [Overview](#-overview) | [Imbuement System](#-imbuement-system) | [Guild Halls](#-guild-halls-system) | [Client Config](#-client-configuration-otcv8--mehah) | [📋 Map Conversion Tutorial](https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60/wiki/Map-Conversion-Tutorial-%E2%80%90-ServerID-to-ClientID) |
+| [Overview](#-overview) | [Imbuement System](#-imbuement-system) | [Guild Halls](#-guild-halls-system) | [Client Config](#-client-configuration-otcv8--mehah) | [📋 Map Conversion](https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60/wiki/Map-Conversion-Tutorial-%E2%80%90-ServerID-to-ClientID) |
 | [Extended Protocol](#-extended-options--modified-860-cip-clients) | [Reward Boss](#-reward-boss-system) | [House Protection](#️-house-protection-system) | [Linux Tuning](#-linux-server-tuning) | [Contributing](#-contributing--issues) |
-| [Extended Protocol](#-extended-options--modified-860-cip-clients) | [Reward Boss](#-reward-boss-system) | [House Protection](#️-house-protection-system) | [Client Config](#-client-configuration-otcv8--mehah) | [Project Status](#-project-status) |
-| [System Spy](#-system-spy) | [Guild Wars](#️-guild-war-system) | [AutoLoot](#️-autoloot-system) | [Linux Tuning](#-linux-server-tuning) | [Downloads](#-downloads--client-updater) |
-| | [Harmony (Monk)](#-harmony-system--monk-vocation) | [Offline Training](#-offline-training-system) | | [Donations](#-support-the-project) |
-| [Token Protect](#-token-item-protection) | | [Live Cast](#-live-cast-system) | [Magic Roulette](#-magic-roulette-system) | |
+| [System Spy](#-system-spy) | [Guild Wars](#️-guild-war-system) | [AutoLoot](#️-autoloot-system) | [Magic Roulette](#-magic-roulette-system) | [Project Status](#-project-status) |
+| [Token Protect](#-token-item-protection) | [Harmony (Monk)](#-harmony-system--monk-vocation) | [Offline Training](#-offline-training-system) | | [Downloads](#-downloads--client-updater) |
+| | | [Live Cast](#-live-cast-system) | | [Donations](#-support-the-project) |
 | | | [Zones System](#️-zones-system) | | |
 
 </div>
