@@ -128,6 +128,8 @@ function Player.sendExtendedOpcode(self, opcode, buffer)
 end
 
 function Player.sendFightMode(self)
+	if not self:isUsingOtClient() then return false end
+
 	local msg<close> = NetworkMessage()
 	msg:addByte(0xA7)
 	msg:addByte(self:getFightMode())

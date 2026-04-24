@@ -1,6 +1,10 @@
 local handler = PacketHandler(0xA0)
 
 function handler.onReceive(player, msg)
+	if msg:len() - msg:tell() < 3 then
+		return
+	end
+
 	local stanceRaw = msg:getByte() -- 1 - offensive, 2 - balanced, 3 - defensive
 	local chaseModeRaw = msg:getByte() -- 0 - stand while fighting, 1 - chase opponent
 	local secureModeRaw = msg:getByte() -- 0 - cannot attack unmarked, 1 - can attack unmarked
