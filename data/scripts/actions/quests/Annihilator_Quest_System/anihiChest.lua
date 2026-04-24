@@ -20,8 +20,8 @@ function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
     end
 
     local virtualItem = Game.createItem(reward.id, reward.count)
-    if reward.id == 1990 then
-        virtualItem:addItem(2326)
+    if reward.id == 2856 then
+        virtualItem:addItem(3213)
     end
 
     if player:addItemEx(virtualItem) ~= RETURNVALUE_NOERROR then
