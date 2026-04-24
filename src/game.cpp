@@ -2031,7 +2031,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 					if (cylinder->getThingIndex(newItem.get()) != -1) {
 						if (!newItem->isRemoved()) {
 							if (newItem->getContainer()) {
-								g_game.startDecay(newItem.get());
+								g_game.startDecay(newItem);
 							} else {
 								newItem->startDecaying();
 							}
@@ -2100,7 +2100,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 	if (cylinder->getThingIndex(newItem.get()) != -1) {
 		if (!newItem->isRemoved()) {
 			if (newItem->getContainer()) {
-				g_game.startDecay(newItem.get());
+				g_game.startDecay(newItem);
 			} else {
 				newItem->startDecaying();
 			}
@@ -5261,7 +5261,7 @@ bool Game::saveAccountStorageValues() const
 
 void Game::startDecay(Item* item)
 {
-	if (!item) {
+	if (!item) [[unlikely]] {
 		return;
 	}
 
@@ -5277,17 +5277,45 @@ void Game::startDecay(Item* item)
 
 	int32_t duration = item->getIntAttr(ITEM_ATTRIBUTE_DURATION);
 	if (duration > 0) {
-		g_decay.startDecay(item, duration);
+		g_decay.startDecay(item->shared_from_this(), duration);
 	} else {
-		internalDecayItem(item);
+		internalDecayItem(item->shared_from_this());
+	}
+}
+
+void Game::startDecay(std::shared_ptr<Item> item)
+{
+	if (!item) [[unlikely]] {
+		return;
+	}
+
+	ItemDecayState_t decayState = item->getDecaying();
+	if (decayState == DECAYING_STOPPING || (!item->canDecay() && decayState == DECAYING_TRUE)) {
+		stopDecay(item.get());
+		return;
+	}
+
+	if (!item->canDecay() || decayState == DECAYING_TRUE) {
+		return;
+	}
+
+	int32_t duration = item->getIntAttr(ITEM_ATTRIBUTE_DURATION);
+	if (duration > 0) {
+		g_decay.startDecay(std::move(item), duration);
+	} else {
+		internalDecayItem(std::move(item));
 	}
 }
 
 void Game::stopDecay(Item* item)
 {
+	if (!item) [[unlikely]] {
+		return;
+	}
+
 	if (item->hasAttribute(ITEM_ATTRIBUTE_DECAYSTATE)) {
 		if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION_TIMESTAMP)) {
-			g_decay.stopDecay(item, item->getIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP));
+			g_decay.stopDecay(item->weak_from_this(), item->getIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP));
 			item->removeAttribute(ITEM_ATTRIBUTE_DURATION_TIMESTAMP);
 		} else {
 			item->removeAttribute(ITEM_ATTRIBUTE_DECAYSTATE);
@@ -5295,16 +5323,24 @@ void Game::stopDecay(Item* item)
 	}
 }
 
-void Game::internalDecayItem(Item* item)
+void Game::internalDecayItem(std::shared_ptr<Item> item)
 {
-	const ItemType& it = Item::items[item->getID()];
+	if (!item) [[unlikely]] {
+		return;
+	}
+
+	Item* itemPtr = item.get();
+	const ItemType& it = Item::items[itemPtr->getID()];
 	const int32_t decayTo = it.decayTo;
 	if (decayTo > 0) {
-		transformItem(item, decayTo);
+		transformItem(itemPtr, decayTo);
 	} else {
-		ReturnValue ret = internalRemoveItem(item);
+		ReturnValue ret = internalRemoveItem(itemPtr);
 		if (ret != RETURNVALUE_NOERROR) {
-			LOG_ERROR(fmt::format("[Debug - Game::internalDecayItem] internalDecayItem failed, error code: {}, item id: {}", static_cast<uint32_t>(ret), item->getID()));
+			LOG_ERROR(fmt::format(
+				"[Debug - Game::internalDecayItem] internalDecayItem failed, error code: {}, item id: {}",
+				static_cast<uint32_t>(ret), itemPtr->getID()
+			));
 		}
 	}
 }

@@ -27,8 +27,8 @@ class Decay
 	public:
 		static constexpr size_t DEFAULT_RESERVE_SIZE = 32;
 
-		void startDecay(Item* item, int32_t duration);
-		void stopDecay(Item* item, int64_t timestamp) noexcept;
+		void startDecay(std::shared_ptr<Item> item, int32_t duration);
+		void stopDecay(std::weak_ptr<Item> weakItem, int64_t timestamp) noexcept;
 		void clear() noexcept;
 
 		[[nodiscard]] bool hasDecayingItems() const noexcept { return !decayMap.empty(); }
@@ -39,8 +39,8 @@ class Decay
 
 	private:
 		using DecayTimestamp = int64_t;
-	using ItemRef = std::shared_ptr<Item>;
-	using DecayBucket = std::vector<ItemRef>;
+		using ItemRef = std::weak_ptr<Item>;
+		using DecayBucket = std::vector<ItemRef>;
 
 		void checkDecay() noexcept;
 		void processDecayBatch(std::span<ItemRef const> items) noexcept;

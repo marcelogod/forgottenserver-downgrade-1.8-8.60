@@ -508,8 +508,9 @@ public:
 	bool saveAccountStorageValues() const;
 
 	void startDecay(Item* item);
+	void startDecay(std::shared_ptr<Item> item);
 	void stopDecay(Item* item);
-	void internalDecayItem(Item* item);
+	void internalDecayItem(std::shared_ptr<Item> item);
 
 	// Loot Highlight system
 	void startLootHighlight(Container* corpse, uint32_t ownerPlayerId);

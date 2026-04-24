@@ -36,7 +36,6 @@ void Decay::scheduleNextCheck(DecayTimestamp nextTimestamp) noexcept
 	const auto currentTime = OTSYS_TIME();
 	const auto delay = clampSchedulerDuration(static_cast<int32_t>(nextTimestamp - currentTime));
 
-	// FIX: Cancel previous event before creating a new one.
 	if (eventId != 0) {
 		g_scheduler.stopEvent(eventId);
 	}
@@ -46,7 +45,8 @@ void Decay::scheduleNextCheck(DecayTimestamp nextTimestamp) noexcept
 
 void Decay::processDecayBatch(std::span<ItemRef const> items) noexcept
 {
-	for (const auto& item : items) {
+	for (const auto& weakItem : items) {
+		auto item = weakItem.lock();
 		if (!item) [[unlikely]] {
 			continue;
 		}
@@ -56,7 +56,7 @@ void Decay::processDecayBatch(std::span<ItemRef const> items) noexcept
 			item->setDecaying(DECAYING_FALSE);
 		} else {
 			item->setDecaying(DECAYING_FALSE);
-			g_game.internalDecayItem(item.get());
+			g_game.internalDecayItem(item);
 		}
 	}
 }
@@ -64,20 +64,25 @@ void Decay::processDecayBatch(std::span<ItemRef const> items) noexcept
 size_t Decay::getTotalDecayingItems() const noexcept
 {
 	size_t total = 0;
-	for (const auto& [timestamp, items] : decayMap) {
-		total += items.size();
+	for (const auto& decayEntry : decayMap) {
+		const auto& items = decayEntry.second;
+		for (const auto& weakItem : items) {
+			if (auto item = weakItem.lock()) {
+				++total;
+			}
+		}
 	}
 	return total;
 }
 
-void Decay::startDecay(Item* item, int32_t duration)
+void Decay::startDecay(std::shared_ptr<Item> item, int32_t duration)
 {
 	if (!item) [[unlikely]] {
 		return;
 	}
 
 	if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION_TIMESTAMP)) {
-		stopDecay(item, item->getIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP));
+		stopDecay(std::weak_ptr<Item>(item), item->getIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP));
 	}
 
 	const DecayTimestamp timestamp = OTSYS_TIME() + static_cast<int64_t>(duration);
@@ -95,11 +100,12 @@ void Decay::startDecay(Item* item, int32_t duration)
 
 	item->setDecaying(DECAYING_TRUE);
 	item->setDurationTimestamp(timestamp);
-	decayMap[timestamp].push_back(item->shared_from_this());
+	decayMap[timestamp].emplace_back(item);
 }
 
-void Decay::stopDecay(Item* item, int64_t timestamp) noexcept
+void Decay::stopDecay(std::weak_ptr<Item> weakItem, int64_t timestamp) noexcept
 {
+	auto item = weakItem.lock();
 	if (!item) [[unlikely]] {
 		return;
 	}
@@ -111,7 +117,10 @@ void Decay::stopDecay(Item* item, int64_t timestamp) noexcept
 
 	auto& decayItems = it->second;
 
-	if (const auto itemIt = std::ranges::find_if(decayItems, [item](const auto& ref) { return ref.get() == item; }); itemIt != decayItems.end()) {
+	if (const auto itemIt = std::ranges::find_if(decayItems, [&item](const auto& ref) {
+		auto refItem = ref.lock();
+		return refItem && refItem.get() == item.get();
+	}); itemIt != decayItems.end()) {
 		if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION)) {
 			item->setDuration(item->getDuration());
 		}
@@ -134,12 +143,12 @@ void Decay::clear() noexcept
 		eventId = 0;
 	}
 
-	for (auto& [timestamp, items] : decayMap) {
-		for (const auto& item : items) {
-			if (!item) [[unlikely]] {
-				continue;
+	for (auto& decayEntry : decayMap) {
+		auto& items = decayEntry.second;
+		for (const auto& weakItem : items) {
+			if (auto item = weakItem.lock()) {
+				item->removeAttribute(ITEM_ATTRIBUTE_DECAYSTATE);
 			}
-			item->removeAttribute(ITEM_ATTRIBUTE_DECAYSTATE);
 		}
 	}
 	decayMap.clear();
