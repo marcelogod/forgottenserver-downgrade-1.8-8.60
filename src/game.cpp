@@ -2445,7 +2445,7 @@ void Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t f
 	}
 
 	Item* item = thing->getItem();
-	if (!item || !item->isUseable() || item->getClientID() != fromSpriteId) {
+	if (!item || !item->isUseable()) {
 		player->sendCancelMessage(RETURNVALUE_CANNOTUSETHISOBJECT);
 		return;
 	}
@@ -2536,7 +2536,7 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 	}
 
 	Item* item = thing->getItem();
-	if (!item || item->isUseable() || item->getClientID() != spriteId) {
+	if (!item || item->isUseable()) {
 		player->sendCancelMessage(RETURNVALUE_CANNOTUSETHISOBJECT);
 		return;
 	}
@@ -2623,7 +2623,7 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uin
 	}
 
 	Item* item = thing->getItem();
-	if (!item || !item->isUseable() || item->getClientID() != spriteId) {
+	if (!item || !item->isUseable()) {
 		player->sendCancelMessage(RETURNVALUE_CANNOTUSETHISOBJECT);
 		return;
 	}
