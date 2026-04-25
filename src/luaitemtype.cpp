@@ -540,6 +540,18 @@ int luaItemTypeGetCorpseType(lua_State* L)
 	return 1;
 }
 
+int luaItemTypeGetWrapableTo(lua_State* L)
+{
+	// itemType:getWrapableTo()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType) {
+		lua_pushinteger(L, itemType->wrapableTo);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int luaItemTypeGetRotateTo(lua_State* L)
 {
 	// itemType:getRotateTo()
@@ -1053,6 +1065,7 @@ void LuaScriptInterface::registerItemType()
 	registerMethod("ItemType", "getRequiredLevel", luaItemTypeGetRequiredLevel);
 	registerMethod("ItemType", "getAmmoType", luaItemTypeGetAmmoType);
 	registerMethod("ItemType", "getCorpseType", luaItemTypeGetCorpseType);
+	registerMethod("ItemType", "getWrapableTo", luaItemTypeGetWrapableTo);
 	registerMethod("ItemType", "getRotateTo", luaItemTypeGetRotateTo);
 
 	registerMethod("ItemType", "getAbilities", luaItemTypeGetAbilities);

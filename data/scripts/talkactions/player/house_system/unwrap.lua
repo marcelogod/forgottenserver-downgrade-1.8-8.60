@@ -35,27 +35,49 @@ function unwrapCommand.onSay(player, words, param)
 
 	for _, item in pairs(items) do
 		local itemId = item:getId()
+		local itemType = item:getType()
 
 		-- Check if it's a kit (needs to be constructed)
-		local constructedId = houseAutowrapItems[itemId]
-		if constructedId then
+		if not houseAutowrapItems then
+			-- Fallback in case the lib was not loaded
+			houseAutowrapItems = {}
+			for i = 1, 50000 do
+				local it = ItemType(i)
+				if it and it:getId() ~= 0 then
+					local w = it:getWrapableTo()
+					if w and w ~= 0 then
+						houseAutowrapItems[w] = i
+					end
+				end
+			end
+		end
+
+		local constructedId = item:getAttribute("wrapid")
+		if not constructedId or constructedId == 0 then
+			constructedId = houseAutowrapItems[itemId]
+		end
+
+		if constructedId and constructedId ~= 0 then
 			item:transform(constructedId)
-			item:setAttribute(ITEM_ATTRIBUTE_WRAPID, itemId)
+			item:setAttribute("wrapid", itemId) -- Store the kit ID on the furniture
 			lookPosition:sendMagicEffect(CONST_ME_POFF)
 			player:sendTextMessage(MESSAGE_INFO_DESCR, "Item placed successfully.")
 			return false
 		end
 
-		-- Check if it's already constructed (has wrapid attribute)
-		if item:hasAttribute(ITEM_ATTRIBUTE_WRAPID) then
-			local wrapId = item:getIntAttr(ITEM_ATTRIBUTE_WRAPID)
-			if wrapId and wrapId ~= 0 then
-				item:transform(wrapId)
-				item:removeAttribute(ITEM_ATTRIBUTE_WRAPID)
-				lookPosition:sendMagicEffect(CONST_ME_POFF)
-				player:sendTextMessage(MESSAGE_INFO_DESCR, "Item wrapped successfully.")
-				return false
-			end
+		-- Check if it's already constructed (has wrapid attribute OR wrapableto in ItemType)
+		local wrapId = item:getAttribute("wrapid")
+		if not wrapId or wrapId == 0 then
+			wrapId = itemType:getWrapableTo()
+		end
+
+		if wrapId and wrapId ~= 0 then
+			local furnitureId = item:getId()
+			item:transform(wrapId)
+			item:setAttribute("wrapid", furnitureId) -- Store the furniture ID on the kit
+			lookPosition:sendMagicEffect(CONST_ME_POFF)
+			player:sendTextMessage(MESSAGE_INFO_DESCR, "Item wrapped successfully.")
+			return false
 		end
 	end
 

@@ -209,6 +209,7 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
     {"storeitem", ITEM_PARSE_STOREITEM},
     {"worth", ITEM_PARSE_WORTH},
     {"imbuementslot", ITEM_PARSE_IMBUEMENTSLOT},
+    {"wrapableto", ITEM_PARSE_WRAPABLETO},
     {"stacksize", ITEM_PARSE_STACKSIZE},
     {"supply", ITEM_PARSE_SUPPLY},
     {"experienceratebase", ITEM_PARSE_EXPERIENCERATE_BASE},
@@ -221,17 +222,19 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
     {"script", ITEM_PARSE_SCRIPT},
 };
 
-const std::unordered_map<std::string, ItemTypes_t> ItemTypesMap = {{"key", ITEM_TYPE_KEY},
-                                                                   {"magicfield", ITEM_TYPE_MAGICFIELD},
-                                                                   {"container", ITEM_TYPE_CONTAINER},
-                                                                   {"depot", ITEM_TYPE_DEPOT},
-                                                                   {"mailbox", ITEM_TYPE_MAILBOX},
-                                                                   {"trashholder", ITEM_TYPE_TRASHHOLDER},
-                                                                   {"teleport", ITEM_TYPE_TELEPORT},
-                                                                   {"door", ITEM_TYPE_DOOR},
-                                                                   {"bed", ITEM_TYPE_BED},
-                                                                   {"rune", ITEM_TYPE_RUNE},
-                                                                   {"rewardchest", ITEM_TYPE_REWARDCHEST}};
+const std::unordered_map<std::string, ItemTypes_t> ItemTypesMap = {
+	{"key", ITEM_TYPE_KEY},
+	{"magicfield", ITEM_TYPE_MAGICFIELD},
+	{"container", ITEM_TYPE_CONTAINER},
+	{"depot", ITEM_TYPE_DEPOT},
+	{"mailbox", ITEM_TYPE_MAILBOX},
+	{"trashholder", ITEM_TYPE_TRASHHOLDER},
+	{"teleport", ITEM_TYPE_TELEPORT},
+	{"door", ITEM_TYPE_DOOR},
+	{"bed", ITEM_TYPE_BED},
+	{"rune", ITEM_TYPE_RUNE},
+	{"rewardchest", ITEM_TYPE_REWARDCHEST}
+};
 
 const std::unordered_map<std::string, tileflags_t> TileStatesMap = {
     {"down", TILESTATE_FLOORCHANGE_DOWN},        {"north", TILESTATE_FLOORCHANGE_NORTH},
@@ -1948,6 +1951,10 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					break;
 				}
 
+				case ITEM_PARSE_WRAPABLETO: {
+					it.wrapableTo = pugi::cast<uint16_t>(valueAttribute.value());
+					break;
+				}
 				case ITEM_PARSE_IMBUEMENTSLOT: {
 					it.imbuementSlot = pugi::cast<uint16_t>(valueAttribute.value());
 					for (auto subAttributeNode : attributeNode.children()) {

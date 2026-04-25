@@ -229,6 +229,7 @@ enum ItemParseAttributes_t
 	ITEM_PARSE_ELEMENTALBOND,
 	ITEM_PARSE_SCRIPT,
 	ITEM_PARSE_IMBUEMENTSLOT,
+	ITEM_PARSE_WRAPABLETO,
 };
 
 struct Abilities
@@ -384,6 +385,7 @@ public:
 	uint16_t wareId = 0;
 
 	uint16_t imbuementSlot = 0;
+	uint16_t wrapableTo = 0;
 	std::unordered_map<std::string, uint8_t> imbuementAllowedTypes;
 	MagicEffectClasses magicEffect = CONST_ME_NONE;
 	Direction bedPartnerDir = DIRECTION_NONE;
