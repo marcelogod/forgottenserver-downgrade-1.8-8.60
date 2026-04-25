@@ -220,6 +220,13 @@ public:
 
 	const auto& getSpectators() { return spectators; }
 
+	uint8_t getSpeechBubble() const { return speechBubble; }
+	void setSpeechBubble(const uint8_t bubble) { 
+		if (bubble < SPEECHBUBBLE_LAST) {
+			speechBubble = bubble;
+		}
+	}
+
 	void loadNpcTypeInfo();
 
 	std::unique_ptr<NpcEventsHandler> npcEventHandler;

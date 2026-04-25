@@ -2972,6 +2972,14 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 		}
 	}
 
+	if (isOTC) {
+		if (const auto npc = creature->getNpc()) {
+			msg.addByte(npc->getSpeechBubble());
+		} else {
+			msg.addByte(SPEECHBUBBLE_NONE);
+		}
+	}
+
 	msg.addByte(player->canWalkthroughEx(creature) ? 0x00 : 0x01);
 }
 
@@ -3274,6 +3282,7 @@ void ProtocolGame::sendFeatures()
 	features[GameFeature::BaseSkillU16] = true;
 	features[GameFeature::AdditionalSkills] = true;
 	features[GameFeature::ExtendedClientPing] = true;
+	features[GameFeature::CreatureIcons] = true; // Speech Bubbles para NPCs
 
 	if (features.empty()) return;
 

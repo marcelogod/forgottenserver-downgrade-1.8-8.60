@@ -637,6 +637,7 @@ if(version >= 860) then
     g_game.enableFeature(GameSpritesU32)
     g_game.enableFeature(GameExtendedClientPing)
     g_game.enableFeature(GameDoublePlayerGoodsMoney)
+    g_game.enableFeature(GameCreatureIcons)
 end
 ```
 

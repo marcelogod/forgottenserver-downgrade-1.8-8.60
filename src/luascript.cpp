@@ -2145,6 +2145,12 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(GUILDEMBLEM_ENEMY);
 	registerEnum(GUILDEMBLEM_NEUTRAL);
 
+	registerEnum(SPEECHBUBBLE_NONE);
+	registerEnum(SPEECHBUBBLE_NORMAL);
+	registerEnum(SPEECHBUBBLE_TRADE);
+	registerEnum(SPEECHBUBBLE_QUEST);
+	registerEnum(SPEECHBUBBLE_QUESTTRADER);
+
 	registerEnum(TALKTYPE_SAY);
 	registerEnum(TALKTYPE_WHISPER);
 	registerEnum(TALKTYPE_YELL);

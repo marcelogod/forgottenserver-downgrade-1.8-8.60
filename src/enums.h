@@ -728,4 +728,15 @@ struct Reflect
 	uint16_t chance = 0;
 };
 
+enum SpeechBubble_t : uint8_t
+{
+	SPEECHBUBBLE_NONE = 0,
+	SPEECHBUBBLE_NORMAL = 1,
+	SPEECHBUBBLE_TRADE = 2,
+	SPEECHBUBBLE_QUEST = 3,
+	SPEECHBUBBLE_QUESTTRADER = 4,
+	
+	SPEECHBUBBLE_LAST
+};
+
 #endif

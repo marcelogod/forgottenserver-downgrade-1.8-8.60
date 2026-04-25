@@ -1,5 +1,6 @@
 -- Riona – RevScript (NpcsHandler)
 local npcType = Game.createNpcType("Riona")
+npcType:speechBubble(2) -- SPEECHBUBBLE_TRADE
 npcType:outfit({lookType = 138, lookHead = 57, lookBody = 59, lookLegs = 40, lookFeet = 76, lookAddons = 0})
 npcType:health(100)
 npcType:maxHealth(100)

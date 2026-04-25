@@ -44,6 +44,18 @@ if not NpcEvents then
     ---@param npc Npc The NPC that appeared.
     ---@param creature Creature The creature (player) that the NPC appeared to.
     function NpcEvents.onAppear(npc, creature)
+        -- Auto-set speech bubble for NPCs with shops
+        if creature:getId() == npc:getId() then
+            local handler = NpcsHandler(npc)
+            if handler and next(handler.shops or {}) then
+                local currentBubble = npc:getSpeechBubble()
+                if currentBubble == 3 then -- SPEECHBUBBLE_QUEST
+                    npc:setSpeechBubble(4) -- SPEECHBUBBLE_QUESTTRADER
+                elseif currentBubble == 0 then -- SPEECHBUBBLE_NONE
+                    npc:setSpeechBubble(2) -- SPEECHBUBBLE_TRADE
+                end
+            end
+        end
     end
 
     -- onMove function is called when an NPC moves.

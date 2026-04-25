@@ -5,6 +5,7 @@
 
 local npcType = Game.createNpcType("Dark Rodo")
 npcType:outfit({lookType = 133, lookHead = 0, lookBody = 86, lookLegs = 0, lookFeet = 38, lookAddons = 1})
+npcType:speechBubble(2) -- SPEECHBUBBLE_TRADE
 npcType:health(100)
 npcType:maxHealth(100)
 npcType:walkInterval(2000)

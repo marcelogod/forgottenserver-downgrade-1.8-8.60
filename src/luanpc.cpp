@@ -83,6 +83,40 @@ int luaNpcGetSpectators(lua_State* L)
 	}
 	return 1;
 }
+
+int luaNpcGetSpeechBubble(lua_State* L)
+{
+	// npc:getSpeechBubble()
+	Npc* npc = getUserdata<Npc>(L, 1);
+	if (npc) {
+		lua_pushinteger(L, npc->getSpeechBubble());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaNpcSetSpeechBubble(lua_State* L)
+{
+	// npc:setSpeechBubble(speechBubble)
+	Npc* npc = getUserdata<Npc>(L, 1);
+	if (!npc) {
+		lua_pushnil(L);
+		return 1;
+	}
+	
+	uint8_t bubbleType = getInteger<uint8_t>(L, 2);
+	
+	if (bubbleType >= SPEECHBUBBLE_LAST) {
+		reportErrorFunc(L, "Invalid speech bubble type. Valid values: 0-4 (SPEECHBUBBLE_NONE to SPEECHBUBBLE_QUESTTRADER)");
+		pushBoolean(L, false);
+		return 1;
+	}
+	
+	npc->setSpeechBubble(bubbleType);
+	pushBoolean(L, true);
+	return 1;
+}
 } // namespace
 
 void LuaScriptInterface::registerNpc()
@@ -97,6 +131,9 @@ void LuaScriptInterface::registerNpc()
 	registerMethod("Npc", "setMasterPos", luaNpcSetMasterPos);
 
 	registerMethod("Npc", "getSpectators", luaNpcGetSpectators);
+
+	registerMethod("Npc", "getSpeechBubble", luaNpcGetSpeechBubble);
+	registerMethod("Npc", "setSpeechBubble", luaNpcSetSpeechBubble);
 }
 
 // ─── NpcType ─────────────────────────────────────────────────────────────────
