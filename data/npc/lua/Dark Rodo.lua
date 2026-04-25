@@ -27,9 +27,9 @@ local trade = greet:keyword({"trade"})
 trade:respond("Here is what I offer!")
 trade:shop(1)
 
-local vocItems = {[1] = 2190, [2] = 2182, [5] = 2190, [6] = 2182} -- druid=rod, sorc=wand
+local vocItems = {[1] = 3074, [2] = 3066, [5] = 3074, [6] = 3066}
 
-local firstItem = greet:keyword({"first rod", "first wand"})
+local firstItem = greet:keyword({"first rod", "first wand", "first"})
 function firstItem:callback(npc, player, message, handler)
     local voc = player:getVocation():getId()
     if not vocItems[voc] then

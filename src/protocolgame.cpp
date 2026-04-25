@@ -3282,7 +3282,7 @@ void ProtocolGame::sendFeatures()
 	features[GameFeature::BaseSkillU16] = true;
 	features[GameFeature::AdditionalSkills] = true;
 	features[GameFeature::ExtendedClientPing] = true;
-	features[GameFeature::CreatureIcons] = true; // Speech Bubbles para NPCs
+	features[GameFeature::CreatureIcons] = true;
 
 	if (features.empty()) return;
 
