@@ -28,6 +28,19 @@
 			}
 		},
 		{
+			"name": "valgrind-linux",
+			"inherits": [
+				"default"
+			],
+			"description": "Configure a Valgrind-friendly Linux/WSL build without mimalloc",
+			"binaryDir": "${sourceDir}/build-valgrind-linux",
+			"cacheVariables": {
+				"BUILD_TESTING": "OFF",
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo",
+				"USE_MIMALLOC": "OFF"
+			}
+		},
+		{
 			"name": "asan-vcpkg",
 			"inherits": [
 				"vcpkg"
@@ -56,6 +69,11 @@
 			"configuration": "Debug"
 		},
 		{
+			"name": "valgrind-linux",
+			"configurePreset": "valgrind-linux",
+			"configuration": "RelWithDebInfo"
+		},
+		{
 			"name": "asan-vcpkg",
 			"configurePreset": "asan-vcpkg",
 			"configuration": "Debug"
@@ -74,6 +92,11 @@
 			"name": "asan-linux",
 			"configurePreset": "asan-linux",
 			"configuration": "Debug"
+		},
+		{
+			"name": "valgrind-linux",
+			"configurePreset": "valgrind-linux",
+			"configuration": "RelWithDebInfo"
 		},
 		{
 			"name": "asan-vcpkg",

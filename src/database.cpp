@@ -222,8 +222,8 @@ std::string Database::escapeBlob(const char* s, uint32_t length) const
 
 	if (length != 0) {
 		std::vector<char> output(maxLength);
-		mysql_real_escape_string(handle.get(), output.data(), s, length);
-		escaped.append(output.data());
+		const unsigned long escapedLength = mysql_real_escape_string(handle.get(), output.data(), s, length);
+		escaped.append(output.data(), escapedLength);
 	}
 
 	escaped.push_back('\'');

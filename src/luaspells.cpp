@@ -69,14 +69,14 @@ int luaSpellCreate(lua_State* L)
 		auto spell = std::make_unique<InstantSpell>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 		spell->fromLua = true;
 		spell->spellType = SPELL_INSTANT;
-		pushOwnedUserdata<InstantSpell>(L, std::move(spell));
+		pushOwnedUserdataAs<Spell>(L, std::move(spell));
 		setMetatable(L, -1, "Spell");
 		return 1;
 	} else if (spellType == SPELL_RUNE) {
 		auto spell = std::make_unique<RuneSpell>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 		spell->fromLua = true;
 		spell->spellType = SPELL_RUNE;
-		pushOwnedUserdata<RuneSpell>(L, std::move(spell));
+		pushOwnedUserdataAs<Spell>(L, std::move(spell));
 		setMetatable(L, -1, "Spell");
 		return 1;
 	}

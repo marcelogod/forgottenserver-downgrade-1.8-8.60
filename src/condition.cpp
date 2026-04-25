@@ -1853,7 +1853,16 @@ void ConditionOutfit::serialize(PropWriteStream& propWriteStream)
 	Condition::serialize(propWriteStream);
 
 	propWriteStream.write<uint8_t>(CONDITIONATTR_OUTFIT);
-	propWriteStream.write<Outfit_t>(outfit);
+	Outfit_t serializedOutfit{};
+	serializedOutfit.lookType = outfit.lookType;
+	serializedOutfit.lookTypeEx = outfit.lookTypeEx;
+	serializedOutfit.lookMount = outfit.lookMount;
+	serializedOutfit.lookHead = outfit.lookHead;
+	serializedOutfit.lookBody = outfit.lookBody;
+	serializedOutfit.lookLegs = outfit.lookLegs;
+	serializedOutfit.lookFeet = outfit.lookFeet;
+	serializedOutfit.lookAddons = outfit.lookAddons;
+	propWriteStream.write<Outfit_t>(serializedOutfit);
 }
 
 bool ConditionOutfit::startCondition(Creature* creature)

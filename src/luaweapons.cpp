@@ -31,7 +31,7 @@ int luaCreateWeapon(lua_State* L)
 			auto weapon = std::make_unique<WeaponMelee>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 			weapon->weaponType = type;
 			weapon->fromLua = true;
-			pushOwnedUserdata<WeaponMelee>(L, std::move(weapon));
+			pushOwnedUserdataAs<Weapon>(L, std::move(weapon));
 			setMetatable(L, -1, "Weapon");
 			break;
 		}
@@ -40,7 +40,7 @@ int luaCreateWeapon(lua_State* L)
 			auto weapon = std::make_unique<WeaponDistance>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 			weapon->weaponType = type;
 			weapon->fromLua = true;
-			pushOwnedUserdata<WeaponDistance>(L, std::move(weapon));
+			pushOwnedUserdataAs<Weapon>(L, std::move(weapon));
 			setMetatable(L, -1, "Weapon");
 			break;
 		}
@@ -48,7 +48,7 @@ int luaCreateWeapon(lua_State* L)
 			auto weapon = std::make_unique<WeaponWand>(LuaScriptInterface::getScriptEnv()->getScriptInterface());
 			weapon->weaponType = type;
 			weapon->fromLua = true;
-			pushOwnedUserdata<WeaponWand>(L, std::move(weapon));
+			pushOwnedUserdataAs<Weapon>(L, std::move(weapon));
 			setMetatable(L, -1, "Weapon");
 			break;
 		}

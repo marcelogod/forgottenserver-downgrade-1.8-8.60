@@ -766,22 +766,22 @@ struct OwnedUserdataHeader {
 	void* (*release)(OwnedUserdataHeader*) noexcept;
 };
 
-template <class T>
+template <class T, class ExposedT = T>
 struct OwnedUserdata {
-	T* value;
+	ExposedT* value;
 	void (*destroy)(OwnedUserdataHeader*) noexcept;
 	void* (*release)(OwnedUserdataHeader*) noexcept;
 	std::unique_ptr<T> owner;
 
 	explicit OwnedUserdata(std::unique_ptr<T> ptr) noexcept :
-		value(ptr.get()),
+		value(static_cast<ExposedT*>(ptr.get())),
 		destroy([](OwnedUserdataHeader* header) noexcept {
-			auto* userdata = reinterpret_cast<OwnedUserdata*>(header);
+			auto* userdata = reinterpret_cast<OwnedUserdata<T, ExposedT>*>(header);
 			userdata->owner.reset();
 			userdata->value = nullptr;
 		}),
 		release([](OwnedUserdataHeader* header) noexcept -> void* {
-			auto* userdata = reinterpret_cast<OwnedUserdata*>(header);
+			auto* userdata = reinterpret_cast<OwnedUserdata<T, ExposedT>*>(header);
 			userdata->value = nullptr;
 			return userdata->owner.release();
 		}),
@@ -997,6 +997,12 @@ template <class T>
 inline void pushOwnedUserdata(lua_State* L, std::unique_ptr<T> value, int nuvalue = 1)
 {
 	new (lua_newuserdatauv(L, sizeof(OwnedUserdata<T>), nuvalue)) OwnedUserdata<T>(std::move(value));
+}
+
+template <class ExposedT, class T>
+inline void pushOwnedUserdataAs(lua_State* L, std::unique_ptr<T> value, int nuvalue = 1)
+{
+	new (lua_newuserdatauv(L, sizeof(OwnedUserdata<T, ExposedT>), nuvalue)) OwnedUserdata<T, ExposedT>(std::move(value));
 }
 
 // Shared Ptr
