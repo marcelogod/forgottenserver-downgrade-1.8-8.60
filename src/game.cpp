@@ -5399,33 +5399,31 @@ void Game::startLootHighlight(Container* corpse, uint32_t ownerPlayerId)
 		return;
 	}
 
-	uintptr_t key = reinterpret_cast<uintptr_t>(corpse);
 	std::weak_ptr<Item> weakCorpse = corpseItem;
 	auto scheduledEventId = std::make_shared<uint32_t>(0);
+	cleanupExpiredLootHighlightEvents();
 
 	// Schedule the first repeating tick
 	uint32_t eventId = g_scheduler.addEvent(createSchedulerTask(
 	    LOOT_HIGHLIGHT_PULSE_MS,
-	    ([this, key, weakCorpse, scheduledEventId, ownerPlayerId,
+	    ([this, weakCorpse, scheduledEventId, ownerPlayerId,
 	      ownerTicksLeft = LOOT_HIGHLIGHT_OWNER_MS - static_cast<int32_t>(LOOT_HIGHLIGHT_PULSE_MS),
 	      totalTicksLeft = LOOT_HIGHLIGHT_MAX_DURATION_MS - static_cast<int32_t>(LOOT_HIGHLIGHT_PULSE_MS)]() {
 		    auto corpseItem = weakCorpse.lock();
 		    if (!corpseItem) {
-			    auto it = lootHighlightEvents.find(key);
-			    if (it != lootHighlightEvents.end() && it->second == *scheduledEventId) {
-				    lootHighlightEvents.erase(it);
-			    }
+			    eraseLootHighlightEvent(weakCorpse, *scheduledEventId);
 			    return;
 		    }
 
-		    checkLootHighlight(corpseItem, ownerPlayerId, ownerTicksLeft, totalTicksLeft);
+		    checkLootHighlight(corpseItem, ownerPlayerId, ownerTicksLeft, totalTicksLeft, *scheduledEventId);
 	    })));
 
 	*scheduledEventId = eventId;
-	lootHighlightEvents[key] = eventId;
+	lootHighlightEvents[weakCorpse] = eventId;
 }
 
-void Game::checkLootHighlight(std::shared_ptr<Item> corpseItem, uint32_t ownerPlayerId, int32_t ownerTicksLeft, int32_t totalTicksLeft)
+void Game::checkLootHighlight(std::shared_ptr<Item> corpseItem, uint32_t ownerPlayerId, int32_t ownerTicksLeft,
+                              int32_t totalTicksLeft, uint32_t eventId)
 {
 	if (!corpseItem) {
 		return;
@@ -5436,11 +5434,11 @@ void Game::checkLootHighlight(std::shared_ptr<Item> corpseItem, uint32_t ownerPl
 		return;
 	}
 
-	uintptr_t corpseKey = reinterpret_cast<uintptr_t>(corpse);
+	std::weak_ptr<Item> weakCorpse = corpseItem;
 
 	// Remove entry first
-	auto it = lootHighlightEvents.find(corpseKey);
-	if (it == lootHighlightEvents.end()) {
+	auto it = lootHighlightEvents.find(weakCorpse);
+	if (it == lootHighlightEvents.end() || it->second != eventId) {
 		return;
 	}
 	lootHighlightEvents.erase(it);
@@ -5485,27 +5483,23 @@ void Game::checkLootHighlight(std::shared_ptr<Item> corpseItem, uint32_t ownerPl
 	}
 
 	// Reschedule with decreased timers
-	std::weak_ptr<Item> weakCorpse = corpseItem;
 	auto scheduledEventId = std::make_shared<uint32_t>(0);
 	uint32_t newEventId = g_scheduler.addEvent(createSchedulerTask(
 	    LOOT_HIGHLIGHT_PULSE_MS,
-	    ([this, corpseKey, weakCorpse, scheduledEventId, ownerPlayerId,
+	    ([this, weakCorpse, scheduledEventId, ownerPlayerId,
 	      nextOwnerTicks = ownerTicksLeft - static_cast<int32_t>(LOOT_HIGHLIGHT_PULSE_MS),
 	      nextTotalTicks = totalTicksLeft - static_cast<int32_t>(LOOT_HIGHLIGHT_PULSE_MS)]() {
 		    auto corpseItem = weakCorpse.lock();
 		    if (!corpseItem) {
-			    auto it = lootHighlightEvents.find(corpseKey);
-			    if (it != lootHighlightEvents.end() && it->second == *scheduledEventId) {
-				    lootHighlightEvents.erase(it);
-			    }
+			    eraseLootHighlightEvent(weakCorpse, *scheduledEventId);
 			    return;
 		    }
 
-		    checkLootHighlight(corpseItem, ownerPlayerId, nextOwnerTicks, nextTotalTicks);
+		    checkLootHighlight(corpseItem, ownerPlayerId, nextOwnerTicks, nextTotalTicks, *scheduledEventId);
 	    })));
 
 	*scheduledEventId = newEventId;
-	lootHighlightEvents[corpseKey] = newEventId;
+	lootHighlightEvents[weakCorpse] = newEventId;
 }
 
 void Game::stopLootHighlight(Container* corpse)
@@ -5514,8 +5508,13 @@ void Game::stopLootHighlight(Container* corpse)
 		return;
 	}
 
-	uintptr_t key = reinterpret_cast<uintptr_t>(corpse);
-	auto it = lootHighlightEvents.find(key);
+	auto corpseItem = corpse->weak_from_this().lock();
+	if (!corpseItem) {
+		return;
+	}
+
+	std::weak_ptr<Item> weakCorpse = corpseItem;
+	auto it = lootHighlightEvents.find(weakCorpse);
 	if (it == lootHighlightEvents.end()) {
 		return; // No highlight active for this corpse
 	}
@@ -5717,6 +5716,28 @@ void Game::eraseTradeItem(Item* item)
 	if (it != tradeItems.end()) {
 		tradeItems.erase(it);
 	}
+}
+
+void Game::cleanupExpiredLootHighlightEvents()
+{
+	for (auto it = lootHighlightEvents.begin(); it != lootHighlightEvents.end();) {
+		if (it->first.expired()) {
+			it = lootHighlightEvents.erase(it);
+		} else {
+			++it;
+		}
+	}
+}
+
+bool Game::eraseLootHighlightEvent(const std::weak_ptr<Item>& corpse, uint32_t eventId)
+{
+	auto it = lootHighlightEvents.find(corpse);
+	if (it == lootHighlightEvents.end() || it->second != eventId) {
+		return false;
+	}
+
+	lootHighlightEvents.erase(it);
+	return true;
 }
 
 void Game::broadcastMessage(std::string_view text, MessageClasses type) const
@@ -6275,16 +6296,34 @@ void Game::internalRemoveItems(std::vector<Item*> itemList, uint32_t amount, boo
 	}
 }
 
-BedItem* Game::getBedBySleeper(uint32_t guid) const
+BedItem* Game::getBedBySleeper(uint32_t guid)
 {
 	auto it = bedSleepersMap.find(guid);
 	if (it == bedSleepersMap.end()) {
 		return nullptr;
 	}
-	return it->second;
+
+	auto bed = it->second.lock();
+	if (!bed) {
+		bedSleepersMap.erase(it);
+		return nullptr;
+	}
+	return bed.get();
 }
 
-void Game::setBedSleeper(BedItem* bed, uint32_t guid) { bedSleepersMap[guid] = bed; }
+void Game::setBedSleeper(BedItem* bed, uint32_t guid)
+{
+	if (!bed) {
+		return;
+	}
+
+	auto bedItem = bed->weak_from_this().lock();
+	if (!bedItem) {
+		return;
+	}
+
+	bedSleepersMap[guid] = std::static_pointer_cast<BedItem>(bedItem);
+}
 
 void Game::removeBedSleeper(uint32_t guid)
 {
