@@ -2220,9 +2220,10 @@ ReturnValue Game::internalTeleport(Thing* thing, const Position& newPos, bool pu
 		Position origPos = creature->getPosition();
 		uint32_t instanceId = creature->getInstanceID();
 
+		InstanceUtils::sendMagicEffectToInstance(origPos, instanceId, CONST_ME_TELEPORT);
+
 		map.moveCreature(*creature, *toTile, !pushMove);
 
-		InstanceUtils::sendMagicEffectToInstance(origPos, instanceId, CONST_ME_TELEPORT);
 		InstanceUtils::sendMagicEffectToInstance(newPos, instanceId, CONST_ME_TELEPORT);
 
 		return RETURNVALUE_NOERROR;

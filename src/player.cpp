@@ -67,6 +67,9 @@ Player::~Player()
 	setWriteItem(nullptr);
 	setEditHouse(nullptr);
 
+	depotLockerMap.clear();
+	depotChests.clear();
+
 	// clear stored conditions to prevent memory leak from IOLoginData::loadPlayer
 	storedConditionList.clear();
 }
@@ -914,10 +917,14 @@ DepotChest* Player::getDepotChest(uint32_t depotId, bool autoCreate)
 		return nullptr;
 	}
 
-	it = depotChests.emplace(depotId, std::make_shared<DepotChest>(ITEM_DEPOT)).first;
-	it->second->setMaxDepotItems(getMaxDepotItems());
-	checkDepotBoxes(it->second.get());
-	return it->second.get();
+	auto chest = std::make_unique<DepotChest>(ITEM_DEPOT);
+	chest->initializeSharedView();
+	DepotChest* rawPtr = chest.get();
+
+	depotChests.emplace(depotId, std::move(chest));
+	rawPtr->setMaxDepotItems(getMaxDepotItems());
+	checkDepotBoxes(rawPtr);
+	return rawPtr;
 }
 
 DepotLocker* Player::getDepotLocker(uint32_t depotId)

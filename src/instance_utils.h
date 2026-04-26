@@ -62,7 +62,7 @@ inline void sendMagicEffectToInstance(const SpectatorVec &spectators,
 {
     for (const auto& spectator : spectators.players()) {
         Player *p = static_cast<Player*>(spectator.get());
-        if (p->compareInstance(instanceId)) {
+        if (instanceId == 0 || p->compareInstance(instanceId)) {
             p->sendMagicEffect(pos, effect);
         }
     }

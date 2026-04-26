@@ -11,6 +11,8 @@ class DepotChest final : public Container
 public:
 	explicit DepotChest(uint16_t type);
 
+	void initializeSharedView();
+
 	// serialization
 	void setMaxDepotItems(uint32_t maxitems) { maxDepotItems = maxitems; }
 
@@ -37,6 +39,7 @@ public:
 	bool needsSave() { return save; }
 
 private:
+	std::shared_ptr<Item> sharedView;
 	uint32_t maxDepotItems = 2000;
 	bool save = false;
 };

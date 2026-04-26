@@ -87,8 +87,8 @@ local function expelAllPlayers(instanceId, message)
             if message then
                 spec:sendTextMessage(MESSAGE_EVENT_ORANGE, message)
             end
-            spec:setInstanceIdRaw(0)
             spec:teleportTo(EXIT_DEST)
+            spec:setInstanceId(0)
 
         end
     end
@@ -107,11 +107,10 @@ local function removePlayerFromInstance(player)
     local instanceId = player:getInstanceId()
     if instanceId == 0 then return end
 
-    player:setInstanceIdRaw(0)
-
     local data = dungeonInstances[instanceId]
     if not data then
         Game.unregisterInstanceArea(instanceId)
+        player:setInstanceId(0)
         return
     end
 
@@ -120,6 +119,8 @@ local function removePlayerFromInstance(player)
     if next(data.players) == nil then
         cleanupFullInstance(instanceId)
     end
+
+    player:setInstanceId(0)
 end
 
 local entryMovement = MoveEvent()
@@ -243,9 +244,8 @@ function exitMovement.onStepIn(creature, item, position, fromPosition)
     local instanceId = player:getInstanceId()
     if instanceId == 0 then return true end
 
-    removePlayerFromInstance(player)
-
     player:teleportTo(EXIT_DEST)
+    removePlayerFromInstance(player)
 
 
     return true
@@ -323,9 +323,9 @@ local logoutEvent = CreatureEvent("DungeonLogout")
 function logoutEvent.onLogout(player)
     local instanceId = player:getInstanceId()
     if instanceId ~= 0 and isInsideDungeonArea(player:getPosition()) then
-        removePlayerFromInstance(player)
         local temple = player:getTown():getTemplePosition()
         player:teleportTo(temple)
+        removePlayerFromInstance(player)
     end
     return true
 end
@@ -338,9 +338,14 @@ function loginEvent.onLogin(player)
 
     local pos = player:getPosition()
     if isInsideDungeonArea(pos) then
-        player:setInstanceIdRaw(0)
         local temple = player:getTown():getTemplePosition()
-        player:teleportTo(temple)
+        if player:getInstanceId() ~= 0 then
+            player:teleportTo(temple)
+            player:setInstanceId(0)
+        else
+            player:setInstanceIdRaw(0)
+            player:teleportTo(temple)
+        end
 
     end
 

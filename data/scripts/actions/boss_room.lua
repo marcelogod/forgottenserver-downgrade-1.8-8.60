@@ -84,7 +84,6 @@ local function cleanupPlayerInstance(player)
 
     cleanupInstanceCreatures(instanceId)
     Game.unregisterInstanceArea(instanceId)
-    player:setInstanceIdRaw(0)
 end
 
 local leverAction = Action()
@@ -176,6 +175,7 @@ function exitMovement.onStepIn(creature, item, position, fromPosition)
 
     local dest = Position(1054, 1000, 7)
     player:teleportTo(dest)
+    player:setInstanceId(0)
 
 
     return true
@@ -221,6 +221,7 @@ function logoutEvent.onLogout(player)
         cleanupPlayerInstance(player)
         local temple = player:getTown():getTemplePosition()
         player:teleportTo(temple)
+        player:setInstanceId(0)
     end
     return true
 end
@@ -233,9 +234,14 @@ function loginEvent.onLogin(player)
 
     local pos = player:getPosition()
     if isInsideInstanceArea(pos) then
-        player:setInstanceIdRaw(0)
         local temple = player:getTown():getTemplePosition()
-        player:teleportTo(temple)
+        if player:getInstanceId() ~= 0 then
+            player:teleportTo(temple)
+            player:setInstanceId(0)
+        else
+            player:setInstanceIdRaw(0)
+            player:teleportTo(temple)
+        end
 
     end
 

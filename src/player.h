@@ -1266,7 +1266,7 @@ private:
 
 	std::unordered_map<uint8_t, OpenContainer> openContainers;
 	std::unordered_map<uint32_t, DepotLocker_ptr> depotLockerMap;
-	std::unordered_map<uint32_t, std::shared_ptr<DepotChest>> depotChests;
+	std::unordered_map<uint32_t, std::unique_ptr<DepotChest>> depotChests;
 
 	std::unordered_map<uint16_t, uint8_t> outfits;
 	std::unordered_set<uint16_t> mounts;

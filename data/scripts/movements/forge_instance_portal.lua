@@ -129,7 +129,6 @@ local function cleanupInstance(player)
     cleanupInstanceContent(instanceId)
     Game.unregisterInstanceArea(instanceId)
 
-    player:setInstanceIdRaw(0)
     returnPositions[player:getGuid()] = nil
 end
 
@@ -160,6 +159,7 @@ function portalMovement.onStepIn(creature, item, position, fromPosition)
             local temple = player:getTown():getTemplePosition()
             player:teleportTo(temple)
         end
+        player:setInstanceId(0)
     else
         instanceCounter = instanceCounter + 1
         local newId = instanceCounter
@@ -186,6 +186,7 @@ function logoutEvent.onLogout(player)
         cleanupInstance(player)
         local temple = player:getTown():getTemplePosition()
         player:teleportTo(temple)
+        player:setInstanceId(0)
     end
     return true
 end
@@ -198,9 +199,14 @@ function loginEvent.onLogin(player)
 
     local pos = player:getPosition()
     if isInsideInstanceArea(pos) then
-        player:setInstanceIdRaw(0)
         local temple = player:getTown():getTemplePosition()
-        player:teleportTo(temple)
+        if player:getInstanceId() ~= 0 then
+            player:teleportTo(temple)
+            player:setInstanceId(0)
+        else
+            player:setInstanceIdRaw(0)
+            player:teleportTo(temple)
+        end
 
     end
 
