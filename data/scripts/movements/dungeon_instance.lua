@@ -89,7 +89,7 @@ local function expelAllPlayers(instanceId, message)
             end
             spec:setInstanceIdRaw(0)
             spec:teleportTo(EXIT_DEST)
-            EXIT_DEST:sendMagicEffect(CONST_ME_TELEPORT)
+
         end
     end
 end
@@ -203,7 +203,7 @@ function entryMovement.onStepIn(creature, item, position, fromPosition)
         local dest = p:getClosestFreePosition(PLAYER_DEST, false)
         if dest.x == 0 then dest = PLAYER_DEST end
         p:teleportTo(dest)
-        dest:sendMagicEffect(CONST_ME_TELEPORT, {p})
+
     end
 
     local spawned = 0
@@ -246,7 +246,7 @@ function exitMovement.onStepIn(creature, item, position, fromPosition)
     removePlayerFromInstance(player)
 
     player:teleportTo(EXIT_DEST)
-    EXIT_DEST:sendMagicEffect(CONST_ME_TELEPORT)
+
 
     return true
 end
@@ -341,7 +341,7 @@ function loginEvent.onLogin(player)
         player:setInstanceIdRaw(0)
         local temple = player:getTown():getTemplePosition()
         player:teleportTo(temple)
-        temple:sendMagicEffect(CONST_ME_TELEPORT)
+
     end
 
     return true

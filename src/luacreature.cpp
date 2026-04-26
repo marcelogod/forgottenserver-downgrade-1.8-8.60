@@ -3,6 +3,7 @@
 
 #include "otpch.h"
 
+#include "container.h"
 #include "creature.h"
 #include "events.h"
 #include "game.h"
@@ -14,6 +15,26 @@ extern Game g_game;
 
 namespace {
 using namespace Lua;
+
+void closeContainersFromOtherInstances(Player* player, uint32_t instanceId)
+{
+	if (!player) {
+		return;
+	}
+
+	std::vector<uint8_t> closeList;
+	for (const auto& it : player->getOpenContainers()) {
+		Container* container = it.second.container;
+		if (container && container->getInstanceID() != 0 && container->getInstanceID() != instanceId) {
+			closeList.push_back(it.first);
+		}
+	}
+
+	for (uint8_t cid : closeList) {
+		player->closeContainer(cid);
+		player->sendCloseContainer(cid);
+	}
+}
 
 // Creature
 int luaCreatureCreate(lua_State* L)
@@ -1174,6 +1195,8 @@ int luaCreatureSetInstanceId(lua_State *L)
 
 	uint32_t instanceId = getInteger<uint32_t>(L, 2);
 
+	closeContainersFromOtherInstances(creature->getPlayer(), instanceId);
+
 	SpectatorVec oldSpectators;
 	g_game.map.getSpectators(oldSpectators, creature->getPosition(), true, true);
 	for (const auto& spectator : oldSpectators.players()) {
@@ -1217,6 +1240,8 @@ int luaCreatureSetInstanceIdRaw(lua_State *L)
 	}
 
 	uint32_t instanceId = getInteger<uint32_t>(L, 2);
+
+	closeContainersFromOtherInstances(creature->getPlayer(), instanceId);
 
 	SpectatorVec oldSpectators;
 	g_game.map.getSpectators(oldSpectators, creature->getPosition(), true, true);

@@ -151,7 +151,7 @@ function leverAction.onUse(player, item, fromPosition, target, toPosition, isHot
         local dest = p:getClosestFreePosition(PLAYER_DEST, false)
         if dest.x == 0 then dest = PLAYER_DEST end
         p:teleportTo(dest)
-        dest:sendMagicEffect(CONST_ME_TELEPORT, {p})
+
     end
 
     local boss = Game.createMonster(BOSS_NAME, BOSS_POS, false, true, CONST_ME_TELEPORT, instanceId)
@@ -176,7 +176,7 @@ function exitMovement.onStepIn(creature, item, position, fromPosition)
 
     local dest = Position(1054, 1000, 7)
     player:teleportTo(dest)
-    dest:sendMagicEffect(CONST_ME_TELEPORT)
+
 
     return true
 end
@@ -236,7 +236,7 @@ function loginEvent.onLogin(player)
         player:setInstanceIdRaw(0)
         local temple = player:getTown():getTemplePosition()
         player:teleportTo(temple)
-        temple:sendMagicEffect(CONST_ME_TELEPORT)
+
     end
 
     return true

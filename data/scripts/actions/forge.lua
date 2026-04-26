@@ -18,6 +18,22 @@ local FORGE_POSITIONS = {
     container = Position(1054, 974, 7),
 }
 
+local function getForgeContainerItem(player)
+    local tile = Tile(FORGE_POSITIONS.container)
+    if not tile then return nil end
+
+    local instanceId = player:getInstanceId()
+    local items = tile:getItems()
+    if not items then return nil end
+
+    for _, item in ipairs(items) do
+        if item:getId() == FORGE_CONTAINER_ID and item:getInstanceId() == instanceId then
+            return item
+        end
+    end
+    return nil
+end
+
 local function isForgeEnabled()
     return configManager.getBoolean(configKeys.FORGE_SYSTEM_ENABLED)
 end
@@ -95,15 +111,7 @@ function forgeFusion.onUse(player, item, fromPosition, target, toPosition, isHot
         return true
     end
 
-    local containerPos = FORGE_POSITIONS.container
-    local tile = Tile(containerPos)
-    if not tile then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE, "[Forge] Forge container not found.")
-        return true
-    end
-
-
-    local containerItem = tile:getItemById(FORGE_CONTAINER_ID)
+    local containerItem = getForgeContainerItem(player)
     if not containerItem then
         player:sendTextMessage(MESSAGE_EVENT_ORANGE, "[Forge] Forge container not found.")
         return true

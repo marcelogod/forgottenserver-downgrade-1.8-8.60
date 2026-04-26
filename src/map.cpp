@@ -8,6 +8,7 @@
 #include "combat.h"
 #include "creature.h"
 #include "game.h"
+#include "instance_utils.h"
 #include "iomap.h"
 #include "iomapserialize.h"
 #include "mapcache.h"
@@ -355,6 +356,10 @@ void Map::moveCreature(Creature& creature, Tile& newTile, bool forceTeleport /* 
 
 	// event method
 	for (const auto& spectator : spectators) {
+		if (!InstanceUtils::isPlayerInSameInstance(spectator.get(), creature.getInstanceID())) {
+			continue;
+		}
+
 		spectator->onCreatureMove(&creature, &newTile, newPos, &oldTile, oldPos, teleport);
 	}
 

@@ -29,6 +29,16 @@ inline bool canSeeItemInInstance(uint32_t viewerInstanceId, const Item *item)
     return itemInstanceId == 0 && item->isLoadedFromMap();
 }
 
+inline bool isPlayerInSameInstance(const Creature* player,
+                                   uint32_t objectInstanceId)
+{
+    if (objectInstanceId == 0) {
+        return true;
+    }
+
+    return player && player->compareInstance(objectInstanceId);
+}
+
 inline SpectatorVec filterByInstance(const SpectatorVec &spectators,
                                      uint32_t instanceId)
 {

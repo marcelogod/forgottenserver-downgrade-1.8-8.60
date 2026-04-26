@@ -39,6 +39,49 @@ extern Vocations g_vocations;
 extern Monsters g_monsters;
 extern LuaEnvironment g_luaEnvironment;
 
+namespace {
+
+bool areDifferentNonZeroInstances(const Creature* first, const Creature* second)
+{
+	if (!first || !second) {
+		return false;
+	}
+
+	const uint32_t firstInstanceId = first->getInstanceID();
+	const uint32_t secondInstanceId = second->getInstanceID();
+	return firstInstanceId != 0 && secondInstanceId != 0 && firstInstanceId != secondInstanceId;
+}
+
+bool isLocalPositionTalk(SpeakClasses type)
+{
+	return type == TALKTYPE_SAY || type == TALKTYPE_WHISPER || type == TALKTYPE_YELL ||
+	       type == TALKTYPE_MONSTER_SAY || type == TALKTYPE_MONSTER_YELL ||
+	       type == TALKTYPE_PRIVATE_NP || type == TALKTYPE_PRIVATE_PN;
+}
+
+void closeContainersFromOtherInstances(Player* player)
+{
+	if (!player) {
+		return;
+	}
+
+	std::vector<uint8_t> closeList;
+	for (const auto& it : player->getOpenContainers()) {
+		Container* container = it.second.container;
+		if (container && container->getInstanceID() != 0 &&
+		    container->getInstanceID() != player->getInstanceID()) {
+			closeList.push_back(it.first);
+		}
+	}
+
+	for (uint8_t cid : closeList) {
+		player->closeContainer(cid);
+		player->sendCloseContainer(cid);
+	}
+}
+
+} // namespace
+
 void Game::start(const std::shared_ptr<ServiceManager>& manager)
 {
 	serviceManager = manager;
@@ -611,15 +654,21 @@ bool Game::placeCreature(Creature* creature, const Position& pos, bool extendedP
 	map.getSpectators(spectators, creature->getPosition(), true);
 	for (const auto& spectator : spectators.players()) {
 		Player* tmpPlayer = static_cast<Player*>(spectator.get());
+		if (!InstanceUtils::isPlayerInSameInstance(tmpPlayer, creature->getInstanceID())) {
+			continue;
+		}
+
 		if (tmpPlayer->canSeeCreature(creature)) {
 			tmpPlayer->sendCreatureAppear(creature, creature->getPosition(), magicEffect);
 		}
 	}
 
 	for (const auto& spectator : spectators) {
-		if (spectator->compareInstance(creature->getInstanceID())) {
-			spectator->onCreatureAppear(creature, true);
+		if (!InstanceUtils::isPlayerInSameInstance(spectator.get(), creature->getInstanceID())) {
+			continue;
 		}
+
+		spectator->onCreatureAppear(creature, true);
 	}
 
 	creature->getParent()->postAddNotification(creature, nullptr, 0);
@@ -669,6 +718,10 @@ bool Game::removeCreature(Creature* creature, bool isLogout /* = true*/)
 
 	// event method
 	for (const auto& spectator : spectators) {
+		if (!InstanceUtils::isPlayerInSameInstance(spectator.get(), creature->getInstanceID())) {
+			continue;
+		}
+
 		spectator->onRemoveCreature(creature, isLogout);
 	}
 
@@ -1071,27 +1124,50 @@ void Game::playerMoveItem(Player* player, const Position& fromPos, uint16_t spri
 	player->setNextActionTask(nullptr);
 
 	if (item == nullptr) {
-		uint8_t fromIndex = 0;
-		if (fromPos.x == 0xFFFF) {
-			if (fromPos.y & 0x40) {
-				fromIndex = fromPos.z;
-			} else {
-				fromIndex = static_cast<uint8_t>(fromPos.y);
+		if (fromPos.x != 0xFFFF) {
+			if (Tile* tile = map.getTile(fromPos)) {
+				if (const TileItemVector* items = tile->getItemList()) {
+					for (const auto& itemRef : *items) {
+						Item* tileItem = itemRef.get();
+						if (tileItem->getClientID() == spriteId) {
+							if (tileItem->getInstanceID() == 0 || player->compareInstance(tileItem->getInstanceID())) {
+								item = tileItem;
+								break;
+							}
+						}
+					}
+				}
 			}
-		} else {
-			fromIndex = fromStackPos;
 		}
 
-		Thing* thing = internalGetThing(player, fromPos, fromIndex, 0, STACKPOS_MOVE);
-		if (!thing || !thing->getItem()) {
-			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-			return;
-		}
+		if (!item) {
+			uint8_t fromIndex = 0;
+			if (fromPos.x == 0xFFFF) {
+				if (fromPos.y & 0x40) {
+					fromIndex = fromPos.z;
+				} else {
+					fromIndex = static_cast<uint8_t>(fromPos.y);
+				}
+			} else {
+				fromIndex = fromStackPos;
+			}
 
-		item = thing->getItem();
+			Thing* thing = internalGetThing(player, fromPos, fromIndex, 0, STACKPOS_MOVE);
+			if (!thing || !thing->getItem()) {
+				player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+				return;
+			}
+
+			item = thing->getItem();
+		}
 	}
 
 	if (item->getClientID() != spriteId) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		return;
+	}
+
+	if (!InstanceUtils::isPlayerInSameInstance(player, item->getInstanceID())) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
 	}
@@ -1307,6 +1383,10 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
                                    const Position* fromPos /*= nullptr*/, const Position* toPos /*= nullptr*/)
 {
 	Player* actorPlayer = actor ? actor->getPlayer() : nullptr;
+	if (actorPlayer && !InstanceUtils::isPlayerInSameInstance(actorPlayer, item->getInstanceID())) {
+		return RETURNVALUE_NOTPOSSIBLE;
+	}
+
 	if (actorPlayer && fromPos && toPos) {
 		const ReturnValue ret = g_events->eventPlayerOnMoveItem(actorPlayer, item, static_cast<uint16_t>(count),
 		                                                        *fromPos, *toPos, fromCylinder, toCylinder);
@@ -2133,7 +2213,18 @@ ReturnValue Game::internalTeleport(Thing* thing, const Position& newPos, bool pu
 			return ret;
 		}
 
+		if (Player* player = creature->getPlayer()) {
+			closeContainersFromOtherInstances(player);
+		}
+
+		Position origPos = creature->getPosition();
+		uint32_t instanceId = creature->getInstanceID();
+
 		map.moveCreature(*creature, *toTile, !pushMove);
+
+		InstanceUtils::sendMagicEffectToInstance(origPos, instanceId, CONST_ME_TELEPORT);
+		InstanceUtils::sendMagicEffectToInstance(newPos, instanceId, CONST_ME_TELEPORT);
+
 		return RETURNVALUE_NOERROR;
 	} else if (Item* item = thing->getItem()) {
 		return internalMoveItem(item->getParent(), toTile, INDEX_WHEREEVER, item, item->getItemCount(), nullptr, flags);
@@ -2438,16 +2529,53 @@ void Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t f
 		return;
 	}
 
-	Thing* thing = internalGetThing(player, fromPos, fromStackPos, fromSpriteId, STACKPOS_USEITEM);
-	if (!thing) {
+	Item* item = nullptr;
+	if (fromPos.x != 0xFFFF) {
+		if (Tile* tile = map.getTile(fromPos)) {
+			if (const TileItemVector* items = tile->getItemList()) {
+				for (const auto& itemRef : *items) {
+					Item* tileItem = itemRef.get();
+					if (tileItem->getClientID() == fromSpriteId) {
+						if (tileItem->getInstanceID() == 0 || player->compareInstance(tileItem->getInstanceID())) {
+							item = tileItem;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (!item) {
+		Thing* thing = internalGetThing(player, fromPos, fromStackPos, fromSpriteId, STACKPOS_USEITEM);
+		if (!thing) {
+			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+			return;
+		}
+		item = thing->getItem();
+	}
+	if (!item || !item->isUseable()) {
+		player->sendCancelMessage(RETURNVALUE_CANNOTUSETHISOBJECT);
+		return;
+	}
+
+	if (!InstanceUtils::isPlayerInSameInstance(player, item->getInstanceID())) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
 	}
 
-	Item* item = thing->getItem();
-	if (!item || !item->isUseable()) {
-		player->sendCancelMessage(RETURNVALUE_CANNOTUSETHISOBJECT);
-		return;
+	if (Thing* targetThing = internalGetThing(player, toPos, toStackPos, 0, STACKPOS_USETARGET)) {
+		if (Item* targetItem = targetThing->getItem()) {
+			if (!InstanceUtils::isPlayerInSameInstance(player, targetItem->getInstanceID())) {
+				player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+				return;
+			}
+		} else if (Creature* targetCreature = targetThing->getCreature()) {
+			if (!InstanceUtils::isPlayerInSameInstance(player, targetCreature->getInstanceID())) {
+				player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+				return;
+			}
+		}
 	}
 
 	Position walkToPos = fromPos;
@@ -2529,15 +2657,38 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 		return;
 	}
 
-	Thing* thing = internalGetThing(player, pos, stackPos, spriteId, STACKPOS_USEITEM);
-	if (!thing) {
-		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+	Item* item = nullptr;
+	if (pos.x != 0xFFFF) {
+		if (Tile* tile = map.getTile(pos)) {
+			if (const TileItemVector* items = tile->getItemList()) {
+				for (const auto& itemRef : *items) {
+					Item* tileItem = itemRef.get();
+					if (tileItem->getClientID() == spriteId) {
+						if (tileItem->getInstanceID() == 0 || player->compareInstance(tileItem->getInstanceID())) {
+							item = tileItem;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (!item) {
+		Thing* thing = internalGetThing(player, pos, stackPos, spriteId, STACKPOS_USEITEM);
+		if (!thing) {
+			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+			return;
+		}
+		item = thing->getItem();
+	}
+	if (!item || item->isUseable()) {
+		player->sendCancelMessage(RETURNVALUE_CANNOTUSETHISOBJECT);
 		return;
 	}
 
-	Item* item = thing->getItem();
-	if (!item || item->isUseable()) {
-		player->sendCancelMessage(RETURNVALUE_CANNOTUSETHISOBJECT);
+	if (!InstanceUtils::isPlayerInSameInstance(player, item->getInstanceID())) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
 	}
 
@@ -2626,6 +2777,11 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uin
 	Item* item = thing->getItem();
 	if (!item || !item->isUseable()) {
 		player->sendCancelMessage(RETURNVALUE_CANNOTUSETHISOBJECT);
+		return;
+	}
+
+	if (!InstanceUtils::isPlayerInSameInstance(player, item->getInstanceID())) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
 	}
 
@@ -2722,6 +2878,11 @@ void Game::playerMoveUpContainer(uint32_t playerId, uint8_t cid)
 
 	Container* parentContainer = dynamic_cast<Container*>(container->getRealParent());
 	if (!parentContainer) {
+		return;
+	}
+
+	if (!InstanceUtils::isPlayerInSameInstance(player, parentContainer->getInstanceID())) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
 	}
 
@@ -2901,7 +3062,7 @@ void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t st
 		return;
 	}
 
-	if (!InstanceUtils::canInteract(player, tradePartner)) {
+	if (areDifferentNonZeroInstances(player, tradePartner)) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
 	}
@@ -3084,12 +3245,12 @@ void Game::playerAcceptTrade(uint32_t playerId)
 	}
 	Player* tradePartner = tradePartnerLock.get();
 
-    if (!InstanceUtils::canInteract(player, tradePartner)) {
-        internalCloseTrade(player, false);
-        player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-        tradePartner->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-        return;
-    }
+	if (areDifferentNonZeroInstances(player, tradePartner)) {
+		internalCloseTrade(player, false);
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		tradePartner->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		return;
+	}
 
 	player->setTradeState(TRADE_ACCEPT);
 
@@ -3978,7 +4139,7 @@ void Game::playerSpeakToNpc(Player* player, std::string_view text)
 	SpectatorVec spectators;
 	map.getSpectators(spectators, player->getPosition());
 	for (const auto& spectator : spectators.npcs()) {
-		if (spectator->compareInstance(player->getInstanceID())) {
+		if (InstanceUtils::isPlayerInSameInstance(player, spectator->getInstanceID())) {
 			spectator->onCreatureSay(player, TALKTYPE_PRIVATE_PN, text);
 		}
 	}
@@ -4050,9 +4211,10 @@ bool Game::internalCreatureSay(Creature* creature, SpeakClasses type, std::strin
 	}
 
 	// send to client
+	const bool localPositionTalk = isLocalPositionTalk(type);
 	for (const auto& spectator : spectators.players()) {
 		Player* tmpPlayer = static_cast<Player*>(spectator.get());
-		if (!tmpPlayer->compareInstance(creature->getInstanceID())) {
+		if (localPositionTalk && areDifferentNonZeroInstances(tmpPlayer, creature)) {
 			continue;
 		}
 		if (!ghostMode || tmpPlayer->canSeeCreature(creature)) {
@@ -4063,7 +4225,7 @@ bool Game::internalCreatureSay(Creature* creature, SpeakClasses type, std::strin
 	// event method
 	if (!echo) {
 		for (const auto& spectator : spectators) {
-			if (!spectator->compareInstance(creature->getInstanceID())) {
+			if (localPositionTalk && areDifferentNonZeroInstances(spectator.get(), creature)) {
 				continue;
 			}
 			spectator->onCreatureSay(creature, type, text);
@@ -5376,17 +5538,17 @@ void Game::startLootHighlight(Container* corpse, uint32_t ownerPlayerId)
 
 	// Send the first effect immediately to owner and party
 	Player* owner = getPlayerByID(ownerPlayerId);
-	if (owner) {
+	if (owner && InstanceUtils::isPlayerInSameInstance(owner, corpse->getInstanceID())) {
 		owner->sendMagicEffect(corpse->getPosition(), CONST_ME_LOOT_HIGHLIGHT);
 		if (Party* party = owner->getParty()) {
 			if (auto leader = party->getLeader()) {
-				if (leader.get() != owner) {
+				if (leader.get() != owner && InstanceUtils::isPlayerInSameInstance(leader.get(), corpse->getInstanceID())) {
 					leader->sendMagicEffect(corpse->getPosition(), CONST_ME_LOOT_HIGHLIGHT);
 				}
 			}
 			for (const auto& memberRef : party->getMembers()) {
 				if (auto member = memberRef.lock()) {
-					if (member.get() != owner) {
+					if (member.get() != owner && InstanceUtils::isPlayerInSameInstance(member.get(), corpse->getInstanceID())) {
 						member->sendMagicEffect(corpse->getPosition(), CONST_ME_LOOT_HIGHLIGHT);
 					}
 				}
@@ -5454,17 +5616,17 @@ void Game::checkLootHighlight(std::shared_ptr<Item> corpseItem, uint32_t ownerPl
 	if (ownerTicksLeft > 0) {
 		// Phase 1 — Owner and Party
 		Player* owner = getPlayerByID(ownerPlayerId);
-		if (owner) {
+		if (owner && InstanceUtils::isPlayerInSameInstance(owner, corpse->getInstanceID())) {
 			owner->sendMagicEffect(pos, CONST_ME_LOOT_HIGHLIGHT);
 			if (Party* party = owner->getParty()) {
 				if (auto leader = party->getLeader()) {
-					if (leader.get() != owner) {
+					if (leader.get() != owner && InstanceUtils::isPlayerInSameInstance(leader.get(), corpse->getInstanceID())) {
 						leader->sendMagicEffect(pos, CONST_ME_LOOT_HIGHLIGHT);
 					}
 				}
 				for (const auto& memberRef : party->getMembers()) {
 					if (auto member = memberRef.lock()) {
-						if (member.get() != owner) {
+						if (member.get() != owner && InstanceUtils::isPlayerInSameInstance(member.get(), corpse->getInstanceID())) {
 							member->sendMagicEffect(pos, CONST_ME_LOOT_HIGHLIGHT);
 						}
 					}
@@ -5477,6 +5639,10 @@ void Game::checkLootHighlight(std::shared_ptr<Item> corpseItem, uint32_t ownerPl
 		map.getSpectators(spectators, pos, false, true);
 		for (const auto& spec : spectators) {
 			if (Player* p = spec->getPlayer()) {
+				if (!InstanceUtils::isPlayerInSameInstance(p, corpse->getInstanceID())) {
+					continue;
+				}
+
 				p->sendMagicEffect(pos, CONST_ME_LOOT_HIGHLIGHT);
 			}
 		}

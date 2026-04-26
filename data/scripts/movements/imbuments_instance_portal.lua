@@ -35,11 +35,40 @@ local function isInsideInstanceArea(pos)
        and pos.z >= INSTANCE_FROM.z and pos.z <= INSTANCE_TO.z
 end
 
-local function ensureWorkbenchAt(pos)
+local function getWorkbenchByInstance(pos, instanceId)
     local tile = Tile(pos)
-    if not tile then return end
+    if not tile then return nil end
 
-    local existing = tile:getItemById(WORKBENCH_ID)
+    local items = tile:getItems()
+    if not items then return nil end
+
+    for _, item in ipairs(items) do
+        if item:getId() == WORKBENCH_ID and item:getInstanceId() == instanceId then
+            return item
+        end
+    end
+    return nil
+end
+
+local function hasInstancedWorkbench(pos)
+    local tile = Tile(pos)
+    if not tile then return false end
+
+    local items = tile:getItems()
+    if not items then return false end
+
+    for _, item in ipairs(items) do
+        if item:getId() == WORKBENCH_ID and item:getInstanceId() ~= 0 then
+            return true
+        end
+    end
+    return false
+end
+
+local function ensureWorkbenchAt(pos)
+    if hasInstancedWorkbench(pos) then return end
+
+    local existing = getWorkbenchByInstance(pos, 0)
     if existing then
         local container = Container(existing.uid)
         if not container then
@@ -55,12 +84,14 @@ local function createInstanceContent(instanceId)
     if instanceId == 0 then return end
 
     for _, pos in ipairs(WORKBENCH_POSITIONS) do
-        local tile = Tile(pos)
-        if tile then
-            local old = tile:getItemById(WORKBENCH_ID)
-            if old then old:remove() end
+        local globalWorkbench = getWorkbenchByInstance(pos, 0)
+        if globalWorkbench then
+            globalWorkbench:remove()
         end
-        Game.createContainer(WORKBENCH_ID, WORKBENCH_SLOTS, pos, instanceId)
+
+        if not getWorkbenchByInstance(pos, instanceId) then
+            Game.createContainer(WORKBENCH_ID, WORKBENCH_SLOTS, pos, instanceId)
+        end
     end
 
     local npc = Game.createNpc(NPC_NAME, NPC_POS, false, true, CONST_ME_NONE, instanceId)
@@ -79,12 +110,9 @@ local function cleanupInstanceContent(instanceId)
     end
 
     for _, pos in ipairs(WORKBENCH_POSITIONS) do
-        local tile = Tile(pos)
-        if tile then
-            local item = tile:getItemById(WORKBENCH_ID)
-            if item then
-                item:remove()
-            end
+        local item = getWorkbenchByInstance(pos, instanceId)
+        if item then
+            item:remove()
         end
         ensureWorkbenchAt(pos)
     end
@@ -160,7 +188,7 @@ function entryMovement.onStepIn(creature, item, position, fromPosition)
     if free.x ~= 0 then dest = free end
 
     player:teleportTo(dest)
-    dest:sendMagicEffect(CONST_ME_TELEPORT, {player})
+
     return true
 end
 entryMovement:aid(ENTRY_PORTAL_AID)
@@ -180,11 +208,11 @@ function exitMovement.onStepIn(creature, item, position, fromPosition)
 
     if returnPos then
         player:teleportTo(returnPos)
-        returnPos:sendMagicEffect(CONST_ME_TELEPORT)
+
     else
         local temple = player:getTown():getTemplePosition()
         player:teleportTo(temple)
-        temple:sendMagicEffect(CONST_ME_TELEPORT)
+
     end
 
     return true
@@ -215,7 +243,7 @@ function loginEvent.onLogin(player)
         player:setInstanceIdRaw(0)
         local temple = player:getTown():getTemplePosition()
         player:teleportTo(temple)
-        temple:sendMagicEffect(CONST_ME_TELEPORT)
+
     end
 
     return true

@@ -183,6 +183,11 @@ bool Spawns::loadFromXml(std::string_view filename)
 					npc->setDirection(static_cast<Direction>(pugi::cast<uint16_t>(directionAttribute.value())));
 				}
 
+				pugi::xml_attribute instanceIdAttribute = childNode.attribute("instanceId");
+				if (instanceIdAttribute) {
+					npc->setInstanceID(pugi::cast<uint32_t>(instanceIdAttribute.value()));
+				}
+
 				npc->setMasterPos(
 				    Position(centerPos.x + pugi::cast<uint16_t>(childNode.attribute("x").value()),
 				             centerPos.y + pugi::cast<uint16_t>(childNode.attribute("y").value()), centerPos.z),

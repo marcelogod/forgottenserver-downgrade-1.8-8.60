@@ -1383,7 +1383,12 @@ void Tile::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t 
 	SpectatorVec spectators;
 	g_game.map.getSpectators(spectators, getPosition(), true, true);
 	for (const auto& spectator : spectators.players()) {
-		static_cast<Player*>(spectator.get())->postAddNotification(thing, oldParent, index, LINK_NEAR);
+		Player* player = static_cast<Player*>(spectator.get());
+		if (!InstanceUtils::isPlayerInSameInstance(player, thing->getInstanceID())) {
+			continue;
+		}
+
+		player->postAddNotification(thing, oldParent, index, LINK_NEAR);
 	}
 
 	// add a reference to this item, it may be deleted after being added (mailbox for example)
@@ -1436,6 +1441,9 @@ void Tile::postRemoveNotification(Thing* thing, const Cylinder* newParent, int32
 
 	for (const auto& spectator : spectators.players()) {
 		Player* player = static_cast<Player*>(spectator.get());
+		if (!InstanceUtils::isPlayerInSameInstance(player, thing->getInstanceID())) {
+			continue;
+		}
 
 		if (thingCount > TILE_UPDATE_THRESHOLD) {
 			player->sendUpdateTile(this, tilePos);

@@ -626,7 +626,15 @@ bool Creature::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreatur
 
 		auto corpse = getCorpse(lastHitCreature, mostDamageCreature);
 		if (corpse) {
-			corpse->setInstanceID(getInstanceID());
+			uint32_t corpseInstanceId = getInstanceID();
+			if (corpseInstanceId == 0) {
+				if (mostDamageCreature && mostDamageCreature->getInstanceID() != 0) {
+					corpseInstanceId = mostDamageCreature->getInstanceID();
+				} else if (lastHitCreature && lastHitCreature->getInstanceID() != 0) {
+					corpseInstanceId = lastHitCreature->getInstanceID();
+				}
+			}
+			corpse->setInstanceID(corpseInstanceId);
 			if (!tile || g_game.internalAddItem(tile, corpse.get(), INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 				corpse.reset();
 			} else {

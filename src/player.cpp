@@ -807,7 +807,8 @@ bool Player::canSeeCreature(const Creature* creature) const
 		return true;
 	}
 
-	if (!compareInstance(creature->getInstanceID())) {
+	const uint32_t creatureInstanceId = creature->getInstanceID();
+	if (creatureInstanceId != 0 && !compareInstance(creatureInstanceId)) {
 		return false;
 	}
 
@@ -829,7 +830,8 @@ bool Player::canWalkthrough(const Creature* creature) const
 		return true;
 	}
 
-	if (!compareInstance(creature->getInstanceID())) {
+	const uint32_t creatureInstanceId = creature->getInstanceID();
+	if (creatureInstanceId != 0 && !compareInstance(creatureInstanceId)) {
 		return true;
 	}
 
@@ -861,7 +863,8 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 		return true;
 	}
 
-	if (!compareInstance(creature->getInstanceID())) {
+	const uint32_t creatureInstanceId = creature->getInstanceID();
+	if (creatureInstanceId != 0 && !compareInstance(creatureInstanceId)) {
 		return true;
 	}
 

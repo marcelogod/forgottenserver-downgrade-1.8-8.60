@@ -28,11 +28,40 @@ local function isInsideInstanceArea(pos)
        and pos.z >= INSTANCE_FROM.z and pos.z <= INSTANCE_TO.z
 end
 
-local function ensureForgeContainerAt(pos)
+local function getForgeContainerByInstance(pos, instanceId)
     local tile = Tile(pos)
-    if not tile then return end
+    if not tile then return nil end
 
-    local existing = tile:getItemById(FORGE_CONTAINER_ID)
+    local items = tile:getItems()
+    if not items then return nil end
+
+    for _, item in ipairs(items) do
+        if item:getId() == FORGE_CONTAINER_ID and item:getInstanceId() == instanceId then
+            return item
+        end
+    end
+    return nil
+end
+
+local function hasInstancedForgeContainer(pos)
+    local tile = Tile(pos)
+    if not tile then return false end
+
+    local items = tile:getItems()
+    if not items then return false end
+
+    for _, item in ipairs(items) do
+        if item:getId() == FORGE_CONTAINER_ID and item:getInstanceId() ~= 0 then
+            return true
+        end
+    end
+    return false
+end
+
+local function ensureForgeContainerAt(pos)
+    if hasInstancedForgeContainer(pos) then return end
+
+    local existing = getForgeContainerByInstance(pos, 0)
     if existing then
         local container = Container(existing.uid)
         if not container then
@@ -47,23 +76,22 @@ end
 local function createInstanceContent(instanceId)
     if instanceId == 0 then return end
 
-    local tile = Tile(FORGE_CONTAINER_POS)
-    if tile then
-        local old = tile:getItemById(FORGE_CONTAINER_ID)
-        if old then old:remove() end
+    local globalContainer = getForgeContainerByInstance(FORGE_CONTAINER_POS, 0)
+    if globalContainer then
+        globalContainer:remove()
     end
-    Game.createContainer(FORGE_CONTAINER_ID, FORGE_CONTAINER_SLOTS, FORGE_CONTAINER_POS, instanceId)
+
+    if not getForgeContainerByInstance(FORGE_CONTAINER_POS, instanceId) then
+        Game.createContainer(FORGE_CONTAINER_ID, FORGE_CONTAINER_SLOTS, FORGE_CONTAINER_POS, instanceId)
+    end
 end
 
 local function cleanupInstanceContent(instanceId)
     if instanceId == 0 then return end
 
-    local tile = Tile(FORGE_CONTAINER_POS)
-    if tile then
-        local item = tile:getItemById(FORGE_CONTAINER_ID)
-        if item then
-            item:remove()
-        end
+    local item = getForgeContainerByInstance(FORGE_CONTAINER_POS, instanceId)
+    if item then
+        item:remove()
     end
     ensureForgeContainerAt(FORGE_CONTAINER_POS)
 end
@@ -173,7 +201,7 @@ function loginEvent.onLogin(player)
         player:setInstanceIdRaw(0)
         local temple = player:getTown():getTemplePosition()
         player:teleportTo(temple)
-        temple:sendMagicEffect(CONST_ME_TELEPORT)
+
     end
 
     return true

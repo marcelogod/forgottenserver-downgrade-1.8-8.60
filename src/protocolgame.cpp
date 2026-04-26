@@ -2392,6 +2392,10 @@ void ProtocolGame::sendUpdateTileCreature(const Position& pos, uint32_t stackpos
 		return;
 	}
 
+	if (creature != player.get() && !player->canSeeCreature(creature)) {
+		return;
+	}
+
 	NetworkMessage msg;
 	msg.addByte(0x6B);
 	msg.addPosition(pos);
@@ -2439,6 +2443,10 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
                                    MagicEffectClasses magicEffect /*= CONST_ME_NONE*/)
 {
 	if (!canSee(pos)) {
+		return;
+	}
+
+	if (creature != player.get() && !player->canSeeCreature(creature)) {
 		return;
 	}
 
@@ -2549,6 +2557,13 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Position& ne
 			                  1, (Map::maxClientViewportY * 2) + 2, msg);
 		}
 		writeToOutputBuffer(msg);
+		return;
+	}
+
+	if (creature != player.get() && !player->canSeeCreature(creature)) {
+		if (oldStackPos != -1 && canSee(oldPos)) {
+			sendRemoveTileThing(oldPos, oldStackPos);
+		}
 		return;
 	}
 
