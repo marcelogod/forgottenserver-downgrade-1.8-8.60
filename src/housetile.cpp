@@ -78,7 +78,11 @@ ReturnValue HouseTile::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 		} else {
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
-	} else if (thing.getItem()) {
+	} else if (const Item* item = thing.getItem()) {
+		if (item->isStoreItem() && !item->hasAttribute(ITEM_ATTRIBUTE_WRAPID)) {
+			return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE;
+		}
+
 		if (actor) {
 			if (getHouse()->getProtected() && !getHouse()->canModifyItems(actor->getPlayer())) {
 				return RETURNVALUE_CANNOTMOVEITEMISPROTECTED;

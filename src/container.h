@@ -14,6 +14,7 @@ class Container;
 class DepotChest;
 class DepotLocker;
 class RewardChest;
+class StoreInbox;
 
 using ContainerQueue = std::queue<const Container*>;
 
@@ -55,6 +56,13 @@ public:
 		return nullptr;
 	}
 	virtual const RewardChest* getRewardChest() const {
+		return nullptr;
+	}
+
+	virtual StoreInbox* getStoreInbox() {
+		return nullptr;
+	}
+	virtual const StoreInbox* getStoreInbox() const {
 		return nullptr;
 	}
 

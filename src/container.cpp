@@ -4,6 +4,9 @@
 #include "otpch.h"
 
 #include "container.h"
+#include "depotchest.h"
+#include "depotlocker.h"
+#include "storeinbox.h"
 
 #include "game.h"
 #include "iomap.h"
@@ -223,6 +226,11 @@ ReturnValue Container::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 		return RETURNVALUE_THISISIMPOSSIBLE;
 	}
 
+	// Store items can only be moved into depot chests or the Store inbox.
+	if (item->isStoreItem() && !dynamic_cast<const DepotChest*>(this) && !dynamic_cast<const StoreInbox*>(this)) {
+		return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE;
+	}
+
 	uint32_t corpseOwner = getCorpseOwner();
 	if (corpseOwner != 0 && corpseOwner != static_cast<uint32_t>(std::numeric_limits<int32_t>::max()) && 
 		getID() != ITEM_MALE_CORPSE && getID() != ITEM_FEMALE_CORPSE && actor && actor->getPlayer()) {
@@ -234,6 +242,11 @@ ReturnValue Container::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 	}
 
 	const Cylinder* cylinder = getParent();
+
+	// Do not allow inserting items into a Store item container while it is inside the Store inbox.
+	if (isStoreItem() && dynamic_cast<const StoreInbox*>(cylinder)) {
+		return item->isStoreItem() ? RETURNVALUE_ITEMCANNOTBEMOVEDTHERE : RETURNVALUE_CANNOTMOVEITEMISNOTSTOREITEM;
+	}
 
 	if (!hasBitSet(FLAG_NOLIMIT, flags) && !hasPagination()) {
 		while (cylinder) {

@@ -733,6 +733,39 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 		}
 	}
 
+	// load store inbox items
+	{
+		ItemMap itemMap;
+		[[maybe_unused]] ItemMapGuard itemMapGuard{itemMap};
+
+		if ((result = db.storeQuery(fmt::format(
+		         "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_storeinboxitems` WHERE `player_id` = {:d} ORDER BY `sid` DESC",
+		         player->getGUID())))) {
+			loadItems(itemMap, result);
+
+			for (ItemMap::reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
+				auto item = std::move(it->second.first);
+				if (!item) {
+					continue;
+				}
+
+				int32_t pid = it->second.second;
+				if (pid >= 0 && pid < 100) {
+					transferLoadedItem(player->getStoreInbox(), item);
+					continue;
+				}
+
+				ItemMap::const_iterator parentIt = itemMap.find(pid);
+				if (parentIt == itemMap.end() || !parentIt->second.first) {
+					continue;
+				}
+
+				Container* container = parentIt->second.first->getContainer();
+				transferLoadedItem(container, item);
+			}
+		}
+	}
+
 	// Load reward items
 	{
 		ItemMap itemMap;
@@ -1248,6 +1281,26 @@ bool IOLoginData::savePlayer(Player* player)
 		}
 
 		if (!saveItems(player, itemList, rewardQuery, propWriteStream)) {
+			return false;
+		}
+	}
+
+	// save store inbox items
+	{
+		AutoStat statStoreInbox("savePlayer", "items_storeinbox");
+		if (!db.executeQuery(fmt::format("DELETE FROM `player_storeinboxitems` WHERE `player_id` = {:d}", player->getGUID()))) {
+			return false;
+		}
+
+		DBInsert storeInboxQuery(
+		    "INSERT INTO `player_storeinboxitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+		ItemBlockList itemList;
+
+		for (const auto& item : player->getStoreInbox()->getItemList()) {
+			itemList.emplace_back(0, item.get());
+		}
+
+		if (!saveItems(player, itemList, storeInboxQuery, propWriteStream)) {
 			return false;
 		}
 	}

@@ -775,6 +775,32 @@ int luaItemIsLoadedFromMap(lua_State* L)
 	return 1;
 }
 
+int luaItemSetStoreItem(lua_State* L)
+{
+	// item:setStoreItem(storeItem)
+	Item* item = getItemUserdata<Item>(L, 1);
+	if (!item) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	item->setStoreItem(getBoolean(L, 2, false));
+	pushBoolean(L, true);
+	return 1;
+}
+
+int luaItemIsStoreItem(lua_State* L)
+{
+	// item:isStoreItem()
+	const Item* item = getItemUserdata<const Item>(L, 1);
+	if (item) {
+		pushBoolean(L, item->isStoreItem());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int luaItemSetReflect(lua_State* L)
 {
 	// item:setReflect(combatType, reflect)
@@ -1073,6 +1099,8 @@ void LuaScriptInterface::registerItem()
 
 	registerMethod("Item", "hasProperty", luaItemHasProperty);
 	registerMethod("Item", "isLoadedFromMap", luaItemIsLoadedFromMap);
+	registerMethod("Item", "setStoreItem", luaItemSetStoreItem);
+	registerMethod("Item", "isStoreItem", luaItemIsStoreItem);
 
 	registerMethod("Item", "setReflect", luaItemSetReflect);
 	registerMethod("Item", "getReflect", luaItemGetReflect);

@@ -325,6 +325,21 @@ int luaPlayerGetInbox(lua_State* L)
 	return 1;
 }
 
+int luaPlayerGetStoreInbox(lua_State* L)
+{
+	// player:getStoreInbox()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player || !player->getStoreInbox()) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	StoreInbox* storeInbox = player->getStoreInbox();
+	pushSharedPtr(L, storeInbox->shared_from_this());
+	setItemMetatable(L, -1, storeInbox);
+	return 1;
+}
+
 int luaPlayerGetProtectionTime(lua_State* L)
 {
     // player:getProtectionTime()
@@ -3478,6 +3493,7 @@ void LuaScriptInterface::registerPlayer()
 	registerMethod("Player", "getDepotBox", luaPlayerGetDepotBox);
 	registerMethod("Player", "getRewardChest", luaPlayerGetRewardChest);
 	registerMethod("Player", "getInbox", luaPlayerGetInbox);
+	registerMethod("Player", "getStoreInbox", luaPlayerGetStoreInbox);
 
 	registerMethod("Player", "getProtectionTime", luaPlayerGetProtectionTime);
 	registerMethod("Player", "setProtectionTime", luaPlayerSetProtectionTime);

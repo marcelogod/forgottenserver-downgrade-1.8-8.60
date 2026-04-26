@@ -565,6 +565,18 @@ int luaItemTypeGetRotateTo(lua_State* L)
 	return 1;
 }
 
+int luaItemTypeIsStoreItem(lua_State* L)
+{
+	// itemType:isStoreItem()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType) {
+		pushBoolean(L, itemType->storeItem);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int luaItemTypeGetAbilities(lua_State* L)
 {
 	// itemType:getAbilities()
@@ -1037,6 +1049,7 @@ void LuaScriptInterface::registerItemType()
 	registerMethod("ItemType", "isMagicField", luaItemTypeIsMagicField);
 	registerMethod("ItemType", "isUseable", luaItemTypeIsUseable);
 	registerMethod("ItemType", "isPickupable", luaItemTypeIsPickupable);
+	registerMethod("ItemType", "isStoreItem", luaItemTypeIsStoreItem);
 
 	registerMethod("ItemType", "getType", luaItemTypeGetType);
 	registerMethod("ItemType", "getGroup", luaItemTypeGetGroup);

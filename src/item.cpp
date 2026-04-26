@@ -957,6 +957,11 @@ void Item::serializeAttr(PropWriteStream& propWriteStream) const
 		propWriteStream.write<uint16_t>(static_cast<uint16_t>(getIntAttr(ITEM_ATTRIBUTE_WRAPID)));
 	}
 
+	if (hasAttribute(ITEM_ATTRIBUTE_STOREITEM)) {
+		propWriteStream.write<uint8_t>(ATTR_STOREITEM);
+		propWriteStream.write<uint8_t>(static_cast<uint8_t>(getIntAttr(ITEM_ATTRIBUTE_STOREITEM)));
+	}
+
 	if (hasAttribute(ITEM_ATTRIBUTE_CUSTOM)) {
 		const ItemAttributes::CustomAttributeMap* customAttrMap = attributes->getCustomAttributeMap();
 		propWriteStream.write<uint8_t>(ATTR_CUSTOM_ATTRIBUTES);

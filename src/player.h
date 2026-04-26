@@ -18,6 +18,7 @@
 #include "protocolgame.h"
 #include "protocolspectator.h"
 #include "rewardchest.h"
+#include "storeinbox.h"
 #include "town.h"
 #include "vocation.h"
 
@@ -457,6 +458,7 @@ public:
 	void setLoading(bool b) { loading = b; }
 	RewardChest& getRewardChest();
 	Inbox* getInbox();
+	StoreInbox* getStoreInbox() const { return storeInbox.get(); }
 	void onReceiveMail() const;
 	bool isNearDepotBox() const;
 
@@ -1321,6 +1323,7 @@ private:
 	std::shared_ptr<Town> town;
 	std::shared_ptr<Vocation> vocation;
 	std::shared_ptr<RewardChest> rewardChest = nullptr;
+	std::shared_ptr<StoreInbox> storeInbox = nullptr;
 
 	uint32_t attackSpeed = 0;
 	uint32_t inventoryWeight = 0;

@@ -50,8 +50,10 @@ uint32_t Player::playerAutoID = 0x10000000;
 
 // storedConditionList is now a per-instance member (see player.h)
 
-Player::Player(ProtocolGame_ptr p) : Creature(), client(std::make_shared<ProtocolSpectator>(std::move(p))), lastPing(OTSYS_TIME()), lastPong(lastPing)
+Player::Player(ProtocolGame_ptr p) : Creature(), client(std::make_shared<ProtocolSpectator>(std::move(p))), lastPing(OTSYS_TIME()), lastPong(lastPing),
+	storeInbox(std::make_shared<StoreInbox>(ITEM_STORE_INBOX))
 {
+	storeInbox->setParent(this);
 	experienceRate.fill(100);
 }
 
@@ -62,6 +64,11 @@ Player::~Player()
 			item->setParent(nullptr);
 			item->stopDecaying();
 		}
+	}
+
+	if (storeInbox) {
+		storeInbox->setParent(nullptr);
+		storeInbox->stopDecaying();
 	}
 
 	setWriteItem(nullptr);
@@ -2731,6 +2738,10 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 
 	if (!item->isPickupable()) {
 		return RETURNVALUE_CANNOTPICKUP;
+	}
+
+	if (item->isStoreItem()) {
+		return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE;
 	}
 
 	ReturnValue ret = RETURNVALUE_NOERROR;
