@@ -5290,6 +5290,7 @@ void Player::lootCorpse(Container* container)
 		return;
 	}
 
+	auto goldPouchDestination = findGoldPouch();
 	auto storeInboxDestination = getStoreInbox();
 	if (!storeInboxDestination) {
 		sendTextMessage(MESSAGE_EVENT_ORANGE, "Your store inbox is unavailable.");
@@ -5349,10 +5350,24 @@ void Player::lootCorpse(Container* container)
 			continue;
 		}
 
-		ReturnValue ret = g_game.internalMoveItem(container, storeInboxDestination, INDEX_WHEREEVER, item,
+		ReturnValue ret;
+		Container* primaryDestination = goldPouchDestination ? goldPouchDestination : storeInboxDestination;
+		Container* fallbackDestination = storeInboxDestination;
+		bool usedGoldPouch = (goldPouchDestination != nullptr);
+
+		ret = g_game.internalMoveItem(container, primaryDestination, INDEX_WHEREEVER, item,
 		                                          item->getItemCount(), nullptr);
 		if (ret == RETURNVALUE_NOERROR) {
 			continue;
+		}
+
+		if (usedGoldPouch && fallbackDestination != primaryDestination) {
+			ret = g_game.internalMoveItem(container, fallbackDestination, INDEX_WHEREEVER, item,
+			                                          item->getItemCount(), nullptr);
+			if (ret == RETURNVALUE_NOERROR) {
+				sendTextMessage(MESSAGE_STATUS_SMALL, "Your gold pouch is full. Item sent to store inbox.");
+				continue;
+			}
 		}
 
 		auto backpackItem = getInventoryItem(CONST_SLOT_BACKPACK);
