@@ -673,6 +673,18 @@ DLL patches that extend the old Tibia 8.60 client beyond its original protocol l
 
 ---
 
+## 💬 Community (Discord)
+
+I’ve created a Discord server.
+
+If you want to discuss ideas, give suggestions, keep the 8.6 protocol standards, share systems, report errors, or show your work, feel free to join.
+
+You’re very welcome 🙂
+
+**[💬 Join the Discord Community!](https://discord.gg/uZyxcxWXp)**
+
+---
+
 ## 🐛 Contributing & Issues
 
 The base is **stable** and all systems are fully working. Found a bug? You're very welcome to help:
