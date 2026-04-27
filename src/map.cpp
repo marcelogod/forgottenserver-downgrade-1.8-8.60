@@ -1257,7 +1257,8 @@ uint32_t Map::clean() const
 
 	std::vector<Item*> toRemove;
 
-	for (auto tile : g_game.getTilesToClean()) {
+	for (const Position& tilePos : g_game.getTilesToClean()) {
+		Tile* tile = g_game.map.getTile(tilePos);
 		if (!tile) {
 			continue;
 		}

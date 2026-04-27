@@ -565,37 +565,29 @@ public:
 
 	std::forward_list<std::shared_ptr<Item>> toDecayItems;
 
-	std::unordered_set<TilePtr> getTilesToClean() const { return tilesToClean; }
+	std::unordered_set<Position, PositionHasher> getTilesToClean() const { return tilesToClean; }
 	bool isTileInCleanList(Tile* tile)
 	{
-		auto tileRef = getTileSharedRef(tile);
-		return tileRef && tilesToClean.contains(tileRef);
+		return tile && tilesToClean.contains(tile->getPosition());
 	}
-	bool isTileInCleanList(const TilePtr& tile) { return tile && tilesToClean.contains(tile); }
-	void addTileToClean(Tile* tile)
-	{
-		if (auto tileRef = getTileSharedRef(tile)) {
-			tilesToClean.emplace(std::move(tileRef));
-		}
-	}
-	void addTileToClean(const TilePtr& tile)
-	{
-		if (tile) {
-			tilesToClean.emplace(tile);
-		}
-	}
+	bool isTileInCleanList(const TilePtr& tile) { return isTileInCleanList(tile.get()); }
 	void removeTileToClean(Tile* tile)
 	{
-		if (auto tileRef = getTileSharedRef(tile)) {
-			tilesToClean.erase(tileRef);
+		if (tile) {
+			tilesToClean.erase(tile->getPosition());
 		}
 	}
 	void removeTileToClean(const TilePtr& tile)
 	{
+		removeTileToClean(tile.get());
+	}
+	void addTileToClean(Tile* tile)
+	{
 		if (tile) {
-			tilesToClean.erase(tile);
+			tilesToClean.emplace(tile->getPosition());
 		}
 	}
+	void addTileToClean(const TilePtr& tile) { addTileToClean(tile.get()); }
 	void clearTilesToClean() { tilesToClean.clear(); }
 
 	void loadGameStorageValues();
@@ -712,7 +704,7 @@ private:
 
 	std::unordered_map<uint32_t, std::weak_ptr<BedItem>> bedSleepersMap;
 
-	std::unordered_set<TilePtr> tilesToClean;
+	std::unordered_set<Position, PositionHasher> tilesToClean;
 
 	// Loot Highlight: maps corpse item lifetime to scheduler event ID
 	LootHighlightEventMap lootHighlightEvents;
