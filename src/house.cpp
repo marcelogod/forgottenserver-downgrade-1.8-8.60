@@ -330,6 +330,17 @@ bool House::transferToDepot(Player* player) const
 		return false;
 	}
 
+	Inbox* targetInbox = player->getInbox(townId);
+	if (!targetInbox) {
+		targetInbox = player->getInbox();
+		if (targetInbox) {
+			LOG_WARN(fmt::format("[House::transferToDepot] Fallback to player default inbox for house {} (townId {})", id, townId));
+		} else {
+			LOG_WARN(fmt::format("[House::transferToDepot] No inbox found for player when transferring house {} items", id));
+			return false;
+		}
+	}
+
 	for (HouseTile* tile : houseTiles) {
 		const TileItemVector* items = tile->getItemList();
 		if (!items) {
@@ -363,7 +374,7 @@ bool House::transferToDepot(Player* player) const
 						if (Container* sub = child->getContainer()) {
 							subContainers.push_back(sub);
 						} else if (child->isPickupable()) {
-							g_game.internalMoveItem(child->getParent(), player->getInbox(), INDEX_WHEREEVER, child.get(), child->getItemCount(), nullptr, FLAG_NOLIMIT);
+							g_game.internalMoveItem(child->getParent(), targetInbox, INDEX_WHEREEVER, child.get(), child->getItemCount(), nullptr, FLAG_NOLIMIT);
 						}
 					}
 				}
@@ -380,14 +391,14 @@ bool House::transferToDepot(Player* player) const
 			}
 
 			if (processedItem->isPickupable()) {
-				g_game.internalMoveItem(processedItem->getParent(), player->getInbox(), INDEX_WHEREEVER, processedItem, processedItem->getItemCount(), nullptr, FLAG_NOLIMIT);
+				g_game.internalMoveItem(processedItem->getParent(), targetInbox, INDEX_WHEREEVER, processedItem, processedItem->getItemCount(), nullptr, FLAG_NOLIMIT);
 			} else if (Container* container = processedItem->getContainer()) {
 				std::vector<std::shared_ptr<Item>> contents;
 				for (const auto& content : container->getItemList()) {
 					contents.push_back(content);
 				}
 				for (const auto& content : contents) {
-					g_game.internalMoveItem(content->getParent(), player->getInbox(), INDEX_WHEREEVER, content.get(), content->getItemCount(), nullptr, FLAG_NOLIMIT);
+					g_game.internalMoveItem(content->getParent(), targetInbox, INDEX_WHEREEVER, content.get(), content->getItemCount(), nullptr, FLAG_NOLIMIT);
 				}
 			}
 		}
