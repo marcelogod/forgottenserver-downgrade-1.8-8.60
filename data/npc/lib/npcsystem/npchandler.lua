@@ -371,7 +371,15 @@ if NpcHandler == nil then
         local callback = self:getCallback(CALLBACK_CREATURE_DISAPPEAR)
         if callback == nil or callback(cid) then
             if self:processModuleCallback(CALLBACK_CREATURE_DISAPPEAR, cid) then
-                if self:isFocused(cid) then self:unGreet(cid) end
+                if self:isFocused(cid) then
+                    local player = Player(cid)
+                    if player then
+                        self:unGreet(cid)
+                    else
+                        self:resetNpc(cid)
+                        self:releaseFocus(cid)
+                    end
+                end
             end
         end
     end
@@ -491,7 +499,11 @@ if NpcHandler == nil then
             if self:processModuleCallback(CALLBACK_ONTHINK) then
                 for pos, focus in pairs(self.focuses) do
                     if focus then
-                        if not self:isInRange(focus) then
+                        local player = Player(focus)
+                        if not player then
+                            self:resetNpc(focus)
+                            self:releaseFocus(focus)
+                        elseif not self:isInRange(focus) then
                             self:onWalkAway(focus)
                         elseif self.talkStart[focus] and
                             (os.time() - self.talkStart[focus]) > self.idleTime then
@@ -524,28 +536,29 @@ if NpcHandler == nil then
             local callback = self:getCallback(CALLBACK_CREATURE_DISAPPEAR)
             if callback == nil or callback(cid) then
                 if self:processModuleCallback(CALLBACK_CREATURE_DISAPPEAR, cid) then
-                    local msg = self:getMessage(MESSAGE_WALKAWAY)
-
                     local player = Player(cid)
-                    local playerName = player and player:getName() or -1
-                    local playerSex = player and player:getSex() or 0
+                    if player then
+                        local msg = self:getMessage(MESSAGE_WALKAWAY)
+                        local playerName = player:getName()
+                        local playerSex = player:getSex()
 
-                    local parseInfo = {[TAG_PLAYERNAME] = playerName}
-                    local message = self:parseMessage(msg, parseInfo)
+                        local parseInfo = {[TAG_PLAYERNAME] = playerName}
+                        local message = self:parseMessage(msg, parseInfo)
 
-                    local msg_male = self:getMessage(MESSAGE_WALKAWAY_MALE)
-                    local message_male = self:parseMessage(msg_male, parseInfo)
-                    local msg_female = self:getMessage(MESSAGE_WALKAWAY_FEMALE)
-                    local message_female =
-                        self:parseMessage(msg_female, parseInfo)
-                    if message_female ~= message_male then
-                        if playerSex == PLAYERSEX_FEMALE then
-                            selfSay(message_female)
-                        else
-                            selfSay(message_male)
+                        local msg_male = self:getMessage(MESSAGE_WALKAWAY_MALE)
+                        local message_male = self:parseMessage(msg_male, parseInfo)
+                        local msg_female = self:getMessage(MESSAGE_WALKAWAY_FEMALE)
+                        local message_female =
+                            self:parseMessage(msg_female, parseInfo)
+                        if message_female ~= message_male then
+                            if playerSex == PLAYERSEX_FEMALE then
+                                selfSay(message_female)
+                            else
+                                selfSay(message_male)
+                            end
+                        elseif message ~= "" then
+                            selfSay(message)
                         end
-                    elseif message ~= "" then
-                        selfSay(message)
                     end
                     self:resetNpc(cid)
                     self:releaseFocus(cid)

@@ -112,6 +112,8 @@ if not NpcEvents then
             local player = Player(playerid)
             if not player then
                 focus:removeFocus(playerid)
+                handler:setTalkState(handler, playerid)
+                handler:resetData(playerid)
             elseif getDistanceTo(player:getId()) >= FOCUS.distance or releaseTime < os.time() then
                 focus:removeFocus(player)
                 closeShopWindow(player)

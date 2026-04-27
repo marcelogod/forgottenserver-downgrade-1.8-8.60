@@ -582,11 +582,19 @@ void Npc::onRemoveCreature(Creature* creature, bool isLogout)
 	Creature::onRemoveCreature(creature, isLogout);
 
 	if (creature == this) {
+		auto focused = m_focusCreature.lock();
+		if (focused) {
+			Player* focusedPlayer = focused->getPlayer();
+			if (focusedPlayer) {
+				clearFocusIfNeeded(focusedPlayer);
+			}
+		}
 		closeAllShopWindows();
 		if (npcEventHandler) {
 			npcEventHandler->onCreatureDisappear(creature);
 		}
-	} else if (creature->getPlayer()) {
+	} else if (Player* player = creature->getPlayer()) {
+		clearFocusIfNeeded(player);
 		if (npcEventHandler) {
 			npcEventHandler->onCreatureDisappear(creature);
 		}
@@ -601,6 +609,25 @@ void Npc::onCreatureMove(Creature* creature, const Tile* newTile, const Position
 	if (creature == this || creature->getPlayer()) {
 		if (npcEventHandler) {
 			npcEventHandler->onCreatureMove(creature, oldPos, newPos);
+		}
+	}
+
+	if (Player* player = creature->getPlayer()) {
+		auto focused = m_focusCreature.lock();
+		if (focused && focused.get() == player) {
+			bool shouldClear = false;
+
+			if (!canSee(newPos)) {
+				shouldClear = true;
+			}
+
+			if (!shouldClear && player->getInstanceID() != getInstanceID()) {
+				shouldClear = true;
+			}
+
+			if (shouldClear) {
+				clearFocusIfNeeded(player);
+			}
 		}
 	}
 }
@@ -640,6 +667,20 @@ void Npc::onThink(uint32_t interval)
 
 	if (isIdle) {
 		return;
+	}
+
+	auto focused = m_focusCreature.lock();
+	if (focused) {
+		Player* focusedPlayer = focused->getPlayer();
+		if (!focusedPlayer || focusedPlayer->isRemoved()
+		    || !canSee(focusedPlayer->getPosition())
+		    || focusedPlayer->getInstanceID() != getInstanceID()) {
+			if (focusedPlayer && !focusedPlayer->isRemoved()) {
+				clearFocusIfNeeded(focusedPlayer);
+			} else {
+				setCreatureFocus(nullptr);
+			}
+		}
 	}
 
 	Creature::onThink(interval);
@@ -827,6 +868,29 @@ void Npc::setCreatureFocus(Creature* creature)
 		turnToCreature(player);
 	} else {
 		m_focusCreature.reset();
+	}
+}
+
+void Npc::clearFocusIfNeeded(Player* player)
+{
+	if (!player) {
+		return;
+	}
+
+	auto focused = m_focusCreature.lock();
+	if (!focused || focused.get() != player) {
+		return;
+	}
+
+	setCreatureFocus(nullptr);
+
+	auto playerRef = std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player));
+	if (playerRef) {
+		removeShopPlayer(playerRef);
+	}
+
+	if (npcEventHandler) {
+		npcEventHandler->onCreatureDisappear(player);
 	}
 }
 

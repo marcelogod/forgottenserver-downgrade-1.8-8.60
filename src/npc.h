@@ -217,6 +217,7 @@ public:
 
 	void turnToCreature(Creature* creature);
 	void setCreatureFocus(Creature* creature);
+	void clearFocusIfNeeded(Player* player);
 
 	const auto& getSpectators() { return spectators; }
 
