@@ -295,7 +295,7 @@
     <ClCompile Include="..\src\spy.cpp" />
     <ClCompile Include="..\src\spells.cpp" />
     <ClCompile Include="..\src\stats.cpp" />
-     <ClCompile Include="..\src\storeinbox.cpp" />
+    <ClCompile Include="..\src\storeinbox.cpp" />
     <ClCompile Include="..\src\protocolstatus.cpp" />
     <ClCompile Include="..\src\talkaction.cpp" />
     <ClCompile Include="..\src\tasks.cpp" />
