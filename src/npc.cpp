@@ -65,36 +65,97 @@ bool loadScripts(bool reload /* = false */)
 		load(reload);
 	}
 
-	const std::string dirPath = "data/npc/lua";
-	if (!fs::exists(dirPath)) {
+	const fs::path npcRoot{"data/npc"};
+	if (!fs::exists(npcRoot) || !fs::is_directory(npcRoot)) {
+		LOG_WARN(fmt::format("[Warning - Npcs::loadScripts] NPC root folder does not exist: {}", npcRoot.string()));
 		return false;
 	}
 
-	std::vector<fs::path> files;
+	std::vector<fs::path> scriptDirs;
 	try {
-		for (const auto& entry : fs::recursive_directory_iterator(dirPath)) {
-			if (fs::is_regular_file(entry) && entry.path().extension() == ".lua") {
-				const std::string filename = entry.path().filename().string();
-				if (filename.find("#") == std::string::npos) {
-					files.emplace_back(entry.path());
-				}
+		for (const auto& entry : fs::directory_iterator(npcRoot)) {
+			const fs::path entryPath = entry.path();
+			if (!fs::is_directory(entryPath)) {
+				continue;
 			}
+
+			if (entryPath.filename() == "lib") {
+				continue;
+			}
+
+			scriptDirs.emplace_back(entryPath);
 		}
 	} catch (const std::exception& e) {
-		std::ostringstream ss;
-		ss << "[Error - Npcs::loadScripts] Exception: " << e.what();
-		LOG_ERROR(ss.str());
+		LOG_WARN(fmt::format("[Warning - Npcs::loadScripts] Can not scan {}: {}", npcRoot.string(), e.what()));
 		return false;
 	}
 
-	std::sort(files.begin(), files.end());
-	for (const auto& path : files) {
-		const std::string scriptFile = path.string();
-		if (scriptInterface->loadFile(scriptFile) == -1) {
-			LOG_ERROR("> " + path.filename().string() + " [error]");
-			LOG_ERROR(fmt::format("^ {}", scriptInterface->getLastLuaError()));
-		} else {
-			LOG_DEBUG("> " + path.filename().string() + " [loaded]");
+	std::sort(scriptDirs.begin(), scriptDirs.end());
+
+	for (const auto& dirPath : scriptDirs) {
+		if (!fs::exists(dirPath) || !fs::is_directory(dirPath)) {
+			LOG_WARN(fmt::format("[Warning - Npcs::loadScripts] NPC script folder does not exist: {}", dirPath.string()));
+			continue;
+		}
+
+		LOG_INFO(fmt::format(">> Loading NPC scripts from {}", dirPath.string()));
+
+		std::vector<fs::path> files;
+		try {
+			for (const auto& entry : fs::recursive_directory_iterator(dirPath)) {
+				const fs::path path = entry.path();
+				if (fs::is_regular_file(path) && path.extension() == ".lua") {
+					const std::string filename = path.filename().string();
+					if (filename.find('#') == std::string::npos) {
+						files.emplace_back(path);
+					}
+				}
+			}
+		} catch (const std::exception& e) {
+			LOG_WARN(fmt::format("[Warning - Npcs::loadScripts] Can not scan {}: {}", dirPath.string(), e.what()));
+			continue;
+		}
+
+		std::sort(files.begin(), files.end());
+
+		lua_State* L = scriptInterface->getLuaState();
+		lua_newtable(L);
+		for (const auto& path : files) {
+			const std::string filename = path.filename().generic_string();
+			const std::string relativeFile = path.lexically_relative(dirPath).generic_string();
+			const std::string scriptFile = path.generic_string();
+			lua_pushstring(L, scriptFile.c_str());
+			lua_setfield(L, -2, filename.c_str());
+			lua_pushstring(L, scriptFile.c_str());
+			lua_setfield(L, -2, relativeFile.c_str());
+		}
+		lua_setglobal(L, "__npcScriptFilesByName");
+
+		for (const auto& path : files) {
+			const std::string scriptFile = path.generic_string();
+			const std::string scriptDir = path.parent_path().generic_string();
+			const std::string scriptRoot = dirPath.generic_string();
+
+			lua_pushstring(L, scriptFile.c_str());
+			lua_setglobal(L, "__npcCurrentScriptFile");
+			lua_pushstring(L, scriptDir.c_str());
+			lua_setglobal(L, "__npcCurrentScriptDir");
+			lua_pushstring(L, scriptRoot.c_str());
+			lua_setglobal(L, "__npcCurrentScriptRoot");
+
+			if (scriptInterface->loadFile(scriptFile) == -1) {
+				LOG_ERROR("> " + scriptFile + " [error]");
+				LOG_ERROR(fmt::format("^ {}", scriptInterface->getLastLuaError()));
+			} else {
+				LOG_DEBUG("> " + scriptFile + " [loaded]");
+			}
+
+			lua_pushnil(L);
+			lua_setglobal(L, "__npcCurrentScriptFile");
+			lua_pushnil(L);
+			lua_setglobal(L, "__npcCurrentScriptDir");
+			lua_pushnil(L);
+			lua_setglobal(L, "__npcCurrentScriptRoot");
 		}
 	}
 
@@ -127,7 +188,7 @@ bool loadScripts(bool reload /* = false */)
 		ss << ">> " << luaCount << " Lua NPC type(s) registered (hybrid mode active)";
 		LOG_INFO(ss.str());
 	} else {
-		LOG_WARN(">> No Lua NPC types registered from data/npc/lua/ - only XML NPCs will work.");
+		LOG_WARN(">> No Lua NPC types registered from data/npc/ subfolders (except lib/) - only XML NPCs will work.");
 	}
 
 	return true;
@@ -264,7 +325,22 @@ std::unique_ptr<Npc> Npc::createNpc(const std::string& name)
 		npcType->name = name;
 		npcType->filename = "data/npc/" + name + ".xml";
 		if (!npcType->loadFromXml()) {
-			LOG_WARN(fmt::format("[Warning - Npc::createNpc] NPC '{}' not found as Lua type or XML file.", name));
+			const bool xmlExists = fs::exists(npcType->filename);
+			LOG_ERROR(fmt::format(
+			    "[Error - Npc::createNpc] NPC '{}' was not found as a RevScript NPC in any data/npc/ folder "
+			    "(except lib/).",
+			    name));
+			if (!xmlExists) {
+				LOG_ERROR(fmt::format("[Error - Npc::createNpc] XML data/npc/{}.xml also does not exist.", name));
+			} else {
+				LOG_ERROR(fmt::format("[Error - Npc::createNpc] XML {} exists but failed to load. See the XML error above.",
+				                      npcType->filename));
+			}
+			LOG_ERROR(fmt::format(
+			    "[Error - Npc::createNpc] Fix: create a .lua file in any data/npc/ subfolder with "
+			    "NpcType:new('{}'), or create data/npc/{}.xml. Make sure the name in NpcType:new(...) matches "
+			    "the map name exactly (case-sensitive).",
+			    name, name));
 			return nullptr;
 		}
 		Npcs::addNpcType(npcType->name, npcType);
@@ -407,10 +483,18 @@ void Npc::loadNpcTypeInfo()
 
 bool NpcType::loadFromXml()
 {
+	if (!fs::exists(filename)) {
+		return false;
+	}
+
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename.c_str());
 	if (!result) {
-		printXMLError("Error - NpcType::loadFromXml", filename, result);
+		LOG_ERROR(fmt::format("[Error - NpcType::loadFromXml] Malformed XML in {}: {}",
+		                      filename, result.description()));
+		LOG_ERROR(fmt::format("[Error - NpcType::loadFromXml] Fix XML syntax in {} and make sure it has a valid "
+		                      "<npc ...> root tag.",
+		                      filename));
 		return false;
 	}
 
@@ -683,7 +767,12 @@ void Npc::onThink(uint32_t interval)
 		npcEventHandler->onThink();
 	}
 
-	if (m_focusCreature.expired() && getTimeSinceLastMove() >= walkTicks) {
+	auto focusedAfterThink = m_focusCreature.lock();
+	if (focusedAfterThink) {
+		turnToCreature(focusedAfterThink.get());
+		stopEventWalk();
+		listWalkDir.clear();
+	} else if (walkTicks > 0 && getTimeSinceLastMove() >= walkTicks) {
 		addEventWalk();
 	}
 
@@ -810,6 +899,8 @@ bool Npc::doMoveTo(const Position& pos, int32_t minTargetDist /* = 1*/, int32_t 
                    bool fullPathSearch /* = true*/, bool clearSight /* = true*/, int32_t maxSearchDist /* = 0*/)
 {
 	if (!m_focusCreature.expired()) {
+		stopEventWalk();
+		listWalkDir.clear();
 		return false;
 	}
 
@@ -857,12 +948,27 @@ void Npc::setCreatureFocus(Creature* creature)
 	Player* player = creature ? creature->getPlayer() : nullptr;
 	if (player) {
 		m_focusCreature = g_game.getPlayerWeakRef(player);
+		Creature::setFollowCreature(nullptr);
 		stopEventWalk();
 		listWalkDir.clear();
 		turnToCreature(player);
 	} else {
 		m_focusCreature.reset();
+		Creature::setFollowCreature(nullptr);
+		listWalkDir.clear();
 	}
+}
+
+bool Npc::setFollowCreature(Creature* creature)
+{
+	if (!m_focusCreature.expired()) {
+		Creature::setFollowCreature(nullptr);
+		stopEventWalk();
+		listWalkDir.clear();
+		return false;
+	}
+
+	return Creature::setFollowCreature(creature);
 }
 
 void Npc::clearFocusIfNeeded(Player* player)
@@ -999,7 +1105,7 @@ int NpcScriptInterface::luaActionMove(lua_State* L)
 {
 	// selfMove(direction)
 	Npc* npc = getScriptEnv()->getNpc();
-	if (npc) {
+	if (npc && !npc->hasCreatureFocus()) {
 		g_game.internalMoveCreature(npc, Lua::getInteger<Direction>(L, 1));
 	}
 	return 0;
@@ -1048,6 +1154,11 @@ int NpcScriptInterface::luaActionFollow(lua_State* L)
 	// selfFollow(player)
 	Npc* npc = getScriptEnv()->getNpc();
 	if (!npc) {
+		Lua::pushBoolean(L, false);
+		return 1;
+	}
+
+	if (npc->hasCreatureFocus()) {
 		Lua::pushBoolean(L, false);
 		return 1;
 	}

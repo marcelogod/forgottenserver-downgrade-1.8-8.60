@@ -217,6 +217,8 @@ public:
 
 	void turnToCreature(Creature* creature);
 	void setCreatureFocus(Creature* creature);
+	bool hasCreatureFocus() const { return !m_focusCreature.expired(); }
+	bool setFollowCreature(Creature* creature) override;
 	void clearFocusIfNeeded(Player* player);
 
 	const auto& getSpectators() { return spectators; }
