@@ -50,7 +50,8 @@ bool luaPlayerIsFamiliarSpell(std::string_view name)
 int luaPlayerCreate(lua_State* L)
 {
 	// Player(id or guid or name or userdata)
-	Player* player;
+	std::shared_ptr<Player> player;
+	Player* rawPlayer = nullptr;
 	if (isInteger(L, 2)) {
 		uint32_t id = getInteger<uint32_t>(L, 2);
 		if (id >= 0x10000000 && id <= Player::playerAutoID) {
@@ -66,14 +67,15 @@ int luaPlayerCreate(lua_State* L)
 			return 2;
 		}
 	} else if (isUserdata(L, 2)) {
-		player = getUserdata<Player>(L, 2);
+		rawPlayer = getUserdata<Player>(L, 2);
 	} else {
-		player = nullptr;
+		rawPlayer = nullptr;
 	}
 
-	if (player) {
-		pushUserdata<Player>(L, player);
-		setCreatureMetatable(L, -1, player);
+	Player* playerRaw = player ? player.get() : rawPlayer;
+	if (playerRaw) {
+		pushUserdata<Player>(L, playerRaw);
+		setCreatureMetatable(L, -1, playerRaw);
 	} else {
 		lua_pushnil(L);
 	}
@@ -2277,16 +2279,16 @@ int luaPlayerSetGhostMode(lua_State* L)
 	}
 
 	if (player->isInGhostMode()) {
-		for (const auto& it : g_game.getPlayers()) {
-			if (!it.second->isAccessPlayer()) {
-				it.second->notifyStatusChange(player, VIPSTATUS_OFFLINE);
+		for (const auto& onlinePlayer : g_game.getPlayers()) {
+			if (!onlinePlayer->isAccessPlayer()) {
+				onlinePlayer->notifyStatusChange(player, VIPSTATUS_OFFLINE);
 			}
 		}
 		IOLoginData::removeOnlineStatus(player->getGUID());
 	} else {
-		for (const auto& it : g_game.getPlayers()) {
-			if (!it.second->isAccessPlayer()) {
-				it.second->notifyStatusChange(player, VIPSTATUS_ONLINE);
+		for (const auto& onlinePlayer : g_game.getPlayers()) {
+			if (!onlinePlayer->isAccessPlayer()) {
+				onlinePlayer->notifyStatusChange(player, VIPSTATUS_ONLINE);
 			}
 		}
 		IOLoginData::updateOnlineStatus(player->getGUID(), true, player->client->isBroadcasting(), player->client->password(), player->client->description(), player->client->spectatorList().size());

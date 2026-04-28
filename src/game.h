@@ -165,9 +165,9 @@ public:
 	/**
 	 * Returns a player based on the unique creature identifier
 	 * \param id is the unique player id to get a player pointer to
-	 * \returns A Pointer to the player
+	 * \returns A shared pointer to the player
 	 */
-	[[nodiscard]] Player* getPlayerByID(uint32_t id);
+	[[nodiscard]] std::shared_ptr<Player> getPlayerByID(uint32_t id);
 
 	/**
 	 * Returns a creature based on a string name identifier
@@ -186,30 +186,30 @@ public:
 	/**
 	 * Returns a player based on a string name identifier
 	 * \param s is the name identifier
-	 * \returns A Pointer to the player
+	 * \returns A shared pointer to the player
 	 */
-	[[nodiscard]] Player* getPlayerByName(std::string_view s);
+	[[nodiscard]] std::shared_ptr<Player> getPlayerByName(std::string_view s);
 
 	/**
 	 * Returns a player based on guid
-	 * \returns A Pointer to the player
+	 * \returns A shared pointer to the player
 	 */
-	[[nodiscard]] Player* getPlayerByGUID(const uint32_t& guid);
+	[[nodiscard]] std::shared_ptr<Player> getPlayerByGUID(const uint32_t& guid);
 
 	/**
 	 * Returns a player based on a string name identifier, with support for the "~" wildcard.
 	 * \param s is the name identifier, with or without wildcard
-	 * \param player will point to the found player (if any)
+	 * \param player will hold the found player (if any)
 	 * \return "RETURNVALUE_PLAYERWITHTHISNAMEISNOTONLINE" or "RETURNVALUE_NAMEISTOOAMBIGIOUS"
 	 */
-	ReturnValue getPlayerByNameWildcard(std::string_view s, Player*& player);
+	ReturnValue getPlayerByNameWildcard(std::string_view s, std::shared_ptr<Player>& player);
 
 	/**
 	 * Returns a player based on an account number identifier
 	 * \param acc is the account identifier
-	 * \returns A Pointer to the player
+	 * \returns A shared pointer to the player
 	 */
-	[[nodiscard]] Player* getPlayerByAccount(uint32_t acc);
+	[[nodiscard]] std::shared_ptr<Player> getPlayerByAccount(uint32_t acc);
 
 	/**
 	 * Place Creature on the map without sending out events to the surrounding.
@@ -267,8 +267,8 @@ public:
 	{
 		lightLevel = lightInfo.level;
 		lightColor = lightInfo.color;
-		for (const auto& it : players) {
-			it.second->sendWorldLight(lightInfo);
+		for (const auto& player : getPlayers()) {
+			player->sendWorldLight(lightInfo);
 		}
 	}
 	void updateWorldLightLevel();
@@ -335,7 +335,8 @@ public:
 	 * \param flags optional flags to modify default behavior
 	 * \returns true if the teleportation was successful
 	 */
-	ReturnValue internalTeleport(Thing* thing, const Position& newPos, bool pushMove = true, uint32_t flags = 0);
+	ReturnValue internalTeleport(Thing* thing, const Position& newPos, bool pushMove = true, uint32_t flags = 0,
+	                             MagicEffectClasses magicEffect = CONST_ME_TELEPORT);
 
 	/**
 	 * Turn a creature to a different direction.
@@ -528,7 +529,7 @@ public:
 	uint32_t getMotdNum() const { return motdNum; }
 	void incrementMotdNum() { motdNum++; }
 
-	const std::unordered_map<uint32_t, Player*>& getPlayers() const { return players; }
+	std::vector<std::shared_ptr<Player>> getPlayers() const;
 	const NpcRegistry& getNpcs() const { return npcs; }
 	const MonsterRegistry& getMonsters() const { return monsters; }
 
@@ -672,9 +673,9 @@ private:
 	void cleanupExpiredLootHighlightEvents();
 	bool eraseLootHighlightEvent(const std::weak_ptr<Item>& corpse, uint32_t eventId);
 
-	std::unordered_map<uint32_t, Player*> players;
-	std::unordered_map<std::string, Player*> mappedPlayerNames;
-	std::unordered_map<uint32_t, Player*> mappedPlayerGuids;
+	std::unordered_map<uint32_t, std::weak_ptr<Player>> players;
+	std::unordered_map<std::string, std::weak_ptr<Player>> mappedPlayerNames;
+	std::unordered_map<uint32_t, std::weak_ptr<Player>> mappedPlayerGuids;
 	mutable std::shared_mutex playersMutex;
 	std::unordered_map<uint32_t, Guild_ptr> guilds;
 	std::unordered_map<uint16_t, std::weak_ptr<Item>> uniqueItems;

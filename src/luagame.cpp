@@ -65,8 +65,8 @@ int luaGameGetPlayers(lua_State* L)
 	lua_createtable(L, g_game.getPlayersOnline(), 0);
 
 	int index = 0;
-	for (const auto& playerEntry : g_game.getPlayers()) {
-		pushUserdata<Player>(L, playerEntry.second);
+	for (const auto& player : g_game.getPlayers()) {
+		pushUserdata<Player>(L, player.get());
 		setMetatable(L, -1, "Player");
 		lua_rawseti(L, -2, ++index);
 	}

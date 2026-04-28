@@ -13,7 +13,7 @@ function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return true
 	end
 
-	player:teleportTo(fromPosition, false)
+	player:teleportTo(fromPosition, false, CONST_ME_NONE)
 	return true
 end
 

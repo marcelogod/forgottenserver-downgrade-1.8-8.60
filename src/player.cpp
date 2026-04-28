@@ -2644,15 +2644,15 @@ void Player::removeList()
 {
 	g_game.removePlayer(this);
 
-	for (const auto& it : g_game.getPlayers()) {
-		it.second->notifyStatusChange(this, VIPSTATUS_OFFLINE);
+	for (const auto& player : g_game.getPlayers()) {
+		player->notifyStatusChange(this, VIPSTATUS_OFFLINE);
 	}
 }
 
 void Player::addList()
 {
-	for (const auto& it : g_game.getPlayers()) {
-		it.second->notifyStatusChange(this, VIPSTATUS_ONLINE);
+	for (const auto& player : g_game.getPlayers()) {
+		player->notifyStatusChange(this, VIPSTATUS_ONLINE);
 	}
 
 	g_game.addPlayer(this);
@@ -4344,13 +4344,7 @@ void Player::addOutfit(uint16_t lookType, uint8_t addons)
 
 bool Player::removeOutfit(uint16_t lookType)
 {
-	for (const auto& [outfit, _] : outfits) {
-		if (outfit == lookType) {
-			outfits.erase(outfit);
-			return true;
-		}
-	}
-	return false;
+	return outfits.erase(lookType) != 0;
 }
 
 bool Player::removeOutfitAddon(uint16_t lookType, uint8_t addons)

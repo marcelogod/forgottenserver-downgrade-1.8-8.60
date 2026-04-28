@@ -142,12 +142,12 @@ function portalMovement.onStepIn(creature, item, position, fromPosition)
 
     local instanceId = player:getInstanceId()
 
-    if not isForgeEnabled() and instanceId == 0 then
-        player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-        player:teleportTo(fromPosition)
-        fromPosition:sendMagicEffect(CONST_ME_POFF)
-        return true
-    end
+	if not isForgeEnabled() and instanceId == 0 then
+		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		player:teleportTo(fromPosition, false, CONST_ME_NONE)
+		fromPosition:sendMagicEffect(CONST_ME_POFF)
+		return true
+	end
 
     if instanceId ~= 0 then
         local returnPos = returnPositions[player:getGuid()]

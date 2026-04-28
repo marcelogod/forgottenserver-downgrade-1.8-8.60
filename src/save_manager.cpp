@@ -58,12 +58,12 @@ void SaveManager::saveAll()
 	uint32_t failCount = 0;
 	const auto& players = g_game.getPlayers();
 
-	for (const auto& it : players) {
-		if (IOLoginData::savePlayer(it.second)) {
+	for (const auto& player : players) {
+		if (IOLoginData::savePlayer(player.get())) {
 			playerCount++;
 		} else {
 			failCount++;
-			LOG_ERROR(fmt::format("[SaveManager] Failed to save player: {}", it.second->getName()));
+			LOG_ERROR(fmt::format("[SaveManager] Failed to save player: {}", player->getName()));
 		}
 	}
 

@@ -129,23 +129,23 @@ function entryMovement.onStepIn(creature, item, position, fromPosition)
     if not player then return true end
 
     if player:getInstanceId() ~= 0 then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE,
-            "[Dungeon] You are already inside an instance.")
-        player:teleportTo(fromPosition)
-        return true
-    end
+		player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+			"[Dungeon] You are already inside an instance.")
+		player:teleportTo(fromPosition, false, CONST_ME_NONE)
+		return true
+	end
 
     local now = os.time()
     local lastUse = player:getStorageValue(COOLDOWN_STORAGE)
     if lastUse and lastUse > 0 and (now - lastUse) < COOLDOWN_TIME then
         local remaining = COOLDOWN_TIME - (now - lastUse)
         local minutes = math.ceil(remaining / 60)
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE,
-            string.format("[Dungeon] You have already cleared this dungeon recently.\n" ..
-            "You must wait %d minute(s) before entering again.", minutes))
-        player:teleportTo(fromPosition)
-        return true
-    end
+		player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+			string.format("[Dungeon] You have already cleared this dungeon recently.\n" ..
+			"You must wait %d minute(s) before entering again.", minutes))
+		player:teleportTo(fromPosition, false, CONST_ME_NONE)
+		return true
+	end
 
     local participants = {}
     local added = {}
@@ -184,12 +184,12 @@ function entryMovement.onStepIn(creature, item, position, fromPosition)
         added[player:getGuid()] = true
     end
 
-    if #participants == 0 then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE,
-            "[Dungeon] No eligible players to enter the dungeon.")
-        player:teleportTo(fromPosition)
-        return true
-    end
+	if #participants == 0 then
+		player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+			"[Dungeon] No eligible players to enter the dungeon.")
+		player:teleportTo(fromPosition, false, CONST_ME_NONE)
+		return true
+	end
 
     instanceCounter = instanceCounter + 1
     local instanceId = instanceCounter

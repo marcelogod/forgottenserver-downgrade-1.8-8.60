@@ -98,23 +98,21 @@ TalkActionResult Spells::playerSaySpell(Player* player, std::string& words)
 
 void Spells::clearMaps(bool fromLua)
 {
-	for (auto instant = instants.begin(); instant != instants.end();) {
-		if (fromLua == instant->second.fromLua) {
-			instantsByName.erase(std::string(instant->second.getName()));
-			instant = instants.erase(instant);
-		} else {
-			++instant;
+	std::erase_if(instants, [this, fromLua](const auto& entry) {
+		if (fromLua != entry.second.fromLua) {
+			return false;
 		}
-	}
+		instantsByName.erase(std::string(entry.second.getName()));
+		return true;
+	});
 
-	for (auto rune = runes.begin(); rune != runes.end();) {
-		if (fromLua == rune->second.fromLua) {
-			runesByName.erase(std::string(rune->second.getName()));
-			rune = runes.erase(rune);
-		} else {
-			++rune;
+	std::erase_if(runes, [this, fromLua](const auto& entry) {
+		if (fromLua != entry.second.fromLua) {
+			return false;
 		}
-	}
+		runesByName.erase(std::string(entry.second.getName()));
+		return true;
+	});
 }
 
 void Spells::clear(bool fromLua)
@@ -663,14 +661,14 @@ bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 		bool useDirection = false;
 
 		if (hasParam) {
-			Player* playerTarget = nullptr;
+			std::shared_ptr<Player> playerTarget;
 			ReturnValue ret = g_game.getPlayerByNameWildcard(param, playerTarget);
 
 			if (playerTarget && playerTarget->isAccessPlayer() && !player->isAccessPlayer()) {
-				playerTarget = nullptr;
+				playerTarget.reset();
 			}
 
-			target = playerTarget;
+			target = playerTarget.get();
 			if (!target || target->isRemoved() || target->isDead()) {
 				if (!casterTargetOrDirection) {
 					if (cooldown > 0) {
@@ -734,7 +732,7 @@ bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 		}
 	} else if (hasParam) {
 		if (getHasPlayerNameParam()) {
-			Player* playerTarget = nullptr;
+			std::shared_ptr<Player> playerTarget;
 			ReturnValue ret = g_game.getPlayerByNameWildcard(param, playerTarget);
 
 			if (ret != RETURNVALUE_NOERROR) {

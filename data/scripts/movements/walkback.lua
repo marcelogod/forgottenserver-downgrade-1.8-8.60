@@ -16,7 +16,7 @@ function moveevent.onStepIn(creature, item, position, fromPosition)
 			player:remove()
 		end
 	else
-		creature:teleportTo(fromPosition, true)
+		creature:teleportTo(fromPosition, true, CONST_ME_NONE)
 	end
 
 	return true

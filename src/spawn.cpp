@@ -574,11 +574,11 @@ bool Spawn::addMonster(const std::string& name, const Position& pos, Direction d
 
 void Spawn::removeMonster(Monster* monster)
 {
-	for (auto it = spawnedMap.begin(), end = spawnedMap.end(); it != end; ++it) {
-		if (it->second.get() == monster) {
-			spawnedMap.erase(it);
-			break;
-		}
+	auto it = std::find_if(spawnedMap.begin(), spawnedMap.end(), [monster](const auto& entry) {
+		return entry.second.get() == monster;
+	});
+	if (it != spawnedMap.end()) {
+		spawnedMap.erase(it);
 	}
 }
 

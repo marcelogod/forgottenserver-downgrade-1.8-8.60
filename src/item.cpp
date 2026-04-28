@@ -1598,18 +1598,19 @@ bool Item::addImbuement(std::shared_ptr<Imbuement>  imbuement, bool created)
 bool Item::removeImbuement(std::shared_ptr<Imbuement> imbuement, bool decayed)
 {
 	// item:removeImbuement(imbuement) -- returns true if it found and removed the imbuement
-	for (auto imbue : imbuements) {
-		if (imbue == imbuement) {
-			Player* player = const_cast<Player*>(getHoldingPlayer());
-			if (player && isEquipped()) {
-				player->removeImbuementEffect(imbue);
-			}
-			g_events->eventItemOnRemoveImbue(this, imbuement->imbuetype, decayed);
-			imbuements.erase(std::remove(imbuements.begin(), imbuements.end(), imbue), imbuements.end());
-			return true;
-		}
+	auto it = std::find(imbuements.begin(), imbuements.end(), imbuement);
+	if (it == imbuements.end()) {
+		return false;
 	}
-	return false;
+
+	auto imbue = *it;
+	Player* player = const_cast<Player*>(getHoldingPlayer());
+	if (player && isEquipped()) {
+		player->removeImbuementEffect(imbue);
+	}
+	g_events->eventItemOnRemoveImbue(this, imbuement->imbuetype, decayed);
+	imbuements.erase(std::remove(imbuements.begin(), imbuements.end(), imbue), imbuements.end());
+	return true;
 }
 
 std::vector<std::shared_ptr<Imbuement>>& Item::getImbuements() {

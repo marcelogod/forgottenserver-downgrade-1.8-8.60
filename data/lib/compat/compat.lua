@@ -1693,17 +1693,25 @@ function queryTileAddThing(thing, position, ...)
 	return t and t:queryAdd(thing, ...) or false
 end
 
-function doTeleportThing(uid, dest, pushMovement)
+function doTeleportThing(uid, dest, pushMovement, magicEffect)
+	if type(pushMovement) == "number" then
+		magicEffect = pushMovement
+		pushMovement = false
+	end
+	if magicEffect == nil then
+		magicEffect = CONST_ME_TELEPORT
+	end
+
 	if type(uid) == "userdata" then
 		if uid:isCreature() then
-			return uid:teleportTo(dest, pushMovement or false)
+			return uid:teleportTo(dest, pushMovement or false, magicEffect)
 		else
 			return uid:moveTo(dest)
 		end
 	else
 		if uid >= 0x10000000 then
 			local creature = Creature(uid)
-			if creature then return creature:teleportTo(dest, pushMovement or false) end
+			if creature then return creature:teleportTo(dest, pushMovement or false, magicEffect) end
 		else
 			local item = Item(uid)
 			if item then return item:moveTo(dest) end

@@ -23,15 +23,9 @@ void MoveEvents::clearMap(MoveListMap& map, bool fromLua)
 	for (auto it = map.begin(); it != map.end(); ++it) {
 		for (int eventType = MOVE_EVENT_STEP_IN; eventType < MOVE_EVENT_LAST; ++eventType) {
 			auto& moveEvents = it->second.moveEvent[eventType];
-			for (auto find = moveEvents.begin(); find != moveEvents.end();) {
-				if (fromLua && find->fromItem) {
-					++find;
-				} else if (fromLua == find->fromLua || find->fromItem) {
-					find = moveEvents.erase(find);
-				} else {
-					++find;
-				}
-			}
+			std::erase_if(moveEvents, [fromLua](const auto& moveEvent) {
+				return !(fromLua && moveEvent.fromItem) && (fromLua == moveEvent.fromLua || moveEvent.fromItem);
+			});
 		}
 	}
 }
@@ -41,15 +35,9 @@ void MoveEvents::clearPosMap(MovePosListMap& map, bool fromLua)
 	for (auto it = map.begin(); it != map.end(); ++it) {
 		for (int eventType = MOVE_EVENT_STEP_IN; eventType < MOVE_EVENT_LAST; ++eventType) {
 			auto& moveEvents = it->second.moveEvent[eventType];
-			for (auto find = moveEvents.begin(); find != moveEvents.end();) {
-				if (fromLua && find->fromItem) {
-					++find;
-				} else if (fromLua == find->fromLua || find->fromItem) {
-					find = moveEvents.erase(find);
-				} else {
-					++find;
-				}
-			}
+			std::erase_if(moveEvents, [fromLua](const auto& moveEvent) {
+				return !(fromLua && moveEvent.fromItem) && (fromLua == moveEvent.fromLua || moveEvent.fromItem);
+			});
 		}
 	}
 }

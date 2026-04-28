@@ -26,7 +26,7 @@ function closingDoor.onStepIn(creature, item, position, fromPosition)
 				return true
 			else
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The door seems to be sealed against unwanted intruders.")
-				player:teleportTo(fromPosition, true)
+				player:teleportTo(fromPosition, true, CONST_ME_NONE)
 			return false
 			end
 		end
@@ -37,7 +37,7 @@ function closingDoor.onStepIn(creature, item, position, fromPosition)
 				return true
 			else
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
-				player:teleportTo(fromPosition, true)
+				player:teleportTo(fromPosition, true, CONST_ME_NONE)
 				return false
 			end
 		end

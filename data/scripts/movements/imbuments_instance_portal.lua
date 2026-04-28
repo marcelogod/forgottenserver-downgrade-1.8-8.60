@@ -160,18 +160,18 @@ function entryMovement.onStepIn(creature, item, position, fromPosition)
     local player = creature:getPlayer()
     if not player then return true end
 
-    if not isImbuementEnabled() then
-        player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-        player:teleportTo(fromPosition)
-        fromPosition:sendMagicEffect(CONST_ME_POFF)
-        return true
-    end
+	if not isImbuementEnabled() then
+		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		player:teleportTo(fromPosition, false, CONST_ME_NONE)
+		fromPosition:sendMagicEffect(CONST_ME_POFF)
+		return true
+	end
 
-    if player:getInstanceId() ~= 0 then
-        player:sendTextMessage(MESSAGE_STATUS_CONSOLE_RED, "You are already inside an instance.")
-        player:teleportTo(fromPosition)
-        return false
-    end
+	if player:getInstanceId() ~= 0 then
+		player:sendTextMessage(MESSAGE_STATUS_CONSOLE_RED, "You are already inside an instance.")
+		player:teleportTo(fromPosition, false, CONST_ME_NONE)
+		return false
+	end
 
     instanceCounter = instanceCounter + 1
     local instanceId = instanceCounter

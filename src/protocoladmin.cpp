@@ -371,7 +371,7 @@ void ProtocolAdmin::adminCommandKickPlayer(const std::string& name)
 	auto output = OutputMessagePool::getOutputMessage();
 	if (!output) return;
 
-	Player* player = g_game.getPlayerByName(name);
+	auto player = g_game.getPlayerByName(name);
 	if (player) {
 		g_game.kickPlayer(player->getID(), true); // Force kick
 		

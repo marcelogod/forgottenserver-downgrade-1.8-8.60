@@ -332,13 +332,13 @@ int luaCombatExecute(lua_State* L)
 		}
 
 		case VARIANT_STRING: {
-			Player* target = g_game.getPlayerByName(variant.getString());
+			auto target = g_game.getPlayerByName(variant.getString());
 			if (!target) {
 				pushBoolean(L, false);
 				return 1;
 			}
 
-			combat->doCombat(creature, target);
+			combat->doCombat(creature, target.get());
 			break;
 		}
 

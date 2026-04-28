@@ -434,7 +434,7 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 					// Player-owned summons follow their master instead of being despawned.
 					if (getPlayer()) {
 						summon->setInstanceID(getInstanceID());
-						g_game.internalTeleport(summon.get(), newPos, false);
+						g_game.internalTeleport(summon.get(), newPos, false, 0, CONST_ME_NONE);
 						g_game.addMagicEffect(newPos, CONST_ME_TELEPORT, summon->getInstanceID());
 					} else {
 						despawnList.push_front(summon.get());
@@ -654,7 +654,7 @@ bool Creature::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreatur
 
 				uint32_t corpseOwnerId = corpse->getCorpseOwner();
 				if (corpseOwnerId != 0) {
-					if (Player* corpseOwner = g_game.getPlayerByID(corpseOwnerId)) {
+					if (auto corpseOwner = g_game.getPlayerByID(corpseOwnerId)) {
 						corpseOwner->lootCorpse(corpseContainer);
 					}
 				}
@@ -1450,23 +1450,13 @@ bool Creature::unregisterCreatureEvent(std::string_view name)
 		return false;
 	}
 
-	bool resetTypeBit = true;
 	const std::string normalizedName = boost::algorithm::to_lower_copy(std::string{name});
 
-	auto it = eventsList.begin();
-	while (it != eventsList.end()) {
-		if (it->name == normalizedName && it->type == type) {
-			it = eventsList.erase(it);
-			continue;
-		}
+	std::erase_if(eventsList, [&normalizedName, type](const auto& event) {
+		return event.name == normalizedName && event.type == type;
+	});
 
-		if (it->type == type) {
-			resetTypeBit = false;
-		}
-		++it;
-	}
-
-	if (resetTypeBit) {
+	if (std::none_of(eventsList.begin(), eventsList.end(), [type](const auto& event) { return event.type == type; })) {
 		scriptEventsBitField &= ~(static_cast<uint32_t>(1) << type);
 	}
 	return true;

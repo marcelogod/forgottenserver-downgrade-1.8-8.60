@@ -132,7 +132,7 @@ function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
 			return true
 		end
 
-		player:teleportTo(toPosition, false)
+		player:teleportTo(toPosition, false, CONST_ME_NONE)
 		return true
 	end
 
@@ -149,7 +149,7 @@ function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
 				return false
 			end
 
-			return thing:teleportTo(toPosition, false)
+			return thing:teleportTo(toPosition, false, CONST_ME_NONE)
 		elseif thing:isItem() and thing:getType():isMovable() then
 			return thing:moveTo(toPosition:moveUpstairs())
 		end

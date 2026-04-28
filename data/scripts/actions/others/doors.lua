@@ -69,7 +69,7 @@ local function pushCreaturesFromDoor(player, toPosition)
 			             {creature = doorCreature, position = pushPosition})
 		end
 		for _, tableCreature in ipairs(creaturePositionTable) do
-			tableCreature.creature:teleportTo(tableCreature.position, true)
+			tableCreature.creature:teleportTo(tableCreature.position, true, CONST_ME_NONE)
 		end
 	end
 	return true
@@ -218,7 +218,7 @@ function questDoor.onUse(player, item, fromPosition, target, toPosition, isHotke
 			if item.actionid > 0 and (player:getStorageValue(item.actionid) ~= -1 or
 				player:getGroup():getAccess()) then
 				item:transform(value.openDoor)
-				player:teleportTo(toPosition, true)
+				player:teleportTo(toPosition, true, CONST_ME_NONE)
 				return true
 			else
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE,
@@ -267,7 +267,7 @@ function levelDoor.onUse(player, item, fromPosition, target, toPosition, isHotke
 			if item.actionid > 0 and (player:getLevel() >= item.actionid -
 				actionIds.levelDoor or player:getGroup():getAccess()) then
 				item:transform(value.openDoor)
-				player:teleportTo(toPosition, true)
+				player:teleportTo(toPosition, true, CONST_ME_NONE)
 				return true
 			else
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")

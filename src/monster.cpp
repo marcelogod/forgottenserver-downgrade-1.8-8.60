@@ -447,36 +447,26 @@ void Monster::addTarget(Creature* creature, bool pushFront /* = false*/)
 
 void Monster::removeTarget(Creature* creature)
 {
-	for (auto it = targetList.begin(); it != targetList.end(); ++it) {
-		if (it->lock().get() == creature) {
-			targetList.erase(it);
-			return;
-		}
+	auto it = std::find_if(targetList.begin(), targetList.end(), [creature](const auto& weakRef) {
+		return weakRef.lock().get() == creature;
+	});
+	if (it != targetList.end()) {
+		targetList.erase(it);
 	}
 }
 
 void Monster::updateTargetList()
 {
-	auto friendIterator = friendList.begin();
-	while (friendIterator != friendList.end()) {
-		auto creature = friendIterator->lock();
-		if (!creature || creature->isDead() || !canSee(creature->getPosition())) {
-			friendIterator = friendList.erase(friendIterator);
-		} else {
-			++friendIterator;
-		}
-	}
+	std::erase_if(friendList, [this](const auto& weakRef) {
+		auto creature = weakRef.lock();
+		return !creature || creature->isDead() || !canSee(creature->getPosition());
+	});
 
-	auto targetIterator = targetList.begin();
-	while (targetIterator != targetList.end()) {
-		auto creature = targetIterator->lock();
-		if (!creature || creature->isDead() || !canSee(creature->getPosition()) ||
-		    (!isFamiliar() && creature->getZone() == ZONE_PROTECTION)) {
-			targetIterator = targetList.erase(targetIterator);
-		} else {
-			++targetIterator;
-		}
-	}
+	std::erase_if(targetList, [this](const auto& weakRef) {
+		auto creature = weakRef.lock();
+		return !creature || creature->isDead() || !canSee(creature->getPosition()) ||
+		       (!isFamiliar() && creature->getZone() == ZONE_PROTECTION);
+	});
 
 	SpectatorVec spectators;
 	// OPTIMIZATION: Use multifloor=true (like upstream) to reduce spectator count
@@ -845,19 +835,19 @@ bool Monster::selectBlockerTarget()
 void Monster::onFollowCreatureComplete(const Creature* creature)
 {
 	if (creature) {
-		for (auto it = targetList.begin(); it != targetList.end(); ++it) {
-			if (it->lock().get() == creature) {
-				auto weakRef = std::move(*it);
-				targetList.erase(it);
+		auto it = std::find_if(targetList.begin(), targetList.end(), [creature](const auto& weakRef) {
+			return weakRef.lock().get() == creature;
+		});
+		if (it != targetList.end()) {
+			auto weakRef = std::move(*it);
+			targetList.erase(it);
 
-				if (hasFollowPath) {
-					targetList.insert(targetList.begin(), std::move(weakRef));
-				} else if (!isSummon()) {
-					targetList.push_back(std::move(weakRef));
-				}
-				// if summon and !hasFollowPath: just drop — weak_ptr expires naturally
-				break;
+			if (hasFollowPath) {
+				targetList.insert(targetList.begin(), std::move(weakRef));
+			} else if (!isSummon()) {
+				targetList.push_back(std::move(weakRef));
 			}
+			// if summon and !hasFollowPath: just drop — weak_ptr expires naturally
 		}
 	}
 }
@@ -1032,7 +1022,7 @@ void Monster::onThink(uint32_t interval)
 						if ((!masterInProtectionZone || ConfigManager::getBoolean(ConfigManager::FAMILIAR_ENTER_PZ)) &&
 						    (differentInstance || tooFar)) {
 							setInstanceID(master->getInstanceID());
-							g_game.internalTeleport(this, master->getPosition(), false);
+							g_game.internalTeleport(this, master->getPosition(), false, 0, CONST_ME_NONE);
 							g_game.addMagicEffect(master->getPosition(), CONST_ME_TELEPORT, getInstanceID());
 							isMasterInRange = true;
 						}
@@ -1046,7 +1036,7 @@ void Monster::onThink(uint32_t interval)
 						const bool tooFar = !getPosition().isInRange(master->getPosition(), 7, 7, 0);
 						if (differentInstance || tooFar) {
 							setInstanceID(master->getInstanceID());
-							g_game.internalTeleport(this, master->getPosition(), false);
+							g_game.internalTeleport(this, master->getPosition(), false, 0, CONST_ME_NONE);
 							g_game.addMagicEffect(master->getPosition(), CONST_ME_TELEPORT, getInstanceID());
 							isMasterInRange = true;
 						}
@@ -2078,7 +2068,7 @@ void Monster::death(Creature*)
 			double expectedScore =
 			    ((contrubutionScore / totalScore) * ConfigManager::getFloat(ConfigManager::REWARD_BASE_RATE));
 			double lootRate = std::min(expectedScore, 1.0);
-			Player* player = g_game.getPlayerByGUID(playerId);
+			auto player = g_game.getPlayerByGUID(playerId);
 			auto rewardItem = Item::CreateItem(ITEM_REWARD_CONTAINER);
 			if (!rewardItem) {
 				return;

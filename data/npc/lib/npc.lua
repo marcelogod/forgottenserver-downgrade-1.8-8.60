@@ -286,6 +286,17 @@ do
 		return nil
 	end
 
+	local function normalizeOutfit(outfit)
+		if type(outfit) ~= "table" then
+			return outfit
+		end
+
+		outfit.lookType = outfit.lookType or outfit.type or outfit.looktype
+		outfit.lookTypeEx = outfit.lookTypeEx or outfit.typeEx or outfit.typeex or outfit.looktypeex
+		outfit.lookAddons = outfit.lookAddons or outfit.addons or outfit.lookaddons
+		return outfit
+	end
+
 	local function getNpcData(npcName)
 		if not npcName then
 			return nil
@@ -401,9 +412,6 @@ do
 
 		function NpcHandler:onThink(npc, interval)
 			local result = compat.originalNpcHandlerOnThink(self)
-			if NpcEvents and NpcEvents.onThink then
-				NpcEvents.onThink(npc or Npc())
-			end
 
 			local npcObj = npc or Npc()
 			if npcObj then
@@ -725,7 +733,7 @@ do
 			self:spawnRadius(npcConfig.walkRadius)
 		end
 		if npcConfig.outfit then
-			self:outfit(npcConfig.outfit)
+			self:outfit(normalizeOutfit(npcConfig.outfit))
 		end
 		if npcConfig.flags then
 			if npcConfig.flags.floorchange ~= nil then
@@ -751,42 +759,11 @@ do
 			end
 		end
 
-		local npcTypeMeta = getmetatable(self)
-		local npcTypeIndex = npcTypeMeta and npcTypeMeta.__index or nil
-
-		local function getNativeNpcTypeMethod(methodName)
-			if type(npcTypeIndex) == "table" and type(npcTypeIndex[methodName]) == "function" then
-				return npcTypeIndex[methodName]
-			end
-
-			return nil
-		end
-
-		-- Map modern RevScript fields to C++ event registration
-		local events = {
-			["onSay"] = "onSay",
-			["onAppear"] = "onAppear", 
-			["onDisappear"] = "onDisappear",
-			["onMove"] = "onMove",
-			["onThink"] = "onThink",
-			["onCloseChannel"] = "onPlayerCloseChannel",
-			["onEndTrade"] = "onPlayerEndTrade"
-		}
-
-		for luaField, cppMethod in pairs(events) do
-			local nativeMethod = getNativeNpcTypeMethod(cppMethod)
-			if self[luaField] then
-				-- Register the actual callback found in the script
-				local eventName = (luaField == "onEndTrade" and "endtrade") or (luaField == "onCloseChannel" and "closechannel") or luaField:gsub("on", ""):lower()
-				self:eventType(eventName)
-				if nativeMethod then
-					nativeMethod(self, self[luaField])
-				end
-			elseif luaField == "onSay" or luaField == "onAppear" or luaField == "onThink" then
-				-- Provide empty stubs for essential events to silence engine warnings
-				self:eventType(luaField:gsub("on", ""):lower())
-				if nativeMethod then
-					nativeMethod(self, function() end)
+		local essentialEvents = { "onSay", "onAppear", "onThink" }
+		for _, luaField in ipairs(essentialEvents) do
+			if type(compatData[luaField]) ~= "function" then
+				self[luaField] = function()
+					return true
 				end
 			end
 		end

@@ -96,26 +96,27 @@ void ScriptEnvironment::resetEnv()
 	localMap.clear();
 	tempResults.clear();
 
-	auto pair = tempItems.equal_range(this);
-	auto it = pair.first;
-	while (it != pair.second) {
-		auto& itemSp = it->second;
+	std::erase_if(tempItems, [this](auto& entry) {
+		if (entry.first != this) {
+			return false;
+		}
+
+		auto& itemSp = entry.second;
 		if (itemSp && itemSp->getParent() == VirtualCylinder::virtualCylinder) {
 			g_game.ReleaseItem(std::move(itemSp));
 		}
-		it = tempItems.erase(it);
-	}
+		return true;
+	});
 }
 
 void ScriptEnvironment::clearTempItems()
 {
-	for (auto it = tempItems.begin(); it != tempItems.end();) {
-		auto& itemSp = it->second;
+	for (auto& [_, itemSp] : tempItems) {
 		if (itemSp && itemSp->getParent() == VirtualCylinder::virtualCylinder) {
 			g_game.ReleaseItem(std::move(itemSp));
 		}
-		it = tempItems.erase(it);
 	}
+	tempItems.clear();
 }
 
 void ScriptEnvironment::setNpc(Npc* npc)
@@ -240,11 +241,11 @@ void ScriptEnvironment::addTempItem(const std::shared_ptr<Item>& item) { tempIte
 
 void ScriptEnvironment::removeTempItem(Item* item)
 {
-	for (auto it = tempItems.begin(), end = tempItems.end(); it != end; ++it) {
-		if (it->second.get() == item) {
-			tempItems.erase(it);
-			break;
-		}
+	auto it = std::find_if(tempItems.begin(), tempItems.end(), [item](const auto& entry) {
+		return entry.second.get() == item;
+	});
+	if (it != tempItems.end()) {
+		tempItems.erase(it);
 	}
 }
 
@@ -1065,11 +1066,11 @@ Player* Lua::getPlayer(lua_State* L, int32_t arg)
 	if (isUserdata(L, arg)) {
 		return getUserdata<Player>(L, arg);
 	}
-	Player* player = g_game.getPlayerByID(getInteger<uint32_t>(L, arg));
-	if (!player || !Creature::isAlive(player) || player->isRemoved()) {
+	auto player = g_game.getPlayerByID(getInteger<uint32_t>(L, arg));
+	if (!player || !Creature::isAlive(player.get()) || player->isRemoved()) {
 		return nullptr;
 	}
-	return player;
+	return player.get();
 }
 
 std::string Lua::getFieldString(lua_State* L, int32_t arg, std::string_view key)

@@ -131,19 +131,24 @@ void Raids::checkRaids()
 	if (!getRunning()) {
 		uint64_t now = OTSYS_TIME();
 
-		for (auto it = raidList.begin(), end = raidList.end(); it != end; ++it) {
-			Raid* raid = it->get();
+		auto it = std::find_if(raidList.begin(), raidList.end(), [this, now](const auto& raidPtr) {
+			Raid* raid = raidPtr.get();
 			if (now >= (getLastRaidEnd() + raid->getMargin())) {
 				if (((MAX_RAND_RANGE * CHECK_RAIDS_INTERVAL) / raid->getInterval()) >=
 				    static_cast<uint32_t>(uniform_random(0, MAX_RAND_RANGE))) {
-					setRunning(raid);
-					raid->startRaid();
-
-					if (!raid->canBeRepeated()) {
-						raidList.erase(it);
-					}
-					break;
+					return true;
 				}
+			}
+			return false;
+		});
+
+		if (it != raidList.end()) {
+			Raid* raid = it->get();
+			setRunning(raid);
+			raid->startRaid();
+
+			if (!raid->canBeRepeated()) {
+				raidList.erase(it);
 			}
 		}
 	}

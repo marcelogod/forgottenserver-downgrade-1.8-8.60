@@ -29,7 +29,7 @@ public:
 	bool fromLua = false;
 	bool fromItem = false;
 
-	int32_t getScriptId() { return scriptId; }
+	int32_t getScriptId() const { return scriptId; }
 
 protected:
 	virtual std::string_view getScriptEventName() const = 0;

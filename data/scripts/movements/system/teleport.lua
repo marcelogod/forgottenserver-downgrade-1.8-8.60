@@ -8,7 +8,7 @@ function teleport.onStepIn(creature, item, position, fromPosition)
 
 	local setting = TeleportUnique[item.uid]
 	if setting then
-		player:teleportTo(setting.destination)
+		player:teleportTo(setting.destination, false, CONST_ME_NONE)
 		player:getPosition():sendMagicEffect(setting.effect)
 	end
 	return true

@@ -17,7 +17,7 @@ function portal.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local destination = Position(95, 112, 7)
 	
 	fromPosition:sendMagicEffect(CONST_ME_TELEPORT)
-	player:teleportTo(destination)
+	player:teleportTo(destination, false, CONST_ME_NONE)
 	player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 	player:sendTextMessage(MESSAGE_INFO_DESCR, "You have been teleported!")
 	return true
@@ -29,4 +29,3 @@ for _, pos in pairs(portalPositions) do
 end
 
 portal:register()
-

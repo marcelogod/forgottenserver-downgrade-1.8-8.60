@@ -50,10 +50,10 @@ removeEvent:register()
 
 local stepEvent = MoveEvent()
 function stepEvent.onStepIn(creature, item, pos, fromPosition)
-    if creature:isPlayer() then
-        creature:teleportTo(fromPosition)
-        fromPosition:sendMagicEffect(CONST_ME_POFF)
-    end
+	if creature:isPlayer() then
+		creature:teleportTo(fromPosition, false, CONST_ME_NONE)
+		fromPosition:sendMagicEffect(CONST_ME_POFF)
+	end
     return true
 end
 

@@ -94,7 +94,7 @@ bool SpySystem::stopSpy(Player* god) {
 		targetPlayerId = session->targetPlayerId;
 	}
 
-	Player* target = g_game.getPlayerByID(targetPlayerId);
+	auto target = g_game.getPlayerByID(targetPlayerId);
 	if (target && target->client) {
 		auto godProto = session->godProtocol.lock();
 		if (godProto) {
@@ -207,7 +207,7 @@ void SpySystem::onPlayerDisconnect(uint32_t playerId) {
 	auto godIt = godToSession_.find(playerId);
 	if (godIt != godToSession_.end()) {
 		auto& session = godIt->second;
-		Player* target = g_game.getPlayerByID(session->targetPlayerId);
+		auto target = g_game.getPlayerByID(session->targetPlayerId);
 		if (target && target->client) {
 			auto godProto = session->godProtocol.lock();
 			if (godProto) {
@@ -225,7 +225,8 @@ void SpySystem::onPlayerDisconnect(uint32_t playerId) {
 			auto godProto = session->godProtocol.lock();
 			if (godProto) {
 				godProto->setSpyMode(false);
-				Player* godPlayer = g_game.getPlayerByID(session->godPlayerId);
+				auto godPlayerRef = g_game.getPlayerByID(session->godPlayerId);
+				Player* godPlayer = godPlayerRef.get();
 				if (godPlayer) {
 					godProto->knownCreatureSet.clear();
 					godProto->sendMapDescription(godPlayer->getPosition());

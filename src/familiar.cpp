@@ -49,7 +49,7 @@ static void ClearFamiliarTimerEvents(Player* player, bool stopEvents)
 
 static void SendMessageFunction(uint32_t playerId, const std::string& message)
 {
-    if (Player* player = g_game.getPlayerByID(playerId)) {
+    if (auto player = g_game.getPlayerByID(playerId)) {
         player->sendTextMessage(MESSAGE_INFO_DESCR, "Your summon will disappear in less than " + message);
     }
 }
@@ -57,7 +57,8 @@ static void SendMessageFunction(uint32_t playerId, const std::string& message)
 static void RemoveFamiliar(uint32_t creatureId, uint32_t playerId)
 {
 	Creature* creature = g_game.getCreatureByID(creatureId);
-	Player* player = g_game.getPlayerByID(playerId);
+	auto playerRef = g_game.getPlayerByID(playerId);
+	Player* player = playerRef.get();
 	if (!creature || !player) {
 		if (player) {
 			ClearFamiliarTimerEvents(player, false);
@@ -77,7 +78,6 @@ static void RemoveFamiliar(uint32_t creatureId, uint32_t playerId)
 		player->setStorageValue(STORAGE_FAMILIAR_SUMMON_TIME, std::optional<int64_t>(-1));
 	}
 }
-
 std::string getFamiliarName(const Player* player)
 {
     if (!ConfigManager::getBoolean(ConfigManager::FAMILIAR_SYSTEM_ENABLED)) return {};
@@ -248,7 +248,8 @@ bool createFamiliarSpell(Player* player, uint32_t spellId)
 
 void restoreFamiliarOnLogin(uint32_t playerId)
 {
-    Player* player = g_game.getPlayerByID(playerId);
+    auto playerRef = g_game.getPlayerByID(playerId);
+    Player* player = playerRef.get();
     if (!player) {
         return;
     }

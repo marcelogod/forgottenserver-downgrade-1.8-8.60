@@ -241,7 +241,7 @@ bool House::kickPlayer(Player* player, Player* target) const
 	}
 
 	Position oldPosition = target->getPosition();
-	if (g_game.internalTeleport(target, getEntryPosition()) == RETURNVALUE_NOERROR) {
+	if (g_game.internalTeleport(target, getEntryPosition(), true, 0, CONST_ME_NONE) == RETURNVALUE_NOERROR) {
 		g_game.addMagicEffect(oldPosition, CONST_ME_POFF, target->getInstanceID());
 		g_game.addMagicEffect(getEntryPosition(), CONST_ME_TELEPORT, target->getInstanceID());
 	}
@@ -283,13 +283,15 @@ bool House::transferToDepot() const
 		return false;
 	}
 
+	std::shared_ptr<Player> onlinePlayerRef;
 	Player* onlinePlayer = nullptr;
 	Player tmpPlayer(nullptr);
 	Player* targetPlayer = nullptr;
 	bool needsSave = false;
 
 	if (type == HOUSE_TYPE_NORMAL) {
-		onlinePlayer = g_game.getPlayerByGUID(owner);
+		onlinePlayerRef = g_game.getPlayerByGUID(owner);
+		onlinePlayer = onlinePlayerRef.get();
 		if (onlinePlayer) {
 			targetPlayer = onlinePlayer;
 		} else if (IOLoginData::loadPlayerById(&tmpPlayer, owner)) {
@@ -302,7 +304,8 @@ bool House::transferToDepot() const
 			guild = IOGuild::loadGuild(owner);
 		}
 		if (guild) {
-			onlinePlayer = g_game.getPlayerByGUID(guild->getOwnerGUID());
+			onlinePlayerRef = g_game.getPlayerByGUID(guild->getOwnerGUID());
+			onlinePlayer = onlinePlayerRef.get();
 			if (onlinePlayer) {
 				targetPlayer = onlinePlayer;
 			} else if (IOLoginData::loadPlayerById(&tmpPlayer, guild->getOwnerGUID())) {
@@ -589,7 +592,7 @@ void AccessList::parseList(std::string_view list)
 
 void AccessList::addPlayer(std::string_view name)
 {
-	Player* player = g_game.getPlayerByName(name);
+	auto player = g_game.getPlayerByName(name);
 	if (player) {
 		playerList.insert(player->getGUID());
 	} else {

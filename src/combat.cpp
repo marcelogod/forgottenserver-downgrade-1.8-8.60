@@ -1598,9 +1598,9 @@ void MagicField::onStepInField(Creature* creature)
 
 			Player* targetPlayer = creature->getPlayer();
 			if (targetPlayer) {
-				Player* attackerPlayer = g_game.getPlayerByID(ownerId);
+				auto attackerPlayer = g_game.getPlayerByID(ownerId);
 				if (attackerPlayer) {
-					if (Combat::isProtected(attackerPlayer, targetPlayer)) {
+					if (Combat::isProtected(attackerPlayer.get(), targetPlayer)) {
 						harmfulField = false;
 					}
 				}

@@ -876,8 +876,16 @@ int luaCreatureRemove(lua_State* L)
 
 int luaCreatureTeleportTo(lua_State* L)
 {
-	// creature:teleportTo(position[, pushMovement = false])
-	bool pushMovement = getBoolean(L, 3, false);
+	// creature:teleportTo(position[, pushMovement = false[, magicEffect = CONST_ME_TELEPORT]])
+	// Also accepts creature:teleportTo(position, magicEffect) for compatibility with doTeleportThing(uid, pos, effect).
+	bool pushMovement = false;
+	MagicEffectClasses magicEffect = CONST_ME_TELEPORT;
+	if (isBoolean(L, 3)) {
+		pushMovement = getBoolean(L, 3, false);
+		magicEffect = getInteger<MagicEffectClasses>(L, 4, CONST_ME_TELEPORT);
+	} else if (isInteger(L, 3)) {
+		magicEffect = getInteger<MagicEffectClasses>(L, 3, CONST_ME_TELEPORT);
+	}
 
 	const Position& position = getPosition(L, 2);
 	Creature* creature = getUserdata<Creature>(L, 1);
@@ -887,7 +895,7 @@ int luaCreatureTeleportTo(lua_State* L)
 	}
 
 	const Position oldPosition = creature->getPosition();
-	if (g_game.internalTeleport(creature, position, pushMovement) != RETURNVALUE_NOERROR) {
+	if (g_game.internalTeleport(creature, position, pushMovement, 0, magicEffect) != RETURNVALUE_NOERROR) {
 		pushBoolean(L, false);
 		return 1;
 	}

@@ -109,8 +109,8 @@ void ProtocolStatus::sendStatusString()
 	uint32_t maxPlayersPerIp = getInteger(ConfigManager::STATUS_COUNT_MAX_PLAYERS_PER_IP);
 	if (maxPlayersPerIp > 0) {
 		std::unordered_map<uint32_t, uint32_t> playersPerIp;
-		for (const auto& it : g_game.getPlayers()) {
-			uint32_t playerIp = it.second->getIP();
+		for (const auto& player : g_game.getPlayers()) {
+			uint32_t playerIp = player->getIP();
 			if (playerIp != 0) {
 				playersPerIp[playerIp]++;
 			}
@@ -208,9 +208,9 @@ void ProtocolStatus::sendInfo(uint16_t requestedInfo, std::string_view character
 
 		const auto& players = g_game.getPlayers();
 		output->add<uint32_t>(players.size());
-		for (const auto& it : players) {
-			output->addString(it.second->getName());
-			output->add<uint32_t>(it.second->getLevel());
+		for (const auto& player : players) {
+			output->addString(player->getName());
+			output->add<uint32_t>(player->getLevel());
 		}
 	}
 

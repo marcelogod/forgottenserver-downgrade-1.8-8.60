@@ -128,24 +128,12 @@ void MapCache::flush() {
 void MapCache::cleanupExpiredEntries() {
     {
         std::scoped_lock lock(itemCacheMutex);
-        for (auto it = itemCache.begin(); it != itemCache.end();) {
-            if (it->second.expired()) {
-                it = itemCache.erase(it);
-            } else {
-                ++it;
-            }
-        }
+        std::erase_if(itemCache, [](const auto& entry) { return entry.second.expired(); });
     }
     
     {
         std::scoped_lock lock(tileCacheMutex);
-        for (auto it = tileCache.begin(); it != tileCache.end();) {
-            if (it->second.expired()) {
-                it = tileCache.erase(it);
-            } else {
-                ++it;
-            }
-        }
+        std::erase_if(tileCache, [](const auto& entry) { return entry.second.expired(); });
     }
 }
 

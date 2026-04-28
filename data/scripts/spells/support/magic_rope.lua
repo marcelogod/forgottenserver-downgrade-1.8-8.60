@@ -16,7 +16,7 @@ function spell.onCastSpell(creature, variant)
 		return false
 	end
 
-	creature:teleportTo(position, false)
+	creature:teleportTo(position, false, CONST_ME_NONE)
 	position:sendMagicEffect(CONST_ME_TELEPORT)
 	return true
 end

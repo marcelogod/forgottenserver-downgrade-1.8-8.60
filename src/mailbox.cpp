@@ -133,7 +133,7 @@ bool Mailbox::sendItem(Item* item) const
 		}
 	}
 
-	Player* player = g_game.getPlayerByName(receiver);
+	auto player = g_game.getPlayerByName(receiver);
 	if (player) {
 		Inbox* inbox = getDestinationInbox(*player, town);
 		if (!inbox) {
