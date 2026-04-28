@@ -18,13 +18,7 @@ GlobalEvents::~GlobalEvents() { clear(false); }
 
 void GlobalEvents::clearMap(GlobalEventMap& map, bool fromLua)
 {
-	for (auto it = map.begin(); it != map.end();) {
-		if (fromLua == it->second.fromLua) {
-			it = map.erase(it);
-		} else {
-			++it;
-		}
-	}
+	std::erase_if(map, [fromLua](const auto& entry) { return fromLua == entry.second.fromLua; });
 }
 
 void GlobalEvents::clear(bool fromLua)

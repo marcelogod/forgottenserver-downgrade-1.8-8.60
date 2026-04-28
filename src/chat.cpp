@@ -53,14 +53,13 @@ void PrivateChatChannel::excludePlayer(const Player& player, Player& excludePlay
 
 void PrivateChatChannel::closeChannel()
 {
-	for (auto it = users.begin(); it != users.end();) {
-		if (auto target = it->second.lock()) {
+	std::erase_if(users, [this](const auto& entry) {
+		if (auto target = entry.second.lock()) {
 			target->sendClosePrivate(id);
-			++it;
-		} else {
-			it = users.erase(it);
+			return false;
 		}
-	}
+		return true;
+	});
 }
 
 bool ChatChannel::addUser(const std::shared_ptr<Player>& player)
@@ -106,14 +105,13 @@ bool ChatChannel::hasUser(const Player& player) { return users.contains(player.g
 
 void ChatChannel::sendToAll(std::string_view message, SpeakClasses type)
 {
-	for (auto it = users.begin(); it != users.end();) {
-		if (auto target = it->second.lock()) {
+	std::erase_if(users, [this, message, type](const auto& entry) {
+		if (auto target = entry.second.lock()) {
 			target->sendChannelMessage("", message, type, id);
-			++it;
-		} else {
-			it = users.erase(it);
+			return false;
 		}
-	}
+		return true;
+	});
 }
 
 bool ChatChannel::talk(const Player& fromPlayer, SpeakClasses type, std::string_view text)
@@ -122,14 +120,13 @@ bool ChatChannel::talk(const Player& fromPlayer, SpeakClasses type, std::string_
 		return false;
 	}
 
-	for (auto it = users.begin(); it != users.end();) {
-		if (auto target = it->second.lock()) {
+	std::erase_if(users, [this, &fromPlayer, type, text](const auto& entry) {
+		if (auto target = entry.second.lock()) {
 			target->sendToChannel(&fromPlayer, type, text, id);
-			++it;
-		} else {
-			it = users.erase(it);
+			return false;
 		}
-	}
+		return true;
+	});
 	return true;
 }
 
@@ -439,16 +436,14 @@ bool Chat::removeUserFromChannel(const Player& player, uint16_t channelId)
 		return false;
 	}
 
+	const bool ownerLeft = channel->getOwner() == player.getGUID();
+
 	if (channelId == CHANNEL_PARTY && channel->users.empty()) {
-		for (auto it = partyChannels.begin(); it != partyChannels.end(); ++it) {
-			if (&it->second == channel) {
-				partyChannels.erase(it);
-				break;
-			}
-		}
+		std::erase_if(partyChannels, [channel](const auto& entry) { return &entry.second == channel; });
+		return true;
 	}
 
-	if (channel->getOwner() == player.getGUID()) {
+	if (ownerLeft) {
 		deleteChannel(player, channelId);
 	}
 	return true;
@@ -468,18 +463,16 @@ void Chat::removeUserFromAllChannels(const Player& player)
 		it.second.removeUser(player);
 	}
 
-	auto it = privateChannels.begin();
-	while (it != privateChannels.end()) {
-		PrivateChatChannel* channel = &it->second;
+	std::erase_if(privateChannels, [&player](auto& entry) {
+		PrivateChatChannel* channel = &entry.second;
 		channel->removeInvite(player.getGUID());
 		channel->removeUser(player);
 		if (channel->getOwner() == player.getGUID()) {
 			channel->closeChannel();
-			it = privateChannels.erase(it);
-		} else {
-			++it;
+			return true;
 		}
-	}
+		return false;
+	});
 }
 
 bool Chat::talkToChannel(const Player& player, SpeakClasses type, std::string_view text, uint16_t channelId)

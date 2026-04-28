@@ -98,23 +98,21 @@ TalkActionResult Spells::playerSaySpell(Player* player, std::string& words)
 
 void Spells::clearMaps(bool fromLua)
 {
-	for (auto instant = instants.begin(); instant != instants.end();) {
-		if (fromLua == instant->second.fromLua) {
-			instantsByName.erase(std::string(instant->second.getName()));
-			instant = instants.erase(instant);
-		} else {
-			++instant;
+	std::erase_if(instants, [this, fromLua](const auto& entry) {
+		if (fromLua != entry.second.fromLua) {
+			return false;
 		}
-	}
+		instantsByName.erase(std::string(entry.second.getName()));
+		return true;
+	});
 
-	for (auto rune = runes.begin(); rune != runes.end();) {
-		if (fromLua == rune->second.fromLua) {
-			runesByName.erase(std::string(rune->second.getName()));
-			rune = runes.erase(rune);
-		} else {
-			++rune;
+	std::erase_if(runes, [this, fromLua](const auto& entry) {
+		if (fromLua != entry.second.fromLua) {
+			return false;
 		}
-	}
+		runesByName.erase(std::string(entry.second.getName()));
+		return true;
+	});
 }
 
 void Spells::clear(bool fromLua)

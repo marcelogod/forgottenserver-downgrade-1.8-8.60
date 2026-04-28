@@ -36,15 +36,10 @@ const Weapon* Weapons::getWeapon(const Item* item) const
 
 void Weapons::clear(bool fromLua)
 {
-	for (auto it = weapons.begin(); it != weapons.end();) {
-		if (fromLua && it->second->fromItem) {
-			++it;
-		} else if (fromLua == it->second->fromLua || it->second->fromItem) {
-			it = weapons.erase(it);
-		} else {
-			++it;
-		}
-	}
+	std::erase_if(weapons, [fromLua](const auto& entry) {
+		const auto& weapon = entry.second;
+		return !(fromLua && weapon->fromItem) && (fromLua == weapon->fromLua || weapon->fromItem);
+	});
 
 	reInitState(fromLua);
 }

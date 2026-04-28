@@ -32,14 +32,9 @@ void cleanupConnectMap(std::unordered_map<uint32_t, ConnectBlock>& ipConnectMap,
 	}
 	lastCleanup = currentTime;
 
-	for (auto it = ipConnectMap.begin(); it != ipConnectMap.end(); ) {
-		// Remove entries idle for more than 5 minutes
-		if (currentTime - it->second.lastAttempt > 300000) {
-			it = ipConnectMap.erase(it);
-		} else {
-			++it;
-		}
-	}
+	std::erase_if(ipConnectMap, [currentTime](const auto& entry) {
+		return currentTime - entry.second.lastAttempt > 300000;
+	});
 }
 
 bool acceptConnection(const uint32_t clientIP)

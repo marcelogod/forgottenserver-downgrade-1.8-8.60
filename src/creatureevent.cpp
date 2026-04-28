@@ -24,13 +24,7 @@ void CreatureEvents::clear(bool fromLua)
 
 void CreatureEvents::removeInvalidEvents()
 {
-	for (auto it = creatureEvents.begin(); it != creatureEvents.end();) {
-		if (it->second.getScriptId() == 0) {
-			it = creatureEvents.erase(it);
-		} else {
-			++it;
-		}
-	}
+	std::erase_if(creatureEvents, [](const auto& entry) { return entry.second.getScriptId() == 0; });
 }
 
 LuaScriptInterface& CreatureEvents::getScriptInterface() { return scriptInterface; }

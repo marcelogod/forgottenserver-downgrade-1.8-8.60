@@ -137,18 +137,16 @@ void Guild::addMember(Player* player)
 
 	const uint32_t playerId = player->getID();
 
-	for (auto it = membersOnline.begin(); it != membersOnline.end();) {
-		auto member = it->lock();
-		if (!member || member->isRemoved()) {
-			it = membersOnline.erase(it);
-			continue;
-		}
+	std::erase_if(membersOnline, [](const auto& weakPlayer) {
+		auto member = weakPlayer.lock();
+		return !member || member->isRemoved();
+	});
 
-		if (member->getID() == playerId) {
-			return;
-		}
-
-		++it;
+	if (std::any_of(membersOnline.begin(), membersOnline.end(), [playerId](const auto& weakPlayer) {
+			auto member = weakPlayer.lock();
+			return member && member->getID() == playerId;
+		})) {
+		return;
 	}
 
 	auto weakPlayer = g_game.getPlayerWeakRef(player);
@@ -161,15 +159,10 @@ void Guild::removeMember(Player* player)
 {
 	const uint32_t playerId = player ? player->getID() : 0;
 
-	for (auto it = membersOnline.begin(); it != membersOnline.end();) {
-		auto member = it->lock();
-		if (!member || member->isRemoved() || (playerId != 0 && member->getID() == playerId)) {
-			it = membersOnline.erase(it);
-			continue;
-		}
-
-		++it;
-	}
+	std::erase_if(membersOnline, [playerId](const auto& weakPlayer) {
+		auto member = weakPlayer.lock();
+		return !member || member->isRemoved() || (playerId != 0 && member->getID() == playerId);
+	});
 
 	if (membersOnline.empty()) {
 		g_game.removeGuild(id);

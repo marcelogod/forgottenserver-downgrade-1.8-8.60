@@ -27,13 +27,7 @@ Actions::~Actions() { clear(false); }
 
 void Actions::clearMap(ActionUseMap& map, bool fromLua)
 {
-	for (auto it = map.begin(); it != map.end();) {
-		if (fromLua == it->second.fromLua) {
-			it = map.erase(it);
-		} else {
-			++it;
-		}
-	}
+	std::erase_if(map, [fromLua](const auto& entry) { return fromLua == entry.second.fromLua; });
 }
 
 void Actions::clear(bool fromLua)
@@ -42,13 +36,7 @@ void Actions::clear(bool fromLua)
 	clearMap(uniqueItemMap, fromLua);
 	clearMap(actionItemMap, fromLua);
 
-	for (auto it = positionMap.begin(); it != positionMap.end();) {
-		if (fromLua == it->second.fromLua) {
-			it = positionMap.erase(it);
-		} else {
-			++it;
-		}
-	}
+	std::erase_if(positionMap, [fromLua](const auto& entry) { return fromLua == entry.second.fromLua; });
 
 	reInitState(fromLua);
 }

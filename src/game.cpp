@@ -3209,10 +3209,9 @@ void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t st
 
 	Container* tradeItemContainer = tradeItem->getContainer();
 	if (tradeItemContainer) {
-		for (auto it = tradeItems.begin(); it != tradeItems.end();) {
-			auto itemRef = it->first.lock();
+		for (const auto& [weakItem, _] : tradeItems) {
+			auto itemRef = weakItem.lock();
 			if (!itemRef) {
-				it = tradeItems.erase(it);
 				continue;
 			}
 
@@ -3232,14 +3231,11 @@ void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t st
 				player->sendCancelMessage("This item is already being traded.");
 				return;
 			}
-
-			++it;
 		}
 	} else {
-		for (auto it = tradeItems.begin(); it != tradeItems.end();) {
-			auto itemRef = it->first.lock();
+		for (const auto& [weakItem, _] : tradeItems) {
+			auto itemRef = weakItem.lock();
 			if (!itemRef) {
-				it = tradeItems.erase(it);
 				continue;
 			}
 
@@ -3254,8 +3250,6 @@ void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t st
 				player->sendCancelMessage("This item is already being traded.");
 				return;
 			}
-
-			++it;
 		}
 	}
 
@@ -5967,13 +5961,7 @@ void Game::ReleaseItem(std::shared_ptr<Item> item) { ToReleaseItems.push_back(st
 
 void Game::cleanupExpiredTradeItems()
 {
-	for (auto it = tradeItems.begin(); it != tradeItems.end();) {
-		if (it->first.expired()) {
-			it = tradeItems.erase(it);
-		} else {
-			++it;
-		}
-	}
+	std::erase_if(tradeItems, [](const auto& entry) { return entry.first.expired(); });
 }
 
 void Game::eraseTradeItem(Item* item)
@@ -5990,13 +5978,7 @@ void Game::eraseTradeItem(Item* item)
 
 void Game::cleanupExpiredLootHighlightEvents()
 {
-	for (auto it = lootHighlightEvents.begin(); it != lootHighlightEvents.end();) {
-		if (it->first.expired()) {
-			it = lootHighlightEvents.erase(it);
-		} else {
-			++it;
-		}
-	}
+	std::erase_if(lootHighlightEvents, [](const auto& entry) { return entry.first.expired(); });
 }
 
 bool Game::eraseLootHighlightEvent(const std::weak_ptr<Item>& corpse, uint32_t eventId)

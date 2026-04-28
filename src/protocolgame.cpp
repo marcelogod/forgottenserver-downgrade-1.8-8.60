@@ -23,7 +23,7 @@ std::set<std::string> ProtocolGame::spectatorNames;
 namespace {
 
 std::deque<std::pair<int64_t, uint32_t>> waitList; // (timeout, player guid)
-auto priorityEnd = waitList.end();
+std::size_t priorityCount = 0;
 
 auto findClient(uint32_t guid)
 {
@@ -71,20 +71,25 @@ std::size_t clientLogin(const Player& player)
 
 	int64_t time = OTSYS_TIME();
 
-	auto it = waitList.begin();
-	while (it != waitList.end()) {
-		if ((it->first - time) <= 0) {
-			it = waitList.erase(it);
-		} else {
-			++it;
+	std::size_t index = 0;
+	std::erase_if(waitList, [time, &index](const auto& entry) {
+		const bool expired = (entry.first - time) <= 0;
+		if (expired && index < priorityCount && priorityCount > 0) {
+			--priorityCount;
 		}
-	}
+		++index;
+		return expired;
+	});
 
 	std::size_t slot;
+	auto it = waitList.end();
 	std::tie(it, slot) = findClient(player.getGUID());
 	if (it != waitList.end()) {
 		// If server has capacity for this client, let him in even though his current slot might be higher than 0.
 		if ((g_game.getPlayersOnline() + slot) <= maxPlayers) {
+			if (slot <= priorityCount && priorityCount > 0) {
+				--priorityCount;
+			}
 			waitList.erase(it);
 			return 0;
 		}
@@ -95,8 +100,12 @@ std::size_t clientLogin(const Player& player)
 	}
 
 	if (player.isPremium()) {
-		priorityEnd = waitList.emplace(priorityEnd, time + (getTimeout(slot + 1) * 1000), player.getGUID());
-		return std::distance(waitList.begin(), priorityEnd);
+		const std::size_t insertIndex = std::min(priorityCount, waitList.size());
+		auto insertPos = waitList.begin();
+		std::advance(insertPos, insertIndex);
+		waitList.emplace(insertPos, time + (getTimeout(insertIndex + 1) * 1000), player.getGUID());
+		++priorityCount;
+		return priorityCount;
 	}
 	waitList.emplace_back(time + (getTimeout(waitList.size() + 1) * 1000), player.getGUID());
 	return waitList.size();
@@ -1047,13 +1056,14 @@ std::pair<bool, uint32_t> ProtocolGame::isKnownCreature(uint32_t id)
 	}
 
 	if (knownCreatureSet.size() > 250) {
-		for (auto it = knownCreatureSet.begin(); it != knownCreatureSet.end(); ++it) {
-			Creature* creature = g_game.getCreatureByID(*it);
-			if (!canSee(creature)) {
-				uint32_t removedCreatureId = *it;
-				knownCreatureSet.erase(it);
-				return {false, removedCreatureId};
-			}
+		auto unseenIt = std::find_if(knownCreatureSet.begin(), knownCreatureSet.end(), [this](uint32_t creatureId) {
+			Creature* creature = g_game.getCreatureByID(creatureId);
+			return !canSee(creature);
+		});
+		if (unseenIt != knownCreatureSet.end()) {
+			uint32_t removedCreatureId = *unseenIt;
+			knownCreatureSet.erase(unseenIt);
+			return {false, removedCreatureId};
 		}
 
 		auto it = knownCreatureSet.begin();

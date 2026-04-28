@@ -147,13 +147,7 @@ void reload()
 	}
 
 	// 3. Clear Lua NPC types from registry (preserve XML types)
-	for (auto it = npcTypes.begin(); it != npcTypes.end(); ) {
-		if (it->second && it->second->fromLua) {
-			it = npcTypes.erase(it);
-		} else {
-			++it;
-		}
-	}
+	std::erase_if(npcTypes, [](const auto& entry) { return entry.second && entry.second->fromLua; });
 
 	// 4. Reload XML NPC definitions
 	for (const auto& it : npcTypes) {

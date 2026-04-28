@@ -4344,13 +4344,7 @@ void Player::addOutfit(uint16_t lookType, uint8_t addons)
 
 bool Player::removeOutfit(uint16_t lookType)
 {
-	for (const auto& [outfit, _] : outfits) {
-		if (outfit == lookType) {
-			outfits.erase(outfit);
-			return true;
-		}
-	}
-	return false;
+	return outfits.erase(lookType) != 0;
 }
 
 bool Player::removeOutfitAddon(uint16_t lookType, uint8_t addons)
