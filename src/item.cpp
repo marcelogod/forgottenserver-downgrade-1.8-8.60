@@ -8,6 +8,7 @@
 #include "actions.h"
 #include "bed.h"
 #include "container.h"
+#include "inbox.h"
 #include "events.h"
 #include "game.h"
 #include "house.h"
@@ -50,6 +51,8 @@ std::shared_ptr<Item> Item::CreateItem(const uint16_t type, uint16_t count /*= 0
 		return std::make_shared<RewardChest>(type);
 	} else if (it.id >= ITEM_DEPOT_BOX_1 && it.id <= ITEM_DEPOT_BOX_17) {
 		return std::make_shared<DepotBox>(type);
+	} else if (it.id == ITEM_INBOX) {
+		return std::make_shared<Inbox>(type);
 	} else if (it.isContainer()) {
 		return std::make_shared<Container>(type);
 	} else if (it.isTeleport()) {

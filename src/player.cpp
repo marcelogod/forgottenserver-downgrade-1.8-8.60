@@ -948,9 +948,6 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 	it = depotLockerMap.emplace(depotId, std::make_shared<DepotLocker>(ITEM_LOCKER)).first;
 	it->second->setDepotId(static_cast<uint16_t>(depotId));
 
-	DepotChest* chest = getDepotChest(depotId, true);
-	it->second->internalAddThing(chest);
-
 	bool hasInbox = false;
 	for (const auto& item : it->second->getItemList()) {
 		if (item->getID() == ITEM_INBOX) {
@@ -965,6 +962,9 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 			it->second->internalAddThing(inbox.get());
 		}
 	}
+
+	DepotChest* chest = getDepotChest(depotId, true);
+	it->second->internalAddThing(chest);
 
 	return it->second.get();
 }
