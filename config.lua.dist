@@ -120,6 +120,10 @@ onlyInvitedCanMoveHouseItems = true
 -- Item Usage
 timeBetweenActions = 200
 timeBetweenExActions = 1000
+-- Set false to use timeBetweenActions for ring and necklace equip exhaustion.
+separateRingNecklaceExhaustion = true
+timeBetweenNecklace = 500
+timeBetweenRing = 500
 exhaustPotionMiliSeconds = 1500
 exhaustItemAtUsePotion = true
 

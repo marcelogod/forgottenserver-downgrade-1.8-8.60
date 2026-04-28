@@ -95,6 +95,20 @@ ReturnValue getStoreInboxLockedItemMoveReturn(const Item* item)
 	return RETURNVALUE_NOERROR;
 }
 
+int64_t getMoveItemExhaustionDelay(const Position& toPos)
+{
+	if (ConfigManager::getBoolean(ConfigManager::SEPARATE_RING_NECKLACE_EXHAUSTION) && toPos.x == 0xFFFF &&
+	    (toPos.y & 0x40) == 0) {
+		if (toPos.y == CONST_SLOT_NECKLACE) {
+			return getInteger(ConfigManager::NECKLACE_DELAY_INTERVAL);
+		}
+		if (toPos.y == CONST_SLOT_RING) {
+			return getInteger(ConfigManager::RING_DELAY_INTERVAL);
+		}
+	}
+	return getInteger(ConfigManager::ACTIONS_DELAY_INTERVAL);
+}
+
 void closeContainersFromOtherInstances(Player* player)
 {
 	if (!player) {
@@ -1428,7 +1442,7 @@ void Game::playerMoveItem(Player* player, const Position& fromPos, uint16_t spri
 		player->sendCancelMessage(ret);
 	} else {
 		if (auto c = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST_WEAPON,
-		            getInteger(ConfigManager::ACTIONS_DELAY_INTERVAL), 0, false, EXHAUST_MOVEITEM)) {
+		            getMoveItemExhaustionDelay(toPos), 0, false, EXHAUST_MOVEITEM)) {
 			player->addCondition(std::move(c));
 		}
 	}

@@ -324,6 +324,8 @@ bool ConfigManager::load()
 	booleans[Boolean::ALLOW_AUTO_ATTACK_WITHOUT_EXHAUSTION] =
 	    getGlobalBoolean(L, "allowAutoAttackWithoutExhaustion", true);
 	booleans[Boolean::POTION_CAN_EXHAUST_ITEM] = getGlobalBoolean(L, "exhaustItemAtUsePotion", true);
+	booleans[Boolean::SEPARATE_RING_NECKLACE_EXHAUSTION] =
+	    getGlobalBoolean(L, "separateRingNecklaceExhaustion", true);
 	booleans[Boolean::ACCOUNT_MANAGER] = getGlobalBoolean(L, "accountManager", false);
 	booleans[Boolean::NAMELOCK_MANAGER] = getGlobalBoolean(L, "namelockManager", false);
 	booleans[Boolean::START_CHOOSEVOC] = getGlobalBoolean(L, "newPlayerChooseVoc", false);
@@ -382,6 +384,8 @@ bool ConfigManager::load()
 	integers[Integer::KILLS_TO_BLACK] = getGlobalInteger(L, "killsToBlackSkull", 6);
 	integers[Integer::ACTIONS_DELAY_INTERVAL] = getGlobalInteger(L, "timeBetweenActions", 200);
 	integers[Integer::EX_ACTIONS_DELAY_INTERVAL] = getGlobalInteger(L, "timeBetweenExActions", 1000);
+	integers[Integer::NECKLACE_DELAY_INTERVAL] = getGlobalInteger(L, "timeBetweenNecklace", 500);
+	integers[Integer::RING_DELAY_INTERVAL] = getGlobalInteger(L, "timeBetweenRing", 500);
 	integers[Integer::EXHAUST_POTION_INTERVAL] = getGlobalInteger(L, "exhaustPotionMiliSeconds", 1500);
 	integers[Integer::MAX_MESSAGEBUFFER] = getGlobalInteger(L, "maxMessageBuffer", 4);
 	integers[Integer::KICK_AFTER_MINUTES] = getGlobalInteger(L, "kickIdlePlayerAfterMinutes", 15);
