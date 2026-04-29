@@ -352,6 +352,22 @@ private:
 	float maxb = 0.0f;
 };
 
+class ConditionRooted final : public Condition
+{
+public:
+	ConditionRooted(ConditionId_t id, ConditionType_t type, int32_t ticks, bool buff = false, uint32_t subId = 0,
+	                bool aggressive = false) :
+	    Condition(id, type, ticks, buff, subId, aggressive)
+	{}
+
+	bool startCondition(Creature* creature) override;
+	bool executeCondition(Creature* creature, int32_t interval) override;
+	void endCondition(Creature* creature) override;
+	void addCondition(Creature* creature, const Condition* condition) override;
+
+	Condition_ptr clone() const override { return std::make_unique<ConditionRooted>(*this); }
+};
+
 class ConditionOutfit final : public Condition
 {
 public:

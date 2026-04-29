@@ -1,9 +1,8 @@
 local combatRoot = Combat()
 combatRoot:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ROOTS)
 
-local condition = Condition(CONDITION_PARALYZE)
+local condition = Condition(CONDITION_ROOTED)
 condition:setParameter(CONDITION_PARAM_TICKS, 3000)
-condition:setFormula(0, -10000, 0, -10000)
 combatRoot:addCondition(condition)
 
 local arr = {
@@ -64,6 +63,5 @@ end
 spell:name("rootkrakentwo")
 spell:words("#773334")
 spell:needLearn(true)
-spell:isAggressive(true)
 spell:isSelfTarget(true)
 spell:register()

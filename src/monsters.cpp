@@ -288,6 +288,15 @@ bool Monsters::deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std
 			auto condition = Condition::createCondition(CONDITIONID_COMBAT, CONDITION_INVISIBLE, duration, 0);
 			combat->setParam(COMBAT_PARAM_AGGRESSIVE, 0);
 			combat->addCondition(std::move(condition));
+		} else if (tmpName == "root" || tmpName == "rooted") {
+			int32_t duration = 3000;
+
+			if (spell->duration != 0) {
+				duration = spell->duration;
+			}
+
+			auto condition = Condition::createCondition(CONDITIONID_COMBAT, CONDITION_ROOTED, duration, 0);
+			combat->addCondition(std::move(condition));
 		} else if (tmpName == "drunk") {
 			int32_t duration = 10000;
 			uint8_t drunkenness = 25;

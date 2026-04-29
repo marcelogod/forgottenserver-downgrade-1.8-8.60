@@ -553,6 +553,8 @@ public:
 	bool setAttackedCreature(Creature* creature) override;
 	bool isImmune(CombatType_t type) const override;
 	bool isImmune(ConditionType_t type) const override;
+	void setRootImmunity();
+	bool isRootImmune() const;
 	bool hasShield() const;
 	bool isAttackable() const override;
 	static bool lastHitIsPlayer(Creature* lastHitCreature);
@@ -1403,6 +1405,7 @@ private:
 	uint8_t m_harmony = 0;
 	bool m_serene = false;
 	uint64_t m_serene_cooldown = 0;
+	int64_t rootImmunityEnd = 0;
 	VirtueMonk_t m_virtue = VIRTUE_NONE;
 	bool loading = false;
 

@@ -414,6 +414,7 @@ enum ConditionType_t
 	CONDITION_CLIPORT = 1 << 26,
 	CONDITION_SPELLCOOLDOWN = 1 << 27,
 	CONDITION_SPELLGROUPCOOLDOWN = 1 << 28,
+	CONDITION_ROOTED = 1 << 29,
 };
 
 enum ConditionId_t : int8_t

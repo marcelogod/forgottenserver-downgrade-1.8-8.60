@@ -1139,6 +1139,10 @@ bool Creature::addCondition(Condition_ptr condition, bool force /* = false*/)
 		return false;
 	}
 
+	if (!force && condition->getType() == CONDITION_ROOTED && isImmune(CONDITION_ROOTED)) {
+		return false;
+	}
+
 	if (!force && condition->getType() == CONDITION_HASTE && hasCondition(CONDITION_PARALYZE)) {
 		int64_t walkDelay = getWalkDelay();
 		if (walkDelay > 0) {

@@ -1494,6 +1494,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_CLIPORT);
 	registerEnum(CONDITION_SPELLCOOLDOWN);
 	registerEnum(CONDITION_SPELLGROUPCOOLDOWN);
+	registerEnum(CONDITION_ROOTED);
 
 	registerEnum(CONDITIONID_DEFAULT);
 	registerEnum(CONDITIONID_COMBAT);

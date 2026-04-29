@@ -8,6 +8,7 @@
 #include "configmanager.h"
 #include "game.h"
 #include "instance_utils.h"
+#include "player.h"
 
 extern Game g_game;
 
@@ -208,6 +209,9 @@ Condition_ptr Condition::createCondition(ConditionId_t id, ConditionType_t type,
 		case CONDITION_PARALYZE:
 			return std::make_unique<ConditionSpeed>(id, type, ticks, buff, subId, param, aggressive);
 
+		case CONDITION_ROOTED:
+			return std::make_unique<ConditionRooted>(id, type, ticks, buff, subId, aggressive);
+
 		case CONDITION_INVISIBLE:
 			return std::make_unique<ConditionInvisible>(id, type, ticks, buff, subId, aggressive);
 
@@ -265,7 +269,7 @@ Condition_ptr Condition::createCondition(PropStream& propStream)
 		return nullptr;
 	}
 
-	if (type == 0 || (type & (type - 1)) != 0 || type > CONDITION_SPELLGROUPCOOLDOWN) {
+	if (type == 0 || (type & (type - 1)) != 0 || type > CONDITION_ROOTED) {
 		return nullptr;
 	}
 
@@ -1819,6 +1823,37 @@ uint32_t ConditionSpeed::getIcons() const
 			break;
 	}
 	return icons;
+}
+
+bool ConditionRooted::startCondition(Creature* creature)
+{
+	if (!Condition::startCondition(creature)) {
+		return false;
+	}
+
+	creature->stopEventWalk();
+	return true;
+}
+
+bool ConditionRooted::executeCondition(Creature* creature, int32_t interval)
+{
+	creature->stopEventWalk();
+	return Condition::executeCondition(creature, interval);
+}
+
+void ConditionRooted::addCondition(Creature*, const Condition* condition)
+{
+	if (updateCondition(condition)) {
+		setTicks(condition->getTicks());
+	}
+}
+
+void ConditionRooted::endCondition(Creature* creature)
+{
+	creature->stopEventWalk();
+	if (Player* player = creature->getPlayer()) {
+		player->setRootImmunity();
+	}
 }
 
 bool ConditionInvisible::startCondition(Creature* creature)

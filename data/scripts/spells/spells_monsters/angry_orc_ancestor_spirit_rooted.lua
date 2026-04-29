@@ -5,9 +5,8 @@ combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_SOUND_RED)
 local area = createCombatArea(AREA_CIRCLE2X2)
 combat:setArea(area)
 
-local condition = Condition(CONDITION_PARALYZE)
+local condition = Condition(CONDITION_ROOTED)
 condition:setParameter(CONDITION_PARAM_TICKS, 3000)
-condition:setFormula(0, -10000, 0, -10000)
 combat:addCondition(condition)
 
 local function executeCombat(cid, var)

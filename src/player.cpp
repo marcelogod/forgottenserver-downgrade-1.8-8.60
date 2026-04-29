@@ -3931,6 +3931,10 @@ void Player::onAddCombatCondition(ConditionType_t type)
 			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are paralyzed.");
 			break;
 
+		case CONDITION_ROOTED:
+			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are rooted.");
+			break;
+
 		case CONDITION_DRUNK:
 			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are drunk.");
 			break;
@@ -4216,7 +4220,20 @@ bool Player::isImmune(ConditionType_t type) const
 	if (hasFlag(PlayerFlag_CannotBeAttacked)) {
 		return true;
 	}
+	if (type == CONDITION_ROOTED && isRootImmune()) {
+		return true;
+	}
 	return Creature::isImmune(type);
+}
+
+void Player::setRootImmunity()
+{
+	rootImmunityEnd = OTSYS_TIME() + 30000;
+}
+
+bool Player::isRootImmune() const
+{
+	return OTSYS_TIME() <= rootImmunityEnd;
 }
 
 bool Player::isAttackable() const
