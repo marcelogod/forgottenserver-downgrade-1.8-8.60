@@ -508,6 +508,10 @@ do
 		return true
 	end
 
+	function NpcHandler:setInteraction(npc, creature)
+		return self:addInteraction(npc, creature)
+	end
+
 	function NpcHandler:removeInteraction(npc, creature)
 		local playerId = getPlayerId(creature or npc)
 		if playerId == 0 then
@@ -534,6 +538,47 @@ do
 		local target = getCreatureObject(creature)
 		if not target then return end
 		return self:onCreatureSay(target, messageType, message)
+	end
+
+	if not compat.originalNpcHandlerOnCreatureSay then
+		compat.originalNpcHandlerOnCreatureSay = NpcHandler.onCreatureSay
+
+		function NpcHandler:onCreatureSay(creature, messageType, message)
+			local playerId = getPlayerId(creature)
+			if playerId == 0 then
+				return compat.originalNpcHandlerOnCreatureSay(self, creature, messageType, message)
+			end
+
+			if not self:isFocused(playerId) then
+				return compat.originalNpcHandlerOnCreatureSay(self, creature, messageType, message)
+			end
+
+			local callback = self:getCallback(CALLBACK_CREATURE_SAY)
+			if callback ~= nil and not callback(playerId, messageType, message) then
+				return false
+			end
+
+			if not self:processModuleCallback(CALLBACK_CREATURE_SAY, playerId, messageType, message) then
+				return false
+			end
+
+			if not self:isInRange(playerId) then
+				return false
+			end
+
+			if self.keywordHandler and self.keywordHandler:processMessage(playerId, message) then
+				self.talkStart[playerId] = os.time()
+				return true
+			end
+
+			local defaultCallback = self:getCallback(CALLBACK_MESSAGE_DEFAULT)
+			if defaultCallback and defaultCallback(playerId, messageType, message) then
+				self.talkStart[playerId] = os.time()
+				return true
+			end
+
+			return false
+		end
 	end
 
 	function NpcHandler:onCloseChannel(npc, creature)
@@ -837,7 +882,7 @@ do
 				end
 			end)
 
-			if #shopItems > 0 and not handler:getCallback(CALLBACK_MESSAGE_DEFAULT) then
+			if #shopItems > 0 then
 				registerTradeKeyword(handler)
 			end
 		end
@@ -865,12 +910,12 @@ do
 				return nil
 			end
 
-			local action = StdModule.say
 			local params = parameters
+			local callback = nil
 
 			-- If the second argument is a function, it's a direct callback
 			if type(parameters) == "function" then
-				action = parameters
+				callback = parameters
 				params = startCallback or {}
 			end
 
@@ -879,9 +924,62 @@ do
 				return nil
 			end
 
+			local function parseText(cid, text)
+				local player = Player(cid)
+				local playerName = player and player:getName() or ""
+				local parseInfo = { [TAG_PLAYERNAME] = playerName }
+				if type(text) == "table" then
+					local parsed = {}
+					for index = 1, #text do
+						parsed[index] = handler:parseMessage(text[index], parseInfo)
+					end
+					return parsed
+				end
+				return handler:parseMessage(text, parseInfo)
+			end
+
+			local function greet(cid, message)
+				local player = Player(cid)
+				if not player then
+					return false
+				end
+
+				if type(startCallback) == "function" and not startCallback(player) then
+					return false
+				end
+
+				if callback then
+					local result = callback(getCurrentNpc(handler), player, message)
+					if result == false then
+						return false
+					end
+				elseif params and params.text then
+					if not handler:isFocused(cid) then
+						handler:addInteraction(getCurrentNpc(handler), player)
+					end
+					handler:say(
+						parseText(cid, params.text),
+						cid,
+						params.publicize and true or false,
+						nil,
+						params.delay or params.interval
+					)
+				else
+					handler:greet(cid)
+				end
+
+				if not handler:isFocused(cid) then
+					handler:addInteraction(getCurrentNpc(handler), player)
+				end
+				handler.talkStart[cid] = os.time()
+				return true
+			end
+
 			local lastNode = nil
 			for _, keyword in ipairs(keywords) do
-				lastNode = self:addKeyword({keyword}, action, params)
+				lastNode = self:addKeyword({ keyword }, function(cid, message)
+					return greet(cid, message)
+				end, params)
 			end
 			return lastNode
 		end
@@ -891,7 +989,54 @@ do
 		end
 
 		function KeywordHandler:addFarewellKeyword(keywords, parameters, startCallback, ...)
-			return self:addGreetKeyword(keywords, parameters, startCallback, ...)
+			if type(keywords) ~= "table" then
+				return nil
+			end
+
+			local params = parameters or {}
+			local handler = params.npcHandler or NpcHandler.__modernCompatLastCreated
+			if not handler then
+				return nil
+			end
+
+			local function farewell(cid)
+				local player = Player(cid)
+				if not player then
+					return false
+				end
+
+				if type(startCallback) == "function" and not startCallback(player) then
+					return false
+				end
+
+				if params.text then
+					local parseInfo = { [TAG_PLAYERNAME] = player:getName() }
+					local text = params.text
+					if type(text) == "table" then
+						local parsed = {}
+						for index = 1, #text do
+							parsed[index] = handler:parseMessage(text[index], parseInfo)
+						end
+						text = parsed
+					else
+						text = handler:parseMessage(text, parseInfo)
+					end
+					handler:say(text, cid)
+				else
+					handler:unGreet(cid)
+				end
+
+				handler:releaseFocus(cid)
+				return true
+			end
+
+			local lastNode = nil
+			for _, keyword in ipairs(keywords) do
+				lastNode = self:addKeyword({ keyword }, function(cid)
+					return farewell(cid)
+				end, params)
+			end
+			return lastNode
 		end
 	end
 
@@ -929,5 +1074,3 @@ do
 		FEYRIST = 18,
 	}
 end
-
-dofile("data/npc/lib/crystalcompat/init.lua")

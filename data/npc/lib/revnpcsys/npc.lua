@@ -111,7 +111,6 @@ dofile('data/npc/lib/revnpcsys/talkqueue.lua')
 dofile('data/npc/lib/revnpcsys/requirements.lua')
 dofile('data/npc/lib/revnpcsys/modules.lua')
 dofile('data/npc/lib/revnpcsys/voices.lua')
-dofile('data/npc/lib/crystalcompat/init.lua')
 
 -- Compatibility: protocol 8.60 has no bank system, so getTotalMoney/removeTotalMoney
 -- are aliases for getMoney/removeMoney.

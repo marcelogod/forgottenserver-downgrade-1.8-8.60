@@ -360,6 +360,7 @@ bool ConfigManager::load()
 	strings[String::LOCATION] = getGlobalString(L, "location", "");
 	strings[String::MOTD] = getGlobalString(L, "motd", "");
 	strings[String::WORLD_TYPE] = getGlobalString(L, "worldType", "pvp");
+	strings[String::NPC_SYSTEM] = getGlobalString(L, "npcSystem", "tfs");
 
 	Monster::despawnRange = getGlobalInteger(L, "deSpawnRange", 2);
 	Monster::despawnRadius = getGlobalInteger(L, "deSpawnRadius", 50);

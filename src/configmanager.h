@@ -107,6 +107,7 @@ enum String
 	ADMIN_ENCRYPTION,
 	ADMIN_ENCRYPTION_DATA,
 	STAMINATRAINER_NAMES,
+	NPC_SYSTEM,
 
 	LAST_STRING /* this must be the last one */
 };

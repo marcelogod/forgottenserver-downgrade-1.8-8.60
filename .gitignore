@@ -198,6 +198,8 @@ config.lua
 
 # Ignorar ejecutable principal en linux
 tfs
+!data/npc/lib/tfs/
+!data/npc/lib/tfs/init.lua
 
 # Others
 *.emmyrc.jsondata/scripts/meus/

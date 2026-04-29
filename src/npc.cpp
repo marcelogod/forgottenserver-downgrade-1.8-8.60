@@ -5,6 +5,7 @@
 
 #include "npc.h"
 
+#include "configmanager.h"
 #include "game.h"
 #include "logger.h"
 #include "pugicast.h"
@@ -20,6 +21,7 @@ namespace fs = std::filesystem;
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <cctype>
 
 extern Game g_game;
 extern LuaEnvironment g_luaEnvironment;
@@ -34,6 +36,47 @@ bool loaded = false;
 std::shared_ptr<NpcScriptInterface> scriptInterface;
 std::map<std::string, std::shared_ptr<NpcType>> npcTypes;
 
+namespace {
+std::string getConfiguredNpcSystem()
+{
+	std::string npcSystem = std::string(ConfigManager::getString(ConfigManager::NPC_SYSTEM));
+	std::transform(npcSystem.begin(), npcSystem.end(), npcSystem.begin(),
+	               [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+
+	if (npcSystem == "crystal") {
+		return npcSystem;
+	}
+
+	if (npcSystem != "tfs") {
+		LOG_WARN(fmt::format("[Warning - Npcs::load] Unknown npcSystem '{}', falling back to 'tfs'.", npcSystem));
+	}
+	return "tfs";
+}
+
+std::string getNpcLibPath(const std::string& npcSystem)
+{
+	return "data/npc/lib/" + npcSystem + "/init.lua";
+}
+
+std::vector<fs::path> getNpcScriptDirectories(const std::string& npcSystem)
+{
+	std::vector<fs::path> scriptDirs;
+
+	if (npcSystem == "tfs") {
+		scriptDirs.emplace_back("data/npc/lua");
+		return scriptDirs;
+	}
+
+	for (const fs::path& path : {fs::path{"data/npc/crystal"}, fs::path{"data/npc/npc_Crystal_Server_15x"}}) {
+		if (fs::exists(path) && fs::is_directory(path)) {
+			scriptDirs.emplace_back(path);
+		}
+	}
+
+	return scriptDirs;
+}
+} // namespace
+
 void load(bool reload /*= false*/)
 {
 	if (!reload && loaded) {
@@ -44,8 +87,10 @@ void load(bool reload /*= false*/)
 		scriptInterface = std::make_shared<NpcScriptInterface>();
 	}
 
-	if (!scriptInterface->loadNpcLib("data/npc/lib/npc.lua")) {
-		LOG_WARN("[Warning - Npcs::load] Can not load lib: data/npc/lib/npc.lua");
+	const std::string npcSystem = getConfiguredNpcSystem();
+	const std::string npcLibPath = getNpcLibPath(npcSystem);
+	if (!scriptInterface->loadNpcLib(npcLibPath)) {
+		LOG_WARN(fmt::format("[Warning - Npcs::load] Can not load {} NPC lib: {}", npcSystem, npcLibPath));
 		LOG_WARN(scriptInterface->getLastLuaError());
 		return;
 	}
@@ -53,9 +98,9 @@ void load(bool reload /*= false*/)
 	loaded = true;
 
 	if (!reload) {
-		LOG_INFO(">> NpcLib loaded");
+		LOG_INFO(fmt::format(">> NpcLib loaded ({})", npcSystem));
 	} else {
-		LOG_INFO(">> NpcLib reloaded");
+		LOG_INFO(fmt::format(">> NpcLib reloaded ({})", npcSystem));
 	}
 }
 
@@ -65,30 +110,8 @@ bool loadScripts(bool reload /* = false */)
 		load(reload);
 	}
 
-	const fs::path npcRoot{"data/npc"};
-	if (!fs::exists(npcRoot) || !fs::is_directory(npcRoot)) {
-		LOG_WARN(fmt::format("[Warning - Npcs::loadScripts] NPC root folder does not exist: {}", npcRoot.string()));
-		return false;
-	}
-
-	std::vector<fs::path> scriptDirs;
-	try {
-		for (const auto& entry : fs::directory_iterator(npcRoot)) {
-			const fs::path entryPath = entry.path();
-			if (!fs::is_directory(entryPath)) {
-				continue;
-			}
-
-			if (entryPath.filename() == "lib") {
-				continue;
-			}
-
-			scriptDirs.emplace_back(entryPath);
-		}
-	} catch (const std::exception& e) {
-		LOG_WARN(fmt::format("[Warning - Npcs::loadScripts] Can not scan {}: {}", npcRoot.string(), e.what()));
-		return false;
-	}
+	const std::string npcSystem = getConfiguredNpcSystem();
+	std::vector<fs::path> scriptDirs = getNpcScriptDirectories(npcSystem);
 
 	std::sort(scriptDirs.begin(), scriptDirs.end());
 
@@ -185,10 +208,10 @@ bool loadScripts(bool reload /* = false */)
 	}
 	if (luaCount > 0) {
 		std::ostringstream ss;
-		ss << ">> " << luaCount << " Lua NPC type(s) registered (hybrid mode active)";
+		ss << ">> " << luaCount << " Lua NPC type(s) registered (" << npcSystem << " backend, hybrid mode active)";
 		LOG_INFO(ss.str());
 	} else {
-		LOG_WARN(">> No Lua NPC types registered from data/npc/ subfolders (except lib/) - only XML NPCs will work.");
+		LOG_WARN(fmt::format(">> No Lua NPC types registered for '{}' backend - only XML NPCs will work.", npcSystem));
 	}
 
 	return true;
@@ -228,31 +251,30 @@ void reload()
 			continue;
 		}
 
-		Npc* npc = npcRef.get();
-		if (npc->npcType && npc->npcType->fromLua) {
+		if (npcRef->npcType && npcRef->npcType->fromLua) {
 			// Re-lookup type from refreshed registry
-			auto freshType = getNpcType(npc->getName());
+			auto freshType = getNpcType(npcRef->getName());
 			if (freshType && freshType->fromLua) {
-				npc->npcType = freshType;
-				npc->loadNpcTypeInfo();
+				npcRef->npcType = freshType;
+				npcRef->loadNpcTypeInfo();
 
 				// Create fresh event handler from template (avoids stale callback IDs)
-				npc->npcEventHandler = std::make_unique<NpcEventsHandler>(*freshType->npcEventHandler);
-				npc->npcEventHandler->loaded = true;
-				npc->npcEventHandler->setNpc(npc);
+				npcRef->npcEventHandler = std::make_unique<NpcEventsHandler>(*freshType->npcEventHandler);
+				npcRef->npcEventHandler->loaded = true;
+				npcRef->npcEventHandler->setNpc(npcRef);
 
 				// Re-initialize runtime state: re-populate spectators, set idle,
 				// start walk events, and fire onCreatureAppear to bootstrap Lua state.
 				// Npc::reload() already skips reset(true) for fromLua NPCs.
-				npc->reload();
+				npcRef->reload();
 			} else {
 				// Lua NPC type was removed — clear handler
-				LOG_WARN(fmt::format(">> [Reload] Lua NPC '{}' type no longer registered.", npc->getName()));
-				npc->npcEventHandler.reset();
+				LOG_WARN(fmt::format(">> [Reload] Lua NPC '{}' type no longer registered.", npcRef->getName()));
+				npcRef->npcEventHandler.reset();
 			}
 		} else {
 			// XML NPC: standard reload path
-			npc->reload();
+			npcRef->reload();
 		}
 	}
 }
