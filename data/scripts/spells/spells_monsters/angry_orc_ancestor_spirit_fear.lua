@@ -5,23 +5,23 @@ combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_SOUND_BLUE)
 local area = createCombatArea(AREA_CIRCLE2X2)
 combat:setArea(area)
 
-local condition = Condition(CONDITION_DRUNK)
+local condition = Condition(CONDITION_FEARED)
 condition:setParameter(CONDITION_PARAM_TICKS, 3000)
 combat:addCondition(condition)
 
 local function executeCombat(cid, var)
-    local creature = Creature(cid)
-    if not creature then
-        return
-    end
-    return combat:execute(creature, var)
+	local creature = Creature(cid)
+	if not creature then
+		return
+	end
+	return combat:execute(creature, var)
 end
 
 local spell = Spell("instant")
 
 function spell.onCastSpell(creature, var)
-    addEvent(executeCombat, 2000, creature:getId(), var)
-    return true
+	addEvent(executeCombat, 2000, creature:getId(), var)
+	return true
 end
 
 spell:name("angry orc ancestor spirit fear")

@@ -9,6 +9,7 @@
 #include "game.h"
 #include "instance_utils.h"
 #include "player.h"
+#include "tools.h"
 
 extern Game g_game;
 
@@ -39,6 +40,11 @@ bool Condition::setParam(ConditionParam_t param, int32_t value)
 			return false;
 		}
 	}
+}
+
+bool Condition::setPositionParam(ConditionParam_t, const Position&)
+{
+	return false;
 }
 
 int32_t Condition::getParam(ConditionParam_t param) const
@@ -212,6 +218,9 @@ Condition_ptr Condition::createCondition(ConditionId_t id, ConditionType_t type,
 		case CONDITION_ROOTED:
 			return std::make_unique<ConditionRooted>(id, type, ticks, buff, subId, aggressive);
 
+		case CONDITION_FEARED:
+			return std::make_unique<ConditionFeared>(id, type, ticks, buff, subId, aggressive);
+
 		case CONDITION_INVISIBLE:
 			return std::make_unique<ConditionInvisible>(id, type, ticks, buff, subId, aggressive);
 
@@ -269,7 +278,7 @@ Condition_ptr Condition::createCondition(PropStream& propStream)
 		return nullptr;
 	}
 
-	if (type == 0 || (type & (type - 1)) != 0 || type > CONDITION_ROOTED) {
+	if (type == 0 || (type & (type - 1)) != 0 || type > CONDITION_FEARED) {
 		return nullptr;
 	}
 
@@ -1854,6 +1863,124 @@ void ConditionRooted::endCondition(Creature* creature)
 	if (Player* player = creature->getPlayer()) {
 		player->setRootImmunity();
 	}
+}
+
+bool ConditionFeared::startCondition(Creature* creature)
+{
+	if (!Condition::startCondition(creature)) {
+		return false;
+	}
+
+	auto creatureRef = creature->shared_from_this();
+	std::vector<Direction> listDir;
+	if (getFleePath(creatureRef, listDir)) {
+		g_game.playerAutoWalk(creature->getID(), listDir);
+	}
+	return true;
+}
+
+bool ConditionFeared::executeCondition(Creature* creature, int32_t interval)
+{
+	if (creature->getPlayer()) {
+		auto creatureRef = creature->shared_from_this();
+		std::vector<Direction> listDir;
+		if (getFleePath(creatureRef, listDir)) {
+			g_game.playerAutoWalk(creature->getID(), listDir);
+		}
+	}
+
+	return Condition::executeCondition(creature, interval);
+}
+
+void ConditionFeared::endCondition(Creature* creature)
+{
+	creature->stopEventWalk();
+	if (Player* player = creature->getPlayer()) {
+		player->setFearImmunity();
+	}
+}
+
+void ConditionFeared::addCondition(Creature*, const Condition* condition)
+{
+	if (updateCondition(condition)) {
+		setTicks(condition->getTicks());
+	}
+}
+
+bool ConditionFeared::setPositionParam(ConditionParam_t param, const Position& pos)
+{
+	if (param != CONDITION_PARAM_CASTER_POSITION) {
+		return false;
+	}
+
+	fleeingFromPos = pos;
+	return true;
+}
+
+bool ConditionFeared::getFleePath(const std::shared_ptr<Creature>& creature, std::vector<Direction>& dirList) const
+{
+	if (!creature || !creature->getPlayer()) {
+		return false;
+	}
+
+	const Position creaturePos = creature->getPosition();
+	if (creaturePos.z != fleeingFromPos.z) {
+		return false;
+	}
+
+	std::vector<Direction> directions;
+	const int32_t offsetX = creaturePos.getOffsetX(fleeingFromPos);
+	const int32_t offsetY = creaturePos.getOffsetY(fleeingFromPos);
+
+	if (offsetX == 0 && offsetY == 0) {
+		directions = {DIRECTION_NORTH, DIRECTION_EAST, DIRECTION_SOUTH, DIRECTION_WEST,
+		              DIRECTION_NORTHEAST, DIRECTION_SOUTHEAST, DIRECTION_SOUTHWEST, DIRECTION_NORTHWEST};
+	} else {
+		if (offsetY < 0) {
+			directions.push_back(DIRECTION_NORTH);
+		} else if (offsetY > 0) {
+			directions.push_back(DIRECTION_SOUTH);
+		}
+
+		if (offsetX > 0) {
+			directions.push_back(DIRECTION_EAST);
+		} else if (offsetX < 0) {
+			directions.push_back(DIRECTION_WEST);
+		}
+
+		if (offsetX > 0 && offsetY < 0) {
+			directions.insert(directions.begin(), DIRECTION_NORTHEAST);
+		} else if (offsetX > 0 && offsetY > 0) {
+			directions.insert(directions.begin(), DIRECTION_SOUTHEAST);
+		} else if (offsetX < 0 && offsetY > 0) {
+			directions.insert(directions.begin(), DIRECTION_SOUTHWEST);
+		} else if (offsetX < 0 && offsetY < 0) {
+			directions.insert(directions.begin(), DIRECTION_NORTHWEST);
+		}
+
+		directions.push_back(DIRECTION_NORTH);
+		directions.push_back(DIRECTION_EAST);
+		directions.push_back(DIRECTION_SOUTH);
+		directions.push_back(DIRECTION_WEST);
+		directions.push_back(DIRECTION_NORTHEAST);
+		directions.push_back(DIRECTION_SOUTHEAST);
+		directions.push_back(DIRECTION_SOUTHWEST);
+		directions.push_back(DIRECTION_NORTHWEST);
+	}
+
+	for (Direction direction : directions) {
+		Position targetPos = creaturePos;
+		for (uint8_t i = 0; i < 6; ++i) {
+			targetPos = getNextPosition(direction, targetPos);
+		}
+
+		dirList.clear();
+		if (creature->getPathTo(targetPos, dirList, 0, 0, true, true, 30) && !dirList.empty()) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool ConditionInvisible::startCondition(Creature* creature)

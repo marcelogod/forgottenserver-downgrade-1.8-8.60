@@ -559,6 +559,9 @@ int luaMonsterTypeConditionImmunities(lua_State* L)
 			} else if (immunity == "root" || immunity == "rooted") {
 				monsterType->info.conditionImmunities |= CONDITION_ROOTED;
 				pushBoolean(L, true);
+			} else if (immunity == "fear" || immunity == "feared") {
+				monsterType->info.conditionImmunities |= CONDITION_FEARED;
+				pushBoolean(L, true);
 			} else if (immunity == "outfit") {
 				monsterType->info.conditionImmunities |= CONDITION_OUTFIT;
 				pushBoolean(L, true);

@@ -555,6 +555,8 @@ public:
 	bool isImmune(ConditionType_t type) const override;
 	void setRootImmunity();
 	bool isRootImmune() const;
+	void setFearImmunity();
+	bool isFearImmune() const;
 	bool hasShield() const;
 	bool isAttackable() const override;
 	static bool lastHitIsPlayer(Creature* lastHitCreature);
@@ -1406,6 +1408,7 @@ private:
 	bool m_serene = false;
 	uint64_t m_serene_cooldown = 0;
 	int64_t rootImmunityEnd = 0;
+	int64_t fearImmunityEnd = 0;
 	VirtueMonk_t m_virtue = VIRTUE_NONE;
 	bool loading = false;
 

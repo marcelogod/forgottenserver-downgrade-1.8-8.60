@@ -1139,7 +1139,8 @@ bool Creature::addCondition(Condition_ptr condition, bool force /* = false*/)
 		return false;
 	}
 
-	if (!force && condition->getType() == CONDITION_ROOTED && isImmune(CONDITION_ROOTED)) {
+	if (!force && (condition->getType() == CONDITION_ROOTED || condition->getType() == CONDITION_FEARED) &&
+	    isImmune(condition->getType())) {
 		return false;
 	}
 

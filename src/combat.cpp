@@ -748,6 +748,7 @@ void Combat::doCombat(Creature* caster, Creature* target) const
 					if (caster == target || !target->isImmune(condition->getType())) {
 						auto conditionCopy = condition->clone();
 						conditionCopy->setParam(CONDITION_PARAM_OWNER, caster->getID());
+						conditionCopy->setPositionParam(CONDITION_PARAM_CASTER_POSITION, caster->getPosition());
 						target->addCombatCondition(std::move(conditionCopy));
 					}
 				}
@@ -833,6 +834,7 @@ void Combat::doCombat(Creature* caster, const Position& position) const
 								auto conditionCopy = condition->clone();
 								if (caster) {
 									conditionCopy->setParam(CONDITION_PARAM_OWNER, caster->getID());
+									conditionCopy->setPositionParam(CONDITION_PARAM_CASTER_POSITION, caster->getPosition());
 								}
 
 								// TODO: infight condition until all aggressive conditions has ended
@@ -954,6 +956,7 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 					auto conditionCopy = condition->clone();
 					if (caster) {
 						conditionCopy->setParam(CONDITION_PARAM_OWNER, caster->getID());
+						conditionCopy->setPositionParam(CONDITION_PARAM_CASTER_POSITION, caster->getPosition());
 					}
 
 					// TODO: infight condition until all aggressive conditions has ended
@@ -1207,6 +1210,7 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 						auto conditionCopy = condition->clone();
 						if (caster) {
 							conditionCopy->setParam(CONDITION_PARAM_OWNER, caster->getID());
+							conditionCopy->setPositionParam(CONDITION_PARAM_CASTER_POSITION, caster->getPosition());
 						}
 
 						// TODO: infight condition until all aggressive conditions has ended

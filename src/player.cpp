@@ -3935,6 +3935,10 @@ void Player::onAddCombatCondition(ConditionType_t type)
 			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are rooted.");
 			break;
 
+		case CONDITION_FEARED:
+			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are feared.");
+			break;
+
 		case CONDITION_DRUNK:
 			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are drunk.");
 			break;
@@ -4223,6 +4227,9 @@ bool Player::isImmune(ConditionType_t type) const
 	if (type == CONDITION_ROOTED && isRootImmune()) {
 		return true;
 	}
+	if (type == CONDITION_FEARED && isFearImmune()) {
+		return true;
+	}
 	return Creature::isImmune(type);
 }
 
@@ -4234,6 +4241,16 @@ void Player::setRootImmunity()
 bool Player::isRootImmune() const
 {
 	return OTSYS_TIME() <= rootImmunityEnd;
+}
+
+void Player::setFearImmunity()
+{
+	fearImmunityEnd = OTSYS_TIME() + 11000;
+}
+
+bool Player::isFearImmune() const
+{
+	return OTSYS_TIME() <= fearImmunityEnd;
 }
 
 bool Player::isAttackable() const

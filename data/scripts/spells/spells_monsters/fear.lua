@@ -1,7 +1,7 @@
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_BLUE_GHOST)
 
-local condition = Condition(CONDITION_DRUNK)
+local condition = Condition(CONDITION_FEARED)
 condition:setParameter(CONDITION_PARAM_TICKS, 3000)
 combat:addCondition(condition)
 

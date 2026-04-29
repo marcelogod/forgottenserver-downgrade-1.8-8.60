@@ -6,6 +6,9 @@
 
 #include "enums.h"
 #include "fileloader.h"
+#include "position.h"
+
+#include <memory>
 
 class Creature;
 class Player;
@@ -101,6 +104,7 @@ public:
 	[[nodiscard]] static Condition_ptr createCondition(PropStream& propStream);
 
 	virtual bool setParam(ConditionParam_t param, int32_t value);
+	virtual bool setPositionParam(ConditionParam_t param, const Position& pos);
 	virtual int32_t getParam(ConditionParam_t param) const;
 
 	// serialization
@@ -366,6 +370,28 @@ public:
 	void addCondition(Creature* creature, const Condition* condition) override;
 
 	Condition_ptr clone() const override { return std::make_unique<ConditionRooted>(*this); }
+};
+
+class ConditionFeared final : public Condition
+{
+public:
+	ConditionFeared(ConditionId_t id, ConditionType_t type, int32_t ticks, bool buff = false, uint32_t subId = 0,
+	                bool aggressive = false) :
+	    Condition(id, type, ticks, buff, subId, aggressive)
+	{}
+
+	bool startCondition(Creature* creature) override;
+	bool executeCondition(Creature* creature, int32_t interval) override;
+	void endCondition(Creature* creature) override;
+	void addCondition(Creature* creature, const Condition* condition) override;
+	bool setPositionParam(ConditionParam_t param, const Position& pos) override;
+
+	Condition_ptr clone() const override { return std::make_unique<ConditionFeared>(*this); }
+
+private:
+	bool getFleePath(const std::shared_ptr<Creature>& creature, std::vector<Direction>& dirList) const;
+
+	Position fleeingFromPos;
 };
 
 class ConditionOutfit final : public Condition

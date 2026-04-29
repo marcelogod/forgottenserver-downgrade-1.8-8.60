@@ -67,7 +67,7 @@ monster.attacks = {
 	{ name = "drunk", interval = 2000, chance = 10, radius = 3, effect = CONST_ME_SOUND_RED, target = false, duration = 10000 },
 	{ name = "speed", interval = 2000, chance = 50, speedChange = -400, range = 7, effect = CONST_ME_SOUND_YELLOW, target = false, duration = 20000 },
 	{ name = "angry orc ancestor spirit root", interval = 2000, chance = 50, target = true },
-	--{ name = "angry orc ancestor spirit fear", interval = 4000, chance = 50, target = true },
+	{ name = "angry orc ancestor spirit fear", interval = 4000, chance = 50, target = true },
 }
 
 monster.defenses = {
