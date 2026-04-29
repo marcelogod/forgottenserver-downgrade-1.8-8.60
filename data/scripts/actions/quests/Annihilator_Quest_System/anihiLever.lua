@@ -95,31 +95,38 @@ function annihilator.onUse(player, item, fromPosition, target, toPosition, isHot
 
     local participants = {}
     local puller_found = false
+    local hasAccess = player:getGroup():getAccess()
 
     for i = 1, #player_positions do
         local t = Tile(player_positions[i].fromPos)
         local creature = t and t:getBottomCreature()
 
         if not creature or not creature:isPlayer() then
-            player:sendCancelMessage("All 4 tiles must be occupied to start the quest.")
-            return true
-        end
+            if not hasAccess then
+                player:sendCancelMessage("All 4 tiles must be occupied to start the quest.")
+                return true
+            end
+        else
+            if creature:getLevel() < config.level_req and not hasAccess then
+                player:sendCancelMessage(creature:getName() .. " does not meet the level requirement (" .. config.level_req .. ").")
+                return true
+            end
 
-        if creature:getLevel() < config.level_req then
-            player:sendCancelMessage(creature:getName() .. " does not meet the level requirement (" .. config.level_req .. ").")
-            return true
-        end
+            if creature:getGuid() == player:getGuid() then
+                puller_found = true
+            end
 
-        if creature:getGuid() == player:getGuid() then
-            puller_found = true
+            table.insert(participants, {ptr = creature, toPos = player_positions[i].toPos})
         end
-
-        table.insert(participants, {ptr = creature, toPos = player_positions[i].toPos})
     end
 
-    if not puller_found then
+    if not puller_found and not hasAccess then
         player:sendCancelMessage("You must stand on one of the starting tiles to pull the lever.")
         return true
+    end
+
+    if #participants == 0 and hasAccess then
+        table.insert(participants, {ptr = player, toPos = player_positions[1].toPos})
     end
 
     for _, mData in pairs(monsters) do
