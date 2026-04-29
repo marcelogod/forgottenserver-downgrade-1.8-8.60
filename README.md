@@ -36,6 +36,9 @@
 > Based on [Nekiro's TFS 1.5 Downgrades](https://github.com/nekiro/TFS-1.5-Downgrades) · Forked from [MillhioreBT's downgrade](https://github.com/MillhioreBT/forgottenserver-downgrade)  
 > **Fully reworked** — all systems, optimizations, and custom features by Mateuzkl
 
+> If you’d like to stay updated on the community and follow the project’s progress, feel free to join our **Discord**. Everyone is welcome! 
+[Discord Server](https://discord.com/invite/GxTm7DyXVe) 🙂
+
 </div>
 
 ---
@@ -705,7 +708,7 @@ The base is **stable** and all systems are fully working. Found a bug? You're ve
 
 | Metric | Value |
 |:------:|:-----:|
-| 📦 Commits | **~900** |
+| 📦 Commits | **~1000+** |
 | 🧩 Custom Systems | **13+** |
 | 🔧 Status | **Stable & Active** |
 
