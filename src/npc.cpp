@@ -204,6 +204,7 @@ void reload()
 	for (const auto& it : npcsMap) {
 		if (auto npc = it.second.lock()) {
 			npc->closeAllShopWindows();
+			npc->setCreatureFocus(nullptr);
 		}
 	}
 
