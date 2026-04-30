@@ -37,7 +37,7 @@ local function protectNestedGoldPouches(item, inbox)
     end
 end
 
-local function getBlessingLossChance(player)
+local function getBlessingCount(player)
     local blessCount = 0
     for blessing = 1, 5 do
         if player:hasBlessing(blessing) then
@@ -45,25 +45,27 @@ local function getBlessingLossChance(player)
         end
     end
 
+    return blessCount
+end
+
+local function getContainerLossChance(blessCount)
+    return math.max(0, 100 - (blessCount * 20))
+end
+
+local function getItemLossChance(blessCount)
     return math.max(0, 10 - (blessCount * 2))
 end
 
-local function shouldDropItem(item, slot, isRedOrBlack, killedByPlayer, lossChance)
+local function shouldDropItem(item, isRedOrBlack, containerLossChance, itemLossChance)
     if isRedOrBlack then
         return true
     end
 
-    if lossChance <= 0 then
-        return false
+    if item:isContainer() then
+        return containerLossChance > 0 and math.random(1, 100) < containerLossChance
     end
 
-    if slot == CONST_SLOT_BACKPACK and not killedByPlayer then
-        return true
-    end
-
-    local maxRandom = item:isContainer() and 100 or 1000
-    local threshold = (lossChance / 100) * maxRandom
-    return math.random(1, maxRandom) <= threshold
+    return itemLossChance > 0 and math.random(1, 100) <= itemLossChance
 end
 
 local function moveToCorpseOrRemove(item, corpse)
@@ -98,13 +100,15 @@ function DropLoot.onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjus
     end
 
     local storeInbox = player:getStoreInbox()
-    local lossChance = getBlessingLossChance(player)
+    local blessCount = getBlessingCount(player)
+    local containerLossChance = getContainerLossChance(blessCount)
+    local itemLossChance = getItemLossChance(blessCount)
     for i = CONST_SLOT_HEAD, CONST_SLOT_AMMO do
         local item = player:getSlotItem(i)
         if item and not moveGoldPouchToInbox(item, storeInbox) then
             protectNestedGoldPouches(item, storeInbox)
 
-            if shouldDropItem(item, i, isRedOrBlack, killedByPlayer, lossChance) then
+            if shouldDropItem(item, isRedOrBlack, containerLossChance, itemLossChance) then
                 moveToCorpseOrRemove(item, corpse)
             end
         end
