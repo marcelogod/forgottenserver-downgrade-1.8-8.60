@@ -1397,6 +1397,7 @@ private:
 	bool wasMounted = false;
 	bool pzLocked = false;
 	bool isConnecting = false;
+	bool logoutRequested = false;
 	bool addAttackSkillPoint = false;
 	bool randomizeMount = false;
 	bool inventoryAbilities[CONST_SLOT_LAST + 1] = {};

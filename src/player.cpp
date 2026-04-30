@@ -1038,25 +1038,24 @@ void Player::sendPing()
 	}
 
 	if (noPongTime >= noPongKickTime) {
-		if (isConnecting || inNoLogoutZone) {
+		if (isConnecting || inNoLogoutZone || logoutRequested) {
 			return;
 		}
 
+		logoutRequested = true;
 		if (!g_creatureEvents->playerLogout(this)) {
+			logoutRequested = false;
 			return;
 		}
 
 		if (client) {
-			LOG_NETWORK(
-			    "{} disconnected by no-pong timeout (noPongTime={} ms, kickTime={} ms, pzLocked={}, inPz={}, position={}, ip={}).",
-			    getName(), noPongTime, noPongKickTime, pzLocked, inProtectionZone, getPosition(),
-			    convertIPToString(getIP()));
-			client->logout(true, true);
+			if (client->protocol()) {
+				client->logout(true, true);
+			} else {
+				client->clear();
+				g_game.removeCreature(this, true);
+			}
 		} else {
-			LOG_NETWORK(
-			    "{} removed by no-pong timeout without client (noPongTime={} ms, kickTime={} ms, pzLocked={}, inPz={}, position={}, ip={}).",
-			    getName(), noPongTime, noPongKickTime, pzLocked, inProtectionZone, getPosition(),
-			    convertIPToString(getIP()));
 			g_game.removeCreature(this, true);
 		}
 	}
