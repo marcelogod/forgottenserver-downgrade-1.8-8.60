@@ -297,7 +297,7 @@ if not NpcRequirements then
         end
 
         if self.requireMoney then
-            if player:getMoney() < self.requireMoney then
+            if player:getTotalMoney() < self.requireMoney then
                 return false, MESSAGE_LIST.money:replaceTags({total = self.requireMoney}), REQUIREMENTS.money
             end
         end
@@ -340,14 +340,27 @@ if not NpcRequirements then
                     return false, MESSAGE_LIST.item:replaceTags({itemName = name, amount = index.count}), REQUIREMENTS.item
                 end
             end
-            if player:getMoney() < self.requireRemoveMoney then
+            if player:getTotalMoney() < self.requireRemoveMoney then
                 return false, MESSAGE_LIST.money:replaceTags({total = self.requireRemoveMoney}), REQUIREMENTS.money
             end
         end
 
         if self.requireRemoveMoney then
-            if not player:removeMoney(self.requireRemoveMoney) then
+            local hasBankBalanceBefore, bankBalanceBefore = pcall(function()
+                return player:getBankBalance()
+            end)
+            if not player:removeTotalMoney(self.requireRemoveMoney) then
                 return false, MESSAGE_LIST.money:replaceTags({total = self.requireRemoveMoney}), REQUIREMENTS.money
+            end
+            if hasBankBalanceBefore and type(bankBalanceBefore) == "number" then
+                local hasBankBalanceAfter, bankBalanceAfter = pcall(function()
+                    return player:getBankBalance()
+                end)
+                if hasBankBalanceAfter and type(bankBalanceAfter) == "number" and bankBalanceAfter < bankBalanceBefore then
+                    local bankDeducted = bankBalanceBefore - bankBalanceAfter
+                    player:sendTextMessage(MESSAGE_INFO_DESCR,
+                        string.format("The travel fee included %d gold deducted from your bank account.", bankDeducted))
+                end
             end
         end
 
