@@ -97,7 +97,14 @@ function DropLoot.onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjus
     end
 
     if amulet and amulet:getId() == ITEM_AMULETOFLOSS and not isRedOrBlack then
-        if not killedByPlayer or not player:hasBlessing(6) then
+        local allBlessings = true
+        for i = 1, 5 do
+            if not player:hasBlessing(i) then
+                allBlessings = false
+                break
+            end
+        end
+        if not killedByPlayer or not allBlessings then
             player:removeItem(ITEM_AMULETOFLOSS, 1, -1, false)
         end
         if not player:getSlotItem(CONST_SLOT_BACKPACK) then
