@@ -3324,7 +3324,7 @@ void ProtocolGame::sendFeatures()
 	if (!isOTCv8 || isMehah) return;
 
 	std::unordered_map<GameFeature, bool> features;
-	features[GameFeature::ExtendedOpcode] = false;
+	features[GameFeature::ExtendedOpcode] = true;
 	features[GameFeature::SkillsBase] = true;
 	features[GameFeature::PlayerMounts] = true;
 	features[GameFeature::MagicEffectU16] = true;

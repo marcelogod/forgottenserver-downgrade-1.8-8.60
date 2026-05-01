@@ -8,12 +8,13 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `email` varchar(255) NOT NULL DEFAULT '',
   `creation` int NOT NULL DEFAULT '0',
   `tibia_coins` int unsigned NOT NULL DEFAULT '0',
+  `points_second` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
-INSERT INTO `accounts` (`id`, `name`, `password`, `secret`, `type`, `premium_ends_at`, `email`, `creation`, `tibia_coins`) VALUES
-(1, '1', '356a192b7913b04c54574d18c28d46e6395428ab', NULL, 1, 0, '', 0, 0);
+INSERT INTO `accounts` (`id`, `name`, `password`, `secret`, `type`, `premium_ends_at`, `email`, `creation`, `tibia_coins`, `points_second`) VALUES
+(1, '1', '356a192b7913b04c54574d18c28d46e6395428ab', NULL, 1, 0, '', 0, 0, 0);
 
 CREATE TABLE IF NOT EXISTS `players` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -317,6 +318,46 @@ CREATE TABLE IF NOT EXISTS `player_deaths` (
   FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE,
   KEY `killed_by` (`killed_by`),
   KEY `mostdamage_by` (`mostdamage_by`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+CREATE TABLE IF NOT EXISTS `player_deaths_backup` (
+  `player_id` int NOT NULL,
+  `time` bigint unsigned NOT NULL DEFAULT '0',
+  `level` int NOT NULL DEFAULT '1',
+  `killed_by` varchar(255) NOT NULL,
+  `is_player` tinyint NOT NULL DEFAULT '1',
+  `mostdamage_by` varchar(100) NOT NULL,
+  `mostdamage_is_player` tinyint NOT NULL DEFAULT '0',
+  `unjustified` tinyint NOT NULL DEFAULT '0',
+  `mostdamage_unjustified` tinyint NOT NULL DEFAULT '0',
+  FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE,
+  KEY `killed_by` (`killed_by`),
+  KEY `mostdamage_by` (`mostdamage_by`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+CREATE TABLE IF NOT EXISTS `change_name_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `player_id` int(11) NOT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `current_name` varchar(30) NOT NULL,
+  `changed_name_in` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `shop_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account` int(11) NOT NULL,
+  `player` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `price` int(11) NOT NULL,
+  `costSecond` int(11) NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `target` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`account`) REFERENCES `accounts` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`player`) REFERENCES `players` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
 CREATE TABLE IF NOT EXISTS `player_inboxitems` (
