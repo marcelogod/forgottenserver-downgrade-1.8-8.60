@@ -93,6 +93,8 @@ declare -A MSG_PT=(
   [boost_system_old]="Boost do sistema ausente ou antigo. Usando Boost manual."
   [boost_ldconfig]="registrando %s no ldconfig"
   [lua_ok]="Lua 5.5 ja esta OK em %s"
+  [lua_pc_ok]="pkg-config do Lua 5.5 pronto: %s"
+  [lua_pc_verify_failed]="pkg-config nao conseguiu validar Lua 5.5: %s"
   [lua_install]="instalando Lua %s manualmente"
   [lua_old]="Lua ausente ou diferente de 5.5. Instalando a versao correta."
   [simdutf_ok]="simdutf ja esta instalado em %s"
@@ -148,6 +150,8 @@ declare -A MSG_EN=(
   [boost_system_old]="System Boost is missing or old. Using manual Boost."
   [boost_ldconfig]="registering %s in ldconfig"
   [lua_ok]="Lua 5.5 is already OK at %s"
+  [lua_pc_ok]="Lua 5.5 pkg-config is ready: %s"
+  [lua_pc_verify_failed]="pkg-config could not validate Lua 5.5: %s"
   [lua_install]="installing Lua %s manually"
   [lua_old]="Lua is missing or different from 5.5. Installing the correct version."
   [simdutf_ok]="simdutf is already installed at %s"
@@ -203,6 +207,8 @@ declare -A MSG_ES=(
   [boost_system_old]="Boost del sistema falta o es antiguo. Usando Boost manual."
   [boost_ldconfig]="registrando %s en ldconfig"
   [lua_ok]="Lua 5.5 ya esta OK en %s"
+  [lua_pc_ok]="pkg-config de Lua 5.5 listo: %s"
+  [lua_pc_verify_failed]="pkg-config no pudo validar Lua 5.5: %s"
   [lua_install]="instalando Lua %s manualmente"
   [lua_old]="Lua falta o es diferente de 5.5. Instalando la version correcta."
   [simdutf_ok]="simdutf ya esta instalado en %s"
@@ -727,10 +733,128 @@ detect_existing_boost_mode() {
   fi
 }
 
+lua_header_declares_55() {
+  local header="$1"
+
+  awk '
+    $1 == "#define" && $2 == "LUA_VERSION_MAJOR_N" { major = $3 }
+    $1 == "#define" && $2 == "LUA_VERSION_MINOR_N" { minor = $3 }
+    $1 == "#define" && $2 == "LUA_VERSION_NUM" { version_num = $3 }
+    function leading_digits(value) {
+      sub(/[^0-9].*$/, "", value)
+      return value
+    }
+    END {
+      major = leading_digits(major)
+      minor = leading_digits(minor)
+      version_num = leading_digits(version_num)
+
+      if (major == "5" && minor == "5") {
+        exit 0
+      }
+      if (version_num == "505") {
+        exit 0
+      }
+      exit 1
+    }
+  ' "${header}"
+}
+
+lua_binary_is_55() {
+  local lua_bin="${LUA_PREFIX}/bin/lua"
+  local version=""
+
+  [[ -x "${lua_bin}" ]] || return 1
+  version="$("${lua_bin}" -v 2>&1 || true)"
+  [[ "${version}" =~ ^Lua[[:space:]]5\.5(\.|[[:space:]]|$) ]]
+}
+
 lua_local_is_55() {
   local header="${LUA_PREFIX}/include/lua.h"
-  [[ -f "${header}" && -f "${LUA_PREFIX}/lib/liblua.a" ]] || return 1
-  grep -Eq '#define[[:space:]]+LUA_VERSION_NUM[[:space:]]+505' "${header}"
+  local library="${LUA_PREFIX}/lib/liblua.a"
+
+  [[ -f "${header}" && -f "${library}" ]] || return 1
+  lua_header_declares_55 "${header}" || return 1
+  lua_binary_is_55
+}
+
+lua_pkgconfig_dirs() {
+  local multiarch=""
+
+  printf '%s\n' "${LUA_PREFIX}/lib/pkgconfig"
+
+  if command -v dpkg-architecture >/dev/null 2>&1; then
+    multiarch="$(dpkg-architecture -qDEB_HOST_MULTIARCH 2>/dev/null || true)"
+    if [[ -n "${multiarch}" ]]; then
+      printf '%s\n' "${LUA_PREFIX}/lib/${multiarch}/pkgconfig"
+    fi
+  fi
+}
+
+prepend_lua_pkgconfig_path() {
+  local dir new_path=""
+
+  while IFS= read -r dir; do
+    [[ -n "${dir}" ]] || continue
+    case ":${PKG_CONFIG_PATH:-}:" in
+      *":${dir}:"*) ;;
+      *) new_path="${new_path:+${new_path}:}${dir}" ;;
+    esac
+  done < <(lua_pkgconfig_dirs)
+
+  if [[ -n "${new_path}" ]]; then
+    export PKG_CONFIG_PATH="${new_path}${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"
+  fi
+}
+
+ensure_lua_pkgconfig() {
+  local pc_name="lua5.5.pc"
+  local primary_pc_dir="${LUA_PREFIX}/lib/pkgconfig"
+  local primary_pc_file="${primary_pc_dir}/${pc_name}"
+  local dir pc_version
+
+  prepend_lua_pkgconfig_path
+
+  if [[ -f "${primary_pc_file}" && -e "${primary_pc_dir}/lua-5.5.pc" && -e "${primary_pc_dir}/lua.pc" ]] && command -v pkg-config >/dev/null 2>&1; then
+    pc_version="$(pkg-config --modversion lua5.5 2>/dev/null || true)"
+    if [[ "${pc_version}" == 5.5* ]]; then
+      ok "$(printf "$(msg lua_pc_ok)" "${primary_pc_file}")"
+      return
+    fi
+  fi
+
+  "${SUDO[@]}" mkdir -p "${primary_pc_dir}"
+
+  {
+    printf 'prefix=%s\n' "${LUA_PREFIX}"
+    printf 'exec_prefix=${prefix}\n'
+    printf 'libdir=${exec_prefix}/lib\n'
+    printf 'includedir=${prefix}/include\n'
+    printf '\n'
+    printf 'Name: Lua\n'
+    printf 'Description: Lua language engine\n'
+    printf 'Version: %s\n' "${LUA_VERSION}"
+    printf 'Libs: -L${libdir} -llua -lm -ldl\n'
+    printf 'Cflags: -I${includedir}\n'
+  } | "${SUDO[@]}" tee "${primary_pc_file}" >/dev/null
+
+  "${SUDO[@]}" ln -sf "${pc_name}" "${primary_pc_dir}/lua-5.5.pc"
+  "${SUDO[@]}" ln -sf "${pc_name}" "${primary_pc_dir}/lua.pc"
+
+  while IFS= read -r dir; do
+    [[ -n "${dir}" && "${dir}" != "${primary_pc_dir}" ]] || continue
+    "${SUDO[@]}" mkdir -p "${dir}"
+    "${SUDO[@]}" ln -sf "${primary_pc_file}" "${dir}/${pc_name}"
+    "${SUDO[@]}" ln -sf "${pc_name}" "${dir}/lua-5.5.pc"
+    "${SUDO[@]}" ln -sf "${pc_name}" "${dir}/lua.pc"
+  done < <(lua_pkgconfig_dirs)
+
+  if command -v pkg-config >/dev/null 2>&1; then
+    pc_version="$(pkg-config --modversion lua5.5 2>/dev/null || true)"
+    [[ "${pc_version}" == 5.5* ]] || die "$(printf "$(msg lua_pc_verify_failed)" "${pc_version:-not found}")"
+  fi
+
+  ok "$(printf "$(msg lua_pc_ok)" "${primary_pc_file}")"
 }
 
 ensure_lua_alternatives() {
@@ -758,6 +882,7 @@ install_lua_55() {
   make linux MYCFLAGS="-fPIC"
   "${SUDO[@]}" make install
   "${SUDO[@]}" ldconfig
+  ensure_lua_pkgconfig
   ensure_lua_alternatives
 }
 
@@ -765,6 +890,7 @@ ensure_lua_55() {
   section section_lua
 
   if lua_local_is_55; then
+    ensure_lua_pkgconfig
     ensure_lua_alternatives
     ok "$(printf "$(msg lua_ok)" "${LUA_PREFIX}")"
     "${LUA_PREFIX}/bin/lua" -v || true
@@ -882,7 +1008,7 @@ safe_remove_build_dir() {
 }
 
 cmake_prefix_path() {
-  local -a prefixes=("${SIMDUTF_PREFIX}")
+  local -a prefixes=("${LUA_PREFIX}" "${SIMDUTF_PREFIX}")
 
   if [[ "${BOOST_MODE}" == "manual" ]]; then
     prefixes=("${BOOST_PREFIX}" "${prefixes[@]}")
@@ -906,6 +1032,7 @@ configure_tfs() {
     -DUSE_MIMALLOC="${USE_MIMALLOC}"
     -DLUA_INCLUDE_DIR="${LUA_PREFIX}/include"
     -DLUA_LIBRARY="${LUA_PREFIX}/lib/liblua.a"
+    -DLUA_LIBRARIES="${LUA_PREFIX}/lib/liblua.a;m;dl"
     -DCMAKE_PREFIX_PATH="${prefix_path}"
   )
 
