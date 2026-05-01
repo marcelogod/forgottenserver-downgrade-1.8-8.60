@@ -341,6 +341,35 @@ familiarSystemEnabled = false
 
 ## Compilation
 
+## **IMPORTANT / ATENCAO**
+
+### **RECOMMENDED: USE THE AUTOMATIC BUILD SCRIPT**
+
+For Ubuntu 22.04 / 24.04 or WSL, run:
+
+```bash
+chmod +x build.sh
+./build.sh
+```
+
+The script detects your Ubuntu version, lets you choose the language, installs missing dependencies, prepares Lua 5.5, Boost, simdutf and builds the server in Release mode.
+
+Useful examples:
+
+```bash
+./build.sh --lang pt
+./build.sh --lang en --ubuntu 24.04
+./build.sh --lang es --ubuntu 22.04 --clean
+```
+
+After the build finishes, run:
+
+```bash
+./tfs
+```
+
+Manual compilation notes are kept below only for advanced/custom setups.
+
 ### Ubuntu 22.04 / 24.04
 
 Requires **Boost 1.75+** and **Lua 5.5**.
