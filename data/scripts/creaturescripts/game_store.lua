@@ -190,17 +190,54 @@ function addItem(parent, name, id, price, isSecondPrice, count, description)
 	})
 end
 
+local function normalizeUnsignedInteger(value)
+	value = tonumber(value)
+	if not value or value < 0 or value ~= math.floor(value) then
+		return nil
+	end
+
+	return value
+end
+
+local function buildSafeOffer(serverOffer, clientOffer)
+	-- Never trust item id, outfit id, mount id, count or price sent by the client.
+	-- The client may only provide UI context and optional fields such as the desired new name.
+	return {
+		parent = serverOffer.parent,
+		name = serverOffer.name,
+		serverId = serverOffer.serverId,
+		id = serverOffer.id,
+		price = serverOffer.price,
+		isSecondPrice = serverOffer.isSecondPrice,
+		count = serverOffer.count,
+		description = serverOffer.description,
+		categoryId = serverOffer.categoryId,
+		nick = type(clientOffer.nick) == "string" and clientOffer.nick or nil
+	}
+end
+
 function gameStorePurchase(player, offer)
+	if type(offer) ~= "table" or type(offer.parent) ~= "string" or type(offer.name) ~= "string" then
+		return errorMsg(player, "Invalid store request.")
+	end
+
+	local clientPrice = tonumber(offer.price)
+	local clientCount = tonumber(offer.count)
+	if not clientPrice or not clientCount then
+		return errorMsg(player, "Invalid store request.")
+	end
+
 	local offers = GAME_STORE.offers[offer.parent]
 	if not offers then
 		return errorMsg(player, "Something went wrong, try again or contact server admin [#1]!")
 	end
 
 	for i = 1, #offers do
-		if offers[i].name == offer.name and offers[i].price == offer.price and offers[i].count == offer.count then
+		local serverOffer = offers[i]
+		if serverOffer.name == offer.name and serverOffer.price == clientPrice and serverOffer.count == clientCount then
 			local points = 0
 			local query = ""
-			if offers[i].isSecondPrice then
+			if serverOffer.isSecondPrice then
 				points = getSecondCurrency(player)
 				query = SECOND_CURRENCY_COLUMN
 			else
@@ -208,30 +245,30 @@ function gameStorePurchase(player, offer)
 				query = PRIMARY_CURRENCY_COLUMN
 			end
 			
-			if offers[i].price > points then
+			if serverOffer.price > points then
 				return errorMsg(player, "You don't have enough points!")
 			end
 
-			offer.serverId = offers[i].serverId
-			local status = finalizePurchase(player, offer)
+			local safeOffer = buildSafeOffer(serverOffer, offer)
+			local status = finalizePurchase(player, safeOffer)
 			if status then
 				return errorMsg(player, status)
 			end
 
 			local aid = player:getAccountId()
-			local escapeName = db.escapeString(offers[i].name)
-			local escapePrice = db.escapeString(-offers[i].price)
-			local escapeIsSecondPrice = db.escapeString(offers[i].isSecondPrice and "1" or "0")
-			local escapeCount = offers[i].count and db.escapeString(offers[i].count) or 0
-			if GAME_STORE.categoriesId[offer.parent] == CATEGORY_PREMIUM then
+			local escapeName = db.escapeString(serverOffer.name)
+			local escapePrice = db.escapeString(-serverOffer.price)
+			local escapeIsSecondPrice = db.escapeString(serverOffer.isSecondPrice and "1" or "0")
+			local escapeCount = serverOffer.count and db.escapeString(serverOffer.count) or 0
+			if GAME_STORE.categoriesId[serverOffer.parent] == CATEGORY_PREMIUM then
 				escapeCount = 0
 			end
 
-			db.query("UPDATE `" .. ACCOUNT_TABLE .. "` set `" .. query .. "` = `" .. query .. "` - " .. offers[i].price .. " WHERE `id` = " .. aid)
+			db.query("UPDATE `" .. ACCOUNT_TABLE .. "` SET `" .. query .. "` = `" .. query .. "` - " .. serverOffer.price .. " WHERE `id` = " .. aid)
 			db.asyncQuery("INSERT INTO `shop_history` VALUES (NULL, " .. aid .. ", " .. player:getGuid() .. ", NOW(), " .. escapeName .. ", " .. escapePrice .. ", " .. escapeIsSecondPrice .. ", " .. escapeCount .. ", NULL)")
 			addEvent(gameStoreUpdateHistory, 1000, player:getId())
 			addEvent(gameStoreUpdatePoints, 1000, player:getId())
-			return infoMsg(player, "You've bought " .. offers[i].name .. "!", true)
+			return infoMsg(player, "You've bought " .. serverOffer.name .. "!", true)
 		end
 	end
 	
@@ -302,7 +339,7 @@ function defaultBlessingCallback(player, offer)
 		return "You already have this blessing."
 	end
 	
-	layer:addBlessing(offer.count)
+	player:addBlessing(offer.count)
 	return false
 end
 
@@ -375,6 +412,10 @@ function defaultChangeNameCallback(player, offer)
     if not player:getGroup() then
         return "You can't do this."
     end
+
+	if type(offer.nick) ~= "string" then
+		return "You need to choose a new nickname."
+	end
 
 	local characterName = offer.nick:trim()
 	local v = getValid(characterName:lower(), false)
@@ -576,27 +617,46 @@ function gameStoreChangeName(player, offer)
 end
 
 function gameStoreTransferCoins(player, transfer)
-	local receiver = transfer.target
-	local amount = transfer.amount
-	local amountSecond = transfer.amountSecond
-	if not receiver then
-		return errorMsg(player, "Target player not found!")
+	if type(transfer) ~= "table" or type(transfer.target) ~= "string" then
+		return errorMsg(player, "Invalid transfer request.")
 	end
 
-	if amount > getPoints(player) or amountSecond > getSecondCurrency(player) then
-		return errorMsg(player, "You don't have enough points!")
+	local receiver = transfer.target:trim()
+	local amount = normalizeUnsignedInteger(transfer.amount)
+	local amountSecond = normalizeUnsignedInteger(transfer.amountSecond)
+	if not amount or not amountSecond then
+		return errorMsg(player, "Invalid amount.")
+	end
+
+	if amount == 0 and amountSecond == 0 then
+		return errorMsg(player, "Invalid amount.")
+	end
+
+	if not SECOND_CURRENCY_ENABLED and amountSecond > 0 then
+		return errorMsg(player, "Invalid amount.")
+	end
+
+	if receiver == "" then
+		return errorMsg(player, "Target player not found!")
 	end
 
 	if receiver:lower() == player:getName():lower() then
 		return errorMsg(player, "You can't transfer coins to yourself.")
 	end
 
+	local availablePoints = getPoints(player)
+	local availableSecondPoints = getSecondCurrency(player)
+	if amount > availablePoints or amountSecond > availableSecondPoints then
+		return errorMsg(player, "You don't have enough points!")
+	end
+
 	local accountId = 0
 	local GUID = 0
-	local resultId = db.storeQuery("SELECT `id`, `account_id` FROM `players` WHERE `name` = " .. db.escapeString(receiver))
+	local resultId = db.storeQuery("SELECT `id`, `account_id`, `name` FROM `players` WHERE `name` = " .. db.escapeString(receiver) .. " LIMIT 1")
 	if resultId ~= false then
-		accountId = result.getDataInt(resultId, "account_id")
 		GUID = result.getDataInt(resultId, "id")
+		accountId = result.getDataInt(resultId, "account_id")
+		receiver = result.getDataString(resultId, "name")
 		result.free(resultId)
 	end
 
@@ -609,19 +669,19 @@ function gameStoreTransferCoins(player, transfer)
 	end
 
 	local aid = player:getAccountId()
-	local title = "Coin Transfer from " .. player:getName() .. " to " .. receiver:sub(1, 1):upper() .. receiver:sub(2, receiver:len()):lower()
+	local title = "Coin Transfer from " .. player:getName() .. " to " .. receiver
 	local escapeTitle = db.escapeString(title)
 	if amount > 0 then
-		db.query("UPDATE `" .. ACCOUNT_TABLE .. "` set `" .. PRIMARY_CURRENCY_COLUMN .. "` = `" .. PRIMARY_CURRENCY_COLUMN .. "` - " .. amount .. " WHERE `id` = " .. aid)
-		db.query("UPDATE `" .. ACCOUNT_TABLE .. "` set `" .. PRIMARY_CURRENCY_COLUMN .. "` = `" .. PRIMARY_CURRENCY_COLUMN .. "` + " .. amount .. " WHERE `id` = " .. accountId)
+		db.query("UPDATE `" .. ACCOUNT_TABLE .. "` SET `" .. PRIMARY_CURRENCY_COLUMN .. "` = `" .. PRIMARY_CURRENCY_COLUMN .. "` - " .. amount .. " WHERE `id` = " .. aid)
+		db.query("UPDATE `" .. ACCOUNT_TABLE .. "` SET `" .. PRIMARY_CURRENCY_COLUMN .. "` = `" .. PRIMARY_CURRENCY_COLUMN .. "` + " .. amount .. " WHERE `id` = " .. accountId)
 		
 		db.asyncQuery("INSERT INTO `shop_history` VALUES (NULL, '" .. aid .. "', '" .. player:getGuid() .. "', NOW(), " .. escapeTitle .. ", " .. db.escapeString(-amount) .. ", 0, 1, " .. db.escapeString(receiver) .. ")")
 		db.asyncQuery("INSERT INTO `shop_history` VALUES (NULL, '" .. accountId .. "', '" .. GUID .. "', NOW(), " .. escapeTitle .. ", " .. db.escapeString(amount) .. ", 0, 1, " .. db.escapeString(player:getName()) .. ")")
 	end
 
 	if amountSecond > 0 then
-		db.query("UPDATE `" .. ACCOUNT_TABLE .. "` set `" .. SECOND_CURRENCY_COLUMN .. "` = `" .. SECOND_CURRENCY_COLUMN .. "` - " .. amountSecond .. " WHERE `id` = " .. aid)
-		db.query("UPDATE `" .. ACCOUNT_TABLE .. "` set `" .. SECOND_CURRENCY_COLUMN .. "` = `" .. SECOND_CURRENCY_COLUMN .. "` + " .. amountSecond .. " WHERE `id` = " .. accountId)
+		db.query("UPDATE `" .. ACCOUNT_TABLE .. "` SET `" .. SECOND_CURRENCY_COLUMN .. "` = `" .. SECOND_CURRENCY_COLUMN .. "` - " .. amountSecond .. " WHERE `id` = " .. aid)
+		db.query("UPDATE `" .. ACCOUNT_TABLE .. "` SET `" .. SECOND_CURRENCY_COLUMN .. "` = `" .. SECOND_CURRENCY_COLUMN .. "` + " .. amountSecond .. " WHERE `id` = " .. accountId)
 	
 		db.asyncQuery("INSERT INTO `shop_history` VALUES (NULL, '" .. aid .. "', '" .. player:getGuid() .. "', NOW(), " .. escapeTitle .. ", " .. db.escapeString(-amountSecond) .. ", 1, 1, " .. db.escapeString(receiver) .. ")")
 		db.asyncQuery("INSERT INTO `shop_history` VALUES (NULL, '" .. accountId .. "', '" .. GUID .. "', NOW(), " .. escapeTitle .. ", " .. db.escapeString(amountSecond) .. ", 1, 1, " .. db.escapeString(player:getName()) .. ")")
