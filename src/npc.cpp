@@ -1007,8 +1007,15 @@ void Npc::clearFocusIfNeeded(Player* player)
 
 	setCreatureFocus(nullptr);
 
+	bool closedShopWindow = false;
+	int32_t onBuy;
+	int32_t onSell;
+	if (player->getShopOwner(onBuy, onSell) == this) {
+		closedShopWindow = player->closeShopWindow();
+	}
+
 	auto playerRef = std::static_pointer_cast<Player>(g_game.getCreatureSharedRef(player));
-	if (playerRef) {
+	if (playerRef && !closedShopWindow) {
 		removeShopPlayer(playerRef);
 	}
 

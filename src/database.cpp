@@ -14,6 +14,7 @@
 
 static constexpr int MAX_RECONNECT_ATTEMPTS = 10;
 static constexpr unsigned int MYSQL_TIMEOUT_SECONDS = 30;
+static constexpr uint64_t DB_INSERT_PACKET_SAFETY_MARGIN = 4096;
 
 static tfs::detail::Mysql_ptr connectToDatabase(const bool retryIfError)
 {
@@ -291,11 +292,18 @@ bool DBInsert::addRow(std::string_view row)
 {
 	// adds new row to buffer
 	const size_t rowLength = row.length();
-	length += rowLength;
-	if (length > Database::getInstance().getMaxPacketSize() && !execute()) {
+	const uint64_t maxPacketSize = Database::getInstance().getMaxPacketSize();
+	const uint64_t maxQueryLength = maxPacketSize > DB_INSERT_PACKET_SAFETY_MARGIN
+	                                    ? maxPacketSize - DB_INSERT_PACKET_SAFETY_MARGIN
+	                                    : maxPacketSize;
+
+	const bool hasRows = !values.empty();
+	const size_t projectedRowLength = rowLength + (hasRows ? 3 : 2);
+	if (hasRows && static_cast<uint64_t>(length + projectedRowLength) > maxQueryLength && !execute()) {
 		return false;
 	}
 
+	const bool firstRow = values.empty();
 	if (values.empty()) {
 		values.reserve(rowLength + 2);
 		values.push_back('(');
@@ -308,6 +316,7 @@ bool DBInsert::addRow(std::string_view row)
 		values.append(row);
 		values.push_back(')');
 	}
+	length += rowLength + (firstRow ? 2 : 3);
 	return true;
 }
 
