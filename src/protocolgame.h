@@ -331,9 +331,6 @@ private:
 
 	uint32_t dllCheckSequence = 0;
 
-	// Anti-speedhack: movement packet rate limiter
-	static constexpr uint16_t MAX_MOVES_PER_SECOND = 25;
-	static constexpr uint8_t MAX_SPEEDHACK_WARNINGS = 10;
 	int64_t moveWindowStart = 0;
 	uint16_t movePacketCount = 0;
 	uint8_t speedhackWarnings = 0;

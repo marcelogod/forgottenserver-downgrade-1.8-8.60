@@ -700,56 +700,34 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 			}
 			break; // GameClientExtendedPing
 		case 0x64:
-		case 0x65:
-		case 0x66:
-		case 0x67:
-		case 0x68:
-		case 0x6A:
-		case 0x6B:
-		case 0x6C:
-		case 0x6D: {
-			// Anti-speedhack: rate limit movement packets
-			int64_t now = OTSYS_TIME();
-			if (now - moveWindowStart > 1000) {
-				moveWindowStart = now;
-				movePacketCount = 1;
-			} else if (++movePacketCount > MAX_MOVES_PER_SECOND) {
-				if (++speedhackWarnings >= MAX_SPEEDHACK_WARNINGS) {
-					g_dispatcher.addTask([thisPtr = getThis()]() { thisPtr->logout(true, true); });
-					return;
-				}
-				// Silently drop excessive movement packets
-				break;
-			}
-
-			if (recvbyte == 0x64) {
-				parseAutoWalk(msg);
-			} else {
-				static constexpr Direction moveDirections[] = {
-					DIRECTION_NORTH,     // 0x65
-					DIRECTION_EAST,      // 0x66
-					DIRECTION_SOUTH,     // 0x67
-					DIRECTION_WEST,      // 0x68
-				};
-				static constexpr Direction diagDirections[] = {
-					DIRECTION_NORTHEAST, // 0x6A
-					DIRECTION_SOUTHEAST, // 0x6B
-					DIRECTION_SOUTHWEST, // 0x6C
-					DIRECTION_NORTHWEST, // 0x6D
-				};
-
-				Direction dir;
-				if (recvbyte <= 0x68) {
-					dir = moveDirections[recvbyte - 0x65];
-				} else {
-					dir = diagDirections[recvbyte - 0x6A];
-				}
-				g_dispatcher.addTask([playerID = player->getID(), dir]() { g_game.playerMove(playerID, dir); });
-			}
+			parseAutoWalk(msg);
 			break;
-		}
+		case 0x65:
+			g_dispatcher.addTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_NORTH); });
+			break;
+		case 0x66:
+			g_dispatcher.addTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_EAST); });
+			break;
+		case 0x67:
+			g_dispatcher.addTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_SOUTH); });
+			break;
+		case 0x68:
+			g_dispatcher.addTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_WEST); });
+			break;
 		case 0x69:
 			g_dispatcher.addTask([playerID = player->getID()]() { g_game.playerStopAutoWalk(playerID); });
+			break;
+		case 0x6A:
+			g_dispatcher.addTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_NORTHEAST); });
+			break;
+		case 0x6B:
+			g_dispatcher.addTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_SOUTHEAST); });
+			break;
+		case 0x6C:
+			g_dispatcher.addTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_SOUTHWEST); });
+			break;
+		case 0x6D:
+			g_dispatcher.addTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_NORTHWEST); });
 			break;
 		case 0x6F:
 			g_dispatcher.addTask(DISPATCHER_TASK_EXPIRATION,
