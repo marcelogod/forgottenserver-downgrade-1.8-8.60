@@ -664,6 +664,7 @@ public:
 
 	bool canWear(uint32_t lookType, uint8_t addons) const;
 	bool hasOutfit(uint32_t lookType, uint8_t addons);
+	bool changeOutfit(Outfit_t outfit, bool checkList);
 	void addOutfit(uint16_t lookType, uint8_t addons);
 	bool removeOutfit(uint16_t lookType);
 	bool removeOutfitAddon(uint16_t lookType, uint8_t addons);
@@ -1395,6 +1396,8 @@ private:
 	bool secureMode = false;
 	bool ghostMode = false;
 	bool wasMounted = false;
+	bool requestedOutfit = false;
+	bool outfitAttributes = false;
 	bool pzLocked = false;
 	bool isConnecting = false;
 	bool logoutRequested = false;

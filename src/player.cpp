@@ -1256,6 +1256,11 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin)
 		}
 		storedConditionList.clear();
 
+		if (defaultOutfit.lookAddons == 3) {
+			uint32_t outfitId = Outfits::getInstance().getOutfitId(sex, defaultOutfit.lookType);
+			outfitAttributes = Outfits::getInstance().addAttributes(getID(), outfitId, sex);
+		}
+
 		updateRegeneration();
 
 		BedItem* bed = g_game.getBedBySleeper(guid);
@@ -4432,6 +4437,29 @@ bool Player::getOutfitAddons(const Outfit& outfit, uint8_t& addons) const
 	}
 
 	addons = 0;
+	return true;
+}
+
+bool Player::changeOutfit(Outfit_t outfit, bool checkList)
+{
+	if (checkList && !canWear(outfit.lookType, outfit.lookAddons)) {
+		return false;
+	}
+
+	if (outfitAttributes) {
+		uint32_t oldId = Outfits::getInstance().getOutfitId(sex, defaultOutfit.lookType);
+		outfitAttributes = !Outfits::getInstance().removeAttributes(getID(), oldId, sex);
+	}
+
+	defaultOutfit = outfit;
+
+	if (outfit.lookAddons == 3) {
+		uint32_t outfitId = Outfits::getInstance().getOutfitId(sex, outfit.lookType);
+		outfitAttributes = Outfits::getInstance().addAttributes(getID(), outfitId, sex);
+	} else {
+		outfitAttributes = false;
+	}
+
 	return true;
 }
 

@@ -4071,7 +4071,7 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit, bool randomize
 	}
 
 	if (player->canWear(outfit.lookType, outfit.lookAddons)) {
-		player->defaultOutfit = outfit;
+		player->changeOutfit(outfit, false);
 
 		if (player->hasCondition(CONDITION_OUTFIT)) {
 			return;
