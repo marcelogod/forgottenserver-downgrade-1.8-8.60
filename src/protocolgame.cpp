@@ -3041,13 +3041,8 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(player->getStaminaMinutes());
 
 	if (isOTC) {
-		if (!isMehah) {
-			msg.add<uint16_t>(player->getOfflineTrainingTime() / 60 / 1000);
-		}
 		msg.add<uint16_t>(player->getBaseSpeed() / 2);
-		if (isMehah) {
-			msg.add<uint16_t>(player->getOfflineTrainingTime() / 60 / 1000);
-		}
+		msg.add<uint16_t>(player->getOfflineTrainingTime() / 60 / 1000);
 	}
 
 	/*msg.add<uint16_t>(player->getBaseSpeed() / 2);
@@ -3080,9 +3075,6 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 		}
 
 		for (uint8_t i = SPECIALSKILL_FIRST; i <= SPECIALSKILL_LAST; ++i) {
-			if (isMehah && (i == SPECIALSKILL_LIFELEECHAMOUNT || i == SPECIALSKILL_MANALEECHAMOUNT)) {
-				continue;
-			}
 			msg.add<uint16_t>(static_cast<uint16_t>(std::min<int32_t>(10000, player->varSpecialSkills[i])));
 			msg.add<uint16_t>(0);
 		}
