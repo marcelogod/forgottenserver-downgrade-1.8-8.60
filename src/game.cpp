@@ -5232,7 +5232,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			}
 
 			if (message.primary.color != TEXTCOLOR_NONE) {
-				addAnimatedText(spectators, fmt::format("{:+d}", -message.primary.value), targetPos, message.primary.color);
+				addAnimatedText(spectators, fmt::format("{:d}", message.primary.value), targetPos, message.primary.color);
 			}
 		}
 
@@ -5243,7 +5243,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			}
 
 			if (message.secondary.color != TEXTCOLOR_NONE) {
-				addAnimatedText(spectators, fmt::format("{:+d}", -message.secondary.value), targetPos, message.secondary.color);
+				addAnimatedText(spectators, fmt::format("{:d}", message.secondary.value), targetPos, message.secondary.color);
 			}
 		}
 
