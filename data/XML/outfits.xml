@@ -13,6 +13,7 @@
 		<stats>
 			<maxHealth value="5" />
 			<maxMana value="5" />
+			<cap value="100" />
 			<magicLevel value="1" />
 		</stats>
 		<imbuing>

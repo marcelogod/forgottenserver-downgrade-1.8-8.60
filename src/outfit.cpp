@@ -136,8 +136,9 @@ bool Outfits::loadFromXml()
 				} else if (statName == "magLevel" || statName == "magicLevel" ||
 				           statName == "magiclevel" || statName == "ml") {
 					outfit.stats[STAT_MAGICPOINTS] += statValue;
+				} else if (statName == "cap" || statName == "capacity") {
+					outfit.stats[STAT_CAPACITY] += statValue * 100;
 				}
-				// "cap"/"capacity" this is not supported via stats_t in this TFS.
 			}
 		}
 

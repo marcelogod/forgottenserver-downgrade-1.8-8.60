@@ -695,6 +695,11 @@ void Player::setVarStats(stats_t stat, int32_t modifier)
 			break;
 		}
 
+		case STAT_CAPACITY: {
+			// capacity changed; sendStats() is called by the caller (outfit/condition)
+			break;
+		}
+
 		default: {
 			break;
 		}
@@ -712,6 +717,8 @@ int32_t Player::getDefaultStats(stats_t stat) const
 			return manaMax;
 		case STAT_MAGICPOINTS:
 			return getBaseMagicLevel();
+		case STAT_CAPACITY:
+			return static_cast<int32_t>(capacity);
 		default:
 			return 0;
 	}

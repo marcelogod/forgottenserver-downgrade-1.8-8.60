@@ -407,7 +407,7 @@ public:
 		} else if (hasFlag(PlayerFlag_HasInfiniteCapacity)) {
 			return std::numeric_limits<uint32_t>::max();
 		}
-		return capacity;
+		return static_cast<uint32_t>(std::max<int32_t>(0, static_cast<int32_t>(capacity) + varStats[STAT_CAPACITY]));
 	}
 
 	uint32_t getFreeCapacity() const
@@ -417,7 +417,7 @@ public:
 		} else if (hasFlag(PlayerFlag_HasInfiniteCapacity)) {
 			return std::numeric_limits<uint32_t>::max();
 		}
-		return std::max<int32_t>(0, capacity - inventoryWeight);
+		return static_cast<uint32_t>(std::max<int32_t>(0, static_cast<int32_t>(capacity) + varStats[STAT_CAPACITY] - static_cast<int32_t>(inventoryWeight)));
 	}
 
 	int32_t getMaxHealth() const override { return std::max<int32_t>(1, healthMax + varStats[STAT_MAXHITPOINTS]); }
