@@ -58,6 +58,10 @@ experienceByKillingPlayers = false
 pzLockSkullAttacker = false
 allowAutoAttackWithoutExhaustion = true
 
+-- Protection Time
+-- Grants protection upon connection if monsters are nearby, to give you a grace period; if you move or attack, the protection is deactivated.
+protectionTime = 10
+
 -- Party Config
 -- required to keep shared experience active.
 -- experienceShareRange: Maximum horizontal distance (in tiles) between party members
@@ -126,8 +130,6 @@ timeBetweenNecklace = 500
 timeBetweenRing = 500
 exhaustPotionMiliSeconds = 1500
 exhaustItemAtUsePotion = true
-
-protectionTime = 10
 
 -- Optional custom systems
 -- Default false keeps closer 8.60 behavior.
@@ -238,7 +240,7 @@ bedOfflineTraining = true
 showPlayerLogInConsole = true
 healthGainColour = 95
 manaGainColour = 158
-manaLossColour = 95
+manaLossColour = 5
 offlineTrainingThreshold = 600
 checkDuplicateStorageKeys = false
 npcsUsingBankMoney = true
