@@ -97,6 +97,7 @@ declare -A MSG_PT=(
   [lua_pc_verify_failed]="pkg-config nao conseguiu validar Lua 5.5: %s"
   [lua_install]="instalando Lua %s manualmente"
   [lua_old]="Lua ausente ou diferente de 5.5. Instalando a versao correta."
+  [lua_missing_skip_deps]="Lua 5.5 nao esta pronto em %s. Rode ./build.sh sem --skip-deps para o script instalar o Lua, ou instale o Lua 5.5 manualmente antes do build."
   [simdutf_ok]="simdutf ja esta instalado em %s"
   [simdutf_install]="instalando simdutf em %s"
   [simdutf_pull_warn]="Nao consegui atualizar simdutf por git pull; vou continuar com a copia local."
@@ -154,6 +155,7 @@ declare -A MSG_EN=(
   [lua_pc_verify_failed]="pkg-config could not validate Lua 5.5: %s"
   [lua_install]="installing Lua %s manually"
   [lua_old]="Lua is missing or different from 5.5. Installing the correct version."
+  [lua_missing_skip_deps]="Lua 5.5 is not ready at %s. Run ./build.sh without --skip-deps so the script can install Lua, or install Lua 5.5 manually before building."
   [simdutf_ok]="simdutf is already installed at %s"
   [simdutf_install]="installing simdutf at %s"
   [simdutf_pull_warn]="Could not update simdutf with git pull; continuing with local copy."
@@ -211,6 +213,7 @@ declare -A MSG_ES=(
   [lua_pc_verify_failed]="pkg-config no pudo validar Lua 5.5: %s"
   [lua_install]="instalando Lua %s manualmente"
   [lua_old]="Lua falta o es diferente de 5.5. Instalando la version correcta."
+  [lua_missing_skip_deps]="Lua 5.5 no esta listo en %s. Ejecuta ./build.sh sin --skip-deps para que el script instale Lua, o instala Lua 5.5 manualmente antes del build."
   [simdutf_ok]="simdutf ya esta instalado en %s"
   [simdutf_install]="instalando simdutf en %s"
   [simdutf_pull_warn]="No pude actualizar simdutf con git pull; continuo con la copia local."
@@ -962,6 +965,19 @@ ensure_lua_55() {
   "${LUA_PREFIX}/bin/lua" -v || true
 }
 
+require_lua_for_configure() {
+  if lua_local_is_55; then
+    prepend_lua_pkgconfig_path
+    return
+  fi
+
+  if [[ "${SKIP_DEPS}" -eq 1 ]]; then
+    die "$(printf "$(msg lua_missing_skip_deps)" "${LUA_PREFIX}")"
+  fi
+
+  ensure_lua_55
+}
+
 simdutf_config_exists() {
   [[ -f "${SIMDUTF_PREFIX}/lib/cmake/simdutf/simdutf-config.cmake" ]] || \
     [[ -f "${SIMDUTF_PREFIX}/lib/cmake/simdutf/simdutfConfig.cmake" ]]
@@ -1075,6 +1091,7 @@ cmake_prefix_path() {
 
 configure_tfs() {
   local prefix_path
+  require_lua_for_configure
   prefix_path="$(cmake_prefix_path)"
 
   local -a args=(
@@ -1088,6 +1105,7 @@ configure_tfs() {
     -DLUA_INCLUDE_DIR="${LUA_PREFIX}/include"
     -DLUA_LIBRARY="${LUA_PREFIX}/lib/liblua.a"
     -DLUA_LIBRARIES="${LUA_PREFIX}/lib/liblua.a;m;dl"
+    -DLUA_VERSION_STRING="${LUA_VERSION}"
     -DCMAKE_PREFIX_PATH="${prefix_path}"
   )
 
