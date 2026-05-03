@@ -4461,7 +4461,7 @@ bool Player::changeOutfit(Outfit_t outfit, bool checkList)
 
 	defaultOutfit = outfit;
 
-	if (outfit.lookAddons == 3) {
+	if (outfit.lookAddons == getInteger(ConfigManager::MAX_ADDON_ATTRIBUTES)) {
 		uint32_t outfitId = Outfits::getInstance().getOutfitId(sex, outfit.lookType);
 		outfitAttributes = Outfits::getInstance().addAttributes(getID(), outfitId, sex);
 	} else {
