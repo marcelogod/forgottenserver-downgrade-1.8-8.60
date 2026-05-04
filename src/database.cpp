@@ -77,30 +77,26 @@ static bool isLostConnectionError(const unsigned error)
 	       error == 1053 /*ER_SERVER_SHUTDOWN*/ || error == CR_CONNECTION_ERROR;
 }
 
-static bool executeQuery(tfs::detail::Mysql_ptr& handle, std::string_view query, const bool retryIfLostConnection)
+// Single-attempt query execution. Reconnect/retry is handled by the Database member methods.
+static bool executeQuery(tfs::detail::Mysql_ptr& handle, std::string_view query)
 {
-	int retryCount = 0;
-	while (mysql_real_query(handle.get(), query.data(), query.length()) != 0) {
+	if (mysql_real_query(handle.get(), query.data(), query.length()) != 0) {
 		LOG_ERROR(fmt::format("[Error - mysql_real_query] Query: {}\nMessage: {}", query.substr(0, 256), mysql_error(handle.get())));
-		const unsigned error = mysql_errno(handle.get());
-		if (!isLostConnectionError(error) || !retryIfLostConnection) {
-			return false;
-		}
-		if (++retryCount >= MAX_RECONNECT_ATTEMPTS) {
-			LOG_ERROR(fmt::format("[Database] Query retry limit ({}) reached. Aborting query.", MAX_RECONNECT_ATTEMPTS));
-			return false;
-		}
-		handle = connectToDatabase(true);
-		if (!handle) {
-			LOG_ERROR("[Database] Reconnection failed during query retry.");
-			return false;
-		}
+		return false;
 	}
 	return true;
 }
 
 bool Database::connect()
 {
+	// Save credentials so reconnect() can restore the connection later
+	dbHost   = getString(ConfigManager::MYSQL_HOST);
+	dbUser   = getString(ConfigManager::MYSQL_USER);
+	dbPass   = getString(ConfigManager::MYSQL_PASS);
+	dbName   = getString(ConfigManager::MYSQL_DB);
+	dbPort   = getInteger(ConfigManager::SQL_PORT);
+	dbSocket = getString(ConfigManager::MYSQL_SOCK);
+
 	auto newHandle = connectToDatabase(false);
 	if (!newHandle) {
 		return false;
@@ -111,6 +107,50 @@ bool Database::connect()
 	if (result) {
 		maxPacketSize = result->getNumber<uint64_t>("Value");
 	}
+	return true;
+}
+
+bool Database::reconnect()
+{
+	LOG_WARN("[Database::reconnect] Lost connection, attempting reconnect...");
+
+	tfs::detail::Mysql_ptr newHandle{mysql_init(nullptr)};
+	if (!newHandle) {
+		LOG_ERROR("[Database::reconnect] mysql_init failed.");
+		return false;
+	}
+
+	// Restore same timeouts as the initial connect
+	{
+		unsigned int readTimeout  = MYSQL_TIMEOUT_SECONDS;
+		unsigned int writeTimeout = MYSQL_TIMEOUT_SECONDS;
+		mysql_options(newHandle.get(), MYSQL_OPT_READ_TIMEOUT,  &readTimeout);
+		mysql_options(newHandle.get(), MYSQL_OPT_WRITE_TIMEOUT, &writeTimeout);
+	}
+
+#if defined(_WIN32)
+	{
+		bool ssl_enforce = false;
+		bool ssl_verify  = false;
+		mysql_options(newHandle.get(), MYSQL_OPT_SSL_ENFORCE,             &ssl_enforce);
+		mysql_options(newHandle.get(), MYSQL_OPT_SSL_VERIFY_SERVER_CERT,  &ssl_verify);
+	}
+#else
+	{
+		unsigned int ssl_mode = SSL_MODE_DISABLED;
+		mysql_options(newHandle.get(), MYSQL_OPT_SSL_MODE, &ssl_mode);
+	}
+#endif
+
+	const char* sock = dbSocket.empty() ? nullptr : dbSocket.c_str();
+	if (!mysql_real_connect(newHandle.get(), dbHost.c_str(), dbUser.c_str(), dbPass.c_str(),
+	                        dbName.c_str(), static_cast<unsigned int>(dbPort), sock, 0)) {
+		LOG_ERROR(fmt::format("[Database::reconnect] failed: {}", mysql_error(newHandle.get())));
+		return false;
+	}
+
+	handle = std::move(newHandle);
+	LOG_INFO("[Database::reconnect] Reconnected successfully.");
 	return true;
 }
 
@@ -154,7 +194,21 @@ bool Database::executeQuery(std::string_view query)
 #ifdef STATS_ENABLED
 	std::chrono::high_resolution_clock::time_point time_point = std::chrono::high_resolution_clock::now();
 #endif
-	auto success = ::executeQuery(handle, query, retryQueries);
+
+	bool success = ::executeQuery(handle, query);
+
+	if (!success) {
+		const unsigned int mysqlError = mysql_errno(handle.get());
+		if (retryQueries && isLostConnectionError(mysqlError)) {
+			LOG_WARN(fmt::format("[Database::executeQuery] Lost connection (error {}), attempting reconnect...", mysqlError));
+			if (reconnect()) {
+				success = ::executeQuery(handle, query);
+				if (!success) {
+					LOG_ERROR(fmt::format("[Database::executeQuery] Retry failed after reconnect: {}", mysql_error(handle.get())));
+				}
+			}
+		}
+	}
 
 	// executeQuery can be called with command that produces result (e.g. SELECT)
 	// we have to store that result, even though we do not need it, otherwise handle will get blocked
@@ -176,32 +230,36 @@ DBResult_ptr Database::storeQuery(std::string_view query)
 #ifdef STATS_ENABLED
 	std::chrono::high_resolution_clock::time_point time_point = std::chrono::high_resolution_clock::now();
 #endif
+
 	tfs::detail::MysqlResult_ptr res;
-	while (true) {
-		if (!::executeQuery(handle, query, retryQueries) && !retryQueries) {
+
+	if (!::executeQuery(handle, query)) {
+		const unsigned int mysqlError = mysql_errno(handle.get());
+		if (!retryQueries || !isLostConnectionError(mysqlError)) {
 			return nullptr;
 		}
-
-		// we should call that every time as someone would call executeQuery('SELECT...')
-		// as it is described in MySQL manual: "it doesn't hurt" :P
-		res.reset(mysql_store_result(handle.get()));
-
-		if (res) {
-			break;
+		// Lost connection — reconnect once and retry
+		LOG_WARN(fmt::format("[Database::storeQuery] Lost connection (error {}), attempting reconnect...", mysqlError));
+		if (!reconnect() || !::executeQuery(handle, query)) {
+			LOG_ERROR(fmt::format("[Database::storeQuery] Retry failed after reconnect: {}", mysql_error(handle.get())));
+			return nullptr;
 		}
+	}
 
+	// we should call that every time as someone would call executeQuery('SELECT...')
+	// as it is described in MySQL manual: "it doesn't hurt" :P
+	res.reset(mysql_store_result(handle.get()));
+
+	if (!res) {
 		LOG_ERROR(fmt::format("[Error - mysql_store_result] Query: {}\nMessage: {}", query, mysql_error(handle.get())));
-		const unsigned error = mysql_errno(handle.get());
-		if (!isLostConnectionError(error) || !retryQueries) {
-			return nullptr;
-		}
+		return nullptr;
 	}
 
 #ifdef STATS_ENABLED
 	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
 	g_stats.addSqlStats(std::make_unique<Stat>(ns, std::string(query.substr(0, 100)), std::string(query.substr(0, 256))));
 #endif
-	
+
 	// retrieving results of query
 	DBResult_ptr result = std::make_shared<DBResult>(std::move(res));
 	if (!result->hasNext()) {

@@ -120,12 +120,27 @@ private:
 	bool rollback();
 	bool commit();
 
+	/**
+	 * Reconnects to the database using saved credentials.
+	 * Replaces the current handle on success.
+	 * @return true on successful reconnect, false on error.
+	 */
+	bool reconnect();
+
 	tfs::detail::Mysql_ptr handle = nullptr;
 	std::recursive_mutex databaseLock;
 	std::unique_lock<std::recursive_mutex> transactionLock;
 	uint64_t maxPacketSize = 1048576;
 	// Do not retry queries if we are in the middle of a transaction
 	bool retryQueries = true;
+
+	// Saved connection credentials used by reconnect()
+	std::string dbHost;
+	std::string dbUser;
+	std::string dbPass;
+	std::string dbName;
+	std::string dbSocket;
+	int dbPort = 0;
 
 	friend class DBTransaction;
 };
