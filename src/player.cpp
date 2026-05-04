@@ -726,6 +726,11 @@ void Player::setVarStats(stats_t stat, int32_t modifier)
 			break;
 		}
 
+		case STAT_CAPACITY: {
+			// capacity changed; sendStats() is called by the caller (outfit/condition)
+			break;
+		}
+
 		default: {
 			break;
 		}
@@ -743,6 +748,8 @@ int32_t Player::getDefaultStats(stats_t stat) const
 			return manaMax;
 		case STAT_MAGICPOINTS:
 			return getBaseMagicLevel();
+		case STAT_CAPACITY:
+			return static_cast<int32_t>(capacity);
 		default:
 			return 0;
 	}
@@ -1287,6 +1294,15 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin)
 		}
 		storedConditionList.clear();
 
+		if (defaultOutfit.lookAddons >= getInteger(ConfigManager::MAX_ADDON_ATTRIBUTES)) {
+			uint32_t outfitId = Outfits::getInstance().getOutfitId(sex, defaultOutfit.lookType);
+			if (outfitAttributes) {
+				Outfits::getInstance().removeAttributes(getID(), outfitId, sex);
+				outfitAttributes = false;
+			}
+			outfitAttributes = Outfits::getInstance().addAttributes(getID(), outfitId, sex);
+		}
+
 		updateRegeneration();
 
 		BedItem* bed = g_game.getBedBySleeper(guid);
@@ -1294,13 +1310,19 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin)
 			bed->wakeUp(this);
 		}
 
-		// load mount speed bonus
-		uint16_t currentMountId = currentOutfit.lookMount;
-		if (currentMountId != 0) {
-			Mount* currentMount = g_game.mounts.getMountByClientID(currentMountId);
-			if (currentMount && hasMount(currentMount)) {
-				g_game.changeSpeed(this, currentMount->speed);
+		if (currentMount != 0) {
+			Mount* mount = g_game.mounts.getMountByID(currentMount);
+			if (mount && hasMount(mount)) {
+				if (mountAttributes) {
+					g_game.mounts.removeAttributes(getID(), currentMount);
+					mountAttributes = false;
+				}
+				if (defaultOutfit.lookMount != 0) {
+					mountAttributes = g_game.mounts.addAttributes(getID(), currentMount);
+					g_game.changeSpeed(this, mount->speed);
+				}
 			} else {
+				currentMount = 0;
 				defaultOutfit.lookMount = 0;
 				g_game.internalCreatureChangeOutfit(this, defaultOutfit);
 			}
@@ -4466,6 +4488,30 @@ bool Player::getOutfitAddons(const Outfit& outfit, uint8_t& addons) const
 	return true;
 }
 
+bool Player::changeOutfit(Outfit_t outfit, bool checkList)
+{
+	if (checkList && !canWear(outfit.lookType, outfit.lookAddons)) {
+		return false;
+	}
+
+	if (outfitAttributes) {
+		uint32_t oldId = Outfits::getInstance().getOutfitId(sex, defaultOutfit.lookType);
+		Outfits::getInstance().removeAttributes(getID(), oldId, sex);
+		outfitAttributes = false;
+	}
+
+	defaultOutfit = outfit;
+
+	if (outfit.lookAddons >= getInteger(ConfigManager::MAX_ADDON_ATTRIBUTES)) {
+		uint32_t outfitId = Outfits::getInstance().getOutfitId(sex, outfit.lookType);
+		outfitAttributes = Outfits::getInstance().addAttributes(getID(), outfitId, sex);
+	} else {
+		outfitAttributes = false;
+	}
+
+	return true;
+}
+
 void Player::setSex(PlayerSex_t newSex) { sex = newSex; }
 
 Skulls_t Player::getSkull() const
@@ -4991,6 +5037,8 @@ bool Player::toggleMount(bool mount)
 		if (currentMount->speed != 0) {
 			g_game.changeSpeed(this, currentMount->speed);
 		}
+
+		changeMount(currentMount->id, false);
 	} else {
 		if (!isMounted()) {
 			return false;
@@ -5066,7 +5114,35 @@ void Player::dismount()
 		g_game.changeSpeed(this, -mount->speed);
 	}
 
+	if (mountAttributes && mount) {
+		g_game.mounts.removeAttributes(getID(), mount->id);
+		mountAttributes = false;
+	}
+
 	defaultOutfit.lookMount = 0;
+}
+
+bool Player::changeMount(uint16_t mountId, bool checkList)
+{
+	Mount* mount = g_game.mounts.getMountByID(mountId);
+	if (!mount) {
+		return false;
+	}
+
+	if (checkList && !hasMount(mount)) {
+		return false;
+	}
+
+	if (mountAttributes) {
+		Mount* currentMount = g_game.mounts.getMountByID(getCurrentMount());
+		if (currentMount) {
+			mountAttributes = !g_game.mounts.removeAttributes(getID(), currentMount->id);
+		}
+	}
+
+	mountAttributes = g_game.mounts.addAttributes(getID(), mountId);
+	setCurrentMount(mountId);
+	return true;
 }
 
 bool Player::hasModalWindowOpen(uint32_t modalWindowId) const

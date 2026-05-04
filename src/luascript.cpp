@@ -1511,6 +1511,8 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITIONID_FEET);
 	registerEnum(CONDITIONID_RING);
 	registerEnum(CONDITIONID_AMMO);
+	registerEnum(CONDITIONID_OUTFIT);
+	registerEnum(CONDITIONID_MOUNT);
 
 	registerEnum(CONDITION_PARAM_OWNER);
 	registerEnum(CONDITION_PARAM_TICKS);
@@ -1544,6 +1546,8 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_PARAM_STAT_MAXHITPOINTSPERCENT);
 	registerEnum(CONDITION_PARAM_STAT_MAXMANAPOINTSPERCENT);
 	registerEnum(CONDITION_PARAM_STAT_MAGICPOINTSPERCENT);
+	registerEnum(CONDITION_PARAM_STAT_CAPACITY);
+	registerEnum(CONDITION_PARAM_STAT_CAPACITYPERCENT);
 	registerEnum(CONDITION_PARAM_PERIODICDAMAGE);
 	registerEnum(CONDITION_PARAM_SKILL_MELEEPERCENT);
 	registerEnum(CONDITION_PARAM_SKILL_FISTPERCENT);
@@ -2119,6 +2123,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(STAT_MAXMANAPOINTS);
 	registerEnum(STAT_SOULPOINTS);
 	registerEnum(STAT_MAGICPOINTS);
+	registerEnum(STAT_CAPACITY);
 
 	registerEnum(SKULL_NONE);
 	registerEnum(SKULL_YELLOW);

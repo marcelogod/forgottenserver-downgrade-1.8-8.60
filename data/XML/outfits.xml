@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <outfits>
 	<!-- Example of new attributies 
-	<outfit type="1" looktype="128" name="Citizen" premium="no" unlocked="yes" enabled="yes" healthGain="5" healthTicks="5" manaGain="5" manaTicks="5" manaShield="no" speed="220" attackSpeed="500">
+	<outfit type="1" looktype="128" name="Citizen" premium="no" unlocked="yes" enabled="yes" healthGain="35" healthTicks="35" manaGain="5" manaTicks="15" manaShield="yes" speed="220" attackSpeed="500">
 		<skills>
 			<fist value="1" />
 			<club value="2" />

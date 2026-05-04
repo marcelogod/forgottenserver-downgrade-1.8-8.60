@@ -141,6 +141,7 @@ public:
 	void setCurrentMount(uint16_t mountId);
 	bool isMounted() const { return defaultOutfit.lookMount != 0; }
 	bool toggleMount(bool mount);
+	bool changeMount(uint16_t mountId, bool checkList = true);
 	bool tameMount(uint16_t mountId);
 	bool untameMount(uint16_t mountId);
 	bool hasMount(const Mount* mount) const;
@@ -407,7 +408,7 @@ public:
 		} else if (hasFlag(PlayerFlag_HasInfiniteCapacity)) {
 			return std::numeric_limits<uint32_t>::max();
 		}
-		return capacity;
+		return static_cast<uint32_t>(std::max<int32_t>(0, static_cast<int32_t>(capacity) + varStats[STAT_CAPACITY]));
 	}
 
 	uint32_t getFreeCapacity() const
@@ -417,7 +418,7 @@ public:
 		} else if (hasFlag(PlayerFlag_HasInfiniteCapacity)) {
 			return std::numeric_limits<uint32_t>::max();
 		}
-		return std::max<int32_t>(0, capacity - inventoryWeight);
+		return static_cast<uint32_t>(std::max<int32_t>(0, static_cast<int32_t>(capacity) + varStats[STAT_CAPACITY] - static_cast<int32_t>(inventoryWeight)));
 	}
 
 	int32_t getMaxHealth() const override { return std::max<int32_t>(1, healthMax + varStats[STAT_MAXHITPOINTS]); }
@@ -664,6 +665,7 @@ public:
 
 	bool canWear(uint32_t lookType, uint8_t addons) const;
 	bool hasOutfit(uint32_t lookType, uint8_t addons);
+	bool changeOutfit(Outfit_t outfit, bool checkList);
 	void addOutfit(uint16_t lookType, uint8_t addons);
 	bool removeOutfit(uint16_t lookType);
 	bool removeOutfitAddon(uint16_t lookType, uint8_t addons);
@@ -1395,6 +1397,9 @@ private:
 	bool secureMode = false;
 	bool ghostMode = false;
 	bool wasMounted = false;
+	bool requestedOutfit = false;
+	bool outfitAttributes = false;
+	bool mountAttributes = false;
 	bool pzLocked = false;
 	bool isConnecting = false;
 	bool logoutRequested = false;
