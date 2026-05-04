@@ -719,6 +719,12 @@ public:
 		}
 		return items[id].weight;
 	}
+
+	float getWeightReduction() const
+	{
+		return items[id].weightReduction;
+	}
+
 	int32_t getAttack() const
 	{
 		if (hasAttribute(ITEM_ATTRIBUTE_ATTACK)) {

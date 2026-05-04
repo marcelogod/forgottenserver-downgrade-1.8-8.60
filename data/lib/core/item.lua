@@ -349,7 +349,9 @@ do
 				-- melee weapons and missiles
 				-- atk x physical +y% element
 			elseif itemType:isWand() then
-				descriptions[#descriptions + 1] = fmt("Magic Atk:%d", attack)
+				if attack ~= 0 then
+					descriptions[#descriptions + 1] = fmt("Magic Atk:%d", attack)
+				end
 			elseif table.contains(showAtkWeaponTypes, weaponType) then
 				local atkString = fmt("Atk:%d", attack)
 				local elementDmg = itemType:getElementDamage()
@@ -869,8 +871,7 @@ do
 		if lookDistance <= 1 then
 			local weight = item:getWeight()
 			if isPickupable and not isUnique and item:getId() ~= ITEM_REWARD_CONTAINER then
-				response[#response + 1] = fmt("\n%s %0.2f oz.", (count == 1 or not itemType:hasShowCount()) and
-					                              "It weighs" or "They weigh", weight / 100)
+				response[#response + 1] = fmt("\n%s", item:getWeightDescription())
 			end
 		end
 

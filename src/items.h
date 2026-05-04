@@ -51,6 +51,7 @@ enum ItemParseAttributes_t
 	ITEM_PARSE_DESCRIPTION,
 	ITEM_PARSE_RUNESPELLNAME,
 	ITEM_PARSE_WEIGHT,
+	ITEM_PARSE_WEIGHTREDUCTION,
 	ITEM_PARSE_SHOWCOUNT,
 	ITEM_PARSE_ARMOR,
 	ITEM_PARSE_DEFENSE,
@@ -348,6 +349,7 @@ public:
 	uint32_t classification = 0;
 	uint32_t tier = 0;
 	uint32_t weight = 0;
+	float weightReduction = 0.0f;
 	uint32_t levelDoor = 0;
 	uint32_t decayTimeMin = 0;
 	uint32_t decayTimeMax = 0;

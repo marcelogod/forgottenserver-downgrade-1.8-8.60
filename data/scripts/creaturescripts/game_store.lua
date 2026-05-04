@@ -132,6 +132,22 @@ function gameStoreInitialize()
 	addItem("Extra Services", "Name Change", "Name_Change", 250, false, 1, "Tired of your current character name? Purchase a new one!")
 	addItem("Extra Services", "Sex Change", "Sex_Change", 120, false, 1, "Turns your female character into a male one - or vice versa.")
 
+	-- War Backpack: a premium backpack available in the store.
+	-- Item ID 21445 ("war backpack") has the following special features:
+	--   • Container size: 20 slots (same as a regular backpack)
+	--   • Weight Reduction: 30% — items stored inside this backpack count as 30% lighter
+	--     when calculating your character's carried weight. This lets you carry
+	--     significantly more before becoming encumbered.
+	--   • Occupies the backpack equipment slot.
+	-- Sold for Tibia Coins (primary currency). Only 1 per purchase.
+	local WAR_BACKPACK_DESCRIPTION = "A reinforced backpack crafted for warriors.\n\n" ..
+		"• 20 container slots\n" ..
+		"• Reduces the weight of all items stored inside by 30%\n\n" ..
+		"- equips in the backpack slot\n" ..
+		"- sent directly to your Store inbox after purchase"
+	addCategory(nil, "Backpacks", 6, CATEGORY_ITEM, WAR_BACKPACK_DESCRIPTION)
+	addItem("Backpacks", "War Backpack", 21292, 350, false, 1, WAR_BACKPACK_DESCRIPTION)
+
 	addCategory(nil, "Task Points", 1, CATEGORY_NONE)
 	addCategory("Task Points", "Task Outfits", 15, CATEGORY_OUTFIT)
 	addItem("Task Outfits", "Elementalist", 432, 1500, true, 1, "The warm and cosy cloak of the Winter Warden outfit will keep you warm in every situation. Best thing, it is not only comfortable but fashionable as well. You will be the envy of any snow queen or king, guaranteed!")

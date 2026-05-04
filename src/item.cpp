@@ -1065,25 +1065,30 @@ std::string Item::getNameDescription() const
 
 std::string Item::getWeightDescription(const ItemType& it, uint32_t weight, uint32_t count /*= 1*/)
 {
-	std::ostringstream ss;
+	std::ostringstream s;
+	if (const float reduction = it.weightReduction; reduction > 0.0f) {
+		const int32_t percent = static_cast<int32_t>(reduction * 100.0f);
+		s << "Weight Reduction: -" << percent << "% for items inside this backpack.\n";
+	}
+
 	if (it.stackable && count > 1 && it.showCount != 0) {
-		ss << "They weigh ";
+		s << "They weigh ";
 	} else {
-		ss << "It weighs ";
+		s << "It weighs ";
 	}
 
 	if (weight < 10) {
-		ss << "0.0" << weight;
+		s << "0.0" << weight;
 	} else if (weight < 100) {
-		ss << "0." << weight;
+		s << "0." << weight;
 	} else {
 		std::string weightString = std::to_string(weight);
 		weightString.insert(weightString.end() - 2, '.');
-		ss << weightString;
+		s << weightString;
 	}
 
-	ss << " oz.";
-	return ss.str();
+	s << " oz.";
+	return s.str();
 }
 
 std::string Item::getWeightDescription(uint32_t weight) const

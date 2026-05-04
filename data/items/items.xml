@@ -38038,8 +38038,10 @@
 		<attribute key="weight" value="200" />
 	</item>
 	<item id="21292" article="a" name="feedbag">
+		<attribute key="description" value="A reinforced backpack crafted for warriors. Reduces the weight of carried items by 30%." />
 		<attribute key="containersize" value="20" />
 		<attribute key="weight" value="1800" />
+		<attribute key="weightreduction" value="30" />
 		<attribute key="imbuementslot" value="1">
 			<attribute key="increase capacity" value="3" />
 		</attribute>
@@ -38354,9 +38356,8 @@
 	</item>
 	<item id="21444" name="RESERVED SPRITE" />
 	<item id="21445" article="a" name="war backpack">
-		<attribute key="description" value="Carry all you need for battle in it. Sponsored by TibiaWars.com" />
-		<attribute key="writeable" value="1" />
-		<attribute key="maxtextlen" value="99" />
+		<attribute key="description" value="Carry all you need for battle in it." />
+		<attribute key="containersize" value="20" />
 		<attribute key="weight" value="1800" />
 		<attribute key="script" value="moveevent">
 			<attribute key="slot" value="backpack" />

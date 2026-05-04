@@ -550,10 +550,41 @@ void Player::updateInventoryWeight()
 
 	inventoryWeight = 0;
 	for (int i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; ++i) {
-		const Item* item = inventory[i].get();
-		if (item) {
-			inventoryWeight += item->getWeight();
+		const std::shared_ptr<Item>& inventoryItem = inventory[i];
+		if (!inventoryItem) {
+			continue;
 		}
+
+		const uint32_t itemWeight = inventoryItem->getWeight();
+		inventoryWeight += itemWeight;
+
+		const std::shared_ptr<Container> container = std::dynamic_pointer_cast<Container>(inventoryItem);
+		if (!container) {
+			continue;
+		}
+
+		const float weightReduction = container->getWeightReduction();
+		if (weightReduction <= 0.0f) {
+			continue;
+		}
+
+		const float reductionPercent = weightReduction > 1.0f ? 1.0f : weightReduction;
+		uint64_t reductionWeight = 0;
+		for (const std::shared_ptr<Item>& containerItem : container->getItemList()) {
+			if (!containerItem) {
+				continue;
+			}
+
+			uint32_t directWeight = containerItem->getWeight();
+			if (std::dynamic_pointer_cast<Container>(containerItem)) {
+				directWeight = containerItem->getBaseWeight();
+			}
+
+			reductionWeight += static_cast<uint32_t>(directWeight * reductionPercent);
+		}
+
+		const uint64_t maxReduction = std::min<uint64_t>(reductionWeight, itemWeight);
+		inventoryWeight -= static_cast<uint32_t>(maxReduction);
 	}
 }
 

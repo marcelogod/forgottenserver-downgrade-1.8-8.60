@@ -24,7 +24,8 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
     {"type", ITEM_PARSE_TYPE},
     {"description", ITEM_PARSE_DESCRIPTION},
     {"runespellname", ITEM_PARSE_RUNESPELLNAME},
-    {"weight", ITEM_PARSE_WEIGHT},
+	{"weight", ITEM_PARSE_WEIGHT},
+	{"weightreduction", ITEM_PARSE_WEIGHTREDUCTION},
     {"showcount", ITEM_PARSE_SHOWCOUNT},
     {"armor", ITEM_PARSE_ARMOR},
     {"defense", ITEM_PARSE_DEFENSE},
@@ -715,6 +716,12 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 
 				case ITEM_PARSE_WEIGHT: {
 					it.weight = pugi::cast<uint32_t>(valueAttribute.value());
+					break;
+				}
+
+				case ITEM_PARSE_WEIGHTREDUCTION: {
+					const int32_t intValue = pugi::cast<int32_t>(valueAttribute.value());
+					it.weightReduction = static_cast<float>(intValue) / 100.0f;
 					break;
 				}
 
