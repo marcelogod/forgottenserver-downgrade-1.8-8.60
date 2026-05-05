@@ -81,7 +81,16 @@ function Player:onTradeCompleted(target, item, targetItem, isSuccess)
 end
 
 function Player:onGainExperience(source, exp, rawExp, sendText)
-	return hasEvent.onGainExperience and math.floor(Event.onGainExperience(self, source, exp, rawExp, sendText)) or exp
+	if not hasEvent.onGainExperience then
+		return exp
+	end
+
+	local result = Event.onGainExperience(self, source, exp, rawExp, sendText)
+	if type(result) ~= "number" then
+		return exp
+	end
+
+	return math.floor(result)
 end
 
 function Player:onLoseExperience(exp)

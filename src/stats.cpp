@@ -14,6 +14,41 @@ int64_t Stats::DUMP_INTERVAL = 30000; // 30 sec
 uint32_t Stats::SLOW_EXECUTION_TIME = 10000000; // 10 ms
 uint32_t Stats::VERY_SLOW_EXECUTION_TIME = 50000000; // 50 ms
 
+namespace {
+constexpr uint64_t MAX_REASONABLE_STAT_NS = 5ULL * 60ULL * 1000ULL * 1000ULL * 1000ULL;
+
+double clampPercent(double value) noexcept
+{
+	if (value <= 0.) {
+		return 0.;
+	}
+	return std::min(value, 100.);
+}
+
+int64_t elapsedDumpMilliseconds(int64_t lastDump, int64_t now) noexcept
+{
+	return std::max<int64_t>(1, now - lastDump);
+}
+
+bool isValidStatSample(const Stat& stat, const char* queueName)
+{
+	if (stat.executionTime <= MAX_REASONABLE_STAT_NS) {
+		return true;
+	}
+
+	LOG_STATS_WARNING("Ignoring invalid {} stats sample: {} ms - {} - {}", queueName, stat.executionTime / 1000000,
+	                  stat.description, stat.extraDescription);
+	return false;
+}
+
+void addStatSample(statsMap& stats, const Stat& stat)
+{
+	auto it = stats.emplace(stat.description, statsData(0, 0, stat.extraDescription)).first;
+	it->second.calls += 1;
+	it->second.executionTime += stat.executionTime;
+}
+}
+
 Stats::Stats()
 {
 	configureDispatchers(1);
@@ -22,6 +57,52 @@ Stats::Stats()
 Stats::~Stats() = default;
 
 thread_local AutoStatRecursive* AutoStatRecursive::activeStat = nullptr;
+
+AutoStat::AutoStat(const std::string& description, const std::string& extraDescription)
+{
+	time_point = std::chrono::steady_clock::now();
+	if (g_stats.isEnabled()) {
+		stat = std::make_unique<Stat>(0, description, extraDescription);
+	}
+}
+
+AutoStat::~AutoStat() noexcept
+{
+	try {
+		if (!stat) {
+			return;
+		}
+
+		stat->executionTime = std::chrono::duration_cast<std::chrono::nanoseconds>(
+			std::chrono::steady_clock::now() - time_point).count();
+		if (stat->executionTime > minusTime) {
+			stat->executionTime -= minusTime;
+		} else {
+			stat->executionTime = 0;
+		}
+
+		if (g_stats.isEnabled() && g_stats.isRunning()) {
+			g_stats.addSpecialStats(std::move(stat));
+		}
+	} catch (...) {
+	}
+}
+
+AutoStatRecursive::AutoStatRecursive(const std::string& description, const std::string& extraDescription) :
+	AutoStat(description, extraDescription)
+{
+	parent = activeStat;
+	activeStat = this;
+}
+
+AutoStatRecursive::~AutoStatRecursive() noexcept
+{
+	activeStat = parent;
+	if (parent) {
+		parent->minusTime += std::chrono::duration_cast<std::chrono::nanoseconds>(
+			std::chrono::steady_clock::now() - time_point).count();
+	}
+}
 
 void Stats::threadMain() {
 	std::unique_lock<std::mutex> taskLockUnique(statsLock, std::defer_lock);
@@ -39,9 +120,10 @@ void Stats::threadMain() {
 		SLOW_EXECUTION_TIME = ConfigManager::getInteger(ConfigManager::STATS_SLOW_LOG_TIME) * 1000000;
 		VERY_SLOW_EXECUTION_TIME = ConfigManager::getInteger(ConfigManager::STATS_VERY_SLOW_LOG_TIME) * 1000000;
 
-		std::vector<std::forward_list<std::unique_ptr<Task>>> tasks;
+		std::vector<std::forward_list<std::unique_ptr<Stat>>> dispatcherStats;
+		dispatcherStats.reserve(dispatchers.size());
 		for (auto &dispatcher : dispatchers) {
-			tasks.push_back(std::move(dispatcher.queue));
+			dispatcherStats.push_back(std::move(dispatcher.queue));
 			dispatcher.queue.clear();
 		}
 		std::forward_list<std::unique_ptr<Stat>> lua_stats(std::move(lua.queue));
@@ -52,50 +134,66 @@ void Stats::threadMain() {
 		special.queue.clear();
 		taskLockUnique.unlock();
 
-		parseDispatchersQueue(std::move(tasks));
+		parseDispatchersQueue(std::move(dispatcherStats));
 		parseLuaQueue(lua_stats);
 		parseSqlQueue(sql_stats);
 		parseSpecialQueue(special_stats);
 
 		int threadId = 0;
 		for (auto &dispatcher : dispatchers) {
-			if (DUMP_INTERVAL == 0) {
+			if (DUMP_INTERVAL <= 0) {
 				dispatcher.stats.clear();
-				dispatcher.waitTime = 0;
+				dispatcher.waitTime.store(0, std::memory_order_relaxed);
 				dispatcher.lastDump = OTSYS_TIME();
 				continue;
 			}
-			if (dispatcher.lastDump + DUMP_INTERVAL < OTSYS_TIME() || last_iteration) {
-				float execution_time = 0;
-				for (auto &it : dispatcher.stats)
-					execution_time += it.second.executionTime;
-				auto msg = fmt::format("Thread: {} Cpu usage: {}% Idle: {}% Other: {}% Players online: {}\n",
+			const int64_t now = OTSYS_TIME();
+			if (dispatcher.lastDump + DUMP_INTERVAL < now || last_iteration) {
+				uint64_t executionTime = 0;
+				for (auto &it : dispatcher.stats) {
+					executionTime += it.second.executionTime;
+				}
+
+				const uint64_t waitTime = dispatcher.waitTime.exchange(0, std::memory_order_relaxed);
+				const int64_t elapsedMs = elapsedDumpMilliseconds(dispatcher.lastDump, now);
+				const double cpu = clampPercent(static_cast<double>(executionTime) / (static_cast<double>(elapsedMs) * 10000.));
+				const double idle = clampPercent(static_cast<double>(waitTime) / (static_cast<double>(elapsedMs) * 10000.));
+				const double other = std::max(0., 100. - cpu - idle);
+				auto msg = fmt::format("Thread: {} Cpu usage: {:.5f}% Idle: {:.5f}% Other: {:.5f}% Players online: {}\n",
 					++threadId,
-					(execution_time / 10000.) / static_cast<float>(DUMP_INTERVAL),
-					(dispatcher.waitTime / 10000.) / static_cast<float>(DUMP_INTERVAL),
-					100. - (((execution_time + dispatcher.waitTime) / 10000.) / static_cast<float>(DUMP_INTERVAL)),
+					cpu,
+					idle,
+					other,
 					playersOnline.load());
-				if(dispatcher.waitTime > 0)
-					writeStats("dispatcher.log", dispatcher.stats, msg);
+				if(waitTime > 0 || !dispatcher.stats.empty())
+					writeStats("dispatcher.log", dispatcher.stats, msg, elapsedMs);
 				dispatcher.stats.clear();
-				dispatcher.waitTime = 0;
-				dispatcher.lastDump = OTSYS_TIME();
+				dispatcher.lastDump = now;
 			}
 		}
-		if(lua.lastDump + DUMP_INTERVAL < OTSYS_TIME() || last_iteration) {
-			writeStats("lua.log", lua.stats);
+		const int64_t now = OTSYS_TIME();
+		if(DUMP_INTERVAL <= 0) {
 			lua.stats.clear();
-			lua.lastDump = OTSYS_TIME();
-		}
-		if(sql.lastDump + DUMP_INTERVAL < OTSYS_TIME() || last_iteration) {
-			writeStats("sql.log", sql.stats);
 			sql.stats.clear();
-			sql.lastDump = OTSYS_TIME();
-		}
-		if(special.lastDump + DUMP_INTERVAL < OTSYS_TIME() || last_iteration) {
-			writeStats("special.log", special.stats);
 			special.stats.clear();
-			special.lastDump = OTSYS_TIME();
+			lua.lastDump = sql.lastDump = special.lastDump = now;
+		} else if(lua.lastDump + DUMP_INTERVAL < now || last_iteration) {
+			const int64_t elapsedMs = elapsedDumpMilliseconds(lua.lastDump, now);
+			writeStats("lua.log", lua.stats, "", elapsedMs);
+			lua.stats.clear();
+			lua.lastDump = now;
+		}
+		if(DUMP_INTERVAL > 0 && (sql.lastDump + DUMP_INTERVAL < now || last_iteration)) {
+			const int64_t elapsedMs = elapsedDumpMilliseconds(sql.lastDump, now);
+			writeStats("sql.log", sql.stats, "", elapsedMs);
+			sql.stats.clear();
+			sql.lastDump = now;
+		}
+		if(DUMP_INTERVAL > 0 && (special.lastDump + DUMP_INTERVAL < now || last_iteration)) {
+			const int64_t elapsedMs = elapsedDumpMilliseconds(special.lastDump, now);
+			writeStats("special.log", special.stats, "", elapsedMs);
+			special.stats.clear();
+			special.lastDump = now;
 		}
 
 		if(last_iteration)
@@ -119,13 +217,17 @@ void Stats::configureDispatchers(std::size_t count) {
 	dispatchers.resize(std::max<std::size_t>(1, count));
 }
 
-void Stats::addDispatcherTask(std::size_t index, std::unique_ptr<Task> task) {
+void Stats::addDispatcherStat(std::size_t index, std::unique_ptr<Stat> stat) {
+	if (!stat) {
+		return;
+	}
+
 	std::scoped_lock lockClass(statsLock);
 	if (index >= dispatchers.size()) {
 		LOG_STATS_WARNING("Stats dispatcher index {} is out of range (size: {})", index, dispatchers.size());
 		return;
 	}
-	dispatchers[index].queue.push_front(std::move(task));
+	dispatchers[index].queue.push_front(std::move(stat));
 }
 
 void Stats::addDispatcherWaitTime(std::size_t index, uint64_t waitTime) noexcept {
@@ -136,31 +238,45 @@ void Stats::addDispatcherWaitTime(std::size_t index, uint64_t waitTime) noexcept
 }
 
 void Stats::addLuaStats(std::unique_ptr<Stat> stats) {
+	if (!stats) {
+		return;
+	}
+
 	std::scoped_lock lockClass(statsLock);
 	lua.queue.push_front(std::move(stats));
 }
 
 void Stats::addSqlStats(std::unique_ptr<Stat> stats) {
+	if (!stats) {
+		return;
+	}
+
 	std::scoped_lock lockClass(statsLock);
 	sql.queue.push_front(std::move(stats));
 }
 
 void Stats::addSpecialStats(std::unique_ptr<Stat> stats) {
+	if (!stats) {
+		return;
+	}
+
 	std::scoped_lock lockClass(statsLock);
 	special.queue.push_front(std::move(stats));
 }
 
-void Stats::parseDispatchersQueue(std::vector<std::forward_list<std::unique_ptr<Task>>>&& queues) {
+void Stats::parseDispatchersQueue(std::vector<std::forward_list<std::unique_ptr<Stat>>>&& queues) {
 	for(std::size_t i = 0; i < dispatchers.size() && i < queues.size(); ++i) {
 		auto& dispatcher = dispatchers[i];
-		for(const auto& task : queues[i]) {
-			auto it = dispatcher.stats.emplace(task->description, statsData(0, 0, task->extraDescription)).first;
-			it->second.calls += 1;
-			it->second.executionTime += task->executionTime;
-			if(VERY_SLOW_EXECUTION_TIME > 0 && task->executionTime > VERY_SLOW_EXECUTION_TIME) {
-				writeSlowInfo("dispatcher_very_slow.log", task->executionTime, task->description, task->extraDescription);
-			} else if(SLOW_EXECUTION_TIME > 0 && task->executionTime > SLOW_EXECUTION_TIME) {
-				writeSlowInfo("dispatcher_slow.log", task->executionTime, task->description, task->extraDescription);
+		for(const auto& stat : queues[i]) {
+			if (!stat || !isValidStatSample(*stat, "dispatcher")) {
+				continue;
+			}
+
+			addStatSample(dispatcher.stats, *stat);
+			if(VERY_SLOW_EXECUTION_TIME > 0 && stat->executionTime > VERY_SLOW_EXECUTION_TIME) {
+				writeSlowInfo("dispatcher_very_slow.log", stat->executionTime, stat->description, stat->extraDescription);
+			} else if(SLOW_EXECUTION_TIME > 0 && stat->executionTime > SLOW_EXECUTION_TIME) {
+				writeSlowInfo("dispatcher_slow.log", stat->executionTime, stat->description, stat->extraDescription);
 			}
 		}
 	}
@@ -168,9 +284,11 @@ void Stats::parseDispatchersQueue(std::vector<std::forward_list<std::unique_ptr<
 
 void Stats::parseLuaQueue(std::forward_list<std::unique_ptr<Stat>>& queue) {
 	for(const auto& stats : queue) {
-		auto it = lua.stats.emplace(stats->description, statsData(0, 0, stats->extraDescription)).first;
-		it->second.calls += 1;
-		it->second.executionTime += stats->executionTime;
+		if (!stats || !isValidStatSample(*stats, "lua")) {
+			continue;
+		}
+
+		addStatSample(lua.stats, *stats);
 
 		if(VERY_SLOW_EXECUTION_TIME > 0 && stats->executionTime > VERY_SLOW_EXECUTION_TIME) {
 			writeSlowInfo("lua_very_slow.log", stats->executionTime, stats->description, stats->extraDescription);
@@ -182,9 +300,11 @@ void Stats::parseLuaQueue(std::forward_list<std::unique_ptr<Stat>>& queue) {
 
 void Stats::parseSqlQueue(std::forward_list<std::unique_ptr<Stat>>& queue) {
 	for(const auto& stats : queue) {
-		auto it = sql.stats.emplace(stats->description, statsData(0, 0, stats->extraDescription)).first;
-		it->second.calls += 1;
-		it->second.executionTime += stats->executionTime;
+		if (!stats || !isValidStatSample(*stats, "sql")) {
+			continue;
+		}
+
+		addStatSample(sql.stats, *stats);
 
 		if(VERY_SLOW_EXECUTION_TIME > 0 && stats->executionTime > VERY_SLOW_EXECUTION_TIME) {
 			writeSlowInfo("sql_very_slow.log", stats->executionTime, stats->description, stats->extraDescription);
@@ -196,9 +316,11 @@ void Stats::parseSqlQueue(std::forward_list<std::unique_ptr<Stat>>& queue) {
 
 void Stats::parseSpecialQueue(std::forward_list<std::unique_ptr<Stat>>& queue) {
 	for(const auto& stats : queue) {
-		auto it = special.stats.emplace(stats->description, statsData(0, 0, stats->extraDescription)).first;
-		it->second.calls += 1;
-		it->second.executionTime += stats->executionTime;
+		if (!stats || !isValidStatSample(*stats, "special")) {
+			continue;
+		}
+
+		addStatSample(special.stats, *stats);
 
 		if(VERY_SLOW_EXECUTION_TIME > 0 && stats->executionTime > VERY_SLOW_EXECUTION_TIME) {
 			writeSlowInfo("special_very_slow.log", stats->executionTime, stats->description, stats->extraDescription);
@@ -225,10 +347,11 @@ void Stats::writeSlowInfo(const std::string& file, uint64_t executionTime, const
 	LOG_STATS("Execution time: {} ms - {} - {}", (executionTime / 1000000), description, extraDescription);
 }
 
-void Stats::writeStats(const std::string& file, const statsMap& stats, const std::string& extraInfo) {
-	if (DUMP_INTERVAL == 0) {
+void Stats::writeStats(const std::string& file, const statsMap& stats, const std::string& extraInfo, int64_t intervalMs) {
+	if (DUMP_INTERVAL <= 0) {
 		return;
 	}
+	const int64_t effectiveIntervalMs = std::max<int64_t>(1, intervalMs > 0 ? intervalMs : DUMP_INTERVAL);
 
 	std::ofstream out(std::string("data/logs/stats/") + file, std::ofstream::out | std::ofstream::app);
 	if (!out.is_open()) {
@@ -259,14 +382,15 @@ void Stats::writeStats(const std::string& file, const statsMap& stats, const std
 	});
 
 	out << extraInfo;
-	float total_time = 0;
+	uint64_t total_time = 0;
 	out << std::setw(10) << "Time (ms)" << std::setw(10) << "Calls"
 		<< std::setw(15) << "Rel usage " << "%" << std::setw(15) << "Real usage " << "%" << " " << "Description" << "\n";
-	for(auto& it : pairs)
-		total_time += it.second.executionTime;
 	for(auto& it : pairs) {
-		float percent = 100 * static_cast<float>(it.second.executionTime) / total_time;
-		float realPercent = static_cast<float>(it.second.executionTime) / (static_cast<float>(DUMP_INTERVAL) * 10000.);
+		total_time += it.second.executionTime;
+	}
+	for(auto& it : pairs) {
+		double percent = total_time > 0 ? 100. * static_cast<double>(it.second.executionTime) / static_cast<double>(total_time) : 0.;
+		double realPercent = static_cast<double>(it.second.executionTime) / (static_cast<double>(effectiveIntervalMs) * 10000.);
 		if(percent > 0.1)
 			out << std::setw(10) << it.second.executionTime / 1000000 << std::setw(10) << it.second.calls
 				<< std::setw(15) << std::setprecision(5) << std::fixed << percent << "%" << std::setw(15) << std::setprecision(5) << std::fixed << realPercent << "%" << " " << it.first << "\n";

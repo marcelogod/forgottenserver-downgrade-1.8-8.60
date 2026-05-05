@@ -1,4 +1,4 @@
-local WORKBENCH_ID = 25334
+local WORKBENCH_ID = 27547
 local WORKBENCH_POSITIONS = {
 	Position(1123, 1208, 7),
 	-- Position(0, 0, 0),

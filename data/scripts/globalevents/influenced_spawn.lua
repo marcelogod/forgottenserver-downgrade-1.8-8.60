@@ -28,6 +28,47 @@ local function getFreeTile(pos, radius)
     return nil
 end
 
+local blockedNameParts = {
+    "trainer",
+    "training",
+    "dummy",
+}
+
+local function hasBlockedName(name)
+    local lowerName = name:lower()
+    for _, part in ipairs(blockedNameParts) do
+        if lowerName:find(part, 1, true) then
+            return true
+        end
+    end
+    return false
+end
+
+local function isCommonForgeMonster(monster)
+    if not monster or monster:getMaster() then
+        return false
+    end
+
+    local monsterType = monster:getType()
+    if not monsterType then
+        return false
+    end
+
+    if monsterType:isBoss() or monsterType:isRewardBoss() then
+        return false
+    end
+
+    if not monsterType:isAttackable() or not monsterType:isHostile() then
+        return false
+    end
+
+    if monsterType:experience() <= 0 then
+        return false
+    end
+
+    return not hasBlockedName(monster:getName())
+end
+
 local influencedSpawn = GlobalEvent("InfluencedSpawn")
 function influencedSpawn.onThink(interval)
     local influencedList = Game.getInfluencedCreatures()
@@ -55,7 +96,7 @@ function influencedSpawn.onThink(interval)
 
     local candidates = {}
     for _, m in ipairs(allMonsters) do
-        if not m:isInfluenced() and not m:getMaster() then
+        if not m:isInfluenced() and isCommonForgeMonster(m) then
             candidates[#candidates + 1] = m
         end
     end

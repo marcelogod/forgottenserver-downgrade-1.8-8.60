@@ -88,6 +88,7 @@ function logoutMessage.onLogout(player)
     if Game.getStorageValue(GlobalStorageKeys.workbenchOwner) == playerId then
         Game.setStorageValue(GlobalStorageKeys.workbenchOwner, -1)
     end
+    ImbuingWindow.close(player)
     return true
 end
 logoutMessage:register()

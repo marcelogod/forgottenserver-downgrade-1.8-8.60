@@ -44,59 +44,72 @@ local message = Event()
 
 local expTracker = {}
 
+local expTrackerLogout = CreatureEvent("ExpTrackerLogout")
+function expTrackerLogout.onLogout(player)
+	expTracker[player:getGuid()] = nil
+	return true
+end
+
+expTrackerLogout:register()
+
 function message.onGainExperience(self, source, exp, rawExp, sendText)
-    if sendText and exp ~= 0 then
-        local monsterName = source and source:getName() or "Unknown"
-        local playerId = self:getGuid()
+	if sendText and exp ~= 0 then
+		local monsterName = source and source:getName() or "Unknown"
+		local playerId = self:getId()
+		local playerGuid = self:getGuid()
 
-        if not expTracker[playerId] then expTracker[playerId] = {} end
-        if not expTracker[playerId][monsterName] then expTracker[playerId][monsterName] = { totalExp = 0, count = 0, timer = 0 } end
+		if not expTracker[playerGuid] then expTracker[playerGuid] = {} end
+		if not expTracker[playerGuid][monsterName] then expTracker[playerGuid][monsterName] = { totalExp = 0, count = 0, timer = 0 } end
 
-        expTracker[playerId][monsterName].totalExp = expTracker[playerId][monsterName].totalExp + exp
-        expTracker[playerId][monsterName].count = expTracker[playerId][monsterName].count + 1
-        expTracker[playerId][monsterName].timer = os.time()
+		expTracker[playerGuid][monsterName].totalExp = expTracker[playerGuid][monsterName].totalExp + exp
+		expTracker[playerGuid][monsterName].count = expTracker[playerGuid][monsterName].count + 1
+		expTracker[playerGuid][monsterName].timer = os.time()
 
-		if not self then return false end
-        addEvent(function()
-            if not self:isPlayer() then return end
-            local expValue = math.floor(expTracker[playerId][monsterName].totalExp + 0.5)
-                local count = expTracker[playerId][monsterName].count
-	
-                if expValue > 0 then
-                    local expString = expValue .. (expValue ~= 1 and " experience points" or " experience point")
-	
-                    local message = "You gained " .. expString .. " for killing " 
-                    if count > 1 then
-                        message = message .. count .. " " .. monsterName .. "s."
-                    else
-                        message = message .. monsterName .. "."
-                    end
-	
-                    self:sendTextMessage(MESSAGE_STATUS_DEFAULT, message)
+		addEvent(function()
+			local player = Player(playerId)
+			if not player then return end
 
-                    local selfInstanceId = self:getInstanceId()
-                    local spectators = Game.getSpectators(self:getPosition(), false, true)
-                    local filtered = {}
-                    for _, spectator in ipairs(spectators) do
-                        if selfInstanceId == 0 or spectator:getInstanceId() == selfInstanceId then
-                            table.insert(filtered, spectator)
-                        end
-                    end
+			local tracker = expTracker[playerGuid] and expTracker[playerGuid][monsterName]
+			if not tracker then return end
 
-                    Game.sendAnimatedText(tostring(expValue), self:getPosition(), 215, filtered)
+			local expValue = math.floor(tracker.totalExp)
+			local count = tracker.count
 
-                    for _, spectator in ipairs(filtered) do
-                        if spectator ~= self then
-                            spectator:sendTextMessage(MESSAGE_STATUS_DEFAULT, self:getName() .. " gained " .. expString .. " for killing " .. (count > 1 and count .. " " or "") .. monsterName .. (count > 1 and "s" or "") .. ".")
-                        end
-                    end
-                end
-	
-                expTracker[playerId][monsterName].totalExp = 0
-                expTracker[playerId][monsterName].count = 0
-        end, 50)
-    end
-    return exp
+			if expValue > 0 then
+				local expString = expValue .. (expValue ~= 1 and " experience points" or " experience point")
+
+				local message = "You gained " .. expString .. " for killing "
+				if count > 1 then
+					message = message .. count .. " " .. monsterName .. "s."
+				else
+					message = message .. monsterName .. "."
+				end
+
+				player:sendTextMessage(MESSAGE_STATUS_DEFAULT, message)
+
+				local playerInstanceId = player:getInstanceId()
+				local spectators = Game.getSpectators(player:getPosition(), false, true)
+				local filtered = {}
+				for _, spectator in ipairs(spectators) do
+					if playerInstanceId == 0 or spectator:getInstanceId() == playerInstanceId then
+						table.insert(filtered, spectator)
+					end
+				end
+
+				Game.sendAnimatedText(tostring(expValue), player:getPosition(), 215, filtered)
+
+				for _, spectator in ipairs(filtered) do
+					if spectator ~= player then
+						spectator:sendTextMessage(MESSAGE_STATUS_DEFAULT, player:getName() .. " gained " .. expString .. " for killing " .. (count > 1 and count .. " " or "") .. monsterName .. (count > 1 and "s" or "") .. ".")
+					end
+				end
+			end
+
+			tracker.totalExp = 0
+			tracker.count = 0
+		end, 50)
+	end
+	return exp
 end
 
 message:register(math.huge)

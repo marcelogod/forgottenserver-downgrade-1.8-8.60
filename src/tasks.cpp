@@ -37,19 +37,22 @@ void Dispatcher::threadMain()
     tmpTaskList.reserve(128);
 
 #ifdef STATS_ENABLED
-    std::chrono::high_resolution_clock::time_point time_point;
+    std::chrono::steady_clock::time_point waitStart;
 #endif
 
     while (getState() != THREAD_STATE_TERMINATED) {
 #ifdef STATS_ENABLED
-        if (g_stats.isEnabled()) {
-            time_point = std::chrono::high_resolution_clock::now();
+        const bool statsEnabled = g_stats.isEnabled();
+        if (statsEnabled) {
+            waitStart = std::chrono::steady_clock::now();
         }
         taskSignal.acquire();
-        if (g_stats.isEnabled()) {
-            g_stats.addDispatcherWaitTime(static_cast<std::size_t>(dispatcherId), std::chrono::duration_cast<std::chrono::nanoseconds>(
-                std::chrono::high_resolution_clock::now() - time_point
-            ).count());
+        if (statsEnabled) {
+            const auto waitElapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                std::chrono::steady_clock::now() - waitStart
+            ).count();
+            g_stats.addDispatcherWaitTime(static_cast<std::size_t>(dispatcherId),
+                                          waitElapsed > 0 ? static_cast<uint64_t>(waitElapsed) : 0);
         }
 #else
         taskSignal.acquire();
@@ -75,29 +78,30 @@ void Dispatcher::threadMain()
         // Process all available tasks
         for (auto& task : tmpTaskList) {
 #if defined(STATS_ENABLED) || defined(SLOW_TASK_DETECTION)
-            auto taskStart = std::chrono::high_resolution_clock::now();
+            auto taskStart = std::chrono::steady_clock::now();
 #endif
-
 #ifdef STATS_ENABLED
-            if (g_stats.isEnabled()) {
-                time_point = taskStart;
-            }
+            bool executed = false;
 #endif
             if (!task->hasExpired()) {
                 ++dispatcherCycle;
                 ++totalTasksProcessed;
                 (*task)();
+#ifdef STATS_ENABLED
+                executed = true;
+#endif
 
 #ifdef SLOW_TASK_DETECTION
                 // Slow task detection (disabled in production with -DENABLE_SLOW_TASK_DETECTION=OFF)
-                auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    std::chrono::high_resolution_clock::now() - taskStart
+                const auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::steady_clock::now() - taskStart
                 ).count();
+                const uint64_t elapsedNs = elapsed > 0 ? static_cast<uint64_t>(elapsed) : 0;
 
-                if (static_cast<uint64_t>(elapsed) > SLOW_TASK_THRESHOLD_NS && !task->skipSlowDetection) {
+                if (elapsedNs > SLOW_TASK_THRESHOLD_NS && !task->skipSlowDetection) {
                     ++slowTaskCount;
                     if (getBoolean(ConfigManager::SLOW_TASK_WARNING)) {
-                        auto elapsedMs = elapsed / 1'000'000;
+                        auto elapsedMs = elapsedNs / 1'000'000;
                         // Log slow task warning (optional, can be disabled)
                         if (!task->description.empty()) {
                             LOG_WARN(">> Slow task detected: {}ms [{}] {}", elapsedMs, task->description, task->extraDescription);
@@ -110,13 +114,16 @@ void Dispatcher::threadMain()
             }
 
 #ifdef STATS_ENABLED
-            if (g_stats.isEnabled() && task->trackInStats) {
-                task->executionTime = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    std::chrono::high_resolution_clock::now() - time_point
+            if (executed && g_stats.isEnabled() && task->trackInStats) {
+                const auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::steady_clock::now() - taskStart
                 ).count();
-                g_stats.addDispatcherTask(dispatcherId, std::move(task));
+                const uint64_t executionTime = elapsed > 0 ? static_cast<uint64_t>(elapsed) : 0;
+                g_stats.addDispatcherStat(static_cast<std::size_t>(dispatcherId),
+                                          std::make_unique<Stat>(executionTime, task->description, task->extraDescription));
             }
 #endif
+            task.reset();
         }
         tmpTaskList.clear();
     }

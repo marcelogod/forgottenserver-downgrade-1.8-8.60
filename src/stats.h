@@ -3,8 +3,6 @@
 
 #include "thread_holder_base.h"
 
-class Task;
-
 #ifdef STATS_ENABLED
 #define createTask(function) createTaskWithStats(function, #function, __FUNCTION__)
 #define createTimedTask(delay, function) createTaskWithStats(delay, function, #function, __FUNCTION__)
@@ -58,7 +56,7 @@ public:
 	bool isRunning() const { return getState() == THREAD_STATE_RUNNING; }
 
 	void configureDispatchers(std::size_t count);
-	void addDispatcherTask(std::size_t index, std::unique_ptr<Task> task);
+	void addDispatcherStat(std::size_t index, std::unique_ptr<Stat> stat);
 	void addDispatcherWaitTime(std::size_t index, uint64_t waitTime) noexcept;
 	void addLuaStats(std::unique_ptr<Stat> stats);
 	void addSqlStats(std::unique_ptr<Stat> stats);
@@ -71,16 +69,16 @@ public:
 	std::atomic<uint32_t> playersOnline;
 
 private:
-	void parseDispatchersQueue(std::vector<std::forward_list<std::unique_ptr<Task>>>&& queues);
+	void parseDispatchersQueue(std::vector<std::forward_list<std::unique_ptr<Stat>>>&& queues);
 	void parseLuaQueue(std::forward_list<std::unique_ptr<Stat>>& queue);
 	void parseSqlQueue(std::forward_list<std::unique_ptr<Stat>>& queue);
 	void parseSpecialQueue(std::forward_list<std::unique_ptr<Stat>>& queue);
 	static void writeSlowInfo(const std::string& file, uint64_t executionTime, const std::string& description, const std::string& extraDescription);
-	static void writeStats(const std::string& file, const statsMap& stats, const std::string& extraInfo = "");
+	static void writeStats(const std::string& file, const statsMap& stats, const std::string& extraInfo = "", int64_t intervalMs = 0);
 
 	std::mutex statsLock;
 	struct DispatcherStats {
-		std::forward_list<std::unique_ptr<Task>> queue;
+		std::forward_list<std::unique_ptr<Stat>> queue;
 		statsMap stats;
 		std::atomic<uint64_t> waitTime{0};
 		int64_t lastDump = 0;
@@ -118,32 +116,12 @@ extern Stats g_stats;
 
 class AutoStat {
 public:
-	AutoStat(const std::string& description, const std::string& extraDescription = "") {
-		if (g_stats.isEnabled()) {
-			time_point = std::chrono::high_resolution_clock::now();
-			stat = std::make_unique<Stat>(0, description, extraDescription);
-		}
-	}
-
-	~AutoStat() {
-		if (!stat) {
-			return;
-		}
-		stat->executionTime = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
-		if (stat->executionTime > minusTime) {
-			stat->executionTime -= minusTime;
-		} else {
-			stat->executionTime = 0;
-		}
-
-		if (g_stats.isEnabled() && g_stats.isRunning()) {
-			g_stats.addSpecialStats(std::move(stat));
-		}
-	}
+	AutoStat(const std::string& description, const std::string& extraDescription = "");
+	~AutoStat() noexcept;
 
 protected:
 	uint64_t minusTime = 0;
-	std::chrono::high_resolution_clock::time_point time_point;
+	std::chrono::steady_clock::time_point time_point;
 
 private:
 	std::unique_ptr<Stat> stat;
@@ -151,16 +129,8 @@ private:
 
 class AutoStatRecursive : public AutoStat {
 public:
-	AutoStatRecursive(const std::string& description, const std::string& extraDescription = "") : AutoStat(description, extraDescription) {
-		parent = activeStat;
-		activeStat = this;
-	}
-	~AutoStatRecursive() {
-		activeStat = parent;
-		if (parent) {
-			parent->minusTime += std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
-		}
-	}
+	AutoStatRecursive(const std::string& description, const std::string& extraDescription = "");
+	~AutoStatRecursive() noexcept;
 
 private:
 	static thread_local AutoStatRecursive* activeStat;

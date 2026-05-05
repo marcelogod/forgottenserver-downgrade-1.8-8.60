@@ -555,37 +555,28 @@ void Player::updateInventoryWeight()
 			continue;
 		}
 
-		const uint32_t itemWeight = inventoryItem->getWeight();
-		inventoryWeight += itemWeight;
-
-		const std::shared_ptr<Container> container = std::dynamic_pointer_cast<Container>(inventoryItem);
-		if (!container) {
-			continue;
-		}
-
-		const float weightReduction = container->getWeightReduction();
-		if (weightReduction <= 0.0f) {
-			continue;
-		}
-
-		const float reductionPercent = weightReduction > 1.0f ? 1.0f : weightReduction;
-		uint64_t reductionWeight = 0;
-		for (const std::shared_ptr<Item>& containerItem : container->getItemList()) {
-			if (!containerItem) {
-				continue;
-			}
-
-			uint32_t directWeight = containerItem->getWeight();
-			if (std::dynamic_pointer_cast<Container>(containerItem)) {
-				directWeight = containerItem->getBaseWeight();
-			}
-
-			reductionWeight += static_cast<uint32_t>(directWeight * reductionPercent);
-		}
-
-		const uint64_t maxReduction = std::min<uint64_t>(reductionWeight, itemWeight);
-		inventoryWeight -= static_cast<uint32_t>(maxReduction);
+		inventoryWeight += inventoryItem->getWeight();
 	}
+
+	const Item* backpackItem = getInventoryItem(CONST_SLOT_BACKPACK);
+	const Container* backpack = backpackItem ? backpackItem->getContainer() : nullptr;
+	if (!backpack) {
+		return;
+	}
+
+	const float weightReduction = backpack->getWeightReduction();
+	if (weightReduction <= 0.0f) {
+		return;
+	}
+
+	const float reductionPercent = weightReduction > 1.0f ? 1.0f : weightReduction;
+	const uint32_t backpackWeight = backpack->getWeight();
+	const uint32_t backpackBaseWeight = backpack->getBaseWeight();
+	const uint64_t containedWeight = backpackWeight > backpackBaseWeight ? backpackWeight - backpackBaseWeight : 0;
+	const uint64_t reductionWeight = static_cast<uint64_t>(containedWeight * reductionPercent);
+
+	const uint64_t maxReduction = std::min<uint64_t>(reductionWeight, inventoryWeight);
+	inventoryWeight -= static_cast<uint32_t>(maxReduction);
 }
 
 void Player::reloadEquipmentStats()
@@ -3540,7 +3531,7 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 		if (isInventorySlot(static_cast<slots_t>(index))) {
 			Item* item = thing->getItem();
 			if (item && item->hasImbuements()) {
-				addItemImbuements(thing->getItem());
+				addItemImbuements(thing->getItem(), static_cast<slots_t>(index));
 			}
 		}
 		g_events->eventPlayerOnUpdateInventory(this, thing->getItem(), static_cast<slots_t>(index), true);
@@ -3605,7 +3596,7 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 		if (isInventorySlot(static_cast<slots_t>(index))) {
 			Item* item = thing->getItem();
 			if (item && item->hasImbuements()) {
-				removeItemImbuements(thing->getItem());
+				removeItemImbuements(thing->getItem(), static_cast<slots_t>(index));
 			}
 		}
 		g_events->eventPlayerOnUpdateInventory(this, thing->getItem(), static_cast<slots_t>(index), false);
@@ -5680,10 +5671,14 @@ void Player::updateRegeneration()
 	}
 }
 
-void Player::addItemImbuements(Item* item) {
+void Player::addItemImbuements(Item* item, slots_t slot) {
 	if (item->hasImbuements()) {
 		const std::vector<std::shared_ptr<Imbuement>>& imbuementList = item->getImbuements();
 		for (auto& imbue : imbuementList) {
+			if (imbue->imbuetype == ImbuementType::IMBUEMENT_TYPE_CAPACITY_BOOST && slot != CONST_SLOT_BACKPACK) {
+				continue;
+			}
+
 			if (imbue->isSkill()) {
 				switch (imbue->imbuetype) {
 				case ImbuementType::IMBUEMENT_TYPE_FIST_SKILL:
@@ -5741,7 +5736,7 @@ void Player::addItemImbuements(Item* item) {
 			if (imbue->isStat()) {
 				switch (imbue->imbuetype) {
 				case ImbuementType::IMBUEMENT_TYPE_CAPACITY_BOOST:
-					capacity += imbue->value;
+					setVarStats(STAT_CAPACITY, static_cast<int32_t>(imbue->value));
 					break;
 				case ImbuementType::IMBUEMENT_TYPE_SPEED_BOOST:
 					g_game.changeSpeed(this, static_cast<int32_t>(imbue->value));
@@ -5756,10 +5751,14 @@ void Player::addItemImbuements(Item* item) {
 	sendStats();
 }
 
-void Player::removeItemImbuements(Item* item) {
+void Player::removeItemImbuements(Item* item, slots_t slot) {
 	if (item->hasImbuements()) {
 		const std::vector<std::shared_ptr<Imbuement>>& imbuementList = item->getImbuements();
 		for (auto& imbue : imbuementList) {
+			if (imbue->imbuetype == ImbuementType::IMBUEMENT_TYPE_CAPACITY_BOOST && slot != CONST_SLOT_BACKPACK) {
+				continue;
+			}
+
 			if (imbue->isSkill()) {
 				switch (imbue->imbuetype) {
 				case ImbuementType::IMBUEMENT_TYPE_FIST_SKILL:
@@ -5817,7 +5816,7 @@ void Player::removeItemImbuements(Item* item) {
 			if (imbue->isStat()) {
 				switch (imbue->imbuetype) {
 				case ImbuementType::IMBUEMENT_TYPE_CAPACITY_BOOST:
-					capacity -= imbue->value;
+					setVarStats(STAT_CAPACITY, -static_cast<int32_t>(imbue->value));
 					break;
 				case ImbuementType::IMBUEMENT_TYPE_SPEED_BOOST:
 					g_game.changeSpeed(this, -static_cast<int32_t>(imbue->value));
@@ -5892,7 +5891,7 @@ void Player::removeImbuementEffect(std::shared_ptr<Imbuement> imbue) {
 	if (imbue->isStat()) {
 		switch (imbue->imbuetype) {
 		case ImbuementType::IMBUEMENT_TYPE_CAPACITY_BOOST:
-			capacity -= imbue->value;
+			setVarStats(STAT_CAPACITY, -static_cast<int32_t>(imbue->value));
 			break;
 		case ImbuementType::IMBUEMENT_TYPE_SPEED_BOOST:
 			g_game.changeSpeed(this, -static_cast<int32_t>(imbue->value));
@@ -5965,7 +5964,7 @@ void Player::addImbuementEffect(std::shared_ptr<Imbuement> imbue) {
 	if (imbue->isStat()) {
 		switch (imbue->imbuetype) {
 		case ImbuementType::IMBUEMENT_TYPE_CAPACITY_BOOST:
-			capacity += imbue->value;
+			setVarStats(STAT_CAPACITY, static_cast<int32_t>(imbue->value));
 			break;
 		case ImbuementType::IMBUEMENT_TYPE_SPEED_BOOST:
 			g_game.changeSpeed(this, static_cast<int32_t>(imbue->value));

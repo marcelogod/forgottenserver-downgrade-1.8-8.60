@@ -13,6 +13,7 @@
 #include "game.h"
 #include "house.h"
 #include "mailbox.h"
+#include "player.h"
 #include "scheduler.h"
 #include "scriptmanager.h"
 #include "spells.h"
@@ -1590,7 +1591,9 @@ bool Item::addImbuement(std::shared_ptr<Imbuement>  imbuement, bool created)
 		for (auto imbue : imbuements) {
 			if (imbue == imbuement) {
 				Player* player = const_cast<Player*>(getHoldingPlayer());
-				if (systemEnabled && player && isEquipped()) {
+				if (systemEnabled && player && isEquipped() &&
+				    (imbue->imbuetype != ImbuementType::IMBUEMENT_TYPE_CAPACITY_BOOST ||
+				     player->getInventoryItem(CONST_SLOT_BACKPACK) == this)) {
 					player->addImbuementEffect(imbue);
 				}
 			}
@@ -1610,7 +1613,9 @@ bool Item::removeImbuement(std::shared_ptr<Imbuement> imbuement, bool decayed)
 
 	auto imbue = *it;
 	Player* player = const_cast<Player*>(getHoldingPlayer());
-	if (player && isEquipped()) {
+	if (player && isEquipped() &&
+	    (imbue->imbuetype != ImbuementType::IMBUEMENT_TYPE_CAPACITY_BOOST ||
+	     player->getInventoryItem(CONST_SLOT_BACKPACK) == this)) {
 		player->removeImbuementEffect(imbue);
 	}
 	g_events->eventItemOnRemoveImbue(this, imbuement->imbuetype, decayed);

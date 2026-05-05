@@ -46,7 +46,6 @@ public:
 
 	const std::string description;
 	const std::string extraDescription;
-	uint64_t executionTime = 0;
 
 	bool trackInStats = true;
 	bool skipSlowDetection = false;

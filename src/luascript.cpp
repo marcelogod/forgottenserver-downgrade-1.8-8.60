@@ -627,7 +627,7 @@ bool LuaScriptInterface::callFunction(int params)
 	bool timerEvent;
 	LuaScriptInterface* scriptInterface;
 	getScriptEnv()->getEventInfo(scriptId, scriptInterface, callbackId, timerEvent);
-	std::chrono::high_resolution_clock::time_point time_point = std::chrono::high_resolution_clock::now();
+	std::chrono::steady_clock::time_point time_point = std::chrono::steady_clock::now();
 #endif
 
 	bool result = false;
@@ -644,7 +644,7 @@ bool LuaScriptInterface::callFunction(int params)
 	}
 
 #ifdef STATS_ENABLED
-	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
+	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - time_point).count();
 	g_stats.addLuaStats(std::make_unique<Stat>(ns, getFileByIdForStats(scriptId), ""));
 #endif
 

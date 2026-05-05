@@ -192,7 +192,7 @@ bool Database::executeQuery(std::string_view query)
 {
 	std::scoped_lock lockGuard(databaseLock);
 #ifdef STATS_ENABLED
-	std::chrono::high_resolution_clock::time_point time_point = std::chrono::high_resolution_clock::now();
+	std::chrono::steady_clock::time_point time_point = std::chrono::steady_clock::now();
 #endif
 
 	bool success = ::executeQuery(handle, query);
@@ -216,7 +216,7 @@ bool Database::executeQuery(std::string_view query)
 	mysql_free_result(mysql_res);
 
 #ifdef STATS_ENABLED
-	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
+	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - time_point).count();
 	g_stats.addSqlStats(std::make_unique<Stat>(ns, std::string(query.substr(0, 100)), std::string(query.substr(0, 256))));
 #endif
 
@@ -228,7 +228,7 @@ DBResult_ptr Database::storeQuery(std::string_view query)
 	std::scoped_lock lockGuard(databaseLock);
 
 #ifdef STATS_ENABLED
-	std::chrono::high_resolution_clock::time_point time_point = std::chrono::high_resolution_clock::now();
+	std::chrono::steady_clock::time_point time_point = std::chrono::steady_clock::now();
 #endif
 
 	tfs::detail::MysqlResult_ptr res;
@@ -256,7 +256,7 @@ DBResult_ptr Database::storeQuery(std::string_view query)
 	}
 
 #ifdef STATS_ENABLED
-	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
+	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - time_point).count();
 	g_stats.addSqlStats(std::make_unique<Stat>(ns, std::string(query.substr(0, 100)), std::string(query.substr(0, 256))));
 #endif
 

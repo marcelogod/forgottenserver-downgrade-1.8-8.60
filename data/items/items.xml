@@ -47002,6 +47002,7 @@
 	</item>
 	<item id="27546" name="RESERVED SPRITE" />
 	<item id="27547" article="an" name="opticorder rectifier">
+		<attribute key="containersize" value="4" />
 	</item>
 	<item fromid="27548" toid="27551" name="RESERVED SPRITE" />
 	<item id="27552" article="a" name="dead tunnel tyrant">
