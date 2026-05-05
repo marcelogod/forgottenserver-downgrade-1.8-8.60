@@ -152,6 +152,7 @@ do
 		handlerMoveCallback = 10050,
 		lastSellResult = {},
 		npcConfigs = {},
+		shopExhaustion = {},
 	}
 
 	-- Reset last created handler for each NPC script load
@@ -596,8 +597,24 @@ do
 		return callModernCallback(callback, getCurrentNpc(self) or npc, getCreatureObject(creature), fromPosition, toPosition)
 	end
 
+	-- Save original C++ Npc:openShopWindow once; never overwrite with our Lua wrapper
 	if not compat.originalNpcOpenShopWindow then
 		compat.originalNpcOpenShopWindow = Npc.openShopWindow
+	end
+
+	-- Reusable exhaustion check — returns true when the player is still on cooldown
+	local shopExhaust = compat.shopExhaustion
+	local fmt = string.format
+	local clock = os.clock
+
+	local function isShopExhausted(playerObj, playerId)
+		local now = clock()
+		if (shopExhaust[playerId] or 0) > now then
+			playerObj:sendCancelMessage("Please wait a moment before trading again.")
+			return true
+		end
+		shopExhaust[playerId] = now + 1
+		return false
 	end
 
 	function Npc:sellItem(player, itemId, amount, subType, actionId, ignoreCap, inBackpacks)
@@ -637,6 +654,11 @@ do
 
 		return compat.originalNpcOpenShopWindow(npc, playerObject, shopItems,
 			function(playerObj, itemId, subType, amount, ignoreCap, inBackpacks)
+				local playerId = playerObj:getId()
+				if isShopExhausted(playerObj, playerId) then
+					return false
+				end
+
 				local shopItem = findShopItem(shopItems, itemId, subType)
 				if not shopItem or shopItem.buy <= 0 then
 					return false
@@ -654,14 +676,14 @@ do
 					return false
 				end
 
-				compat.lastSellResult[playerObj:getId()] = nil
+				compat.lastSellResult[playerId] = nil
 				if onBuyItem then
 					onBuyItem(npc, playerObj, itemId, subType, amount, ignoreCap, inBackpacks, totalCost)
 				else
 					npc:sellItem(playerObj, itemId, amount, subType, 0, ignoreCap, inBackpacks)
 				end
 
-				local sellResult = compat.lastSellResult[playerObj:getId()]
+				local sellResult = compat.lastSellResult[playerId]
 				if sellResult and sellResult.amount < amount then
 					if currency ~= 0 then
 						playerObj:addItem(currency, totalCost)
@@ -671,9 +693,15 @@ do
 					return false
 				end
 
+				npc:say(fmt("Bought %ix {%s} for {%i} gold.", amount, ItemType(itemId):getName(), totalCost), TALKTYPE_PRIVATE_NP, false, playerObj)
 				return true
 			end,
 			function(playerObj, itemId, subType, amount, ignoreEquipped, _)
+				local playerId = playerObj:getId()
+				if isShopExhausted(playerObj, playerId) then
+					return false
+				end
+
 				local shopItem = findShopItem(shopItems, itemId, subType)
 				if not shopItem or shopItem.sell <= 0 then
 					return false
@@ -694,6 +722,7 @@ do
 					onSellItem(npc, playerObj, itemId, subType, amount, ignoreEquipped, shopItem.name, totalCost)
 				end
 
+				npc:say(fmt("Sold %ix {%s} for {%i} gold.", amount, shopItem.name, totalCost), TALKTYPE_PRIVATE_NP, false, playerObj)
 				return true
 			end)
 	end
@@ -747,7 +776,11 @@ do
 				return false
 			end
 
-			npc:openShopWindow(player)
+			local npcData = getNpcData(npc:getName())
+			if npcData then
+				openCompatShopWindow(npc, player, npcData.shopSource or npcData.shopItems)
+			end
+
 			handler:say(handler:getMessage(MESSAGE_SENDTRADE), cid)
 			return true
 		end, {})

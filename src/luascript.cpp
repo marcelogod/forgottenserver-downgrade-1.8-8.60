@@ -1989,15 +1989,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_GROUP_DOOR);
 	registerEnum(ITEM_GROUP_DEPRECATED);
 
-	registerEnum(ITEM_BAG);
-	registerEnum(ITEM_GOLD_COIN);
-	registerEnum(ITEM_PLATINUM_COIN);
-	registerEnum(ITEM_CRYSTAL_COIN);
-	registerEnum(ITEM_GOLD_NUGGET);
-	registerEnum(ITEM_AMULETOFLOSS);
-	registerEnum(ITEM_PARCEL);
-	registerEnum(ITEM_LABEL);
-	registerEnum(ITEM_INBOX);
 	registerEnum(ITEM_FIREFIELD_PVP_FULL);
 	registerEnum(ITEM_FIREFIELD_PVP_MEDIUM);
 	registerEnum(ITEM_FIREFIELD_PVP_SMALL);
@@ -2005,21 +1996,59 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_FIREFIELD_PERSISTENT_MEDIUM);
 	registerEnum(ITEM_FIREFIELD_PERSISTENT_SMALL);
 	registerEnum(ITEM_FIREFIELD_NOPVP);
+
 	registerEnum(ITEM_POISONFIELD_PVP);
 	registerEnum(ITEM_POISONFIELD_PERSISTENT);
 	registerEnum(ITEM_POISONFIELD_NOPVP);
+
 	registerEnum(ITEM_ENERGYFIELD_PVP);
 	registerEnum(ITEM_ENERGYFIELD_PERSISTENT);
 	registerEnum(ITEM_ENERGYFIELD_NOPVP);
+
 	registerEnum(ITEM_MAGICWALL);
 	registerEnum(ITEM_MAGICWALL_PERSISTENT);
 	registerEnum(ITEM_MAGICWALL_SAFE);
+	registerEnum(ITEM_MAGICWALL_NOPVP);
+
 	registerEnum(ITEM_WILDGROWTH);
 	registerEnum(ITEM_WILDGROWTH_PERSISTENT);
 	registerEnum(ITEM_WILDGROWTH_SAFE);
-	registerEnum(ITEM_REWARD_CONTAINER);
+	registerEnum(ITEM_WILDGROWTH_NOPVP);
+
+	registerEnum(ITEM_BAG);
+	registerEnum(ITEM_BACKPACK);
+	registerEnum(ITEM_GOLD_COIN);
+	registerEnum(ITEM_PLATINUM_COIN);
+	registerEnum(ITEM_CRYSTAL_COIN);
+	registerEnum(ITEM_GOLD_NUGGET);
+
+	registerEnum(ITEM_DEPOT);
+	registerEnum(ITEM_LOCKER);
+	registerEnum(ITEM_INBOX);
+	registerEnum(ITEM_STORE_INBOX);
+	registerEnum(ITEM_DEPOT_BOX_1);
+
+	// Registration is not required. It uses a table.
+	// registerEnum(ITEM_DEPOT_BOX_17);
+
+	registerEnum(ITEM_MALE_CORPSE);
+	registerEnum(ITEM_FEMALE_CORPSE);
+
+	registerEnum(ITEM_FULLSPLASH);
+	registerEnum(ITEM_SMALLSPLASH);
+
+	registerEnum(ITEM_PARCEL);
 	registerEnum(ITEM_LETTER);
 	registerEnum(ITEM_LETTER_STAMPED);
+	registerEnum(ITEM_LABEL);
+
+	registerEnum(ITEM_AMULETOFLOSS);
+
+	registerEnum(ITEM_REWARD_CHEST);
+	registerEnum(ITEM_REWARD_CONTAINER);
+
+	registerEnum(ITEM_GOLD_POUCH);
+
 	registerEnum(ITEM_DOCUMENT_RO);
 	registerEnum(ITEM_RECEIPT_SUCCESS);
 	registerEnum(ITEM_RECEIPT_FAIL);

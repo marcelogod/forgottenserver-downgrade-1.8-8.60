@@ -1,3 +1,5 @@
+dofile('data/npc/lib/npc.lua')
+
 local npcType = Game.createNpcType("...")
 local npcConfig = {}
 
