@@ -113,6 +113,14 @@ local function getActiveImbuements(item)
 	return imbuements
 end
 
+local function getActiveImbuementCount(activeImbuements)
+	local count = 0
+	for _ in ipairs(activeImbuements) do
+		count = count + 1
+	end
+	return count
+end
+
 local function getApplicableDefinitions(item)
 	ensureDefinitions()
 
@@ -369,7 +377,8 @@ function ImbuingWindow.apply(player, slot, imbuementId, protection)
 
 	local slots = item:getImbuementSlots()
 	local activeImbuements = getActiveImbuements(item)
-	if slot < 0 or slot >= slots or activeImbuements[slot + 1] then
+	local firstFreeSlot = getActiveImbuementCount(activeImbuements)
+	if slot < 0 or slot >= slots or slot ~= firstFreeSlot then
 		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		sendWindow(player, item)
 		return
