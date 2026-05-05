@@ -9,6 +9,47 @@ local CONFIG = {
     },
 }
 
+local blockedNameParts = {
+    "trainer",
+    "training",
+    "dummy",
+}
+
+local function hasBlockedName(name)
+    local lowerName = name:lower()
+    for _, part in ipairs(blockedNameParts) do
+        if lowerName:find(part, 1, true) then
+            return true
+        end
+    end
+    return false
+end
+
+local function isCommonForgeMonster(monster)
+    if not monster or monster:getMaster() then
+        return false
+    end
+
+    local monsterType = monster:getType()
+    if not monsterType then
+        return false
+    end
+
+    if monsterType:isBoss() or monsterType:isRewardBoss() then
+        return false
+    end
+
+    if not monsterType:isAttackable() or not monsterType:isHostile() then
+        return false
+    end
+
+    if monsterType:experience() <= 0 then
+        return false
+    end
+
+    return not hasBlockedName(monster:getName())
+end
+
 local influencedDeath = CreatureEvent("InfluencedDeath")
 function influencedDeath.onDeath(creature, corpse, killer, mostDamageKiller, lastHitUnjustified, mostDamageUnjustified)
     if not configManager.getBoolean(configKeys.FORGE_SYSTEM_ENABLED) then
@@ -21,6 +62,10 @@ function influencedDeath.onDeath(creature, corpse, killer, mostDamageKiller, las
 
     local monster = creature:getMonster()
     if not monster or not monster:isInfluenced() then
+        return true
+    end
+
+    if not isCommonForgeMonster(monster) then
         return true
     end
 

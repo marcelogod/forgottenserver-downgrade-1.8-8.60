@@ -1148,8 +1148,8 @@ public:
 	void lootCorpse(Container* container);
 
 	void updateRegeneration();
-	void addItemImbuements(Item* item);
-	void removeItemImbuements(Item* item);
+	void addItemImbuements(Item* item, slots_t slot);
+	void removeItemImbuements(Item* item, slots_t slot);
 	void removeImbuementEffect(std::shared_ptr<Imbuement> imbue);
 	void addImbuementEffect(std::shared_ptr<Imbuement> imbue);
 

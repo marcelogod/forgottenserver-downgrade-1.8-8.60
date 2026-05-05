@@ -9,8 +9,21 @@ local function isInteger(n)
 	return (type(n) == "number") and (math.floor(n) == n)
 end
 
+local function isBossScriptSource()
+	if not debug or not debug.getinfo then return false end
+
+	local info = debug.getinfo(3, "S")
+	local source = info and info.source
+	if not source then return false end
+
+	source = source:lower():gsub("\\", "/")
+	return source:find("/bosses/", 1, true) ~= nil
+end
+
 MonsterType.register = function(self, mask)
-	return registerMonsterType(self, mask)
+	local result = registerMonsterType(self, mask)
+	if isBossScriptSource() then self:isBoss(true) end
+	return result
 end
 
 registerMonsterType.name = function(mtype, mask)
@@ -58,6 +71,9 @@ registerMonsterType.maxSummons = function(mtype, mask)
 end
 registerMonsterType.race = function(mtype, mask)
 	if mask.race then mtype:race(mask.race) end
+end
+registerMonsterType.bosstiary = function(mtype, mask)
+	if type(mask.bosstiary) == "table" then mtype:isBoss(true) end
 end
 registerMonsterType.manaCost = function(mtype, mask)
 	if mask.manaCost then mtype:manaCost(mask.manaCost) end
