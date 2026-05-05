@@ -42,11 +42,12 @@ void Dispatcher::threadMain()
 
     while (getState() != THREAD_STATE_TERMINATED) {
 #ifdef STATS_ENABLED
-        if (g_stats.isEnabled()) {
+        const bool statsEnabled = g_stats.isEnabled();
+        if (statsEnabled) {
             waitStart = std::chrono::steady_clock::now();
         }
         taskSignal.acquire();
-        if (g_stats.isEnabled()) {
+        if (statsEnabled) {
             const auto waitElapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(
                 std::chrono::steady_clock::now() - waitStart
             ).count();
