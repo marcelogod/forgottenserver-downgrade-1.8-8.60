@@ -1620,7 +1620,7 @@ const std::vector<ZoneId>& Creature::getZoneIds() const
 void Creature::setStorageValue(uint32_t key, std::optional<int64_t> value, bool isSpawn)
 {
 	auto oldValue = getStorageValue(key);
-	if (value) {
+	if (value && value.value() != -1) {
 		storageMap.insert_or_assign(key, value.value());
 	} else {
 		storageMap.erase(key);

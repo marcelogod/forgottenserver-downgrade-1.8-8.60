@@ -6990,7 +6990,7 @@ bool Game::saveGameStorageValues() const
 
 void Game::setStorageValue(uint32_t key, std::optional<int64_t> value)
 {
-	if (value) {
+	if (value && value.value() != -1) {
 		storageMap.insert_or_assign(key, value.value());
 	} else {
 		storageMap.erase(key);
