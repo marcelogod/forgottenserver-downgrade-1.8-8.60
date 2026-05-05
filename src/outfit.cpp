@@ -196,16 +196,6 @@ std::vector<const Outfit*> Outfits::getOutfits(PlayerSex_t sex) const
 	return sexOutfits;
 }
 
-const Outfit* Outfits::getOutfitByName(PlayerSex_t sex, std::string_view name) const
-{
-	for (const auto& it : outfits) {
-		if (it.second.sex == sex && it.second.name == name) {
-			return &it.second;
-		}
-	}
-	return nullptr;
-}
-
 uint32_t Outfits::getOutfitId(PlayerSex_t sex, uint16_t lookType) const
 {
 	auto it = outfits.find(lookType);
