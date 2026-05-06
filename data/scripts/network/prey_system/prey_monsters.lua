@@ -68,28 +68,47 @@ local monsterPool = {
 	{ name = "Lizard Snakecharmer", minLevel = 30, maxLevel = 120 },
 }
 
+local validMonsterCache = {}
+
+local function isValidPreyMonster(name)
+	if not name then
+		return false
+	end
+
+	local cached = validMonsterCache[name]
+	if cached ~= nil then
+		return cached
+	end
+
+	local monsterType = MonsterType(name)
+	if not monsterType then
+		validMonsterCache[name] = false
+		return false
+	end
+
+	if monsterType:experience() <= 0 then
+		validMonsterCache[name] = false
+		return false
+	end
+
+	if monsterType:isBoss() or monsterType:isRewardBoss() then
+		validMonsterCache[name] = false
+		return false
+	end
+
+	validMonsterCache[name] = true
+	return true
+end
+
+for _, monster in ipairs(monsterPool) do
+	isValidPreyMonster(monster.name)
+end
+
 local function shuffle(list)
 	for i = #list, 2, -1 do
 		local j = math.random(1, i)
 		list[i], list[j] = list[j], list[i]
 	end
-end
-
-local function isValidPreyMonster(name)
-	local monsterType = MonsterType(name)
-	if not monsterType then
-		return false
-	end
-
-	if monsterType:experience() <= 0 then
-		return false
-	end
-
-	if monsterType:isBoss() or monsterType:isRewardBoss() then
-		return false
-	end
-
-	return true
 end
 
 local function addCandidate(eligible, seen, excluded, monster, playerLevel, strictLevel, ignoreMaxLevel)

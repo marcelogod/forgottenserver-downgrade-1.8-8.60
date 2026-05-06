@@ -195,10 +195,6 @@ local function getSlotFlags(player, slot)
 	local flags = 0
 	local locked = getStorageFlag(player, PREY_STORAGE_LOCK_BASE, slot)
 	local autoBonus = getStorageFlag(player, PREY_STORAGE_AUTO_BONUS_BASE, slot)
-	if locked and autoBonus then
-		setStorageFlag(player, PREY_STORAGE_AUTO_BONUS_BASE, slot, false)
-		autoBonus = false
-	end
 
 	if autoBonus then
 		flags = flags + PREY_FLAG_AUTO_BONUS
@@ -304,7 +300,7 @@ local function writeSlot(out, player, slot, slotData)
 	end
 end
 
-local function sendFullPrey(player)
+local function sendFullPrey(player, sendBalances)
 	local prey = getPlayerPrey(player)
 	local out = NetworkMessage(player)
 	out:addByte(PREY_OPCODE_SEND)
@@ -314,7 +310,9 @@ local function sendFullPrey(player)
 		writeSlot(out, player, slot, prey.slots[slot])
 	end
 	out:sendToPlayer(player)
-	sendPreyBalances(player)
+	if sendBalances ~= false then
+		sendPreyBalances(player)
+	end
 end
 
 local function sendSlotUpdate(player, slot)
@@ -327,7 +325,6 @@ local function sendSlotUpdate(player, slot)
 	writeSlot(out, player, slot, prey.slots[slot])
 	out:sendToPlayer(player)
 	saveSlotToDB(player:getGuid(), slot, prey.slots[slot], prey.wildcards)
-	sendPreyBalances(player)
 end
 
 local function getOtherSlotMonsters(prey, excludedSlot)
@@ -476,6 +473,7 @@ function listRerollHandler.onReceive(player, msg)
 	slotData.time_left = 0
 	slotData.list_monsters = newList
 	sendSlotUpdate(player, slot)
+	sendPreyBalances(player)
 end
 listRerollHandler:register()
 
@@ -507,6 +505,7 @@ function bonusRerollHandler.onReceive(player, msg)
 	slotData.state = PREY_STATE_ACTIVE
 	sendSlotUpdate(player, slot)
 	saveSlotToDB(player:getGuid(), 0, prey.slots[0], prey.wildcards)
+	sendPreyBalances(player)
 end
 bonusRerollHandler:register()
 
@@ -592,7 +591,14 @@ local function preyTick()
 						slotData.time_left = math.max(slotData.time_left - 1, 0)
 						changed = true
 						if slotData.time_left == 0 then
-							if getStorageFlag(player, PREY_STORAGE_LOCK_BASE, slot) then
+							local locked = getStorageFlag(player, PREY_STORAGE_LOCK_BASE, slot)
+							local autoBonus = getStorageFlag(player, PREY_STORAGE_AUTO_BONUS_BASE, slot)
+							if locked and autoBonus then
+								setStorageFlag(player, PREY_STORAGE_AUTO_BONUS_BASE, slot, false)
+								autoBonus = false
+							end
+
+							if locked then
 								if prey.wildcards >= PREY_LOCK_COST then
 									prey.wildcards = math.max(prey.wildcards - PREY_LOCK_COST, 0)
 									slotData.time_left = PREY_DURATION_SECS
@@ -602,7 +608,7 @@ local function preyTick()
 									setStorageFlag(player, PREY_STORAGE_LOCK_BASE, slot, false)
 									slotData.state = PREY_STATE_INACTIVE
 								end
-							elseif getStorageFlag(player, PREY_STORAGE_AUTO_BONUS_BASE, slot) then
+							elseif autoBonus then
 								if prey.wildcards >= PREY_AUTO_BONUS_COST then
 									prey.wildcards = math.max(prey.wildcards - PREY_AUTO_BONUS_COST, 0)
 									slotData.bonus_type = rollBonusType()
@@ -626,11 +632,7 @@ local function preyTick()
 					prey.saveTicker = (prey.saveTicker or 0) + 1
 					if prey.saveTicker >= 60 then
 						for slot = 0, PREY_SLOTS - 1 do
-							if prey.slots[slot].state == PREY_STATE_ACTIVE then
-								sendSlotUpdate(player, slot)
-							else
-								saveSlotToDB(player:getGuid(), slot, prey.slots[slot], prey.wildcards)
-							end
+							saveSlotToDB(player:getGuid(), slot, prey.slots[slot], prey.wildcards)
 						end
 						prey.saveTicker = 0
 					end
@@ -688,7 +690,8 @@ function PreySystem.addWildcards(player, amount)
 	local prey = getPlayerPrey(player)
 	prey.wildcards = math.min(PREY_MAX_WILDCARDS, prey.wildcards + amount)
 	saveSlotToDB(player:getGuid(), 0, prey.slots[0], prey.wildcards)
-	sendFullPrey(player)
+	sendFullPrey(player, false)
+	sendPreyBalances(player)
 	return true
 end
 
@@ -739,8 +742,29 @@ end
 healthChange:register()
 
 local monsterSpawn = Event()
+local function hasActivePreyForMonster(monsterName)
+	if not monsterName or monsterName == "" then
+		return false
+	end
+
+	local targetName = monsterName:lower()
+	for _, prey in pairs(preyCache) do
+		if prey and prey.slots then
+			for slot = 0, PREY_SLOTS - 1 do
+				local slotData = prey.slots[slot]
+				if slotData and slotData.state == PREY_STATE_ACTIVE and slotData.time_left > 0 and (slotData.monster_name or ""):lower() == targetName then
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
 function monsterSpawn.onSpawn(monster)
-	monster:registerEvent("PreyHealthChange")
+	if hasActivePreyForMonster(monster:getName()) then
+		monster:registerEvent("PreyHealthChange")
+	end
 	return true
 end
 monsterSpawn:register()
