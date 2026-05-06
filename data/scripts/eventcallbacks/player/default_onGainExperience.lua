@@ -34,6 +34,13 @@ function event.onGainExperience(player, source, exp, rawExp, sendText)
 	local bonusRate = player:getExperienceRate(ExperienceRateType.BONUS)
 	if bonusRate ~= 100 then exp = exp * bonusRate / 100 end
 
+	if PreySystem and source and source:isMonster() then
+		local bonusType, bonusValue = PreySystem.getBonus(player, source:getName())
+		if bonusType == PreySystem.BONUS_XP then
+			exp = exp + math.floor(exp * bonusValue / 100)
+		end
+	end
+
 	return exp
 end
 

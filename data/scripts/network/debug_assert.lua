@@ -1,4 +1,5 @@
-local debugAssert = PacketHandler(0xE8)
+-- 0xE8 is reserved for the custom Prey System open request.
+local debugAssert = PacketHandler(0xEF)
 
 function debugAssert.onReceive(player, msg)
 	if player:hasDebugAssertSent() then return end

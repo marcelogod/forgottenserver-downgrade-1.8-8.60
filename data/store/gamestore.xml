@@ -10,6 +10,12 @@
 
     <category name="Consumables" icon="store_consumables" description="Consumables and character protection services."/>
 
+    <category name="Prey Wildcards" icon="store_prey">
+        <offer id="4001" name="Prey Wildcard x1" icon="prey_wildcard" price="10" itemid="0" type="prey_wildcard" value="1"/>
+        <offer id="4002" name="Prey Wildcard x5" icon="prey_wildcard" price="50" itemid="0" type="prey_wildcard" value="5"/>
+        <offer id="4003" name="Prey Wildcard x10" icon="prey_wildcard" price="100" itemid="0" type="prey_wildcard" value="10"/>
+    </category>
+
     <category name="Blessings" parent="Consumables" icon="store_blessings" description="Blessings reduce experience, skill and equipment loss when your character dies. They are added directly to your character and cannot exceed the regular blessing limit.">
         <offer id="2001" name="All regular Blessings" icon="All_regular_Blessings" price="130" eid="0" itemid="0" type="blessing" value="-1" count="5" description="Adds all missing regular blessings to your character."/>
         <offer id="2002" name="The Spiritual Shielding" icon="The_Spiritual_Shielding" price="25" eid="0" itemid="0" type="blessing" value="1" count="1" description="Adds The Spiritual Shielding blessing to your character."/>
@@ -37,8 +43,8 @@
     <category name="Equipment" icon="store_equipment" description="Equipment and containers delivered directly to your character."/>
 
     <category name="Weapons" parent="Equipment" icon="store_weapons" description="Weapons are delivered directly to your character. Make sure you have enough inventory room before buying.">
-        <offer id="4001" name="Magic Sword" icon="" price="100" eid="3288" itemid="3288" count="1" description="A legendary sword also known as the Sword of Valor."/>
-        <offer id="4002" name="Fire Axe" icon="" price="80" eid="3320" itemid="3320" count="1" description="An axe with a blade wrapped in magical flame."/>
+        <offer id="4101" name="Magic Sword" icon="" price="100" eid="3288" itemid="3288" count="1" description="A legendary sword also known as the Sword of Valor."/>
+        <offer id="4102" name="Fire Axe" icon="" price="80" eid="3320" itemid="3320" count="1" description="An axe with a blade wrapped in magical flame."/>
     </category>
 
     <category name="Backpacks" parent="Equipment" icon="store_backpacks" description="Backpacks are delivered directly to your character. Make sure you have enough inventory room before buying.">

@@ -369,6 +369,19 @@ local function deliverOffer(player, offer, extra)
 		return nil
 	end
 
+	if offer.oftype == "prey_wildcard" then
+		if not PreySystem or not PreySystem.addWildcards then
+			return "Prey System is not available."
+		end
+
+		if offer.value <= 0 then
+			return "Invalid Prey Wildcard amount."
+		end
+
+		PreySystem.addWildcards(player, offer.value)
+		return nil
+	end
+
 	if offer.oftype == "item" and offer.itemid > 0 then
 		local added = player:addItem(offer.itemid, offer.count, true)
 		if not added then
@@ -502,7 +515,7 @@ function buyHandler.onReceive(player, msg)
 
 	player:setTibiaCoins(coins - offer.price)
 
-	local historyCount = offer.oftype == "item" and offer.count or 1
+	local historyCount = offer.oftype == "item" and offer.count or (offer.oftype == "prey_wildcard" and offer.value or 1)
 	addStoreHistory(player:getAccountId(), player:getGuid(), offer.name, -offer.price, historyCount, nil)
 
 	sendStoreSuccess(player, offerId, "Purchase complete: " .. offer.name)

@@ -19,6 +19,19 @@ local function rollWithDropBonus(lootChance, player)
 	return math.random(1, 100000) <= chance
 end
 
+local function createGuaranteedLootItem(corpse, lootItem)
+	local guaranteedItem = {}
+	for key, value in pairs(lootItem) do
+		guaranteedItem[key] = value
+	end
+	guaranteedItem.chance = 100000
+
+	local item = corpse:createLootItem(guaranteedItem)
+	if not item then
+		print("[Warning] DropLoot:", "Could not add loot item to corpse.")
+	end
+end
+
 local event = Event()
 event.onDropLoot = function(self, corpse)
 	if configManager.getNumber(configKeys.RATE_LOOT) == 0 then return end
@@ -47,20 +60,26 @@ event.onDropLoot = function(self, corpse)
 				-- Applies the drop bonus.
 				if player and lootItem.chance and lootItem.chance < 100000 then
 					if rollWithDropBonus(lootItem.chance, player) then
-						local boostedItem = {}
-						for k, v in pairs(lootItem) do boostedItem[k] = v end
-						boostedItem.chance = 100000
-
-						local item = corpse:createLootItem(boostedItem)
-						if not item then
-							print("[Warning] DropLoot:", "Could not add loot item to corpse.")
-						end
+						createGuaranteedLootItem(corpse, lootItem)
 					end
 				else
 					-- Items with a 100% chance or no defined chance.
 					local item = corpse:createLootItem(lootItem)
 					if not item then
 						print("[Warning] DropLoot:", "Could not add loot item to corpse.")
+					end
+				end
+			end
+		end
+
+		if player and PreySystem then
+			local bonusType, bonusValue = PreySystem.getBonus(player, self:getName())
+			if bonusType == PreySystem.BONUS_LOOT then
+				for i = 1, #monsterLoot do
+					local lootItem = monsterLoot[i]
+					local chance = lootItem.chance or 100000
+					if math.random(1, 100) <= bonusValue and (chance >= 100000 or rollWithDropBonus(chance, player)) then
+						createGuaranteedLootItem(corpse, lootItem)
 					end
 				end
 			end
