@@ -142,12 +142,19 @@ local function sendStoreSuccess(player, offerId, message)
 	out:sendToPlayer(player)
 end
 
+local _shopHistoryCache = nil
 local function shopHistoryExists()
-	if db.tableExists then
-		return db.tableExists("shop_history")
+	if _shopHistoryCache ~= nil then
+		return _shopHistoryCache
 	end
 
-	return true
+	if db.tableExists then
+		_shopHistoryCache = db.tableExists("shop_history")
+	else
+		_shopHistoryCache = true
+	end
+
+	return _shopHistoryCache
 end
 
 local function addStoreHistory(accountId, playerGuid, title, price, count, target)
@@ -267,6 +274,11 @@ local function loadStoreXML()
 end
 
 loadStoreXML()
+
+pcall(function() db.query("ALTER TABLE `player_deaths` ADD INDEX IF NOT EXISTS `idx_pd_killed_by` (`killed_by`(64))") end)
+pcall(function() db.query("ALTER TABLE `player_deaths` ADD INDEX IF NOT EXISTS `idx_pd_mostdamage_by` (`mostdamage_by`(64))") end)
+pcall(function() db.query("ALTER TABLE `player_deaths_backup` ADD INDEX IF NOT EXISTS `idx_pdb_killed_by` (`killed_by`(64))") end)
+pcall(function() db.query("ALTER TABLE `player_deaths_backup` ADD INDEX IF NOT EXISTS `idx_pdb_mostdamage_by` (`mostdamage_by`(64))") end)
 
 local function sendStoreCatalog(player)
 	local out = NetworkMessage(player)
@@ -519,7 +531,6 @@ function buyHandler.onReceive(player, msg)
 	addStoreHistory(player:getAccountId(), player:getGuid(), offer.name, -offer.price, historyCount, nil)
 
 	sendStoreSuccess(player, offerId, "Purchase complete: " .. offer.name)
-	sendStoreHistory(player)
 end
 
 buyHandler:register()
@@ -562,11 +573,13 @@ function transferHandler.onReceive(player, msg)
 	local targetGuid = 0
 	local targetAccountId = 0
 	local storedTargetName = ""
-	local resultId = db.storeQuery("SELECT `id`, `account_id`, `name` FROM `players` WHERE `name` = " .. db.escapeString(targetName) .. " LIMIT 1")
+	local targetCoins = 0
+	local resultId = db.storeQuery("SELECT p.`id`, p.`account_id`, p.`name`, a.`tibia_coins` FROM `players` p JOIN `accounts` a ON a.`id` = p.`account_id` WHERE p.`name` = " .. db.escapeString(targetName) .. " LIMIT 1")
 	if resultId ~= false then
 		targetGuid = result.getDataInt(resultId, "id")
 		targetAccountId = result.getDataInt(resultId, "account_id")
 		storedTargetName = result.getDataString(resultId, "name")
+		targetCoins = result.getDataInt(resultId, "tibia_coins")
 		result.free(resultId)
 	end
 
@@ -588,20 +601,6 @@ function transferHandler.onReceive(player, msg)
 	end
 
 	local targetPlayer = Player(storedTargetName)
-	local targetCoins = 0
-	if targetPlayer then
-		targetCoins = targetPlayer:getTibiaCoins()
-	else
-		local targetBalance = db.storeQuery("SELECT `tibia_coins` FROM `accounts` WHERE `id` = " .. targetAccountId .. " LIMIT 1")
-		if targetBalance == false then
-			sendStoreError(player, "Transfer failed, please try again.")
-			return
-		end
-
-		targetCoins = result.getDataInt(targetBalance, "tibia_coins")
-		result.free(targetBalance)
-	end
-
 	player:setTibiaCoins(coins - amount)
 	if targetPlayer then
 		targetPlayer:setTibiaCoins(targetCoins + amount)
@@ -627,3 +626,21 @@ function transferHandler.onReceive(player, msg)
 end
 
 transferHandler:register()
+
+local storeSessionCleanup = CreatureEvent("StoreSessionCleanup")
+function storeSessionCleanup.onLogout(player)
+	local pid = player:getId()
+	lastBuy[pid] = nil
+	lastTransfer[pid] = nil
+	return true
+end
+
+storeSessionCleanup:register()
+
+local storeSessionInit = CreatureEvent("StoreSessionInit")
+function storeSessionInit.onLogin(player)
+	player:registerEvent("StoreSessionCleanup")
+	return true
+end
+
+storeSessionInit:register()
