@@ -53,6 +53,10 @@ event.onLook = function(self, thing, position, distance, description)
 				description = string.format("%s, Unique ID: %d", description, uniqueId)
 			end
 
+			if thing:hasItemUID() then
+				description = string.format("%s\nHASH: %s", description, thing:getItemUID())
+			end
+
 			local transformEquipId = itemType:getTransformEquipId()
 			local transformDeEquipId = itemType:getTransformDeEquipId()
 			if transformEquipId ~= 0 then
