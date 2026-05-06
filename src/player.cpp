@@ -4977,10 +4977,14 @@ void Player::reloadWarList(bool updateVisuals)
 uint16_t Player::getRandomMount() const
 {
 	std::vector<uint16_t> mountsId;
-	for (const Mount& mount : g_game.mounts.getMounts()) {
+	for (const auto& [id, mount] : g_game.mounts.getMounts()) {
 		if (hasMount(&mount)) {
 			mountsId.push_back(mount.id);
 		}
+	}
+
+	if (mountsId.empty()) {
+		return 0;
 	}
 
 	return mountsId[uniform_random(0, mountsId.size() - 1)];
@@ -5110,7 +5114,7 @@ bool Player::hasMount(const Mount* mount) const
 
 bool Player::hasMounts() const
 {
-	for (const Mount& mount : g_game.mounts.getMounts()) {
+	for (const auto& [id, mount] : g_game.mounts.getMounts()) {
 		if (hasMount(&mount)) {
 			return true;
 		}

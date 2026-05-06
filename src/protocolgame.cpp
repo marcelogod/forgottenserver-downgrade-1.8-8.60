@@ -2842,7 +2842,7 @@ void ProtocolGame::sendOutfitWindow()
 
 	if (isOTC || getVersion() != 861) {
 		std::vector<const Mount*> mounts;
-		for (const Mount& mount : g_game.mounts.getMounts()) {
+		for (const auto& [id, mount] : g_game.mounts.getMounts()) {
 			if (player->hasMount(&mount)) {
 				mounts.push_back(&mount);
 			}

@@ -16,6 +16,8 @@
 bool Mounts::reload()
 {
 	mounts.clear();
+	clientIdToId.clear();
+	nameToId.clear();
 	return loadFromXml();
 }
 
@@ -40,12 +42,22 @@ bool Mounts::loadFromXml()
 			continue;
 		}
 
-		mounts.emplace_back(
-		    static_cast<uint16_t>(nodeId), pugi::cast<uint16_t>(mountNode.attribute("clientid").value()),
-		    mountNode.attribute("name").as_string(), pugi::cast<int32_t>(mountNode.attribute("speed").value()),
-		    mountNode.attribute("premium").as_bool());
+		// Direct insertion into map with value semantics — no heap indirection.
+		auto it = mounts.emplace(
+		    nodeId, Mount {
+				nodeId,
+		        pugi::cast<uint16_t>(mountNode.attribute("clientid").value()),
+		        mountNode.attribute("name").as_string(),
+		        pugi::cast<int32_t>(mountNode.attribute("speed").value()),
+		        mountNode.attribute("premium").as_bool()
+		    }
+		).first;
 
-		Mount& mount = mounts.back();
+		Mount& mount = it->second;
+
+		// Populate secondary indexes for O(1) lookups
+		clientIdToId[mount.clientId] = nodeId;
+		nameToId[asLowerCaseString(mount.name)] = nodeId;
 
 		if (auto typeAttr = mountNode.attribute("type")) {
 			mount.type = typeAttr.as_string();
@@ -154,34 +166,37 @@ bool Mounts::loadFromXml()
 			}
 		}
 	}
-	mounts.shrink_to_fit();
 	return true;
 }
 
 Mount* Mounts::getMountByID(uint16_t id)
 {
-	auto it = std::find_if(mounts.begin(), mounts.end(), [id](const Mount& mount) { return mount.id == id; });
-
-	return it != mounts.end() ? &*it : nullptr;
+	auto it = mounts.find(id);
+	return it != mounts.end() ? &it->second : nullptr;
 }
 
 Mount* Mounts::getMountByName(std::string_view name)
 {
-	for (auto& mount : mounts) {
-		if (caseInsensitiveEqual(name, mount.name)) {
-			return &mount;
+	auto it = nameToId.find(asLowerCaseString(std::string(name)));
+	if (it != nameToId.end()) {
+		auto mountIt = mounts.find(it->second);
+		if (mountIt != mounts.end()) {
+			return &mountIt->second;
 		}
 	}
-
 	return nullptr;
 }
 
 Mount* Mounts::getMountByClientID(uint16_t clientId)
 {
-	auto it = std::find_if(mounts.begin(), mounts.end(),
-	                       [clientId](const Mount& mount) { return mount.clientId == clientId; });
-
-	return it != mounts.end() ? &*it : nullptr;
+	auto it = clientIdToId.find(clientId);
+	if (it != clientIdToId.end()) {
+		auto mountIt = mounts.find(it->second);
+		if (mountIt != mounts.end()) {
+			return &mountIt->second;
+		}
+	}
+	return nullptr;
 }
 
 bool Mounts::addAttributes(uint32_t playerId, uint16_t mountId)
@@ -191,7 +206,7 @@ bool Mounts::addAttributes(uint32_t playerId, uint16_t mountId)
 		return false;
 	}
 
-	const Mount* mount = getMountByID(mountId);
+	Mount* mount = getMountByID(mountId);
 	if (!mount) {
 		return false;
 	}
@@ -300,7 +315,7 @@ bool Mounts::removeAttributes(uint32_t playerId, uint16_t mountId)
 		return false;
 	}
 
-	const Mount* mount = getMountByID(mountId);
+	Mount* mount = getMountByID(mountId);
 	if (!mount) {
 		return false;
 	}
