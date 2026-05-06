@@ -1,0 +1,616 @@
+-- GameStore PacketHandler
+-- OTC sends 0xFB to open, 0xFC to buy, 0xFA for history and 0xF8 to transfer coins.
+-- Server responds with 0xFD.
+
+local OPCODE_STORE_TRANSFER = 0xF8
+local OPCODE_STORE_HISTORY = 0xFA
+local OPCODE_STORE_OPEN = 0xFB
+local OPCODE_STORE_BUY = 0xFC
+local OPCODE_STORE_SEND = 0xFD
+
+-- Response sub-types (0xFD)
+local RESP_ERROR = 0x00
+local RESP_CATALOG = 0x01
+local RESP_SUCCESS = 0x02
+local RESP_HISTORY = 0x03
+
+local STORE_ACTION_DELAY = 2
+local MAX_TARGET_NAME_LENGTH = 50
+local MAX_CHARACTER_NAME_LENGTH = 20
+local MAX_CHARACTER_NAME_WORDS = 5
+
+local storeCategories = {}
+local storeItemsById = {}
+
+local lastBuy = {}
+local lastTransfer = {}
+
+local function logInfo(message)
+	if logger and logger.info then
+		logger.info(message)
+	else
+		print(message)
+	end
+end
+
+local function logError(message)
+	if logger and logger.error then
+		logger.error(message)
+	else
+		print(message)
+	end
+end
+
+local forbiddenNameWords = {
+	gm = true,
+	adm = true,
+	tutor = true,
+	god = true,
+	cm = true,
+	admin = true,
+	owner = true,
+	administrator = true,
+	senior = true,
+	xangel = true,
+	["x-angel"] = true
+}
+
+local function trim(value)
+	return ((value or ""):gsub("^%s*(.-)%s*$", "%1"))
+end
+
+local function formatCharacterName(name)
+	name = trim(name:lower())
+	return (name:gsub("(%a)([%w']*)", function(first, rest)
+		return first:upper() .. rest:lower()
+	end))
+end
+
+local function wordCount(value)
+	local count = 0
+	for _ in value:gmatch("%a+") do
+		count = count + 1
+	end
+	return count
+end
+
+local function isValidCharacterName(name)
+	if name == "" or #name < 2 or #name > MAX_CHARACTER_NAME_LENGTH then
+		return false
+	end
+
+	if name:find("  ", 1, true) or wordCount(name) > MAX_CHARACTER_NAME_WORDS then
+		return false
+	end
+
+	local lowered = name:lower()
+	if lowered == "g m" or lowered == "g o d" or lowered == "a d m" or lowered == "c m" then
+		return false
+	end
+
+	for i = 1, #name do
+		local char = name:sub(i, i)
+		if not char:match("[A-Za-z ]") then
+			return false
+		end
+	end
+
+	for word in name:gmatch("%a+") do
+		if forbiddenNameWords[word:lower()] then
+			return false
+		end
+	end
+
+	return true
+end
+
+local function characterNameExists(name)
+	local resultId = db.storeQuery("SELECT `id` FROM `players` WHERE LOWER(`name`) = LOWER(" .. db.escapeString(name) .. ") LIMIT 1")
+	if resultId ~= false then
+		result.free(resultId)
+		return true
+	end
+
+	return false
+end
+
+local function isOnCooldown(cache, playerId)
+	local now = os.time()
+	if cache[playerId] and now - cache[playerId] < STORE_ACTION_DELAY then
+		return true
+	end
+
+	cache[playerId] = now
+	return false
+end
+
+local function sendStoreError(player, message)
+	local out = NetworkMessage(player)
+	out:addByte(OPCODE_STORE_SEND)
+	out:addByte(RESP_ERROR)
+	out:addString(message)
+	out:sendToPlayer(player)
+end
+
+local function sendStoreSuccess(player, offerId, message)
+	local out = NetworkMessage(player)
+	out:addByte(OPCODE_STORE_SEND)
+	out:addByte(RESP_SUCCESS)
+	out:addU32(offerId)
+	out:addString(message)
+	out:addU32(player:getTibiaCoins())
+	out:sendToPlayer(player)
+end
+
+local function shopHistoryExists()
+	if db.tableExists then
+		return db.tableExists("shop_history")
+	end
+
+	return true
+end
+
+local function addStoreHistory(accountId, playerGuid, title, price, count, target)
+	if not shopHistoryExists() then
+		return
+	end
+
+	title = tostring(title or "Store Purchase"):sub(1, 100)
+	price = tonumber(price) or 0
+	count = tonumber(count) or 0
+
+	local targetSql = "NULL"
+	if target and target ~= "" then
+		targetSql = db.escapeString(target)
+	end
+
+	db.query("INSERT INTO `shop_history` (`account`, `player`, `date`, `title`, `price`, `costSecond`, `count`, `target`) VALUES (" ..
+		accountId .. ", " ..
+		playerGuid .. ", NOW(), " ..
+		db.escapeString(title) .. ", " ..
+		price .. ", 0, " ..
+		count .. ", " ..
+		targetSql .. ")")
+end
+
+local function sendStoreHistory(player)
+	local out = NetworkMessage(player)
+	out:addByte(OPCODE_STORE_SEND)
+	out:addByte(RESP_HISTORY)
+
+	local history = {}
+	if shopHistoryExists() then
+		local resultId = db.storeQuery("SELECT `date`, `price`, `costSecond`, `title`, `count` FROM `shop_history` WHERE `account` = " .. player:getAccountId() .. " ORDER BY `id` DESC LIMIT 100")
+		if resultId ~= false then
+			repeat
+				table.insert(history, {
+					date = result.getDataString(resultId, "date"),
+					price = result.getDataInt(resultId, "price"),
+					costSecond = result.getDataInt(resultId, "costSecond"),
+					title = result.getDataString(resultId, "title"),
+					count = result.getDataInt(resultId, "count"),
+				})
+			until not result.next(resultId)
+			result.free(resultId)
+		end
+	end
+
+	out:addU16(#history)
+	for _, entry in ipairs(history) do
+		local price = entry.price or 0
+		out:addString(entry.date or "")
+		out:addU32(math.abs(price))
+		out:addByte(price >= 0 and 1 or 0)
+		out:addByte(entry.costSecond == 1 and 1 or 0)
+		out:addString(entry.title or "")
+		out:addU16(math.max(entry.count or 0, 0))
+	end
+
+	out:sendToPlayer(player)
+end
+
+local function loadStoreXML()
+	storeCategories = {}
+	storeItemsById = {}
+
+	local xmlDoc = XMLDocument("data/store/gamestore.xml")
+	if not xmlDoc then
+		logError("[GameStore] Error: could not find data/store/gamestore.xml")
+		return
+	end
+
+	local root = xmlDoc:child("store")
+	if not root then
+		return
+	end
+
+	for category in root:children() do
+		if category:name() == "category" then
+			local catName = category:attribute("name") or "?"
+			local catIcon = category:attribute("icon") or ""
+			local catParent = category:attribute("parent") or ""
+			local catDescription = category:attribute("description") or ""
+			local offers = {}
+
+			for offer in category:children() do
+				if offer:name() == "offer" then
+					local item = {
+						id = tonumber(offer:attribute("id")) or 0,
+						name = offer:attribute("name") or "Unknown",
+						icon = offer:attribute("icon") or "",
+						price = tonumber(offer:attribute("price")) or 0,
+						eid = tonumber(offer:attribute("eid")) or 0,
+						itemid = tonumber(offer:attribute("itemid")) or 0,
+						count = tonumber(offer:attribute("count")) or 1,
+						description = offer:attribute("description") or "",
+						oftype = offer:attribute("type") or "item",
+						value = tonumber(offer:attribute("value")) or 0,
+						femalevalue = tonumber(offer:attribute("femalevalue")) or 0,
+						addon = tonumber(offer:attribute("addon")) or 0,
+					}
+					table.insert(offers, item)
+					storeItemsById[item.id] = item
+				end
+			end
+
+			table.insert(storeCategories, {
+				name = catName,
+				icon = catIcon,
+				parent = catParent,
+				description = catDescription,
+				offers = offers
+			})
+		end
+	end
+
+	logInfo(">> Loading Game Store System")
+end
+
+loadStoreXML()
+
+local function sendStoreCatalog(player)
+	local out = NetworkMessage(player)
+	out:addByte(OPCODE_STORE_SEND)
+	out:addByte(RESP_CATALOG)
+
+	out:addU32(player:getTibiaCoins())
+	out:addU16(#storeCategories)
+
+	for _, cat in ipairs(storeCategories) do
+		out:addString(cat.name)
+		out:addString(cat.icon)
+		out:addString(cat.parent)
+		out:addString(cat.description)
+		out:addU16(#cat.offers)
+
+		for _, offer in ipairs(cat.offers) do
+			out:addU32(offer.id)
+			out:addString(offer.name)
+			out:addString(offer.icon)
+			out:addU32(offer.price)
+			out:addU16(offer.eid)
+			out:addU16(offer.count)
+			out:addString(offer.description)
+			out:addString(offer.oftype)
+		end
+	end
+
+	out:sendToPlayer(player)
+end
+
+local function deliverOffer(player, offer, extra)
+	if offer.oftype == "premium" then
+		if offer.value <= 0 then
+			return "Invalid premium amount."
+		end
+		player:addPremiumDays(offer.value)
+		return nil
+	end
+
+	if offer.oftype == "blessing" or offer.oftype == "bless" then
+		if offer.value == -1 then
+			local added = false
+			for blessing = 1, 5 do
+				if not player:hasBlessing(blessing) then
+					player:addBlessing(blessing)
+					added = true
+				end
+			end
+
+			if not added then
+				return "You already have all regular blessings."
+			end
+			return nil
+		end
+
+		if offer.value >= 1 and offer.value <= 5 then
+			if player:hasBlessing(offer.value) then
+				return "You already have this blessing."
+			end
+
+			player:addBlessing(offer.value)
+			return nil
+		end
+
+		return "Invalid blessing."
+	end
+
+	if offer.oftype == "outfit" then
+		local outfitValues = {offer.value}
+		if offer.femalevalue > 0 and offer.femalevalue ~= offer.value then
+			table.insert(outfitValues, offer.femalevalue)
+		end
+
+		local added = false
+		for _, lookType in ipairs(outfitValues) do
+			if lookType > 0 and not player:hasOutfit(lookType, offer.addon) then
+				player:addOutfit(lookType)
+				if offer.addon > 0 then
+					player:addOutfitAddon(lookType, offer.addon)
+				end
+				added = true
+			end
+		end
+
+		if not added then
+			return "You already have this outfit."
+		end
+		return nil
+	end
+
+	if offer.oftype == "mount" then
+		if player:hasMount(offer.value) then
+			return "You already have this mount."
+		end
+
+		if not player:addMount(offer.value) then
+			return "Failed to deliver mount."
+		end
+		return nil
+	end
+
+	if offer.oftype == "item" and offer.itemid > 0 then
+		local added = player:addItem(offer.itemid, offer.count, true)
+		if not added then
+			return "Failed to deliver item. Check your inventory."
+		end
+		return nil
+	end
+
+	if offer.oftype == "changename" then
+		local newName = formatCharacterName(extra and extra.name or "")
+		if not isValidCharacterName(newName) then
+			return "You cannot use this character name."
+		end
+
+		if characterNameExists(newName) then
+			return "Character name already taken."
+		end
+
+		if player:getCondition(CONDITION_INFIGHT, CONDITIONID_DEFAULT) or player:getCondition(CONDITION_INFIGHT, CONDITIONID_COMBAT) then
+			return "You cannot do this during a fight."
+		end
+
+		local tile = player:getTile()
+		if not tile or not tile:hasFlag(TILESTATE_PROTECTIONZONE) then
+			return "You need to be in a protection zone."
+		end
+
+		local oldName = player:getName()
+		db.query("UPDATE `players` SET `name` = " .. db.escapeString(newName) .. " WHERE `id` = " .. player:getGuid())
+		db.query("UPDATE `player_deaths` SET `killed_by` = " .. db.escapeString(newName) .. ", `mostdamage_by` = " .. db.escapeString(newName) .. " WHERE `killed_by` = " .. db.escapeString(oldName) .. " OR `mostdamage_by` = " .. db.escapeString(oldName))
+		db.query("UPDATE `player_deaths_backup` SET `killed_by` = " .. db.escapeString(newName) .. ", `mostdamage_by` = " .. db.escapeString(newName) .. " WHERE `killed_by` = " .. db.escapeString(oldName) .. " OR `mostdamage_by` = " .. db.escapeString(oldName))
+
+		if db.tableExists and db.tableExists("change_name_history") then
+			db.query("INSERT INTO `change_name_history` (`player_id`, `last_name`, `current_name`, `changed_name_in`) VALUES (" .. player:getGuid() .. ", " .. db.escapeString(oldName) .. ", " .. db.escapeString(newName) .. ", " .. os.time() .. ")")
+		end
+
+		return nil
+	end
+
+	if offer.oftype == "sexchange" then
+		if player:getCondition(CONDITION_INFIGHT, CONDITIONID_DEFAULT) or player:getCondition(CONDITION_INFIGHT, CONDITIONID_COMBAT) then
+			return "You cannot do this during a fight."
+		end
+
+		local tile = player:getTile()
+		if not tile or not tile:hasFlag(TILESTATE_PROTECTIONZONE) then
+			return "You need to be in a protection zone."
+		end
+
+		player:setSex(player:getSex() == PLAYERSEX_FEMALE and PLAYERSEX_MALE or PLAYERSEX_FEMALE)
+
+		local outfit = player:getOutfit()
+		if player:getSex() == PLAYERSEX_MALE then
+			outfit.lookType = 128
+		else
+			outfit.lookType = 136
+		end
+		player:setOutfit(outfit)
+		return nil
+	end
+
+	return "Invalid offer type."
+end
+
+-- ============================================================
+-- Handler: OTC asks to open the store (opcode 0xFB)
+-- ============================================================
+local openHandler = PacketHandler(OPCODE_STORE_OPEN)
+
+function openHandler.onReceive(player, msg)
+	sendStoreCatalog(player)
+	sendStoreHistory(player)
+end
+
+openHandler:register()
+
+-- ============================================================
+-- Handler: OTC asks for purchase history (opcode 0xFA)
+-- ============================================================
+local historyHandler = PacketHandler(OPCODE_STORE_HISTORY)
+
+function historyHandler.onReceive(player, msg)
+	sendStoreHistory(player)
+end
+
+historyHandler:register()
+
+-- ============================================================
+-- Handler: OTC buys an offer (opcode 0xFC)
+-- ============================================================
+local buyHandler = PacketHandler(OPCODE_STORE_BUY)
+
+function buyHandler.onReceive(player, msg)
+	if msg:len() - msg:tell() < 4 then
+		return
+	end
+
+	local pid = player:getId()
+	if isOnCooldown(lastBuy, pid) then
+		sendStoreError(player, "Please wait before buying again.")
+		return
+	end
+
+	local offerId = msg:getU32()
+	local offer = storeItemsById[offerId]
+	if not offer then
+		sendStoreError(player, "Offer not found.")
+		return
+	end
+
+	local extra = {}
+	if offer.oftype == "changename" then
+		if msg:len() - msg:tell() < 2 then
+			sendStoreError(player, "You need to choose a new character name.")
+			return
+		end
+		extra.name = msg:getString()
+	end
+
+	local coins = player:getTibiaCoins()
+	if coins < offer.price then
+		sendStoreError(player, "Not enough Tibia Coins.")
+		return
+	end
+
+	local deliveryError = deliverOffer(player, offer, extra)
+	if deliveryError then
+		sendStoreError(player, deliveryError)
+		return
+	end
+
+	player:setTibiaCoins(coins - offer.price)
+
+	local historyCount = offer.oftype == "item" and offer.count or 1
+	addStoreHistory(player:getAccountId(), player:getGuid(), offer.name, -offer.price, historyCount, nil)
+
+	sendStoreSuccess(player, offerId, "Purchase complete: " .. offer.name)
+	sendStoreHistory(player)
+end
+
+buyHandler:register()
+
+-- ============================================================
+-- Handler: OTC transfers Tibia Coins to another player (opcode 0xF8)
+-- Payload: String(targetName) + U32(amount)
+-- ============================================================
+local transferHandler = PacketHandler(OPCODE_STORE_TRANSFER)
+
+function transferHandler.onReceive(player, msg)
+	if msg:len() - msg:tell() < 6 then
+		return
+	end
+
+	local pid = player:getId()
+	if isOnCooldown(lastTransfer, pid) then
+		sendStoreError(player, "Please wait before transferring again.")
+		return
+	end
+
+	local targetName = trim(msg:getString())
+	local amount = msg:getU32()
+
+	if targetName == "" or #targetName > MAX_TARGET_NAME_LENGTH then
+		sendStoreError(player, "Target player not found.")
+		return
+	end
+
+	if amount <= 0 then
+		sendStoreError(player, "Invalid amount.")
+		return
+	end
+
+	if targetName:lower() == player:getName():lower() then
+		sendStoreError(player, "You cannot transfer coins to yourself.")
+		return
+	end
+
+	local targetGuid = 0
+	local targetAccountId = 0
+	local storedTargetName = ""
+	local resultId = db.storeQuery("SELECT `id`, `account_id`, `name` FROM `players` WHERE `name` = " .. db.escapeString(targetName) .. " LIMIT 1")
+	if resultId ~= false then
+		targetGuid = result.getDataInt(resultId, "id")
+		targetAccountId = result.getDataInt(resultId, "account_id")
+		storedTargetName = result.getDataString(resultId, "name")
+		result.free(resultId)
+	end
+
+	if targetAccountId == 0 then
+		sendStoreError(player, "Target player not found.")
+		return
+	end
+
+	if targetAccountId == player:getAccountId() then
+		sendStoreError(player, "You cannot transfer coins to your own account.")
+		return
+	end
+
+	local accountId = player:getAccountId()
+	local coins = player:getTibiaCoins()
+	if coins < amount then
+		sendStoreError(player, "Not enough Tibia Coins.")
+		return
+	end
+
+	local targetPlayer = Player(storedTargetName)
+	local targetCoins = 0
+	if targetPlayer then
+		targetCoins = targetPlayer:getTibiaCoins()
+	else
+		local targetBalance = db.storeQuery("SELECT `tibia_coins` FROM `accounts` WHERE `id` = " .. targetAccountId .. " LIMIT 1")
+		if targetBalance == false then
+			sendStoreError(player, "Transfer failed, please try again.")
+			return
+		end
+
+		targetCoins = result.getDataInt(targetBalance, "tibia_coins")
+		result.free(targetBalance)
+	end
+
+	player:setTibiaCoins(coins - amount)
+	if targetPlayer then
+		targetPlayer:setTibiaCoins(targetCoins + amount)
+	else
+		local creditOk = db.query("UPDATE `accounts` SET `tibia_coins` = " .. (targetCoins + amount) .. " WHERE `id` = " .. targetAccountId)
+		if not creditOk then
+			player:setTibiaCoins(coins)
+			sendStoreError(player, "Transfer failed, please try again.")
+			return
+		end
+	end
+
+	addStoreHistory(accountId, player:getGuid(), "Coin Transfer to " .. storedTargetName, -amount, 1, storedTargetName)
+	addStoreHistory(targetAccountId, targetGuid, "Coin Transfer from " .. player:getName(), amount, 1, player:getName())
+
+	sendStoreSuccess(player, 0, "You sent " .. amount .. " Tibia Coins to " .. storedTargetName .. ".")
+	sendStoreHistory(player)
+
+	if targetPlayer and targetPlayer:isUsingOtcV8() then
+		sendStoreCatalog(targetPlayer)
+		sendStoreHistory(targetPlayer)
+	end
+end
+
+transferHandler:register()
