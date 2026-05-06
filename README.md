@@ -428,13 +428,19 @@ git clone https://github.com/Mateuzkl/forgottenserver-downgrade-1.8-8.60
 cd forgottenserver-downgrade-1.8-8.60
 
 rm -rf build-release
-mkdir build-release && cd build-release
+mkdir build-release
+cd build-release
 
 cmake -DCMAKE_BUILD_TYPE=Release \
-      -DDISABLE_STATS=1 \
-      -DENABLE_SLOW_TASK_DETECTION=OFF \
-      -DUSE_MIMALLOC=ON \
-      ..
+  -DDISABLE_STATS=1 \
+  -DENABLE_SLOW_TASK_DETECTION=ON \
+  -DUSE_MIMALLOC=ON \
+  -DLUA_INCLUDE_DIR=/usr/local/include \
+  -DLUA_LIBRARY=/usr/local/lib/liblua.a \
+  -DLUA_LIBRARIES="/usr/local/lib/liblua.a;m;dl" \
+  -DLUA_VERSION_STRING=5.5.0 \
+  -DCMAKE_PREFIX_PATH="/usr/local;$HOME/.local" \
+  ..
 
 cmake --build . -- -j"$(nproc)"
 ```
