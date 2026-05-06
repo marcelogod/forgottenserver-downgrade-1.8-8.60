@@ -5,8 +5,8 @@
 
 #include "item.h"
 
-#include <atomic>
 #include <chrono>
+#include <mutex>
 
 #include "actions.h"
 #include "bed.h"
@@ -35,7 +35,24 @@ Items Item::items;
 static std::unique_ptr<std::unordered_set<Item*>> g_validItems = std::make_unique<std::unordered_set<Item*>>();
 
 namespace {
-	std::atomic<uint64_t> g_uidCounter{1};
+	constexpr uint64_t UID_COUNTER_BITS = 21;
+	constexpr uint64_t UID_TIMESTAMP_BITS = 63 - UID_COUNTER_BITS;
+	constexpr uint64_t UID_COUNTER_MASK = (uint64_t{1} << UID_COUNTER_BITS) - 1;
+	constexpr uint64_t UID_TIMESTAMP_MASK = (uint64_t{1} << UID_TIMESTAMP_BITS) - 1;
+
+	static_assert(UID_TIMESTAMP_BITS + UID_COUNTER_BITS == 63);
+
+	std::mutex g_uidMutex;
+	uint64_t g_uidLastTimestamp = 0;
+	uint64_t g_uidCounter = 0;
+
+	uint64_t getUidTimestamp() noexcept
+	{
+		const auto now = std::chrono::duration_cast<std::chrono::milliseconds>(
+			std::chrono::system_clock::now().time_since_epoch()
+		).count();
+		return now > 0 ? static_cast<uint64_t>(now) : 0;
+	}
 } // namespace
 
 std::shared_ptr<Item> Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
@@ -70,7 +87,7 @@ std::shared_ptr<Item> Item::CreateItem(const uint16_t type, uint16_t count /*= 0
 	} else if (it.id == ITEM_INBOX) {
 		return std::make_shared<Inbox>(type);
 	} else if (it.isContainer()) {
-		return std::make_shared<Container>(type);
+		return assignUID(std::make_shared<Container>(type));
 	} else if (it.isTeleport()) {
 		return std::make_shared<Teleport>(type);
 	} else if (it.isMagicField()) {
@@ -105,7 +122,11 @@ std::shared_ptr<Container> Item::CreateItemAsContainer(const uint16_t type, uint
 		return nullptr;
 	}
 
-	return std::make_shared<Container>(type, size);
+	auto item = std::make_shared<Container>(type, size);
+	if (!item->isStackable()) {
+		item->setItemUID(Item::generateItemUID());
+	}
+	return item;
 }
 
 std::shared_ptr<Item> Item::CreateItem(PropStream& propStream)
@@ -205,13 +226,26 @@ void Item::clearGlobalRegistry()
 
 uint64_t Item::generateItemUID() noexcept
 {
-	const uint64_t ts = static_cast<uint64_t>(
-		std::chrono::duration_cast<std::chrono::milliseconds>(
-			std::chrono::steady_clock::now().time_since_epoch()
-		).count()
-	);
-	const uint64_t cnt = g_uidCounter.fetch_add(1, std::memory_order_relaxed);
-	return (ts << 20) | (cnt & 0xFFFFF);
+	uint64_t timestamp = getUidTimestamp() & UID_TIMESTAMP_MASK;
+
+	std::lock_guard<std::mutex> lock(g_uidMutex);
+	if (timestamp < g_uidLastTimestamp) {
+		timestamp = g_uidLastTimestamp;
+	}
+
+	if (timestamp == g_uidLastTimestamp) {
+		if (g_uidCounter >= UID_COUNTER_MASK) {
+			timestamp = (g_uidLastTimestamp + 1) & UID_TIMESTAMP_MASK;
+			g_uidCounter = 0;
+		} else {
+			++g_uidCounter;
+		}
+	} else {
+		g_uidCounter = 0;
+	}
+
+	g_uidLastTimestamp = timestamp;
+	return (timestamp << UID_COUNTER_BITS) | g_uidCounter;
 }
 
 uint64_t Item::getItemUID() const noexcept
@@ -244,6 +278,9 @@ std::shared_ptr<Item> Item::clone() const
 	auto item = Item::CreateItem(id, count);
 	if (item && attributes) {
 		item->attributes = std::make_unique<ItemAttributes>(*attributes);
+		if (!item->isStackable()) {
+			item->setItemUID(Item::generateItemUID());
+		}
 		if (item->getDuration() > 0) {
 			item->setDecaying(DECAYING_TRUE);
 			g_game.toDecayItems.push_front(item);
