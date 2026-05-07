@@ -23,11 +23,17 @@ end
 MonsterType.register = function(self, mask)
 	local result = registerMonsterType(self, mask)
 	if isBossScriptSource() then self:isBoss(true) end
+	if CustomBestiary and CustomBestiary.registerMonster and CustomBestiary.registerMonster(self, mask) then
+		self:registerEvent("CustomBestiaryKill")
+	end
 	return result
 end
 
 registerMonsterType.name = function(mtype, mask)
 	if mask.name then mtype:name(mask.name) end
+end
+registerMonsterType.raceId = function(mtype, mask)
+	if mask.raceId then mtype:raceId(mask.raceId) end
 end
 registerMonsterType.description = function(mtype, mask)
 	if mask.description then mtype:nameDescription(mask.description) end
