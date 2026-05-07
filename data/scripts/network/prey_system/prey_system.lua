@@ -6,6 +6,11 @@
 
 -- data/scripts/network/prey_system/prey_system.lua
 
+if not configManager.getBoolean(configKeys.PREY_SYSTEM_ENABLED) then
+	PreySystem = nil
+	return
+end
+
 dofile("data/scripts/network/prey_system/prey_monsters.lua")
 
 local PREY_OPCODE_OPEN = 0xE8

@@ -2,6 +2,10 @@ local function firstToUpper(text)
 	return tostring(text or ""):gsub("^%l", string.upper)
 end
 
+if not CustomBestiary then
+	return
+end
+
 local function getBestiaryEntryByName(name)
 	local targetName = tostring(name or ""):lower()
 	if targetName == "" or not CustomBestiary or not CustomBestiary.monstersByRaceId then

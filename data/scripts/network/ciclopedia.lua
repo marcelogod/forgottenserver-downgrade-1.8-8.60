@@ -1,6 +1,10 @@
 -- Custom Cyclopedia PacketHandler
 -- Client sends 0x48, 0x49, 0x4A, 0x4C and 0x4D. Server responds through 0x48 with a response byte.
 
+if not configManager.getBoolean(configKeys.BESTIARY_SYSTEM_ENABLED) or not CustomBestiary then
+	return
+end
+
 local OPCODE_CYCLOPEDIA_INFO = 0x48
 local OPCODE_CYCLOPEDIA_CATEGORY = 0x49
 local OPCODE_CYCLOPEDIA_MONSTER = 0x4A

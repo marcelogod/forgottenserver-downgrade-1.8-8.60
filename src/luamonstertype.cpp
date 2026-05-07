@@ -3,6 +3,7 @@
 
 #include "otpch.h"
 
+#include "configmanager.h"
 #include "luascript.h"
 #include "monsters.h"
 #include "script.h"
@@ -351,7 +352,9 @@ int32_t luaMonsterTypeRaceId(lua_State* L)
 			lua_pushinteger(L, monsterType->raceId);
 		} else {
 			monsterType->raceId = getInteger<uint32_t>(L, 2);
-			g_monsters.registerBestiaryMonster(monsterType);
+			if (ConfigManager::getBoolean(ConfigManager::BESTIARY_SYSTEM_ENABLED)) {
+				g_monsters.registerBestiaryMonster(monsterType);
+			}
 			pushBoolean(L, true);
 		}
 	} else {

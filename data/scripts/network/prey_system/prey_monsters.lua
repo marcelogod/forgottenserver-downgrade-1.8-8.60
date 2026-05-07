@@ -1,5 +1,10 @@
 -- data/scripts/network/prey_system/prey_monsters.lua
 
+if not configManager.getBoolean(configKeys.PREY_SYSTEM_ENABLED) then
+	PreyMonsters = nil
+	return
+end
+
 PreyMonsters = PreyMonsters or {}
 
 local monsterPool = {

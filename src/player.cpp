@@ -1006,7 +1006,7 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 		}
 	}
 
-	if (!hasMarket) {
+	if (!hasMarket && ConfigManager::getBoolean(ConfigManager::MARKET_SYSTEM_ENABLED)) {
 		auto market = Item::CreateItem(ITEM_MARKET);
 		if (market) {
 			it->second->internalAddThing(market.get());

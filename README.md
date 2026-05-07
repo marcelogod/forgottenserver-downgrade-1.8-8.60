@@ -319,6 +319,9 @@ forgeSystemEnabled = false
 imbuementSystemEnabled = false
 monkVocationEnabled = false
 familiarSystemEnabled = false
+bestiarySystemEnabled = false
+marketSystemEnabled = false
+preySystemEnabled = false
 ```
 
 | Config key | Default | Controls |
@@ -327,6 +330,11 @@ familiarSystemEnabled = false
 | `imbuementSystemEnabled` | `false` | Imbuements, scrolls, workbench, portal and item look text |
 | `monkVocationEnabled` | `false` | Monk vocation behavior, outfits, spells and checks |
 | `familiarSystemEnabled` | `false` | Familiar summons, spells and remaining-time look text |
+| `bestiarySystemEnabled` | `false` | Custom Cyclopedia/Bestiary packets, kills, tracker and charms |
+| `marketSystemEnabled` | `false` | Custom OTC market packets, market tables and market depot item |
+| `preySystemEnabled` | `false` | Custom Prey packets, prey bonuses, timers and wildcard usage |
+
+Set a system to `true` only when you want that feature active:
 
 Example:
 
@@ -335,6 +343,9 @@ forgeSystemEnabled = false
 imbuementSystemEnabled = true
 monkVocationEnabled = false
 familiarSystemEnabled = false
+bestiarySystemEnabled = true
+marketSystemEnabled = false
+preySystemEnabled = false
 ```
 
 ---

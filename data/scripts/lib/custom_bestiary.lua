@@ -1,3 +1,8 @@
+if not configManager.getBoolean(configKeys.BESTIARY_SYSTEM_ENABLED) then
+	CustomBestiary = nil
+	return
+end
+
 CustomBestiary = CustomBestiary or {}
 
 CustomBestiary.monstersByRaceId = CustomBestiary.monstersByRaceId or {}

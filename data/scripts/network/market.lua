@@ -2,6 +2,11 @@
 -- OTC sends 0xF4..0xF7 and 0xE0..0xE1. Server responds with 0xDB.
 -- Item ids are traded directly, no wareId/ThingAttrMarket dependency.
 
+if not configManager.getBoolean(configKeys.MARKET_SYSTEM_ENABLED) then
+	CustomMarket = nil
+	return
+end
+
 local MARKET_ITEM_ID = ITEM_MARKET or 12903
 
 local OPCODE_MARKET_OPEN = 0xF4

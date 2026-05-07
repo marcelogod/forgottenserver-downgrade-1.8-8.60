@@ -1380,6 +1380,9 @@ void LuaScriptInterface::registerFunctions()
 	registerGlobalVariable("IMBUEMENT_SYSTEM_ENABLED", ConfigManager::IMBUEMENT_SYSTEM_ENABLED);
 	registerGlobalVariable("MONK_VOCATION_ENABLED", ConfigManager::MONK_VOCATION_ENABLED);
 	registerGlobalVariable("FAMILIAR_SYSTEM_ENABLED", ConfigManager::FAMILIAR_SYSTEM_ENABLED);
+	registerGlobalVariable("BESTIARY_SYSTEM_ENABLED", ConfigManager::BESTIARY_SYSTEM_ENABLED);
+	registerGlobalVariable("MARKET_SYSTEM_ENABLED", ConfigManager::MARKET_SYSTEM_ENABLED);
+	registerGlobalVariable("PREY_SYSTEM_ENABLED", ConfigManager::PREY_SYSTEM_ENABLED);
 
 	registerGlobalVariable("ACCOUNT_MANAGER_NONE", static_cast<uint8_t>(AccountManagerMode::ACCOUNT_MANAGER_NONE));
 	registerGlobalVariable("ACCOUNT_MANAGER_NEW", static_cast<uint8_t>(AccountManagerMode::ACCOUNT_MANAGER_NEW));
@@ -2543,6 +2546,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::IMBUEMENT_SYSTEM_ENABLED);
 	registerEnumIn("configKeys", ConfigManager::MONK_VOCATION_ENABLED);
 	registerEnumIn("configKeys", ConfigManager::FAMILIAR_SYSTEM_ENABLED);
+	registerEnumIn("configKeys", ConfigManager::BESTIARY_SYSTEM_ENABLED);
+	registerEnumIn("configKeys", ConfigManager::MARKET_SYSTEM_ENABLED);
+	registerEnumIn("configKeys", ConfigManager::PREY_SYSTEM_ENABLED);
 	registerEnumIn("configKeys", ConfigManager::ALLOW_MOUNT_IN_PZ);
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME);

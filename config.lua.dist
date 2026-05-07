@@ -142,6 +142,9 @@ forgeSystemEnabled = false
 imbuementSystemEnabled = false
 monkVocationEnabled = false
 familiarSystemEnabled = false
+bestiarySystemEnabled = false
+marketSystemEnabled = false
+preySystemEnabled = false
 
 -- Configuration to allow mounting in Protection Zone (PZ)
 -- true = allows mounting in PZ, false = disables mounting in PZ (default behavior)
