@@ -133,16 +133,24 @@ local function fallbackImbuementName(imbuement)
 	return name, name
 end
 
+local itemNameCache = {}
+
 local function getItemName(itemId)
-	local ok, itemType = pcall(ItemType, itemId)
-	if not ok or not itemType then
-		return "item"
+	local cachedName = itemNameCache[itemId]
+	if cachedName then
+		return cachedName
 	end
 
-	local name = itemType:getName()
-	if not name or name == "" then
-		return "item"
+	local ok, itemType = pcall(ItemType, itemId)
+	local name = "item"
+	if ok and itemType then
+		name = itemType:getName()
+		if not name or name == "" then
+			name = "item"
+		end
 	end
+
+	itemNameCache[itemId] = name
 	return name
 end
 
@@ -191,14 +199,6 @@ local function getActiveImbuements(item)
 	return imbuements
 end
 
-local function getActiveImbuementCount(activeImbuements)
-	local count = 0
-	for _ in ipairs(activeImbuements) do
-		count = count + 1
-	end
-	return count
-end
-
 local function getApplicableDefinitions(item)
 	ensureDefinitions()
 
@@ -238,17 +238,14 @@ local function writeNeededItems(msg, player, definitions)
 end
 
 local function sendBalances(player)
-	local bankMsg = NetworkMessage(player)
-	bankMsg:addByte(RESOURCE_BALANCE_OPCODE)
-	bankMsg:addByte(0)
-	bankMsg:addU64(player:getBankBalance())
-	bankMsg:sendToPlayer(player)
-
-	local inventoryMsg = NetworkMessage(player)
-	inventoryMsg:addByte(RESOURCE_BALANCE_OPCODE)
-	inventoryMsg:addByte(1)
-	inventoryMsg:addU64(player:getMoney())
-	inventoryMsg:sendToPlayer(player)
+	local msg = NetworkMessage(player)
+	msg:addByte(RESOURCE_BALANCE_OPCODE)
+	msg:addByte(0)
+	msg:addU64(player:getBankBalance())
+	msg:addByte(RESOURCE_BALANCE_OPCODE)
+	msg:addByte(1)
+	msg:addU64(player:getMoney())
+	msg:sendToPlayer(player)
 end
 
 local function findEquipment(container)
@@ -274,7 +271,8 @@ local function containerHasItem(container, target)
 		return false
 	end
 
-	for _, item in ipairs(container:getItems(true)) do
+	for i = 0, container:getSize() - 1 do
+		local item = container:getItem(i)
 		if item == target then
 			return true
 		end
@@ -491,7 +489,7 @@ function ImbuingWindow.apply(player, slot, imbuementId, protection)
 
 	local slots = item:getImbuementSlots()
 	local activeImbuements = getActiveImbuements(item)
-	local firstFreeSlot = getActiveImbuementCount(activeImbuements)
+	local firstFreeSlot = #activeImbuements
 	if slot < 0 or slot >= slots or slot ~= firstFreeSlot then
 		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		sendWindow(player, item)
