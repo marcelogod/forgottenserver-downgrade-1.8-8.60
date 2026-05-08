@@ -70,6 +70,7 @@ local transformItems = {
 	[8664] = 8663, -- street lamp (yalahar)
 	[8665] = 8666,
 	[8666] = 8665, -- street lamp (yalahar)
+	[8708] = 8709, -- closed trapdoor
 	[8832] = 8833,
 	[8833] = 8832, -- wall lamp
 	[8834] = 8835,

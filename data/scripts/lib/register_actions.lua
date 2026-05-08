@@ -1,17 +1,27 @@
 local wildGrowth = {1499, 11099} -- wild growth destroyable by machete
+
 local jungleGrass = { -- grass destroyable by machete
 	[2782] = 2781,
 	[3985] = 3984
 }
+
 local groundIds = {354, 355} -- pick usable ground
-local sandIds = {231, 9059} -- desert sand
+local sandIds = {231} -- desert sand
+
 local holeId = { -- usable rope holes, for rope spots see global.lua
-	294, 369, 370, 383, 392, 408, 409, 410, 427, 428, 429, 430, 462, 469, 470, 482,
- 484, 485, 489, 924, 1369, 3135, 3136, 4835, 4837, 7933, 7938, 8170, 8249, 8250,
- 8251, 8252, 8254, 8255, 8256, 8276, 8277, 8279, 8281, 8284, 8285, 8286, 8323,
- 8567, 8585, 8595, 8596, 8972, 9606, 9625
+	294, 369, 370, 385, 394, 411, 412, 413, 432, 433, 434, 435, 8709, 594, 595, 615,
+	609, 610, 1156, 1931, 482, 483, 859, 4826, 868, 874, 4824, 7515, 7516, 7517,
+	7518, 7520, 7521, 7522, 7768, 967, 7737, 7755, 7767, 8144, 8690
 }
-local holes = {468, 481, 483, 7932} -- holes opened by shovel
+
+local holes = { -- holes opened by shovel, closed client id -> open client id
+	[593] = 594, -- stone pile
+	[606] = 615, -- loose stone pile
+	[608] = 609, -- loose ice pile
+	[867] = 868, -- large hole
+	[7749] = 7755 -- loose stone pile
+}
+
 local fruits = {
 	2673, 2674, 2675, 2676, 2677, 2678, 2679, 2680, 2681, 2682, 2684, 2685, 5097,
  8839, 8840, 8841
@@ -168,20 +178,21 @@ function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
 	if not ground then return false end
 
 	local groundId = ground:getId()
-	if table.contains(holes, groundId) then
-		ground:transform(groundId + 1)
+	local openHoleId = holes[groundId]
+	if openHoleId then
+		ground:transform(openHoleId)
 		ground:decay()
 		toPosition.z = toPosition.z + 1
 		tile:relocateTo(toPosition)
 		player:addAchievementProgress("The Undertaker", 500)
-	elseif target.itemid == 7932 then -- large hole
-		target:transform(7933)
+	elseif holes[target.itemid] then
+		target:transform(holes[target.itemid])
 		target:decay()
 		player:addAchievementProgress("The Undertaker", 500)
 	elseif table.contains(sandIds, groundId) then
 		local randomValue = math.random(1, 100)
 		if target.actionid == actionIds.sandHole and randomValue <= 20 then
-			ground:transform(489)
+			ground:transform(615)
 			ground:decay()
 		elseif randomValue == 1 then
 			Game.createItem(2159, 1, toPosition)
