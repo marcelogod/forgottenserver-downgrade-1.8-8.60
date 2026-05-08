@@ -144,6 +144,10 @@ private:
 	void onRemoveContainerItem(uint32_t index, Item* item) const;
 
 	void updateItemWeight(int32_t diff);
+	bool hasCapacityLimit() const;
+	uint32_t getFreeSlotsFor(const Item* item, uint32_t count) const;
+	bool canMergeIntoExistingStack(const Item* item, int32_t index) const;
+	bool hasRoomForItem(const Item* item, int32_t index, uint32_t count) const;
 
 	friend class ContainerIterator;
 	friend class IOMapSerialize;

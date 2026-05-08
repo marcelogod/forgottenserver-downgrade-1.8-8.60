@@ -6,6 +6,7 @@
 #include "container.h"
 #include "depotchest.h"
 #include "depotlocker.h"
+#include "inbox.h"
 #include "storeinbox.h"
 
 #include "game.h"
@@ -120,6 +121,51 @@ void Container::updateItemWeight(int32_t diff)
 }
 
 uint32_t Container::getWeight() const { return Item::getWeight() + totalWeight; }
+
+bool Container::hasCapacityLimit() const
+{
+	return getID() != ITEM_GOLD_POUCH && !hasPagination() && !getDepotLocker() && !getRewardChest() &&
+	       !getStoreInbox() && !dynamic_cast<const DepotChest*>(this) &&
+	       !dynamic_cast<const Inbox*>(this);
+}
+
+uint32_t Container::getFreeSlotsFor(const Item* item, uint32_t count) const
+{
+	const size_t currentSize = size();
+	uint32_t freeSlots = currentSize < capacity() ? capacity() - static_cast<uint32_t>(currentSize) : 0;
+	if (item && item->getParent() == this && (!item->isStackable() || count >= item->getItemCount())) {
+		++freeSlots;
+	}
+	return freeSlots;
+}
+
+bool Container::canMergeIntoExistingStack(const Item* item, int32_t index) const
+{
+	if (!item || !item->isStackable()) {
+		return false;
+	}
+
+	auto canStackWith = [item](const Item* stackItem) {
+		return stackItem && stackItem != item && stackItem->equals(item) &&
+		       stackItem->getItemCount() < stackItem->getStackSize();
+	};
+
+	if (index == INDEX_WHEREEVER) {
+		for (const auto& containerItem : itemlist) {
+			if (canStackWith(containerItem.get())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	return canStackWith(getItemByIndex(index));
+}
+
+bool Container::hasRoomForItem(const Item* item, int32_t index, uint32_t count) const
+{
+	return !hasCapacityLimit() || getFreeSlotsFor(item, count) > 0 || canMergeIntoExistingStack(item, index);
+}
 
 uint64_t Container::getWeightReductionContentWeight() const
 {
@@ -270,26 +316,16 @@ ReturnValue Container::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 		return item->isStoreItem() ? RETURNVALUE_ITEMCANNOTBEMOVEDTHERE : RETURNVALUE_CANNOTMOVEITEMISNOTSTOREITEM;
 	}
 
-	if (!hasBitSet(FLAG_NOLIMIT, flags) && !hasPagination()) {
-		while (cylinder) {
-			if (cylinder == &thing) {
-				return RETURNVALUE_THISISIMPOSSIBLE;
-			}
-
-			cylinder = cylinder->getParent();
+	while (cylinder) {
+		if (cylinder == &thing) {
+			return RETURNVALUE_THISISIMPOSSIBLE;
 		}
 
-		if (index == INDEX_WHEREEVER && size() >= capacity() && item->getParent() != this) {
-			return RETURNVALUE_CONTAINERNOTENOUGHROOM;
-		}
-	} else {
-		while (cylinder) {
-			if (cylinder == &thing) {
-				return RETURNVALUE_THISISIMPOSSIBLE;
-			}
+		cylinder = cylinder->getParent();
+	}
 
-			cylinder = cylinder->getParent();
-		}
+	if (!hasRoomForItem(item, index, count)) {
+		return RETURNVALUE_CONTAINERNOTENOUGHROOM;
 	}
 
 	const Cylinder* const topParent = getTopParent();
@@ -322,15 +358,12 @@ ReturnValue Container::queryMaxCount(int32_t index, const Thing& thing, uint32_t
 		return RETURNVALUE_NOTPOSSIBLE;
 	}
 
-	if (hasBitSet(FLAG_NOLIMIT, flags) || hasPagination()) {
+	if (!hasCapacityLimit()) {
 		maxQueryCount = std::max<uint32_t>(1, count);
 		return RETURNVALUE_NOERROR;
 	}
 
-	int32_t freeSlots = std::max<int32_t>(capacity() - size(), 0);
-	if (item->getParent() == this) {
-		freeSlots++;
-	}
+	uint32_t freeSlots = getFreeSlotsFor(item, count);
 
 	if (item->isStackable()) {
 		uint32_t n = 0;
@@ -341,10 +374,11 @@ ReturnValue Container::queryMaxCount(int32_t index, const Thing& thing, uint32_t
 			for (const auto& containerItem : itemlist) {
 				if (containerItem.get() != item && containerItem->equals(item) &&
 				    containerItem->getItemCount() < containerItem->getStackSize()) {
-					if (queryAdd(slotIndex++, *item, count, flags) == RETURNVALUE_NOERROR) {
+					if (queryAdd(slotIndex, *item, count, flags) == RETURNVALUE_NOERROR) {
 						n += containerItem->getStackSize() - containerItem->getItemCount();
 					}
 				}
+				++slotIndex;
 			}
 		} else {
 			const Item* destItem = getItemByIndex(index);
