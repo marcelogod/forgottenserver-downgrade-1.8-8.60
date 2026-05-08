@@ -3,6 +3,10 @@ local config = {
 }
 
 local function ServerSave()
+    if CustomMarket and CustomMarket.updateStatistics then
+        CustomMarket.updateStatistics()
+    end
+
     if configManager.getBoolean(configKeys.SERVER_SAVE_SHUTDOWN) then
         Game.setGameState(GAME_STATE_SHUTDOWN)
     else

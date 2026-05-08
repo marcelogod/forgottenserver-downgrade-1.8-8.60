@@ -356,6 +356,34 @@ local function getListRerollCost(player)
 	return player:getLevel() * PREY_LIST_REROLL_COST_PER_LEVEL
 end
 
+local function getPlayerTotalGold(player)
+	return math.max(0, tonumber(player:getMoney()) or 0) + math.max(0, tonumber(player:getBankBalance()) or 0)
+end
+
+local function removePlayerGold(player, amount)
+	amount = tonumber(amount) or 0
+	if amount <= 0 then
+		return true
+	end
+
+	local inventoryMoney = math.max(0, tonumber(player:getMoney()) or 0)
+	local bankBalance = math.max(0, tonumber(player:getBankBalance()) or 0)
+	if inventoryMoney + bankBalance < amount then
+		return false
+	end
+
+	local fromInventory = math.min(inventoryMoney, amount)
+	if fromInventory > 0 and not player:removeMoney(fromInventory) then
+		return false
+	end
+
+	local fromBank = amount - fromInventory
+	if fromBank > 0 then
+		player:setBankBalance(bankBalance - fromBank)
+	end
+	return true
+end
+
 local function getTimeUntilFreeReroll(slotData)
 	return math.max(0, math.ceil(((slotData.reroll_at or 0) - os.time()) / 60))
 end
@@ -569,15 +597,15 @@ function listRerollHandler.onReceive(player, msg)
 		slotData.reroll_at = now + PREY_REROLL_CD
 	else
 		local cost = getListRerollCost(player)
-		if player:getMoney() < cost then
+		if getPlayerTotalGold(player) < cost then
 			return sendError(player, string.format(
-				"You need %d gold to reroll the list (next free reroll in %d minutes).",
+				"You need %d gold in your inventory or bank to reroll the list (next free reroll in %d minutes).",
 				cost,
 				math.ceil((slotData.reroll_at - now) / 60)
 			))
 		end
 
-		if not player:removeMoney(cost) then
+		if not removePlayerGold(player, cost) then
 			return sendError(player, "Failed to remove gold.")
 		end
 	end

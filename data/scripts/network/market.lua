@@ -26,6 +26,25 @@ local RESP_DETAIL = 0x04
 local MARKET_ACTION_BUY = 0
 local MARKET_ACTION_SELL = 1
 
+local MARKET_DESC_ARMOR = 1
+local MARKET_DESC_ATTACK = 2
+local MARKET_DESC_CONTAINER = 3
+local MARKET_DESC_DEFENSE = 4
+local MARKET_DESC_GENERAL = 5
+local MARKET_DESC_DECAY_TIME = 6
+local MARKET_DESC_COMBAT = 7
+local MARKET_DESC_MIN_LEVEL = 8
+local MARKET_DESC_MIN_MAGIC_LEVEL = 9
+local MARKET_DESC_VOCATION = 10
+local MARKET_DESC_RUNE = 11
+local MARKET_DESC_ABILITY = 12
+local MARKET_DESC_CHARGES = 13
+local MARKET_DESC_WEAPON = 14
+local MARKET_DESC_WEIGHT = 15
+local MARKET_DESC_IMBUEMENTS = 16
+local MARKET_DESC_CLASSIFICATION = 17
+local MARKET_DESC_TIER = 18
+
 local MARKET_REQUEST_MY_OFFERS = 0xFFFE
 local MARKET_REQUEST_MY_HISTORY = 0xFFFF
 
@@ -43,6 +62,7 @@ local MARKET_CATALOG_CHUNK_SIZE = 350
 local MARKET_ACTION_DELAY = 1
 local MARKET_EXPIRE_CHECK_INTERVAL = 60
 local MARKET_DEFAULT_DURATION = 30 * 24 * 60 * 60
+local MARKET_STATISTICS_DAYS = 30
 local MARKET_DEPOT_BOX_FIRST = 1
 local MARKET_DEPOT_BOX_LAST = 15
 
@@ -70,6 +90,7 @@ local CATEGORY_GOLD = 30
 
 local marketItems = {}
 local marketItemsById = {}
+local marketItemXmlAttributes = {}
 local lastAction = {}
 local marketDepotSessions = {}
 local lastExpireCheck = 0
@@ -159,6 +180,19 @@ local function ensureTables()
 			`state` TINYINT UNSIGNED NOT NULL,
 			PRIMARY KEY (`id`),
 			KEY `idx_market_history_player` (`player_id`)
+		) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8
+	]])
+
+	db.query([[
+		CREATE TABLE IF NOT EXISTS `market_statistics` (
+			`itemtype` SMALLINT UNSIGNED NOT NULL,
+			`sale` TINYINT(1) NOT NULL DEFAULT 0,
+			`day` INT UNSIGNED NOT NULL,
+			`transactions` INT UNSIGNED NOT NULL DEFAULT 0,
+			`total_price` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+			`highest_price` INT UNSIGNED NOT NULL DEFAULT 0,
+			`lowest_price` INT UNSIGNED NOT NULL DEFAULT 0,
+			PRIMARY KEY (`itemtype`, `sale`, `day`)
 		) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8
 	]])
 end
@@ -270,7 +304,33 @@ local function isMarketableItem(itemId)
 	return itemType:isMovable() and itemType:isPickupable()
 end
 
-local function addMarketItem(itemId, xmlName)
+local function copyAttributes(attributes)
+	if not attributes then
+		return nil
+	end
+
+	local copy = {}
+	for key, value in pairs(attributes) do
+		copy[key] = value
+	end
+	return copy
+end
+
+local function readItemXmlAttributes(itemNode)
+	local attributes = {}
+	for attributeNode in itemNode:children() do
+		if attributeNode:name() == "attribute" then
+			local key = attributeNode:attribute("key")
+			local value = attributeNode:attribute("value")
+			if key and value then
+				attributes[key:lower()] = value
+			end
+		end
+	end
+	return attributes
+end
+
+local function addMarketItem(itemId, xmlName, xmlAttributes)
 	itemId = tonumber(itemId)
 	if not itemId or marketItemsById[itemId] or not isMarketableItem(itemId) then
 		return
@@ -289,12 +349,14 @@ local function addMarketItem(itemId, xmlName)
 	}
 
 	marketItemsById[itemId] = entry
+	marketItemXmlAttributes[itemId] = copyAttributes(xmlAttributes)
 	marketItems[#marketItems + 1] = entry
 end
 
 local function loadMarketCatalog()
 	marketItems = {}
 	marketItemsById = {}
+	marketItemXmlAttributes = {}
 
 	local xmlDoc = XMLDocument("data/items/items.xml")
 	if not xmlDoc then
@@ -314,12 +376,13 @@ local function loadMarketCatalog()
 			local fromId = tonumber(itemNode:attribute("fromid"))
 			local toId = tonumber(itemNode:attribute("toid"))
 			local name = itemNode:attribute("name")
+			local attributes = readItemXmlAttributes(itemNode)
 
 			if id then
-				addMarketItem(id, name)
+				addMarketItem(id, name, attributes)
 			elseif fromId and toId and toId >= fromId then
 				for itemId = fromId, toId do
-					addMarketItem(itemId, name)
+					addMarketItem(itemId, name, attributes)
 				end
 			end
 		end
@@ -789,6 +852,274 @@ local function writeOffer(out, offer)
 	out:addByte(offer.state or MARKET_STATE_ACTIVE)
 end
 
+local function addDescription(descriptions, descriptionType, value)
+	if value == nil or value == "" then
+		return
+	end
+
+	descriptions[#descriptions + 1] = { type = descriptionType, text = tostring(value) }
+end
+
+local function formatWeight(weight)
+	weight = tonumber(weight) or 0
+	local oz = math.floor(weight / 100)
+	local decimals = weight % 100
+	return string.format("%d.%02d oz", oz, decimals)
+end
+
+local function formatDuration(seconds)
+	seconds = tonumber(seconds) or 0
+	if seconds <= 0 then
+		return nil
+	end
+	if seconds % 60 == 0 then
+		local minutes = seconds / 60
+		if minutes % 60 == 0 then
+			return string.format("%d hour%s", minutes / 60, minutes == 60 and "" or "s")
+		end
+		return string.format("%d minute%s", minutes, minutes == 1 and "" or "s")
+	end
+	return string.format("%d second%s", seconds, seconds == 1 and "" or "s")
+end
+
+local function getWeaponTypeName(weaponType)
+	if weaponType == WEAPON_SWORD then
+		return "Sword"
+	elseif weaponType == WEAPON_CLUB then
+		return "Club"
+	elseif weaponType == WEAPON_AXE then
+		return "Axe"
+	elseif weaponType == WEAPON_SHIELD then
+		return "Shield"
+	elseif weaponType == WEAPON_DISTANCE then
+		return "Distance"
+	elseif weaponType == WEAPON_WAND then
+		return "Wand/Rod"
+	elseif weaponType == WEAPON_AMMO then
+		return "Ammunition"
+	elseif weaponType == WEAPON_QUIVER then
+		return "Quiver"
+	elseif weaponType == WEAPON_FIST then
+		return "Fist"
+	end
+	return nil
+end
+
+local function getCombatTypeName(combatType)
+	if COMBAT_PHYSICALDAMAGE and combatType == COMBAT_PHYSICALDAMAGE then
+		return "physical"
+	elseif COMBAT_ENERGYDAMAGE and combatType == COMBAT_ENERGYDAMAGE then
+		return "energy"
+	elseif COMBAT_EARTHDAMAGE and combatType == COMBAT_EARTHDAMAGE then
+		return "earth"
+	elseif COMBAT_FIREDAMAGE and combatType == COMBAT_FIREDAMAGE then
+		return "fire"
+	elseif COMBAT_ICEDAMAGE and combatType == COMBAT_ICEDAMAGE then
+		return "ice"
+	elseif COMBAT_HOLYDAMAGE and combatType == COMBAT_HOLYDAMAGE then
+		return "holy"
+	elseif COMBAT_DEATHDAMAGE and combatType == COMBAT_DEATHDAMAGE then
+		return "death"
+	end
+	return nil
+end
+
+local function buildAbilityDescription(itemType)
+	local abilities = itemType:getAbilities()
+	if not abilities then
+		return nil
+	end
+
+	local parts = {}
+	if (abilities.speed or 0) ~= 0 then
+		parts[#parts + 1] = string.format("speed %+d", abilities.speed)
+	end
+	if (abilities.healthGain or 0) > 0 then
+		parts[#parts + 1] = string.format("health regeneration +%d", abilities.healthGain)
+	end
+	if (abilities.manaGain or 0) > 0 then
+		parts[#parts + 1] = string.format("mana regeneration +%d", abilities.manaGain)
+	end
+	if abilities.manaShield then
+		parts[#parts + 1] = "mana shield"
+	end
+	if abilities.invisible then
+		parts[#parts + 1] = "invisibility"
+	end
+	if #parts == 0 then
+		return nil
+	end
+	return table.concat(parts, ", ")
+end
+
+local function buildMarketDescriptions(itemId)
+	local itemType = ItemType(itemId)
+	local descriptions = {}
+	if not itemType or itemType:getId() == 0 then
+		return descriptions
+	end
+	local xmlAttributes = marketItemXmlAttributes[itemId] or {}
+
+	local armor = tonumber(itemType:getArmor()) or 0
+	if armor > 0 then
+		addDescription(descriptions, MARKET_DESC_ARMOR, armor)
+	end
+
+	local attack = tonumber(itemType:getAttack()) or 0
+	if attack > 0 then
+		addDescription(descriptions, MARKET_DESC_ATTACK, attack)
+	end
+
+	local defense = tonumber(itemType:getDefense()) or 0
+	local extraDefense = tonumber(itemType:getExtraDefense()) or 0
+	if defense > 0 then
+		local defenseText = tostring(defense)
+		if extraDefense ~= 0 then
+			defenseText = string.format("%d %+d", defense, extraDefense)
+		end
+		addDescription(descriptions, MARKET_DESC_DEFENSE, defenseText)
+	end
+
+	if itemType:isContainer() then
+		addDescription(descriptions, MARKET_DESC_CONTAINER, string.format("%d slots", itemType:getCapacity()))
+	end
+
+	local description = xmlAttributes.description or itemType:getDescription()
+	if description and description ~= "" then
+		addDescription(descriptions, MARKET_DESC_GENERAL, description)
+	end
+
+	local classification = tonumber(xmlAttributes.classification) or tonumber(itemType:getClassification()) or 0
+	if classification > 0 then
+		addDescription(descriptions, MARKET_DESC_CLASSIFICATION, classification)
+	end
+
+	local tier = tonumber(xmlAttributes.tier) or tonumber(itemType:getTier()) or 0
+	if tier > 0 then
+		addDescription(descriptions, MARKET_DESC_TIER, tier)
+	end
+
+	local duration = formatDuration(math.max(tonumber(itemType:getDurationMin()) or 0, tonumber(itemType:getDurationMax()) or 0))
+	if duration then
+		addDescription(descriptions, MARKET_DESC_DECAY_TIME, duration)
+	end
+
+	local elementDamage = tonumber(itemType:getElementDamage()) or 0
+	local elementType = itemType:getElementType()
+	local elementName = getCombatTypeName(elementType)
+	if elementDamage > 0 and elementName then
+		addDescription(descriptions, MARKET_DESC_COMBAT, string.format("%s +%d", elementName, elementDamage))
+	end
+
+	local minLevel = tonumber(itemType:getMinReqLevel()) or 0
+	if minLevel > 0 then
+		addDescription(descriptions, MARKET_DESC_MIN_LEVEL, minLevel)
+	end
+
+	local minMagicLevel = tonumber(itemType:getMinReqMagicLevel()) or 0
+	if minMagicLevel > 0 then
+		addDescription(descriptions, MARKET_DESC_MIN_MAGIC_LEVEL, minMagicLevel)
+	end
+
+	local vocation = itemType:getVocationString()
+	if vocation and vocation ~= "" then
+		addDescription(descriptions, MARKET_DESC_VOCATION, vocation)
+	end
+
+	local runeSpell = itemType:getRuneSpellName()
+	if runeSpell and runeSpell ~= "" then
+		addDescription(descriptions, MARKET_DESC_RUNE, runeSpell)
+	end
+
+	addDescription(descriptions, MARKET_DESC_ABILITY, buildAbilityDescription(itemType))
+
+	local charges = tonumber(itemType:getCharges()) or 0
+	if charges > 0 then
+		addDescription(descriptions, MARKET_DESC_CHARGES, charges)
+	end
+
+	local weaponName = getWeaponTypeName(itemType:getWeaponType())
+	if weaponName then
+		addDescription(descriptions, MARKET_DESC_WEAPON, weaponName)
+	end
+
+	local weight = tonumber(itemType:getWeight()) or 0
+	if weight > 0 then
+		addDescription(descriptions, MARKET_DESC_WEIGHT, formatWeight(weight))
+	end
+
+	local imbuementSlots = tonumber(itemType:getImbuementSlot()) or 0
+	if imbuementSlots > 0 then
+		addDescription(descriptions, MARKET_DESC_IMBUEMENTS, string.format("%d slot%s", imbuementSlots, imbuementSlots == 1 and "" or "s"))
+	end
+
+	return descriptions
+end
+
+local function fetchMarketStatistics(itemId, actionType)
+	local stats = {}
+	if not tableExists("market_statistics") then
+		return stats
+	end
+
+	local since = os.time() - (MARKET_STATISTICS_DAYS * 24 * 60 * 60)
+	local firstDay = math.floor(since / 86400) * 86400
+	local query = "SELECT `day`, `transactions`, `total_price`, `highest_price`, `lowest_price` FROM `market_statistics` " ..
+		"WHERE `itemtype` = " .. itemId .. " AND `sale` = " .. actionType .. " AND `day` >= " .. firstDay ..
+		" ORDER BY `day` ASC LIMIT " .. MARKET_STATISTICS_DAYS
+
+	local resultId = db.storeQuery(query)
+	if resultId == false then
+		return stats
+	end
+
+	repeat
+		stats[#stats + 1] = {
+			day = result.getDataInt(resultId, "day"),
+			transactions = result.getDataInt(resultId, "transactions"),
+			totalPrice = result.getDataLong(resultId, "total_price"),
+			highestPrice = result.getDataInt(resultId, "highest_price"),
+			lowestPrice = result.getDataInt(resultId, "lowest_price")
+		}
+	until not result.next(resultId)
+
+	result.free(resultId)
+	return stats
+end
+
+local function refreshMarketStatistics()
+	if not tableExists("market_history") or not tableExists("market_statistics") then
+		return false
+	end
+
+	local since = os.time() - (MARKET_STATISTICS_DAYS * 24 * 60 * 60)
+	local firstDay = math.floor(since / 86400) * 86400
+	db.query("DELETE FROM `market_statistics`")
+
+	return db.query(
+		"REPLACE INTO `market_statistics` (`itemtype`, `sale`, `day`, `transactions`, `total_price`, `highest_price`, `lowest_price`) " ..
+		"SELECT `itemtype`, `sale`, FLOOR(`inserted` / 86400) * 86400 AS `stat_day`, COUNT(*) AS `transactions`, " ..
+		"CASE WHEN SUM(`amount`) > 0 THEN FLOOR((SUM(`price` * `amount`) / SUM(`amount`)) * COUNT(*)) ELSE 0 END AS `total_price`, " ..
+		"MAX(`price`) AS `highest_price`, MIN(`price`) AS `lowest_price` FROM `market_history` " ..
+		"WHERE `state` = " .. MARKET_STATE_ACCEPTED .. " AND `inserted` >= " .. firstDay ..
+		" GROUP BY `itemtype`, `sale`, FLOOR(`inserted` / 86400)"
+	)
+end
+
+local function writeStatistics(out, stats)
+	out:addByte(math.min(#stats, MARKET_STATISTICS_DAYS))
+	for i = 1, math.min(#stats, MARKET_STATISTICS_DAYS) do
+		local stat = stats[i]
+		out:addU32(clamp(stat.day, 0, 0xFFFFFFFF))
+		out:addU32(clamp(stat.transactions, 0, 0xFFFFFFFF))
+		out:addU32(clamp(stat.totalPrice, 0, 0xFFFFFFFF))
+		out:addU32(clamp(stat.highestPrice, 0, 0xFFFFFFFF))
+		out:addU32(clamp(stat.lowestPrice, 0, 0xFFFFFFFF))
+	end
+end
+
+local sendMarketDetail
+
 local function sendMarketBrowse(player, browseId)
 	browseId = tonumber(browseId) or 0
 
@@ -834,6 +1165,10 @@ local function sendMarketBrowse(player, browseId)
 		writeOffer(out, offer)
 	end
 	out:sendToPlayer(player)
+
+	if marketItemsById[browseId] then
+		sendMarketDetail(player, browseId)
+	end
 end
 
 local offerCountCache = {}
@@ -875,13 +1210,26 @@ local function sendMarketEnter(player, depotMap)
 	end
 end
 
-local function sendMarketDetail(player, itemId)
+sendMarketDetail = function(player, itemId)
+	if not marketItemsById[itemId] then
+		return
+	end
+
+	local descriptions = buildMarketDescriptions(itemId)
+	local purchaseStats = fetchMarketStatistics(itemId, MARKET_ACTION_BUY)
+	local saleStats = fetchMarketStatistics(itemId, MARKET_ACTION_SELL)
+
 	local out = NetworkMessage(player)
 	out:addByte(OPCODE_MARKET_SEND)
 	out:addByte(RESP_DETAIL)
 	out:addU16(itemId)
-	out:addByte(0)
-	out:addByte(0)
+	out:addByte(math.min(#descriptions, 0xFF))
+	for i = 1, math.min(#descriptions, 0xFF) do
+		out:addByte(descriptions[i].type)
+		out:addString(descriptions[i].text)
+	end
+	writeStatistics(out, purchaseStats)
+	writeStatistics(out, saleStats)
 	out:sendToPlayer(player)
 end
 
@@ -1198,6 +1546,7 @@ marketSessionInit:register()
 
 ensureTables()
 loadMarketCatalog()
+refreshMarketStatistics()
 
 CustomMarket = {
 	open = function(player, depotId)
@@ -1205,5 +1554,6 @@ CustomMarket = {
 		expireOffers()
 		sendMarketEnter(player)
 	end,
-	browse = sendMarketBrowse
+	browse = sendMarketBrowse,
+	updateStatistics = refreshMarketStatistics
 }
