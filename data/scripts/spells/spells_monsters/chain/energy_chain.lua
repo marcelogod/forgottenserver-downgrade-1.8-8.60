@@ -16,7 +16,7 @@ function spell.onCastSpell(creature, var)
 end
 
 spell:name("energy chain")
-spell:words("###6010")
+spell:words("###6056")
 spell:needLearn(true)
 spell:cooldown("2000")
 spell:isSelfTarget(true)

@@ -6,6 +6,7 @@
 #include "weapons.h"
 
 #include "combat.h"
+#include "matrixarea.h"
 #include "configmanager.h"
 #include "game.h"
 #include "luavariant.h"
@@ -276,9 +277,9 @@ void Weapon::internalUseWeapon(Player* player, Item* item, Creature* target, int
 		damage.secondary.value = getElementDamage(player, target, item);
 
 		if (player->checkChainSystem()) {
-			Combat chainCombat;
-			chainCombat.setupChain(g_weapons->getWeapon(item));
-			if (!chainCombat.doCombatChain(player, target, params.aggressive)) {
+			auto chainCombat = std::make_shared<Combat>();
+			chainCombat->setupChain(g_weapons->getWeapon(item));
+			if (!chainCombat->doCombatChain(player, target, params.aggressive)) {
 				Combat::doTargetCombat(player, target, damage, params);
 			}
 		} else {

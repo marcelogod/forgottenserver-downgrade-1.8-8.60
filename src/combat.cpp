@@ -818,6 +818,12 @@ void Combat::doCombat(Creature* caster, Creature* target) const
 
 void Combat::doCombat(Creature* caster, const Position& position) const
 {
+	if (params.chainCallback) {
+		if (doCombatChain(caster, nullptr, params.aggressive)) {
+			return;
+		}
+	}
+
 	// area combat callback function
 	if (params.combatType != COMBAT_NONE) {
 		CombatDamage damage = getCombatDamage(caster, nullptr);
@@ -1748,7 +1754,7 @@ void Combat::doChainEffect(const Position& origin, const Position& pos, uint8_t 
 }
 
 bool Combat::isValidChainTarget(Creature* caster, Creature* currentTarget, Creature* potentialTarget,
-                                const CombatParams& params, bool aggressive)
+                                const CombatParams& params, bool /*aggressive*/)
 {
 	if (Combat::canDoCombat(caster, potentialTarget) != RETURNVALUE_NOERROR) {
 		return false;
@@ -1832,7 +1838,7 @@ std::vector<std::pair<Position, std::vector<uint32_t>>> Combat::pickChainTargets
 				}
 			} else if (casterMonster) {
 				if (spectatorSummon) {
-					Creature* master = spectator->getMaster();
+					auto master = spectator->getMaster();
 					if (!master || !master->getPlayer()) {
 						visited.insert(spectator->getID());
 						continue;
@@ -1848,8 +1854,8 @@ std::vector<std::pair<Position, std::vector<uint32_t>>> Combat::pickChainTargets
 				continue;
 			}
 
-			double dist = Position::getDistanceX(currentTarget->getPosition(), spectator->getPosition()) +
-			              Position::getDistanceY(currentTarget->getPosition(), spectator->getPosition());
+			double dist = currentTarget->getPosition().getDistanceX(spectator->getPosition()) +
+			              currentTarget->getPosition().getDistanceY(spectator->getPosition());
 
 			if (dist < closestDist) {
 				closestDist = dist;
@@ -1904,25 +1910,26 @@ bool Combat::doCombatChain(Creature* caster, Creature* target, bool aggressive) 
 	}
 
 	auto affected = targets.size();
+	auto self = shared_from_this();
 	int i = 0;
 	for (const auto& [from, toVector] : targets) {
 		auto delay = i * std::max<int32_t>(SCHEDULER_MINTICKS, ConfigManager::getInteger(ConfigManager::COMBAT_CHAIN_DELAY));
 		++i;
 		for (const auto& to : toVector) {
-			g_scheduler.addEvent(delay, [this, casterId = caster ? caster->getID() : 0, to, from, affected]() {
+			g_scheduler.addEvent(delay, [self, casterId = caster ? caster->getID() : 0, to, from, affected]() {
 				Creature* resolvedCaster = g_game.getCreatureByID(casterId);
 				Creature* nextTarget = g_game.getCreatureByID(to);
 				if (!nextTarget) {
 					return;
 				}
-				Combat::doChainEffect(from, nextTarget->getPosition(), params.chainEffect);
+				Combat::doChainEffect(from, nextTarget->getPosition(), self->params.chainEffect);
 				if (resolvedCaster) {
-					CombatDamage damage = const_cast<Combat*>(this)->getCombatDamage(resolvedCaster, nextTarget);
-					bool canCombat = !params.aggressive ||
+					CombatDamage damage = self->getCombatDamage(resolvedCaster, nextTarget);
+					bool canCombat = !self->params.aggressive ||
 					                 (resolvedCaster != nextTarget &&
 					                  Combat::canDoCombat(resolvedCaster, nextTarget) == RETURNVALUE_NOERROR);
 					if (canCombat) {
-						doTargetCombat(resolvedCaster, nextTarget, damage, params);
+						doTargetCombat(resolvedCaster, nextTarget, damage, self->params);
 					}
 				}
 			});
@@ -1932,13 +1939,13 @@ bool Combat::doCombatChain(Creature* caster, Creature* target, bool aggressive) 
 	return true;
 }
 
-void Combat::setupChain(Weapon* weapon)
+void Combat::setupChain(const Weapon* weapon)
 {
 	if (!weapon) {
 		return;
 	}
 
-	WeaponType_t weaponType = weapon->getWeaponType();
+	WeaponType_t weaponType = weapon->weaponType;
 	if (weaponType == WEAPON_NONE || weaponType == WEAPON_SHIELD) {
 		return;
 	}

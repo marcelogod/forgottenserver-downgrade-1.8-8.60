@@ -16,7 +16,7 @@ function spell.onCastSpell(creature, var)
 end
 
 spell:name("ice chain")
-spell:words("###6012")
+spell:words("###6058")
 spell:needLearn(true)
 spell:cooldown("2000")
 spell:isSelfTarget(true)

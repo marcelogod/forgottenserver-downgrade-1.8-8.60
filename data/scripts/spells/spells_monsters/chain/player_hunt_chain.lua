@@ -29,7 +29,7 @@ function spell.onCastSpell(creature, var)
 end
 
 spell:name("player hunt chain")
-spell:words("###6013")
+spell:words("###6059")
 spell:needLearn(true)
 spell:cooldown("3000")
 spell:isSelfTarget(true)

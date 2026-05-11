@@ -113,7 +113,7 @@ private:
 	bool hasExtArea = false;
 };
 
-class Combat
+class Combat : public std::enable_shared_from_this<Combat>
 {
 public:
 	Combat() = default;
@@ -157,7 +157,7 @@ public:
 
 	void setOrigin(CombatOrigin origin) { params.origin = origin; }
 
-	void setupChain(class Weapon* weapon);
+	void setupChain(const class Weapon* weapon);
 	bool doCombatChain(Creature* caster, Creature* target, bool aggressive) const;
 	void setChainCallback(uint8_t chainTargets, uint8_t chainDistance, bool backtracking);
 

@@ -16,7 +16,7 @@ function spell.onCastSpell(creature, var)
 end
 
 spell:name("extended fire chain")
-spell:words("###6011")
+spell:words("###6057")
 spell:needLearn(true)
 spell:cooldown("2000")
 spell:isSelfTarget(true)
