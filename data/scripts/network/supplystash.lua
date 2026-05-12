@@ -13,6 +13,29 @@ local SUPPLY_STASH_MAX_WITHDRAW_NON_STACKABLE = 100
 local SUPPLY_STACK_SIZE = 100
 local SUPPLY_STASH_DEPOT_BOX_FIRST = 1
 local SUPPLY_STASH_DEPOT_BOX_LAST = 15
+local SUPPLY_STASH_DETAILS_MARKER = 0x5353
+
+local CATEGORY_ARMORS = 1
+local CATEGORY_AMULETS = 2
+local CATEGORY_BOOTS = 3
+local CATEGORY_FOOD = 6
+local CATEGORY_HELMETS = 7
+local CATEGORY_LEGS = 8
+local CATEGORY_OTHERS = 9
+local CATEGORY_POTIONS = 10
+local CATEGORY_RINGS = 11
+local CATEGORY_RUNES = 12
+local CATEGORY_SHIELDS = 13
+local CATEGORY_TOOLS = 14
+local CATEGORY_VALUABLES = 15
+local CATEGORY_AMMUNITION = 16
+local CATEGORY_AXES = 17
+local CATEGORY_CLUBS = 18
+local CATEGORY_DISTANCE = 19
+local CATEGORY_SWORDS = 20
+local CATEGORY_WANDS = 21
+local CATEGORY_CREATURE_PRODUCTS = 24
+local CATEGORY_FISTS = 25
 
 local blockedItems = {}
 for _, itemId in ipairs({
@@ -60,6 +83,95 @@ local function getItemType(itemId)
 		return nil
 	end
 	return itemType
+end
+
+local function getCategoryFromName(name)
+	name = (name or ""):lower()
+	if name == "" then
+		return CATEGORY_OTHERS
+	end
+
+	if name:find("sword", 1, true) or name:find("blade", 1, true) or name:find("sabre", 1, true) or name:find("katana", 1, true) then
+		return CATEGORY_SWORDS
+	elseif name:find("fist", 1, true) or name:find("claw", 1, true) or name:find("knuckle", 1, true) then
+		return CATEGORY_FISTS
+	elseif name:find("axe", 1, true) or name:find("hatchet", 1, true) then
+		return CATEGORY_AXES
+	elseif name:find("club", 1, true) or name:find("mace", 1, true) or name:find("hammer", 1, true) then
+		return CATEGORY_CLUBS
+	elseif name:find("bow", 1, true) or name:find("crossbow", 1, true) or name:find("spear", 1, true) then
+		return CATEGORY_DISTANCE
+	elseif name:find("wand", 1, true) or name:find("rod", 1, true) then
+		return CATEGORY_WANDS
+	elseif name:find("arrow", 1, true) or name:find("bolt", 1, true) then
+		return CATEGORY_AMMUNITION
+	elseif name:find("helmet", 1, true) or name:find("hat", 1, true) then
+		return CATEGORY_HELMETS
+	elseif name:find("armor", 1, true) or name:find("mail", 1, true) or name:find("plate", 1, true) then
+		return CATEGORY_ARMORS
+	elseif name:find("legs", 1, true) then
+		return CATEGORY_LEGS
+	elseif name:find("boots", 1, true) then
+		return CATEGORY_BOOTS
+	elseif name:find("shield", 1, true) then
+		return CATEGORY_SHIELDS
+	elseif name:find("amulet", 1, true) or name:find("necklace", 1, true) then
+		return CATEGORY_AMULETS
+	elseif name:find("potion", 1, true) or name:find("fluid", 1, true) then
+		return CATEGORY_POTIONS
+	elseif name:find("rune", 1, true) then
+		return CATEGORY_RUNES
+	elseif name:find("ring", 1, true) then
+		return CATEGORY_RINGS
+	elseif name:find("food", 1, true) or name:find("ham", 1, true) or name:find("meat", 1, true) or name:find("fish", 1, true) or name:find("bread", 1, true) then
+		return CATEGORY_FOOD
+	elseif name:find("rope", 1, true) or name:find("shovel", 1, true) or name:find("pick", 1, true) or name:find("machete", 1, true) then
+		return CATEGORY_TOOLS
+	elseif name:find("gem", 1, true) or name:find("crystal", 1, true) or name:find("pearl", 1, true) then
+		return CATEGORY_VALUABLES
+	end
+	return CATEGORY_OTHERS
+end
+
+local function getSupplyItemCategory(itemType)
+	local weaponType = itemType:getWeaponType()
+	if weaponType == WEAPON_SWORD then
+		return CATEGORY_SWORDS
+	elseif weaponType == WEAPON_CLUB then
+		return CATEGORY_CLUBS
+	elseif weaponType == WEAPON_AXE then
+		return CATEGORY_AXES
+	elseif weaponType == WEAPON_DISTANCE then
+		return CATEGORY_DISTANCE
+	elseif weaponType == WEAPON_WAND then
+		return CATEGORY_WANDS
+	elseif weaponType == WEAPON_AMMO then
+		return CATEGORY_AMMUNITION
+	elseif weaponType == WEAPON_FIST then
+		return CATEGORY_FISTS
+	elseif weaponType == WEAPON_SHIELD then
+		return CATEGORY_SHIELDS
+	end
+
+	if itemType:isRune() then
+		return CATEGORY_RUNES
+	elseif itemType:isHelmet() then
+		return CATEGORY_HELMETS
+	elseif itemType:isArmor() then
+		return CATEGORY_ARMORS
+	elseif itemType:isLegs() then
+		return CATEGORY_LEGS
+	elseif itemType:isBoots() then
+		return CATEGORY_BOOTS
+	elseif itemType:isNecklace() then
+		return CATEGORY_AMULETS
+	elseif itemType:isRing() then
+		return CATEGORY_RINGS
+	elseif itemType:getWorth() > 0 then
+		return CATEGORY_VALUABLES
+	end
+
+	return getCategoryFromName(itemType:getName())
 end
 
 local function isSupplyItem(itemId)
@@ -256,11 +368,21 @@ local function sendStash(player)
 	local msg = NetworkMessage(player)
 	msg:addByte(OPCODE_SUPPLY_STASH_SEND)
 	msg:addU16(math.min(#rows, 0xFFFF))
-	for i = 1, math.min(#rows, 0xFFFF) do
+	local rowCount = math.min(#rows, 0xFFFF)
+	for i = 1, rowCount do
 		msg:addU16(rows[i].itemId)
 		msg:addU32(rows[i].amount)
 	end
 	msg:addU16(math.min(freeSlots, 0xFFFF))
+	msg:addU16(SUPPLY_STASH_DETAILS_MARKER)
+	msg:addU16(rowCount)
+	for i = 1, rowCount do
+		local itemType = getItemType(rows[i].itemId)
+		msg:addU16(rows[i].itemId)
+		msg:addString(itemType and itemType:getName() or "")
+		msg:addU16(itemType and getSupplyItemCategory(itemType) or CATEGORY_OTHERS)
+		msg:addByte(itemType and itemType:isStackable() and 1 or 0)
+	end
 	return msg:sendToPlayer(player)
 end
 
@@ -290,6 +412,10 @@ local function removeStoredAmount(player, itemId, amount)
 		"UPDATE `player_supplystash` SET `amount` = `amount` - %d WHERE `player_id` = %d AND `itemtype` = %d AND `amount` >= %d",
 		amount, player:getGuid(), itemId, amount
 	))
+end
+
+local function cleanupEmptyRows(player)
+	db.query("DELETE FROM `player_supplystash` WHERE `player_id` = " .. player:getGuid() .. " AND `amount` = 0")
 end
 
 local function collectSupplyItems(container, list)
@@ -342,11 +468,10 @@ end
 
 local function stowAll(player)
 	local items = {}
-	collectPlayerInventory(player, items)
 	collectDepotItems(player, items)
 
 	if #items == 0 then
-		player:sendCancelMessage("You do not have stashable items to stow.")
+		player:sendCancelMessage("Put stashable items in Depot Locker boxes 1 to 15.")
 		sendStash(player)
 		return true
 	end
@@ -363,12 +488,40 @@ local function stowAll(player)
 		return true
 	end
 
+	local addedAmounts = {}
 	for itemId, amount in pairs(amounts) do
-		addStoredAmount(player, itemId, amount)
+		if not addStoredAmount(player, itemId, amount) then
+			for addedItemId, addedAmount in pairs(addedAmounts) do
+				removeStoredAmount(player, addedItemId, addedAmount)
+			end
+			cleanupEmptyRows(player)
+			player:sendCancelMessage("Could not store these items in your supply stash.")
+			sendStash(player)
+			return true
+		end
+		addedAmounts[itemId] = amount
+	end
+
+	local remainingAmounts = {}
+	for itemId, amount in pairs(amounts) do
+		remainingAmounts[itemId] = amount
 	end
 
 	for _, item in ipairs(items) do
-		item:remove()
+		local itemId = item:getId()
+		local amount = getSupplyItemAmount(item)
+		if not item:remove() then
+			for remainingItemId, remainingAmount in pairs(remainingAmounts) do
+				if remainingAmount > 0 then
+					removeStoredAmount(player, remainingItemId, remainingAmount)
+				end
+			end
+			cleanupEmptyRows(player)
+			player:sendCancelMessage("Could not remove one of the items from its source.")
+			sendStash(player)
+			return true
+		end
+		remainingAmounts[itemId] = (remainingAmounts[itemId] or 0) - amount
 	end
 
 	player:sendTextMessage(MESSAGE_STATUS_SMALL, "Supplies stowed.")
@@ -464,6 +617,11 @@ function handler.onReceive(player, msg)
 	ensureTables()
 
 	local action = msg:getByte()
+	if not supportsCustomNetwork(player) then
+		player:sendCancelMessage("The supply stash is only available on OTClient.")
+		return true
+	end
+
 	if action == ACTION_OPEN then
 		sendStash(player)
 	elseif action == ACTION_STOW_ALL then
