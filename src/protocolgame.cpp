@@ -2974,7 +2974,11 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 		msg.add<uint16_t>(0x61);
 		msg.add<uint32_t>(remove);
 		msg.add<uint32_t>(creature->getID());
-		msg.addString(creature->getName());
+		if (creature->getMonster() && creature->getMonster()->getLevel() > 0) {
+			msg.addString(creature->getName() + " [" + std::to_string(creature->getMonster()->getLevel()) + "]");
+		} else {
+			msg.addString(creature->getName());
+		}
 	}
 
 	if (creature->isHealthHidden()) {

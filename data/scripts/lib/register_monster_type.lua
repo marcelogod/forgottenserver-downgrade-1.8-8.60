@@ -50,6 +50,12 @@ end
 registerMonsterType.skull = function(mtype, mask)
 	if mask.skull then mtype:skull(mask.skull) end
 end
+registerMonsterType.level = function(mtype, mask)
+	if mask.level then
+		if mask.level.min then mtype:minLevel(mask.level.min) end
+		if mask.level.max then mtype:maxLevel(mask.level.max) end
+	end
+end
 registerMonsterType.emblem = function(mtype, mask)
 	if mask.emblem then mtype:emblem(mask.emblem) end
 end

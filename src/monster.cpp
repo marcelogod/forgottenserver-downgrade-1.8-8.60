@@ -33,6 +33,59 @@ std::unique_ptr<Monster> Monster::createMonster(const std::string& name)
 	return std::make_unique<Monster>(mType);
 }
 
+namespace monsterlevel {
+	struct Config {
+		float bonusDmg = 0.0f;
+		float bonusSpeed = 0.0f;
+		float bonusHP = 0.0f;
+		struct SkullRange { int32_t min = 0; int32_t max = 0; };
+		SkullRange whiteRange = {1, 100};
+		SkullRange redRange = {100, 500};
+		SkullRange blackRange = {500, 2000};
+	};
+
+	static Config config;
+
+	Skulls_t getSkullByLevel(int32_t lvl)
+	{
+		if (lvl >= config.whiteRange.min && lvl <= config.whiteRange.max) {
+			return SKULL_WHITE;
+		}
+		if (lvl >= config.redRange.min && lvl <= config.redRange.max) {
+			return SKULL_RED;
+		}
+		if (lvl >= config.blackRange.min && lvl <= config.blackRange.max) {
+			return SKULL_BLACK;
+		}
+		return SKULL_NONE;
+	}
+
+	void setSkullRange(Skulls_t skull, int32_t minLevel, int32_t maxLevel)
+	{
+		switch (skull) {
+			case SKULL_WHITE: config.whiteRange = {minLevel, maxLevel}; break;
+			case SKULL_RED: config.redRange = {minLevel, maxLevel}; break;
+			case SKULL_BLACK: config.blackRange = {minLevel, maxLevel}; break;
+			default: break;
+		}
+	}
+
+	void setBonus(const std::string& type, float value)
+	{
+		if (type == "damage") {
+			config.bonusDmg = value;
+		} else if (type == "speed") {
+			config.bonusSpeed = value;
+		} else if (type == "health") {
+			config.bonusHP = value;
+		}
+	}
+
+	float getBonusDamage() { return config.bonusDmg; }
+	float getBonusSpeed() { return config.bonusSpeed; }
+	float getBonusHealth() { return config.bonusHP; }
+}
+
 Skulls_t Monster::getSkull() const
 {
 	if (influenced) {
@@ -59,6 +112,23 @@ Monster::Monster(const std::shared_ptr<MonsterType>& mType) : Creature(), nameDe
 	internalLight = mType->info.light;
 	hiddenHealth = mType->info.hiddenHealth;
 	targetList.reserve(24);
+
+	if (ConfigManager::getBoolean(ConfigManager::MONSTER_LEVEL_ENABLED) && mType->info.minLevel > 0 && mType->info.maxLevel > mType->info.minLevel) {
+		level = uniform_random(mType->info.minLevel, mType->info.maxLevel);
+
+		skull = monsterlevel::getSkullByLevel(level);
+
+		float bonusHP = monsterlevel::getBonusHealth();
+		if (bonusHP != 0.0f) {
+			healthMax += static_cast<int32_t>(std::round(healthMax * bonusHP * level));
+			health += static_cast<int32_t>(std::round(health * bonusHP * level));
+		}
+
+		float bonusSpeed = monsterlevel::getBonusSpeed();
+		if (bonusSpeed != 0.0f) {
+			baseSpeed += static_cast<int32_t>(std::round(baseSpeed * bonusSpeed * level));
+		}
+	}
 
 	// register creature events
 	for (std::string_view scriptName : mType->info.scripts) {

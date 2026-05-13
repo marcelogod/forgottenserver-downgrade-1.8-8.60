@@ -1377,6 +1377,40 @@ int luaMonsterTypeEnemyFactions(lua_State* L)
 	}
 	return 1;
 }
+
+int luaMonsterTypeMinLevel(lua_State* L)
+{
+	// get: monsterType:minLevel() set: monsterType:minLevel(level)
+	MonsterType* monsterType = getUserdata<MonsterType>(L, 1);
+	if (monsterType) {
+		if (lua_gettop(L) == 1) {
+			lua_pushinteger(L, monsterType->info.minLevel);
+		} else {
+			monsterType->info.minLevel = getInteger<int32_t>(L, 2);
+			pushBoolean(L, true);
+		}
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int luaMonsterTypeMaxLevel(lua_State* L)
+{
+	// get: monsterType:maxLevel() set: monsterType:maxLevel(level)
+	MonsterType* monsterType = getUserdata<MonsterType>(L, 1);
+	if (monsterType) {
+		if (lua_gettop(L) == 1) {
+			lua_pushinteger(L, monsterType->info.maxLevel);
+		} else {
+			monsterType->info.maxLevel = getInteger<int32_t>(L, 2);
+			pushBoolean(L, true);
+		}
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
 } // namespace
 
 void LuaScriptInterface::registerMonsterType()
@@ -1469,4 +1503,6 @@ void LuaScriptInterface::registerMonsterType()
 
 	registerMethod("MonsterType", "faction", luaMonsterTypeFaction);
 	registerMethod("MonsterType", "enemyFactions", luaMonsterTypeEnemyFactions);
+	registerMethod("MonsterType", "minLevel", luaMonsterTypeMinLevel);
+	registerMethod("MonsterType", "maxLevel", luaMonsterTypeMaxLevel);
 }
