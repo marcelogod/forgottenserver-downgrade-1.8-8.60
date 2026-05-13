@@ -2,6 +2,35 @@ local soulCondition = Condition(CONDITION_SOUL, CONDITIONID_DEFAULT)
 soulCondition:setTicks(4 * 60 * 1000)
 soulCondition:setParameter(CONDITION_PARAM_SOULGAIN, 1)
 
+local EXP_COLOR_STORAGE = STORAGE_EXP_COLOR or PlayerStorageKeys.expColor or 50100
+
+local function getAnimatedExpText(expValue)
+	if configManager.getBoolean(configKeys.MODIFY_EXP_IN_K) then
+		return Game.formatValueK(expValue)
+	end
+	return tostring(expValue)
+end
+
+local function getAnimatedExpColor(player)
+	if not configManager.getBoolean(configKeys.MODIFY_EXP_IN_K) then
+		return TEXTCOLOR_WHITE
+	end
+
+	local storedColor = player:getStorageValue(EXP_COLOR_STORAGE)
+	if storedColor and storedColor > 0 then
+		return storedColor
+	end
+	return configManager.getNumber(configKeys.DEFAULT_EXP_COLOR)
+end
+
+local function getExperienceText(expValue)
+	local value = tostring(expValue)
+	if configManager.getBoolean(configKeys.MODIFY_EXP_IN_K) then
+		value = Game.formatValueK(expValue)
+	end
+	return value .. (expValue ~= 1 and " experience points" or " experience point")
+end
+
 local event = Event()
 
 function event.onGainExperience(player, source, exp, rawExp, sendText)
@@ -83,7 +112,7 @@ function message.onGainExperience(self, source, exp, rawExp, sendText)
 			local count = tracker.count
 
 			if expValue > 0 then
-				local expString = expValue .. (expValue ~= 1 and " experience points" or " experience point")
+				local expString = getExperienceText(expValue)
 
 				local message = "You gained " .. expString .. " for killing "
 				if count > 1 then
@@ -103,7 +132,7 @@ function message.onGainExperience(self, source, exp, rawExp, sendText)
 					end
 				end
 
-				Game.sendAnimatedText(tostring(expValue), player:getPosition(), 215, filtered)
+				Game.sendAnimatedText(getAnimatedExpText(expValue), player:getPosition(), getAnimatedExpColor(player), filtered)
 
 				for _, spectator in ipairs(filtered) do
 					if spectator ~= player then

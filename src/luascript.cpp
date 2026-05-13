@@ -1376,6 +1376,9 @@ void LuaScriptInterface::registerFunctions()
 	registerGlobalVariable("STORAGE_FAMILIAR_SUMMON_TIME", STORAGE_FAMILIAR_SUMMON_TIME);
 	registerGlobalVariable("STORAGE_FAMILIAR_TIMER_10", STORAGE_FAMILIAR_TIMER_10);
 	registerGlobalVariable("STORAGE_FAMILIAR_TIMER_60", STORAGE_FAMILIAR_TIMER_60);
+	registerGlobalVariable("STORAGE_EXP_COLOR", STORAGE_EXP_COLOR);
+	registerGlobalVariable("STORAGE_HEALTH_DISPLAY", STORAGE_HEALTH_DISPLAY);
+	registerGlobalVariable("STORAGE_DAMAGE_COLOR", STORAGE_DAMAGE_COLOR);
 	registerGlobalVariable("FORGE_SYSTEM_ENABLED", ConfigManager::FORGE_SYSTEM_ENABLED);
 	registerGlobalVariable("IMBUEMENT_SYSTEM_ENABLED", ConfigManager::IMBUEMENT_SYSTEM_ENABLED);
 	registerGlobalVariable("MONK_VOCATION_ENABLED", ConfigManager::MONK_VOCATION_ENABLED);
@@ -2219,17 +2222,24 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(TALKTYPE_MONSTER_YELL);
 
 	registerEnum(TEXTCOLOR_BLUE);
+	registerEnum(TEXTCOLOR_GREEN);
 	registerEnum(TEXTCOLOR_LIGHTGREEN);
 	registerEnum(TEXTCOLOR_LIGHTBLUE);
 	registerEnum(TEXTCOLOR_MAYABLUE);
 	registerEnum(TEXTCOLOR_DARKRED);
+	registerEnum(TEXTCOLOR_DARKPURPLE);
+	registerEnum(TEXTCOLOR_TEAL);
 	registerEnum(TEXTCOLOR_PURPLE);
 	registerEnum(TEXTCOLOR_DARKORANGE);
 	registerEnum(TEXTCOLOR_LIGHTORANGE);
 	registerEnum(TEXTCOLOR_RED);
+	registerEnum(TEXTCOLOR_PINK);
 	registerEnum(TEXTCOLOR_ORANGE);
+	registerEnum(TEXTCOLOR_DARKYELLOW);
 	registerEnum(TEXTCOLOR_YELLOW);
+	registerEnum(TEXTCOLOR_WHITE);
 	registerEnum(TEXTCOLOR_NONE);
+	registerGlobalVariable("TEXTCOLOR_GOLD", TEXTCOLOR_DARKYELLOW);
 
 	registerEnum(TILESTATE_NONE);
 	registerEnum(TILESTATE_PROTECTIONZONE);
@@ -2556,6 +2566,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::MARKET_SYSTEM_ENABLED);
 	registerEnumIn("configKeys", ConfigManager::PREY_SYSTEM_ENABLED);
 	registerEnumIn("configKeys", ConfigManager::ALLOW_MOUNT_IN_PZ);
+	registerEnumIn("configKeys", ConfigManager::MODIFY_DAMAGE_IN_K);
+	registerEnumIn("configKeys", ConfigManager::MODIFY_EXP_IN_K);
+	registerEnumIn("configKeys", ConfigManager::DEFAULT_HEALTH_DISPLAY_PERCENT);
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME);
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD);
@@ -2628,6 +2641,10 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::BOOSTED_EXP_MULTIPLIER);
 	registerEnumIn("configKeys", ConfigManager::BOOSTED_LOOT_MULTIPLIER);
 	registerEnumIn("configKeys", ConfigManager::BOOSTED_SPAWN_MULTIPLIER);
+	registerEnumIn("configKeys", ConfigManager::DAMAGE_COLOR_MI);
+	registerEnumIn("configKeys", ConfigManager::DAMAGE_COLOR_BI);
+	registerEnumIn("configKeys", ConfigManager::DAMAGE_COLOR_TRI);
+	registerEnumIn("configKeys", ConfigManager::DEFAULT_EXP_COLOR);
 
 	// os
 	registerMethod("os", "mtime", LuaScriptInterface::luaSystemTime);

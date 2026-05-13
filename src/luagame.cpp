@@ -15,6 +15,7 @@
 #include "spells.h"
 #include "spy.h"
 #include "talkaction.h"
+#include "tools.h"
 #include "logger.h"
 #include "zones.h"
 #include <fmt/format.h>
@@ -914,6 +915,13 @@ int luaGameSendAnimatedText(lua_State* L)
 	return 1;
 }
 
+int luaGameFormatValueK(lua_State* L)
+{
+	// Game.formatValueK(value)
+	lua_pushstring(L, formatValueK(getInteger<int64_t>(L, 1)).c_str());
+	return 1;
+}
+
 int luaGameGetClientVersion(lua_State* L)
 {
 	// Game.getClientVersion()
@@ -1204,6 +1212,7 @@ void LuaScriptInterface::registerGame()
 	registerMethod("Game", "startRaid", luaGameStartRaid);
 
 	registerMethod("Game", "sendAnimatedText", luaGameSendAnimatedText);
+	registerMethod("Game", "formatValueK", luaGameFormatValueK);
 
 	registerMethod("Game", "getClientVersion", luaGameGetClientVersion);
 

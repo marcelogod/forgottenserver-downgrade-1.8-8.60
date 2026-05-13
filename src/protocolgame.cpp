@@ -25,6 +25,23 @@ namespace {
 std::deque<std::pair<int64_t, uint32_t>> waitList; // (timeout, player guid)
 std::size_t priorityCount = 0;
 
+uint32_t getStatPercent(uint32_t current, uint32_t maximum)
+{
+	if (maximum == 0) {
+		return 0;
+	}
+	return static_cast<uint32_t>((static_cast<uint64_t>(current) * 100) / maximum);
+}
+
+bool shouldSendPercentStats(const Player* player)
+{
+	const auto storedValue = player->getStorageValue(STORAGE_HEALTH_DISPLAY);
+	if (storedValue) {
+		return storedValue.value() == 1;
+	}
+	return getBoolean(ConfigManager::DEFAULT_HEALTH_DISPLAY_PERCENT);
+}
+
 bool isOtclientOperatingSystem(OperatingSystem_t operatingSystem)
 {
 	switch (operatingSystem) {
@@ -3034,8 +3051,20 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 {
 	msg.addByte(0xA0);
 
-	msg.add<uint32_t>(player->getHealth());
-	msg.add<uint32_t>(player->getMaxHealth());
+	uint32_t health = player->getHealth();
+	uint32_t maxHealth = player->getMaxHealth();
+	uint32_t mana = player->getMana();
+	uint32_t maxMana = player->getMaxMana();
+
+	if (shouldSendPercentStats(player.get())) {
+		health = getStatPercent(health, maxHealth);
+		maxHealth = 100;
+		mana = getStatPercent(mana, maxMana);
+		maxMana = 100;
+	}
+
+	msg.add<uint32_t>(health);
+	msg.add<uint32_t>(maxHealth);
 
 	msg.add<uint32_t>(player->hasFlag(PlayerFlag_HasInfiniteCapacity) ? 1000000 : player->getFreeCapacity());
 
@@ -3044,8 +3073,8 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(static_cast<uint16_t>(player->getLevel()));
 	msg.addByte(player->getLevelPercent());
 
-	msg.add<uint32_t>(player->getMana());
-	msg.add<uint32_t>(player->getMaxMana());
+	msg.add<uint32_t>(mana);
+	msg.add<uint32_t>(maxMana);
 
 	msg.addByte(static_cast<uint8_t>(std::min<uint32_t>(player->getMagicLevel(), std::numeric_limits<uint8_t>::max())));
 	if (isOTC) {

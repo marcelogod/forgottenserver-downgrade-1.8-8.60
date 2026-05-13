@@ -12,6 +12,7 @@
 #include "luascript.h"
 #include "monster.h"
 #include "pugicast.h"
+#include "tools.h"
 
 #include <fmt/format.h>
 
@@ -95,6 +96,92 @@ bool getGlobalBoolean(lua_State* L, const char* identifier, const bool defaultVa
 	int val = lua_toboolean(L, -1);
 	lua_pop(L, 1);
 	return val != 0;
+}
+
+void setGlobalInteger(lua_State* L, const char* identifier, lua_Integer value)
+{
+	lua_pushinteger(L, value);
+	lua_setglobal(L, identifier);
+}
+
+void registerConfigLuaConstants(lua_State* L)
+{
+	setGlobalInteger(L, "TEXTCOLOR_BLACK", TEXTCOLOR_BLACK);
+	setGlobalInteger(L, "TEXTCOLOR_BLUE", TEXTCOLOR_BLUE);
+	setGlobalInteger(L, "TEXTCOLOR_GREEN", TEXTCOLOR_GREEN);
+	setGlobalInteger(L, "TEXTCOLOR_LIGHTGREEN", TEXTCOLOR_LIGHTGREEN);
+	setGlobalInteger(L, "TEXTCOLOR_DARKBROWN", TEXTCOLOR_DARKBROWN);
+	setGlobalInteger(L, "TEXTCOLOR_DARKGREY", TEXTCOLOR_DARKGREY);
+	setGlobalInteger(L, "TEXTCOLOR_LIGHTBLUE", TEXTCOLOR_LIGHTBLUE);
+	setGlobalInteger(L, "TEXTCOLOR_MAYABLUE", TEXTCOLOR_MAYABLUE);
+	setGlobalInteger(L, "TEXTCOLOR_DARKRED", TEXTCOLOR_DARKRED);
+	setGlobalInteger(L, "TEXTCOLOR_DARKPURPLE", TEXTCOLOR_DARKPURPLE);
+	setGlobalInteger(L, "TEXTCOLOR_BROWN", TEXTCOLOR_BROWN);
+	setGlobalInteger(L, "TEXTCOLOR_GREY", TEXTCOLOR_GREY);
+	setGlobalInteger(L, "TEXTCOLOR_TEAL", TEXTCOLOR_TEAL);
+	setGlobalInteger(L, "TEXTCOLOR_DARKPINK", TEXTCOLOR_DARKPINK);
+	setGlobalInteger(L, "TEXTCOLOR_PURPLE", TEXTCOLOR_PURPLE);
+	setGlobalInteger(L, "TEXTCOLOR_DARKORANGE", TEXTCOLOR_DARKORANGE);
+	setGlobalInteger(L, "TEXTCOLOR_LIGHTORANGE", TEXTCOLOR_LIGHTORANGE);
+	setGlobalInteger(L, "TEXTCOLOR_RED", TEXTCOLOR_RED);
+	setGlobalInteger(L, "TEXTCOLOR_PINK", TEXTCOLOR_PINK);
+	setGlobalInteger(L, "TEXTCOLOR_ORANGE", TEXTCOLOR_ORANGE);
+	setGlobalInteger(L, "TEXTCOLOR_DARKYELLOW", TEXTCOLOR_DARKYELLOW);
+	setGlobalInteger(L, "TEXTCOLOR_YELLOW", TEXTCOLOR_YELLOW);
+	setGlobalInteger(L, "TEXTCOLOR_WHITE", TEXTCOLOR_WHITE);
+	setGlobalInteger(L, "TEXTCOLOR_NONE", TEXTCOLOR_NONE);
+
+	setGlobalInteger(L, "COLOR_WHITE", TEXTCOLOR_WHITE);
+	setGlobalInteger(L, "COLOR_RED", TEXTCOLOR_RED);
+	setGlobalInteger(L, "COLOR_GREEN", TEXTCOLOR_GREEN);
+	setGlobalInteger(L, "COLOR_BLUE", TEXTCOLOR_BLUE);
+	setGlobalInteger(L, "COLOR_ORANGE", TEXTCOLOR_ORANGE);
+	setGlobalInteger(L, "COLOR_YELLOW", TEXTCOLOR_YELLOW);
+	setGlobalInteger(L, "COLOR_PINK", TEXTCOLOR_PINK);
+	setGlobalInteger(L, "COLOR_PURPLE", TEXTCOLOR_PURPLE);
+	setGlobalInteger(L, "COLOR_TEAL", TEXTCOLOR_TEAL);
+	setGlobalInteger(L, "COLOR_GOLD", TEXTCOLOR_DARKYELLOW);
+}
+
+TextColor_t getLuaTextColor(lua_State* L, int index, TextColor_t defaultColor)
+{
+	if (lua_isinteger(L, index)) {
+		const lua_Integer value = lua_tointeger(L, index);
+		if (value >= 0 && value <= std::numeric_limits<uint8_t>::max()) {
+			return static_cast<TextColor_t>(value);
+		}
+		return defaultColor;
+	}
+
+	if (lua_isstring(L, index)) {
+		size_t len = lua_strlen(L, index);
+		return getTextColorByName(std::string_view{lua_tostring(L, index), len}, defaultColor);
+	}
+
+	return defaultColor;
+}
+
+TextColor_t getGlobalTextColor(lua_State* L, const char* identifier, TextColor_t defaultColor)
+{
+	lua_getglobal(L, identifier);
+	TextColor_t color = getLuaTextColor(L, -1, defaultColor);
+	lua_pop(L, 1);
+	return color;
+}
+
+TextColor_t getGlobalTextColorField(lua_State* L, const char* tableName, const char* fieldName,
+                                    TextColor_t defaultColor)
+{
+	lua_getglobal(L, tableName);
+	if (!lua_istable(L, -1)) {
+		lua_pop(L, 1);
+		return defaultColor;
+	}
+
+	lua_getfield(L, -1, fieldName);
+	TextColor_t color = getLuaTextColor(L, -1, defaultColor);
+	lua_pop(L, 2);
+	return color;
 }
 
 float getGlobalFloat(lua_State* L, const char* identifier, const float defaultValue = 0.0f)
@@ -234,6 +321,7 @@ bool ConfigManager::load()
 
 	lua_State* L = ownedL.get();
 	luaL_openlibs(L);
+	registerConfigLuaConstants(L);
 
 	if (strings[CONFIG_FILE].empty()) {
 		strings[CONFIG_FILE] = "config.lua";
@@ -350,6 +438,10 @@ bool ConfigManager::load()
 	booleans[Boolean::PREY_SYSTEM_ENABLED] = getGlobalBoolean(L, "preySystemEnabled", false);
 	booleans[Boolean::ALLOW_MOUNT_IN_PZ] = getGlobalBoolean(L, "allowMountInPz", false);
 	booleans[Boolean::CHAIN_SYSTEM_ENABLED] = getGlobalBoolean(L, "toggleChainSystem", true);
+	booleans[Boolean::MODIFY_DAMAGE_IN_K] = getGlobalBoolean(L, "modifyDamageInK", false);
+	booleans[Boolean::MODIFY_EXP_IN_K] = getGlobalBoolean(L, "modifyExpInK", false);
+	booleans[Boolean::DEFAULT_HEALTH_DISPLAY_PERCENT] =
+	    asLowerCaseString(getGlobalString(L, "defaultHealthDisplay", "real")) == "percent";
 
 	// Admin Config
 	booleans[Boolean::ADMIN_LOCALHOST_ONLY] = getGlobalBoolean(L, "adminLocalhostOnly", true);
@@ -425,6 +517,10 @@ bool ConfigManager::load()
 	integers[Integer::HEALTH_GAIN_COLOUR] = getGlobalInteger(L, "healthGainColour", TEXTCOLOR_MAYABLUE);
 	integers[Integer::MANA_GAIN_COLOUR] = getGlobalInteger(L, "manaGainColour", TEXTCOLOR_MAYABLUE);
 	integers[Integer::MANA_LOSS_COLOUR] = getGlobalInteger(L, "manaLossColour", TEXTCOLOR_BLUE);
+	integers[Integer::DAMAGE_COLOR_MI] = getGlobalTextColorField(L, "damageColorMap", "mi", TEXTCOLOR_WHITE);
+	integers[Integer::DAMAGE_COLOR_BI] = getGlobalTextColorField(L, "damageColorMap", "bi", TEXTCOLOR_RED);
+	integers[Integer::DAMAGE_COLOR_TRI] = getGlobalTextColorField(L, "damageColorMap", "tri", TEXTCOLOR_ORANGE);
+	integers[Integer::DEFAULT_EXP_COLOR] = getGlobalTextColor(L, "defaultExpColor", TEXTCOLOR_WHITE);
 	integers[Integer::MAX_PROTOCOL_OUTFITS] = getGlobalInteger(L, "maxProtocolOutfits", 255);
 	integers[Integer::MAX_ADDON_ATTRIBUTES] = getGlobalInteger(L, "maxAddonAttributes", 3);
 	integers[Integer::MOVE_CREATURE_INTERVAL] = getGlobalInteger(L, "MOVE_CREATURE_INTERVAL", MOVE_CREATURE_INTERVAL);

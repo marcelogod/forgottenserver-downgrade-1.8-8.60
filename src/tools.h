@@ -57,6 +57,7 @@ Direction getDirectionTo(const Position& from, const Position& to, bool extended
 
 std::string getFirstLine(std::string_view str);
 std::string getStringLine(std::string_view str, const int lineNumber);
+std::string formatValueK(int64_t value);
 
 std::string formatDateShort(time_t time);
 std::string convertIPToString(uint32_t ip);
@@ -68,6 +69,7 @@ WeaponAction_t getWeaponAction(const std::string& strValue);
 Skulls_t getSkullType(const std::string& strValue);
 GuildEmblems_t getEmblemType(const std::string& strValue);
 std::string getCombatName(CombatType_t combatType);
+TextColor_t getTextColorByName(std::string_view name, TextColor_t defaultColor = TEXTCOLOR_WHITE);
 
 std::string getSkillName(uint8_t skillid);
 

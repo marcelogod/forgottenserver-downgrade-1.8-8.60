@@ -12,6 +12,7 @@
 #include "scheduler.h"
 #include "scriptmanager.h"
 #include "instance_utils.h"
+#include "tools.h"
 
 extern Game g_game;
 
@@ -1077,14 +1078,30 @@ void Creature::onGainExperience(uint64_t gainExp, const std::shared_ptr<Creature
 		return;
 	}
 
+	std::string expText = std::to_string(gainExp);
+	if (getBoolean(ConfigManager::MODIFY_EXP_IN_K)) {
+		expText = formatValueK(static_cast<int64_t>(gainExp));
+	}
+
 	TextMessage textMessage(MESSAGE_STATUS_DEFAULT,
-	                        fmt::format("{:s} gained {:d} {:s}.", ucfirst(getNameDescription()), gainExp,
-	                                    gainExp != 1 ? " experience points" : " experience point"));
+	                        fmt::format("{:s} gained {:s} {:s}.", ucfirst(getNameDescription()), expText,
+	                                    gainExp != 1 ? "experience points" : "experience point"));
 	for (const auto& spectator : spectators) {
 		static_cast<Player*>(spectator.get())->sendTextMessage(textMessage);
 	}
 
-	g_game.addAnimatedText(spectators, std::to_string(gainExp), position, TEXTCOLOR_WHITE);
+	std::string animatedText = expText;
+	TextColor_t animatedColor = TEXTCOLOR_WHITE;
+	if (getBoolean(ConfigManager::MODIFY_EXP_IN_K)) {
+		if (const auto storedColor = m->getStorageValue(STORAGE_EXP_COLOR); storedColor && storedColor.value() > 0 &&
+		                                                         storedColor.value() <= std::numeric_limits<uint8_t>::max()) {
+			animatedColor = static_cast<TextColor_t>(storedColor.value());
+		} else {
+			animatedColor = static_cast<TextColor_t>(getInteger(ConfigManager::DEFAULT_EXP_COLOR));
+		}
+	}
+
+	g_game.addAnimatedText(spectators, animatedText, position, animatedColor);
 }
 
 bool Creature::setMaster(Creature* newMaster)

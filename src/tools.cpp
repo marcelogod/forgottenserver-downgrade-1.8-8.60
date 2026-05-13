@@ -445,6 +445,34 @@ using AmmoTypeNames = std::unordered_map<std::string, Ammo_t>;
 using WeaponActionNames = std::unordered_map<std::string, WeaponAction_t>;
 using SkullNames = std::unordered_map<std::string, Skulls_t>;
 using EmblemNames = std::unordered_map<std::string, GuildEmblems_t>;
+using TextColorNames = std::unordered_map<std::string, TextColor_t>;
+
+TextColorNames textColorNames = {
+    {"black", TEXTCOLOR_BLACK},
+    {"blue", TEXTCOLOR_BLUE},
+    {"green", TEXTCOLOR_GREEN},
+    {"lightgreen", TEXTCOLOR_LIGHTGREEN},
+    {"darkbrown", TEXTCOLOR_DARKBROWN},
+    {"darkgrey", TEXTCOLOR_DARKGREY},
+    {"lightblue", TEXTCOLOR_LIGHTBLUE},
+    {"mayablue", TEXTCOLOR_MAYABLUE},
+    {"darkred", TEXTCOLOR_DARKRED},
+    {"darkpurple", TEXTCOLOR_DARKPURPLE},
+    {"brown", TEXTCOLOR_BROWN},
+    {"grey", TEXTCOLOR_GREY},
+    {"teal", TEXTCOLOR_TEAL},
+    {"darkpink", TEXTCOLOR_DARKPINK},
+    {"purple", TEXTCOLOR_PURPLE},
+    {"darkorange", TEXTCOLOR_DARKORANGE},
+    {"lightorange", TEXTCOLOR_LIGHTORANGE},
+    {"red", TEXTCOLOR_RED},
+    {"pink", TEXTCOLOR_PINK},
+    {"orange", TEXTCOLOR_ORANGE},
+    {"darkyellow", TEXTCOLOR_DARKYELLOW},
+    {"gold", TEXTCOLOR_DARKYELLOW},
+    {"yellow", TEXTCOLOR_YELLOW},
+    {"white", TEXTCOLOR_WHITE},
+};
 
 MagicEffectNames magicEffectNames = {
     {"assassin", CONST_ME_ASSASSIN},
@@ -751,6 +779,15 @@ std::string getCombatName(CombatType_t combatType)
 	return "unknown";
 }
 
+TextColor_t getTextColorByName(std::string_view name, TextColor_t defaultColor)
+{
+	auto color = textColorNames.find(asLowerCaseString(std::string{name}));
+	if (color != textColorNames.end()) {
+		return color->second;
+	}
+	return defaultColor;
+}
+
 Ammo_t getAmmoType(const std::string& strValue)
 {
 	auto ammoType = ammoTypeNames.find(strValue);
@@ -1051,6 +1088,27 @@ std::string getStringLine(std::string_view str, const int lineNumber)
 		std::getline(iss, line);
 	}
 	return std::getline(iss, line) ? line : std::string{};
+}
+
+std::string formatValueK(int64_t value)
+{
+	const bool negative = value < 0;
+	const uint64_t absValue = negative ? static_cast<uint64_t>(-(value + 1)) + 1 : static_cast<uint64_t>(value);
+
+	std::string result;
+	if (absValue >= 1'000'000'000'000ULL) {
+		result = std::to_string(absValue / 1'000'000'000'000ULL) + "T";
+	} else if (absValue >= 1'000'000'000ULL) {
+		result = std::to_string(absValue / 1'000'000'000ULL) + "B";
+	} else if (absValue >= 1'000'000ULL) {
+		result = std::to_string(absValue / 1'000'000ULL) + "KK";
+	} else if (absValue >= 1'000ULL) {
+		result = std::to_string(absValue / 1'000ULL) + "K";
+	} else {
+		result = std::to_string(absValue);
+	}
+
+	return negative ? "-" + result : result;
 }
 
 std::string_view getReturnMessage(ReturnValue value)
