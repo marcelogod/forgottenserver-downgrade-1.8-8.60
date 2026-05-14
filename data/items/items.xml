@@ -55779,7 +55779,7 @@
 	<item id="32724" article="a" name="spectral gold nugget">
 		<attribute key="showCount" value="1" />
 		<attribute key="weight" value="135" />
-		<attribute key="worth" value="100000" />
+		<attribute key="worth" value="1000000" />
 	</item>
 	<item id="32725" article="a" name="spectral silver nugget">
 		<attribute key="showCount" value="1" />

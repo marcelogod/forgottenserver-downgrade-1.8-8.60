@@ -60,6 +60,39 @@ bool isOtclientOperatingSystem(OperatingSystem_t operatingSystem)
 	}
 }
 
+bool looksLikeLegacyRuleViolationReport(const uint8_t* payload, std::size_t remaining)
+{
+	if (remaining < 6) {
+		return false;
+	}
+
+	const uint16_t targetNameLength = payload[0] | (payload[1] << 8);
+	if (targetNameLength == 0 || targetNameLength > 32 || static_cast<std::size_t>(targetNameLength) + 6 > remaining) {
+		return false;
+	}
+
+	for (uint16_t i = 0; i < targetNameLength; ++i) {
+		const uint8_t ch = payload[2 + i];
+		if (ch < 32 || ch > 126) {
+			return false;
+		}
+	}
+	return true;
+}
+
+uint8_t getRuleViolationTypeFromLegacyAction(uint8_t action)
+{
+	if (action == 6) {
+		return REPORT_TYPE_STATEMENT;
+	}
+
+	if (action == 1 || action == 3 || action == 5) {
+		return REPORT_TYPE_NAME;
+	}
+
+	return REPORT_TYPE_BOT;
+}
+
 auto findClient(uint32_t guid)
 {
 	std::size_t slot = 1;
@@ -1532,16 +1565,35 @@ void ProtocolGame::parseRotateItem(NetworkMessage& msg)
 
 void ProtocolGame::parseRuleViolationReport(NetworkMessage& msg)
 {
-	uint8_t reportType = msg.getByte();
-	uint8_t reportReason = msg.getByte();
-	auto targetName = msg.getString();
-	auto comment = msg.getString();
+	uint8_t reportType;
+	uint8_t reportReason;
+	std::string targetName;
+	std::string comment;
 	std::string translation;
-	if (reportType == REPORT_TYPE_NAME) {
+
+	if (looksLikeLegacyRuleViolationReport(msg.getRemainingBuffer(), msg.getRemainingBufferLength())) {
+		targetName = msg.getString();
+		reportReason = msg.getByte();
+		reportType = getRuleViolationTypeFromLegacyAction(msg.getByte());
+		comment = msg.getString();
 		translation = msg.getString();
-	} else if (reportType == REPORT_TYPE_STATEMENT) {
-		translation = msg.getString();
-		msg.get<uint32_t>(); // statement id, used to get whatever player have said, we don't log that.
+		if (msg.getRemainingBufferLength() >= sizeof(uint16_t)) {
+			msg.get<uint16_t>(); // legacy statement id
+		}
+		if (msg.getRemainingBufferLength() >= 1) {
+			msg.getByte(); // legacy IP banishment flag
+		}
+	} else {
+		reportType = msg.getByte();
+		reportReason = msg.getByte();
+		targetName = msg.getString();
+		comment = msg.getString();
+		if (reportType == REPORT_TYPE_NAME) {
+			translation = msg.getString();
+		} else if (reportType == REPORT_TYPE_STATEMENT) {
+			translation = msg.getString();
+			msg.get<uint32_t>(); // statement id, used to get whatever player have said, we don't log that.
+		}
 	}
 
 	g_dispatcher.addTask([=, playerID = player->getID(), targetName = std::string{targetName},
