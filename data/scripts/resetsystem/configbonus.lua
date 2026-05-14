@@ -195,6 +195,37 @@ function ResetBonusConfig.getTotalBonus(bonusType, resetCount, vocationId)
 	return resetCount * defaultBonus
 end
 
+local function callPlayerMethod(player, methodName, ...)
+	local method = player[methodName]
+	if type(method) ~= "function" then
+		return false
+	end
+
+	method(player, ...)
+	return true
+end
+
+local function applyAttackSpeedBonus(player, vocation, bonus)
+	if callPlayerMethod(player, "setResetAttackSpeedBonus", bonus) then
+		return
+	end
+
+	if type(player.setAttackSpeed) ~= "function" then
+		return
+	end
+
+	local baseSpeed = nil
+	if vocation and type(vocation.getAttackSpeed) == "function" then
+		baseSpeed = vocation:getAttackSpeed()
+	elseif type(player.getAttackSpeed) == "function" then
+		baseSpeed = player:getAttackSpeed()
+	end
+
+	if baseSpeed then
+		player:setAttackSpeed(math.max(100, baseSpeed - bonus))
+	end
+end
+
 function ResetBonusConfig.applyBonuses(player)
 	local resets = player:getResetCount()
 	local vocation = player:getVocation()
@@ -204,42 +235,42 @@ function ResetBonusConfig.applyBonuses(player)
 	if ResetBonusConfig.attackSpeed.enabled ~= false then
 		spd = ResetBonusConfig.getTotalBonus("attackSpeed", resets, vocId)
 	end
-	player:setResetAttackSpeedBonus(math.floor(spd))
+	applyAttackSpeedBonus(player, vocation, math.floor(spd))
 
 	local dmg = 0
 	if ResetBonusConfig.damage.enabled ~= false then
 		dmg = ResetBonusConfig.getTotalBonus("damage", resets, vocId)
 	end
-	player:setResetDamageBonus(dmg)
+	callPlayerMethod(player, "setResetDamageBonus", dmg)
 
 	local def = 0
 	if ResetBonusConfig.defense.enabled ~= false then
 		def = ResetBonusConfig.getTotalBonus("defense", resets, vocId)
 	end
-	player:setResetDefenseBonus(def)
+	callPlayerMethod(player, "setResetDefenseBonus", def)
 
 	local heal = 0
 	if ResetBonusConfig.healing.enabled ~= false then
 		heal = ResetBonusConfig.getTotalBonus("healing", resets, vocId)
 	end
-	player:setResetHealingBonus(heal)
+	callPlayerMethod(player, "setResetHealingBonus", heal)
 
 	local hpConfig = ResetBonusConfig.hp
 	if hpConfig and hpConfig.enabled ~= false then
 		local hpTotal = ResetBonusConfig.getTotalBonus("hp", resets, vocId)
 		if hpTotal > 0 then
 			if hpConfig.bonusMode == "flat" then
-				player:setResetHpBonus(math.floor(hpTotal))
+				callPlayerMethod(player, "setResetHpBonus", math.floor(hpTotal))
 			else
-				player:setResetHpBonus(0)
+				callPlayerMethod(player, "setResetHpBonus", 0)
 				local baseHp = player:getMaxHealth()
-				player:setResetHpBonus(math.floor(baseHp * hpTotal / 100))
+				callPlayerMethod(player, "setResetHpBonus", math.floor(baseHp * hpTotal / 100))
 			end
 		else
-			player:setResetHpBonus(0)
+			callPlayerMethod(player, "setResetHpBonus", 0)
 		end
 	else
-		player:setResetHpBonus(0)
+		callPlayerMethod(player, "setResetHpBonus", 0)
 	end
 
 	local manaConfig = ResetBonusConfig.mana
@@ -247,32 +278,32 @@ function ResetBonusConfig.applyBonuses(player)
 		local manaTotal = ResetBonusConfig.getTotalBonus("mana", resets, vocId)
 		if manaTotal > 0 then
 			if manaConfig.bonusMode == "flat" then
-				player:setResetManaBonus(math.floor(manaTotal))
+				callPlayerMethod(player, "setResetManaBonus", math.floor(manaTotal))
 			else
-				player:setResetManaBonus(0)
+				callPlayerMethod(player, "setResetManaBonus", 0)
 				local baseMana = player:getMaxMana()
-				player:setResetManaBonus(math.floor(baseMana * manaTotal / 100))
+				callPlayerMethod(player, "setResetManaBonus", math.floor(baseMana * manaTotal / 100))
 			end
 		else
-			player:setResetManaBonus(0)
+			callPlayerMethod(player, "setResetManaBonus", 0)
 		end
 	else
-		player:setResetManaBonus(0)
+		callPlayerMethod(player, "setResetManaBonus", 0)
 	end
 
 	local mpConfig = ResetBonusConfig.manaPotion
 	if mpConfig and mpConfig.enabled ~= false then
 		local mpBonus = ResetBonusConfig.getTotalBonus("manaPotion", resets, vocId)
-		player:setResetManaPotionBonus(mpBonus)
+		callPlayerMethod(player, "setResetManaPotionBonus", mpBonus)
 	else
-		player:setResetManaPotionBonus(0)
+		callPlayerMethod(player, "setResetManaPotionBonus", 0)
 	end
 
 	local msConfig = ResetBonusConfig.manaSpell
 	if msConfig and msConfig.enabled ~= false then
 		local msBonus = ResetBonusConfig.getTotalBonus("manaSpell", resets, vocId)
-		player:setResetManaSpellBonus(msBonus)
+		callPlayerMethod(player, "setResetManaSpellBonus", msBonus)
 	else
-		player:setResetManaSpellBonus(0)
+		callPlayerMethod(player, "setResetManaSpellBonus", 0)
 	end
 end
