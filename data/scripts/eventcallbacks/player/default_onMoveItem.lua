@@ -1,4 +1,5 @@
 local WORKBENCH_ID = 27547
+local SUPPLY_STASH_ITEM_ID = ITEM_SUPPLY_STASH or 28750
 local WORKBENCH_POSITIONS = {
 	Position(1123, 1208, 7),
 	-- Position(0, 0, 0),
@@ -44,9 +45,30 @@ local function containsExerciseItem(container)
 	return false
 end
 
+local function isSupplyStashCylinder(cylinder)
+	if not cylinder or not cylinder.isItem or not cylinder:isItem() then
+		return false
+	end
+
+	if cylinder:getId() == SUPPLY_STASH_ITEM_ID then
+		return true
+	end
+
+	if cylinder.getTopParent then
+		local topParent = cylinder:getTopParent()
+		return topParent and topParent.isItem and topParent:isItem() and topParent:getId() == SUPPLY_STASH_ITEM_ID
+	end
+	return false
+end
+
 local event = Event()
 event.onMoveItem = function(self, item, count, fromPosition, toPosition,
                             fromCylinder, toCylinder)
+	if isSupplyStashCylinder(toCylinder) then
+		self:sendCancelMessage("Put items inside Depot Locker boxes 1 to 15, then use Stow All.")
+		return RETURNVALUE_NOTPOSSIBLE
+	end
+
 	local isMovingTo   = toCylinder   and toCylinder:isItem()   and toCylinder:getId() == WORKBENCH_ID
 	local isMovingFrom = fromCylinder and fromCylinder:isItem() and fromCylinder:getId() == WORKBENCH_ID
 
