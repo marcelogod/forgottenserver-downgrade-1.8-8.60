@@ -259,7 +259,7 @@ do
 	}
 
 	-- first argument: Item, itemType or item id
-	local function internalItemGetDescription(item, lookDistance, subType, addArticle)
+	local function internalItemGetDescription(item, lookDistance, subType, addArticle, player)
 		-- optional, but true by default
 		if addArticle == nil then addArticle = true end
 
@@ -425,25 +425,36 @@ do
 				local dodgeChance = item:getDodgeChance()
 				local momentumChance = item:getMomentumChance()
 				local transcendenceChance = item:getTranscendenceChance()
+				local amplification = 0
+				if player and player:isPlayer() then
+					local feet = player:getSlotItem(CONST_SLOT_FEET)
+					if feet then
+						amplification = feet:getMomentumChance()
+					end
+				end
 
 				-- Weapon (hand slot) -> Onslaught
-				if fatalChance > 0 and item:getAttack() > 0 then
-					forgeDescriptions[#forgeDescriptions + 1] = fmt("Onslaught: %.2f%%", fatalChance)
+				if fatalChance > 0 and itemType:isWeapon() then
+					local finalChance = fatalChance * (1.0 + (amplification * 0.02))
+					forgeDescriptions[#forgeDescriptions + 1] = fmt("Onslaught: %.2f%%", finalChance)
 				end
-				-- Armor -> Ruse (Dodge)
-				if dodgeChance > 0 and (bit.band(slotPos, SLOTP_ARMOR) ~= 0) then
-					forgeDescriptions[#forgeDescriptions + 1] = fmt("Ruse: %.2f%%", dodgeChance)
+				-- Armor or Shield -> Ruse (Dodge)
+				if dodgeChance > 0 and (itemType:isArmor() or itemType:isShield()) then
+					local finalChance = dodgeChance * (1.0 + (amplification * 0.02))
+					forgeDescriptions[#forgeDescriptions + 1] = fmt("Ruse: %.2f%%", finalChance)
 				end
 				-- Helmet -> Momentum
-				if momentumChance > 0 and (bit.band(slotPos, SLOTP_HEAD) ~= 0) then
-					forgeDescriptions[#forgeDescriptions + 1] = fmt("Momentum: %.2f%%", momentumChance)
+				if momentumChance > 0 and itemType:isHelmet() then
+					local finalChance = momentumChance * (1.0 + (amplification * 0.02))
+					forgeDescriptions[#forgeDescriptions + 1] = fmt("Momentum: %.2f%%", finalChance)
 				end
 				-- Legs -> Transcendence
-				if transcendenceChance > 0 and (bit.band(slotPos, SLOTP_LEGS) ~= 0) then
-					forgeDescriptions[#forgeDescriptions + 1] = fmt("Transcendence: %.2f%%", transcendenceChance)
+				if transcendenceChance > 0 and itemType:isLegs() then
+					local finalChance = transcendenceChance * (1.0 + (amplification * 0.02))
+					forgeDescriptions[#forgeDescriptions + 1] = fmt("Transcendence: %.2f%%", finalChance)
 				end
 				-- Boots -> (amplifies other abilities)
-				if momentumChance > 0 and (bit.band(slotPos, SLOTP_FEET) ~= 0) then
+				if momentumChance > 0 and itemType:isBoots() then
 					forgeDescriptions[#forgeDescriptions + 1] = fmt("Amplification: %.2f%%", momentumChance)
 				end
 			end
@@ -519,10 +530,10 @@ do
 					local formattedValue
 					if skill - 1 >= 6 then
 						-- fatal, dodge, momentum
-						formattedValue = fmt("%0.2f", value / 100)
+						formattedValue = fmt("%g", value / 100)
 					else
 						-- critical chance, critical amount, leech chance, leech amount
-						formattedValue = fmt("%+.2f", value / 100)
+						formattedValue = fmt("%+g", value / 100)
 					end
 
 					descriptions[#descriptions + 1] = fmt("%s %s%%", getSpecialSkillName(skill - 1), formattedValue)
@@ -929,8 +940,8 @@ do
 		return concat(response, "")
 	end
 
-	function Item:getDescription(lookDistance, subType, addArticle)
-		return internalItemGetDescription(self, lookDistance, subType, addArticle)
+	function Item:getDescription(lookDistance, subType, addArticle, player)
+		return internalItemGetDescription(self, lookDistance, subType, addArticle, player)
 	end
 
 	function ItemType:getItemDescription(lookDistance, subType, addArticle)

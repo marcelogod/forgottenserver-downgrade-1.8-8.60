@@ -97,7 +97,7 @@ function talkaction.onSay(player, words, param)
 		description[#description + 1] = string.format("Reloaded %s.", paramToLower)
 	end
 
-	for _, desc in ipairs(description) do player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, desc) end
+	for _, desc in ipairs(description) do player:sendTextMessage(MESSAGE_INFO_DESCR, desc) end
 	return false
 end
 

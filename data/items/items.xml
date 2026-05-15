@@ -51861,7 +51861,7 @@
 		<attribute key="shootType" value="smallearth" />
 		<attribute key="magiclevelpoints" value="2" />
 		<attribute key="lifeleechamount" value="1800" />
-		<attribute key="lifeleechchance" value="100" />
+		<attribute key="lifeleechchance" value="10000" />
 		<attribute key="range" value="5" />
 		<attribute key="weight" value="2500" />
 		<attribute key="imbuementslot" value="2">
@@ -57609,7 +57609,7 @@
 		<attribute key="manaleechamount" value="300" />
 		<attribute key="manaleechchance" value="100" />
 		<attribute key="lifeleechamount" value="500" />
-		<attribute key="lifeleechchance" value="100" />
+		<attribute key="lifeleechchance" value="10000" />
 		<attribute key="skillsword" value="5" />
 		<attribute key="attack" value="7" />
 		<attribute key="extradef" value="3" />
@@ -57657,7 +57657,7 @@
 		<attribute key="manaleechamount" value="300" />
 		<attribute key="manaleechchance" value="100" />
 		<attribute key="lifeleechamount" value="500" />
-		<attribute key="lifeleechchance" value="100" />
+		<attribute key="lifeleechchance" value="10000" />
 		<attribute key="skillaxe" value="5" />
 		<attribute key="attack" value="7" />
 		<attribute key="extradef" value="3" />
@@ -57707,7 +57707,7 @@
 		<attribute key="manaleechamount" value="300" />
 		<attribute key="manaleechchance" value="100" />
 		<attribute key="lifeleechamount" value="500" />
-		<attribute key="lifeleechchance" value="100" />
+		<attribute key="lifeleechchance" value="10000" />
 		<attribute key="skillclub" value="5" />
 		<attribute key="attack" value="6" />
 		<attribute key="extradef" value="3" />
@@ -57834,7 +57834,7 @@
 		<attribute key="manaleechamount" value="300" />
 		<attribute key="manaleechchance" value="100" />
 		<attribute key="lifeleechamount" value="500" />
-		<attribute key="lifeleechchance" value="100" />
+		<attribute key="lifeleechchance" value="10000" />
 		<attribute key="range" value="6" />
 		<attribute key="weight" value="2500" />
 		<attribute key="imbuementslot" value="2">
@@ -58230,7 +58230,7 @@
 		<attribute key="shootType" value="smallice" />
 		<attribute key="magiclevelpoints" value="2" />
 		<attribute key="lifeleechamount" value="1800" />
-		<attribute key="lifeleechchance" value="100" />
+		<attribute key="lifeleechchance" value="10000" />
 		<attribute key="range" value="5" />
 		<attribute key="weight" value="2100" />
 		<attribute key="imbuementslot" value="2">

@@ -10,7 +10,7 @@ event.onLook = function(self, thing, position, distance, description)
 	local description = "You see "
 
 	if thing:isItem() then
-		description = description .. thing:getDescription(distance)
+		description = description .. thing:getDescription(distance, nil, nil, self)
 		
 	else
 		description = description .. thing:getDescription(distance)
