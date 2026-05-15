@@ -954,10 +954,14 @@ void Monster::onFollowCreatureComplete(const Creature* creature)
 }
 
 BlockType_t Monster::blockHit(const std::shared_ptr<Creature>& attacker, CombatType_t combatType, int32_t& damage,
-                              bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool /* field = false */,
-                              bool /* ignoreResistances = false */)
+                              bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false */,
+                              bool ignoreResistances /* = false */)
 {
-	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor);
+	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor, field, ignoreResistances);
+
+	if (field) {
+		ignoreFieldDamage = true;
+	}
 
 	if (damage != 0) {
 		int32_t elementMod = 0;
@@ -1107,6 +1111,10 @@ void Monster::onThink(uint32_t interval)
 
 		if (!isIdle) {
 			addEventWalk();
+
+			if (getAttackedCreatureShared() && getTimeSinceLastMove() >= 3000) {
+				ignoreFieldDamage = true;
+			}
 
 			if (isSummon()) {
 				auto master = getMaster();
@@ -2104,7 +2112,7 @@ bool Monster::canWalkTo(Position pos, Direction direction) const
 	if (isInSpawnRange(pos)) {
 		Tile* tile = g_game.map.getTile(pos);
 		uint32_t pathFlags = FLAG_PATHFINDING;
-		if (isFamiliar()) {
+		if (isFamiliar() || ignoreFieldDamage) {
 			pathFlags |= FLAG_IGNOREFIELDDAMAGE;
 		}
 		if (isSummon() && !isFamiliar() && tile && tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
@@ -2413,10 +2421,6 @@ void Monster::setNormalCreatureLight() { internalLight = mType->info.light; }
 void Monster::drainHealth(const std::shared_ptr<Creature>& attacker, int32_t damage)
 {
 	Creature::drainHealth(attacker, damage);
-
-	if (damage > 0 && randomStepping) {
-		ignoreFieldDamage = true;
-	}
 
 	if (isInvisible()) {
 		removeCondition(CONDITION_INVISIBLE);
