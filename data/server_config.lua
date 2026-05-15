@@ -6,8 +6,8 @@
 resetssystem = true
 
 -- Visual display customization
-modifyDamageInK = true
-modifyExpInK = true
+modifyDamageInK = false
+modifyExpInK = false
 defaultExpColor = "white"
 defaultHealthDisplay = "real"
 damageColorMap = {
