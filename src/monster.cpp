@@ -566,7 +566,7 @@ void Monster::updateTargetList()
 	std::erase_if(targetList, [this](const auto& weakRef) {
 		auto creature = weakRef.lock();
 		return !creature || creature->isDead() || !canSee(creature->getPosition()) ||
-		       (!isFamiliar() && creature->getZone() == ZONE_PROTECTION);
+		       (!isFamiliar() && creature->getZone() == ZONE_PROTECTION) || !isOpponent(creature.get());
 	});
 
 	SpectatorVec spectators;
@@ -623,6 +623,30 @@ void Monster::onCreatureEnter(Creature* creature)
 	}
 
 	onCreatureFound(creature, true);
+
+	if (creature->getPlayer()) {
+		// A player entered, we might need to notice other monsters now
+		updateTargetList();
+	}
+}
+
+
+bool Monster::hasPlayerNearby(int32_t range /* = 20*/) const
+{
+	if (g_game.getPlayersOnline() == 0) {
+		return false;
+	}
+
+	uint64_t currentTime = OTSYS_TIME();
+	if (lastPlayerNearbyCheck == currentTime) {
+		return cachedPlayerNearby;
+	}
+
+	SpectatorVec spectators;
+	g_game.map.getSpectators(spectators, position, true, true, range, range, range, range);
+	cachedPlayerNearby = !spectators.empty();
+	lastPlayerNearbyCheck = currentTime;
+	return cachedPlayerNearby;
 }
 
 bool Monster::isFriend(const Creature* creature) const
@@ -669,20 +693,22 @@ bool Monster::isOpponent(const Creature* creature) const
 		return false;
 	}
 
+	auto creatureMaster = creature->getMaster();
+	if ((creature->getPlayer() && !creature->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters)) ||
+	    (creatureMaster && creatureMaster->getPlayer())) {
+		return true;
+	}
+
 	if (mType->info.enemyFactions.count(creature->getFaction()) > 0) {
+		if (creature->getMonster() && !creature->isSummon() && !hasPlayerNearby(20)) {
+			return false;
+		}
 		return true;
 	}
 
 	auto master = getMaster();
 	if (isSummon() && master && master->getPlayer()) {
-		// Familiars follow their master through followCreature; the master is never an opponent.
 		if (creature != master.get()) {
-			return true;
-		}
-	} else {
-		auto creatureMaster = creature->getMaster();
-		if ((creature->getPlayer() && !creature->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters)) ||
-		    (creatureMaster && creatureMaster->getPlayer())) {
 			return true;
 		}
 	}
@@ -721,6 +747,11 @@ void Monster::onCreatureLeave(Creature* creature)
 				walkToSpawn();
 			}
 		}
+	}
+
+	if (creature->getPlayer()) {
+		// A player left, we might need to stop fighting other monsters
+		updateTargetList();
 	}
 }
 
