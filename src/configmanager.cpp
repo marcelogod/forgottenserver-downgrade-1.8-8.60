@@ -443,6 +443,7 @@ bool ConfigManager::load()
 	booleans[Boolean::ALLOW_MOUNT_IN_PZ] = getGlobalBoolean(L, "allowMountInPz", false);
 	booleans[Boolean::CHAIN_SYSTEM_ENABLED] = getGlobalBoolean(L, "toggleChainSystem", true);
 	booleans[Boolean::MODIFY_DAMAGE_IN_K] = getGlobalBoolean(L, "modifyDamageInK", false);
+	booleans[Boolean::DAMAGE_COLOR_SYSTEM] = getGlobalBoolean(L, "damageColorSystem", false);
 	booleans[Boolean::MODIFY_EXP_IN_K] = getGlobalBoolean(L, "modifyExpInK", false);
 	booleans[Boolean::DEFAULT_HEALTH_DISPLAY_PERCENT] =
 	    asLowerCaseString(getGlobalString(L, "defaultHealthDisplay", "real")) == "percent";
