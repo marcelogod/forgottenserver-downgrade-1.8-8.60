@@ -10,6 +10,7 @@ modifyDamageInK = false
 modifyExpInK = false
 defaultExpColor = "white"
 defaultHealthDisplay = "real"
+damageColorSystem = false
 damageColorMap = {
 	mi = TEXTCOLOR_WHITE,
 	bi = TEXTCOLOR_RED,
