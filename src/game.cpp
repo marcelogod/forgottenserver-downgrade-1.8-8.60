@@ -148,8 +148,10 @@ void addDamageAnimatedText(const SpectatorVec& spectators, std::string_view mess
 		return;
 	}
 
-	const TextColor_t defaultColor =
-	    getPlayerDamageColor(colorOwner, getDamageColorForCombat(combatType, fallbackColor));
+	const TextColor_t defaultColor = getPlayerDamageColor(
+	    colorOwner, getBoolean(ConfigManager::DAMAGE_COLOR_SYSTEM)
+	                    ? getDamageColorForCombat(combatType, fallbackColor)
+	                    : fallbackColor);
 	for (const auto& spectator : spectators) {
 		Player* player = static_cast<Player*>(spectator.get());
 		player->sendAnimatedText(message, pos, getPlayerDamageColor(player, defaultColor));
