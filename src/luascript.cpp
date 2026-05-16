@@ -2608,6 +2608,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::MONSTER_LEVEL_ENABLED);
 	registerEnumIn("configKeys", ConfigManager::ALLOW_MOUNT_IN_PZ);
 	registerEnumIn("configKeys", ConfigManager::MODIFY_DAMAGE_IN_K);
+	registerEnumIn("configKeys", ConfigManager::DAMAGE_COLOR_SYSTEM);
 	registerEnumIn("configKeys", ConfigManager::MODIFY_EXP_IN_K);
 	registerEnumIn("configKeys", ConfigManager::DEFAULT_HEALTH_DISPLAY_PERCENT);
 
