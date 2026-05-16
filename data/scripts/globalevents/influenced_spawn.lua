@@ -1,16 +1,24 @@
 local CONFIG = {
-    maxInfluenced    = 4,
+    maxInfluenced    = 12,
     spawnInterval    = 270,   -- 4min30s entre spawns
     expireTime       = 3600,  -- 1 hora sem morte = expira
+    sliverItemId     = 37109,
     starLevels = {
-        [1] = { hpMult = 1.50, dmgMult = 1.35, dustMin = 1,  dustMax = 3  },
-        [2] = { hpMult = 1.65, dmgMult = 1.45, dustMin = 2,  dustMax = 6  },
-        [3] = { hpMult = 1.80, dmgMult = 1.55, dustMin = 3,  dustMax = 9  },
-        [4] = { hpMult = 1.95, dmgMult = 1.65, dustMin = 4,  dustMax = 12 },
-        [5] = { hpMult = 2.10, dmgMult = 1.75, dustMin = 5,  dustMax = 15 },
+        [1] = { hpMult = 1.50, dmgMult = 1.35, sliverMin = 1,  sliverMax = 3, chanceMult = 75.00},
+        [2] = { hpMult = 1.65, dmgMult = 1.45, sliverMin = 2,  sliverMax = 6, chanceMult = 82.25},
+        [3] = { hpMult = 1.80, dmgMult = 1.55, sliverMin = 3,  sliverMax = 9, chanceMult = 95.30},
+        [4] = { hpMult = 1.95, dmgMult = 1.65, sliverMin = 4,  sliverMax = 12, chanceMult = 120.75},
+        [5] = { hpMult = 2.10, dmgMult = 1.75, sliverMin = 5,  sliverMax = 15, chanceMult = 150.55},
     },
 }
 
+local blockedNameParts = {
+    "trainer",
+    "training",
+    "dummy",
+}
+
+-- Helper Functions
 local function getFreeTile(pos, radius)
     for r = 1, radius do
         for dx = -r, r do
@@ -27,12 +35,6 @@ local function getFreeTile(pos, radius)
     end
     return nil
 end
-
-local blockedNameParts = {
-    "trainer",
-    "training",
-    "dummy",
-}
 
 local function hasBlockedName(name)
     local lowerName = name:lower()
@@ -71,6 +73,10 @@ end
 
 local influencedSpawn = GlobalEvent("InfluencedSpawn")
 function influencedSpawn.onThink(interval)
+    if not configManager.getBoolean(configKeys.FORGE_SYSTEM_ENABLED) then
+        return true
+    end
+
     local influencedList = Game.getInfluencedCreatures()
     local now = os.time()
 
@@ -122,6 +128,7 @@ function influencedSpawn.onThink(interval)
     local level = math.random(1, 5)
     newMonster:setInfluenced(true)
     newMonster:setInfluencedLevel(level)
+    newMonster:rename(string.format("%s (Level %d)", monsterName, level))
     newMonster:setStorageValue(PlayerStorageKeys.influencedSpawnTime, now)
 
     local starData = CONFIG.starLevels[level]
@@ -131,8 +138,91 @@ function influencedSpawn.onThink(interval)
     newMonster:setHealth(newHP)
 
     newMonster:registerEvent("InfluencedDeath")
+    newMonster:registerEvent("InfluencedDamage")
 
     return true
 end
-influencedSpawn:interval(CONFIG.spawnInterval * 1000)
+influencedSpawn:interval(4000)
 influencedSpawn:register()
+
+local influencedDamage = CreatureEvent("InfluencedDamage")
+function influencedDamage.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
+    if not attacker or not attacker:isMonster() then
+        return primaryDamage, primaryType, secondaryDamage, secondaryType
+    end
+
+    local monster = attacker:getMonster()
+    if not monster or not monster:isInfluenced() then
+        return primaryDamage, primaryType, secondaryDamage, secondaryType
+    end
+
+    local level = monster:getInfluencedLevel()
+    if level < 1 or level > 5 then
+        return primaryDamage, primaryType, secondaryDamage, secondaryType
+    end
+
+    local starData = CONFIG.starLevels[level]
+    if not starData then
+        return primaryDamage, primaryType, secondaryDamage, secondaryType
+    end
+
+    primaryDamage = math.floor(primaryDamage * starData.dmgMult)
+    secondaryDamage = math.floor(secondaryDamage * starData.dmgMult)
+
+    return primaryDamage, primaryType, secondaryDamage, secondaryType
+end
+influencedDamage:register()
+
+local influencedDeath = CreatureEvent("InfluencedDeath")
+function influencedDeath.onDeath(creature, corpse, killer, mostDamageKiller, lastHitUnjustified, mostDamageUnjustified)
+    if not configManager.getBoolean(configKeys.FORGE_SYSTEM_ENABLED) then
+        return true
+    end
+
+    if not creature or not creature:isMonster() then
+        return true
+    end
+
+    local monster = creature:getMonster()
+    if not monster or not monster:isInfluenced() then
+        return true
+    end
+
+    if not isCommonForgeMonster(monster) then
+        return true
+    end
+
+    local player = nil
+    if mostDamageKiller and mostDamageKiller:isPlayer() then
+        player = mostDamageKiller:getPlayer()
+    elseif killer and killer:isPlayer() then
+        player = killer:getPlayer()
+    end
+
+    if not player then
+        return true
+    end
+
+    local level = monster:getInfluencedLevel()
+    if level < 1 or level > 5 then
+        level = 1
+    end
+
+    local starData = CONFIG.starLevels[level]
+    local chance = starData.chanceMult or 100
+    if math.random(1, 10000) <= (chance * 100) then
+        local sliverAmount = math.random(starData.sliverMin, starData.sliverMax)
+        if corpse and corpse:isContainer() then
+            corpse:addItem(CONFIG.sliverItemId, sliverAmount)
+        end
+    end
+    return true
+end
+influencedDeath:register()
+
+local influencedLogin = CreatureEvent("InfluencedLogin")
+function influencedLogin.onLogin(player)
+    player:registerEvent("InfluencedDamage")
+    return true
+end
+influencedLogin:register()

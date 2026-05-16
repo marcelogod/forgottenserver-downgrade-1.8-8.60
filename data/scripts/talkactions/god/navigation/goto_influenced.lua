@@ -1,14 +1,10 @@
 local gotoInfluenced = TalkAction("/gotoinfluenced")
 function gotoInfluenced.onSay(player, words, param)
-    if player:getAccountType() < ACCOUNT_TYPE_GAMEMASTER then
-        return false
-    end
-
     local influencedList = Game.getInfluencedCreatures()
 
     if #influencedList == 0 then
         player:sendTextMessage(MESSAGE_EVENT_ORANGE,
-            "[GM] Não há criaturas influenciadas ativas no momento.")
+            "[GM] There are no active influenced creatures at the moment.")
         return false
     end
 
@@ -28,7 +24,7 @@ function gotoInfluenced.onSay(player, words, param)
 
     if not closest then
         player:sendTextMessage(MESSAGE_EVENT_ORANGE,
-            "[GM] Não há criaturas influenciadas ativas no momento.")
+            "[GM] There are no active influenced creatures at the moment.")
         return false
     end
 
@@ -37,10 +33,11 @@ function gotoInfluenced.onSay(player, words, param)
     destPos:sendMagicEffect(CONST_ME_TELEPORT)
 
     player:sendTextMessage(MESSAGE_EVENT_ORANGE,
-        string.format("[GM] Teleportado para %s (nível %d).",
-            closest:getName(), closest:getInfluencedLevel()))
+        string.format("[GM] Teleported to %s.", closest:getName()))
 
     return false
 end
 gotoInfluenced:separator(" ")
+gotoInfluenced:accountType(6)
+gotoInfluenced:access(true)
 gotoInfluenced:register()

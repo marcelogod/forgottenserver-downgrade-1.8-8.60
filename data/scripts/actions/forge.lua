@@ -63,7 +63,6 @@ local REDUCE_RISK_PER_CORE = 5
 local MAX_RISK_CORES = 2
 local CHANCE_LOSS_TIER = 10
 
-
 function Player:getForgeDust()
     if not isForgeEnabled() then return 0 end
 
@@ -102,7 +101,6 @@ function Player:removeForgeDust(amount)
     return true
 end
 
-
 local forgeFusion = Action()
 function forgeFusion.onUse(player, item, fromPosition, target, toPosition, isHotkey)
     if not isForgeEnabled() then
@@ -117,60 +115,52 @@ function forgeFusion.onUse(player, item, fromPosition, target, toPosition, isHot
         return true
     end
 
-
     local container = Container(containerItem.uid)
     if not container then
         player:sendTextMessage(MESSAGE_EVENT_ORANGE, "[Forge] Error accessing the container.")
         return true
     end
 
-
     if container:getSize() ~= 2 then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE, "[Forge] Place exactly 2 items in the container.")
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, "[Forge] Place exactly 2 items in the container.")
         player:getPosition():sendMagicEffect(CONST_ME_POFF)
         return true
     end
-
 
     local item1 = container:getItem(0)
     local item2 = container:getItem(1)
 
-
     if not item1 or not item2 then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE, "[Forge] Place two items in the container.")
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, "[Forge] Place two items in the container.")
         player:getPosition():sendMagicEffect(CONST_ME_POFF)
         return true
     end
-
 
     if item1:getId() ~= item2:getId() then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE, "[Forge] Both items must be of the same type.")
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, "[Forge] Both items must be of the same type.")
         player:getPosition():sendMagicEffect(CONST_ME_POFF)
         return true
     end
-
 
     local itemId = item1:getId()
     local maxTier = item1:getClassification()
     if maxTier == 0 then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE, "[Forge] This item has no classification and cannot be forged.")
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, "[Forge] This item has no classification and cannot be forged.")
         player:getPosition():sendMagicEffect(CONST_ME_POFF)
         return true
     end
 
-
     local tier1 = item1:getTier()
     local tier2 = item2:getTier()
     if tier1 ~= tier2 then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+        player:sendTextMessage(MESSAGE_STATUS_WARNING,
             string.format("[Forge] Both items must have the same tier. (Tier %d and Tier %d)", tier1, tier2))
         player:getPosition():sendMagicEffect(CONST_ME_POFF)
         return true
     end
 
-
     if tier1 >= maxTier then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+        player:sendTextMessage(MESSAGE_STATUS_WARNING,
             string.format("[Forge] This item has already reached the maximum tier (%d).", maxTier))
         player:getPosition():sendMagicEffect(CONST_ME_POFF)
         return true
@@ -179,7 +169,7 @@ function forgeFusion.onUse(player, item, fromPosition, target, toPosition, isHot
     -- Dust cost
     local dustCost = DUST_COSTS[tier1] or 100
     if player:getForgeDust() < dustCost then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+        player:sendTextMessage(MESSAGE_INFO_DESCR,
             string.format("[Forge] You need %d Dust. You have %d.", dustCost, player:getForgeDust()))
         player:getPosition():sendMagicEffect(CONST_ME_POFF)
         return true
@@ -191,7 +181,7 @@ function forgeFusion.onUse(player, item, fromPosition, target, toPosition, isHot
         coresNeeded = 1
     end
     if coresNeeded > 0 and player:getItemCount(FORGE_ITEM_IDS.exaltedCore) < coresNeeded then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+        player:sendTextMessage(MESSAGE_INFO_DESCR,
             string.format("[Forge] You need %d Exalted Core(s) for tier %d+ fusion.", coresNeeded, EXALTED_CORE_REQUIRED_FROM_TIER))
         player:getPosition():sendMagicEffect(CONST_ME_POFF)
         return true
@@ -202,12 +192,11 @@ function forgeFusion.onUse(player, item, fromPosition, target, toPosition, isHot
     if cost > 0 then
         local totalGold = player:getMoney() + player:getBankBalance()
         if totalGold < cost then
-            player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+            player:sendTextMessage(MESSAGE_STATUS_WARNING,
                 string.format("[Forge] You need %d gold coins.", cost))
             player:getPosition():sendMagicEffect(CONST_ME_POFF)
             return true
         end
-
 
         local bankBal = player:getBankBalance()
         if bankBal >= cost then
@@ -219,7 +208,6 @@ function forgeFusion.onUse(player, item, fromPosition, target, toPosition, isHot
         end
     end
 
-
     local successChance = UPGRADE_CHANCES[tier1] or 5
     local roll = math.random(1, 100)
 
@@ -230,7 +218,6 @@ function forgeFusion.onUse(player, item, fromPosition, target, toPosition, isHot
     if coresNeeded > 0 then
         player:removeItem(FORGE_ITEM_IDS.exaltedCore, coresNeeded)
     end
-
 
     if roll <= successChance then
         item1:setTier(tier1 + 1)
@@ -248,26 +235,24 @@ function forgeFusion.onUse(player, item, fromPosition, target, toPosition, isHot
             item1:moveTo(player)
         end
 
-        containerPos:sendMagicEffect(244)
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+        FORGE_POSITIONS.container:sendMagicEffect(CONST_ME_AVATAR_APPEAR)
+        FORGE_POSITIONS.container:sendMagicEffect(CONST_ME_WATER_DROP)
+        player:sendTextMessage(MESSAGE_INFO_DESCR,
             string.format("[Forge] Success! Tier %d. (Chance: %d%%, Gold: %d, Dust: %d)",
                 tier1 + 1, successChance, cost, dustCost))
     else
         item2:remove(1)
 
-
-        containerPos:sendMagicEffect(249)
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+        FORGE_POSITIONS.container:sendMagicEffect(CONST_ME_AGONY)
+        player:sendTextMessage(MESSAGE_INFO_DESCR,
             string.format("[Forge] Failed! Sacrifice lost. (Chance: %d%%, Gold: %d, Dust: %d)",
                 successChance, cost, dustCost))
     end
-
 
     return true
 end
 forgeFusion:aid(FORGE_LEVER_AID)
 forgeFusion:register()
-
 
 local resetStone = Action()
 function resetStone.onUse(player, item, fromPosition, target, toPosition, isHotkey)
@@ -278,22 +263,20 @@ function resetStone.onUse(player, item, fromPosition, target, toPosition, isHotk
     end
 
     if not target or not target:isItem() then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE, "[Forge] Use the reset stone on an equipment item.")
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, "[Forge] Use the reset stone on an equipment item.")
         return true
     end
 
-
     local tier = target:getTier()
     if tier == 0 then
-        player:sendTextMessage(MESSAGE_EVENT_ORANGE, "[Forge] This item has no tier to reset.")
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, "[Forge] This item has no tier to reset.")
         target:getPosition():sendMagicEffect(CONST_ME_POFF)
         return true
     end
 
-
     target:setTier(0)
     target:getPosition():sendMagicEffect(CONST_ME_MAGIC_GREEN)
-    player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+    player:sendTextMessage(MESSAGE_STATUS_WARNING,
         string.format("[Forge] Tier reset! (was Tier %d)", tier))
     item:remove(1)
     return true
@@ -301,9 +284,8 @@ end
 resetStone:id(RESET_STONE_ID)
 resetStone:register()
 
-
 -- ====== Conversions: /forge dust | /forge silver | /forge info ======
-local forgeTalk = TalkAction("/forge")
+local forgeTalk = TalkAction("/forge", "!forge")
 function forgeTalk.onSay(player, words, param)
     if not isForgeEnabled() then
         player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
@@ -322,18 +304,45 @@ function forgeTalk.onSay(player, words, param)
     end
 
     if param == "dust" then
-        -- Convert 60 dust -> 3 silver
-        local dust = player:getForgeDust()
-        local batches = math.floor(dust / 60)
+        -- Convert 3 silver -> 20 dust
+        local silverCount = player:getItemCount(FORGE_ITEM_IDS.silver)
+        local batches = math.floor(silverCount / 3)
         if batches == 0 then
-            player:popupFYI("[Forge]\n\nVocê precisa de pelo menos 60 Dust para converter.")
+            player:popupFYI("[Forge]\n\nYou need at least 3 Silver to convert.")
             return false
         end
-        local dustUsed = batches * 60
-        local silverGained = batches * 3
-        player:removeForgeDust(dustUsed)
-        player:addItem(FORGE_ITEM_IDS.silver, silverGained)
-        player:popupFYI(string.format("[Forge]\n\nConvertido %d Dust em %d Silver.", dustUsed, silverGained))
+
+        local dustToGain = batches * 20
+        local limit = player:getForgeDustLimit()
+        local current = player:getForgeDust()
+        
+        if current >= limit then
+            player:popupFYI("[Forge]\n\nYou already reached your Dust limit.")
+            return false
+        end
+
+        -- If gaining all would exceed limit, we cap the gain but still allow the conversion
+        if current + dustToGain > limit then
+            local space = limit - current
+            -- How many full batches of 20 fit?
+            local fullBatches = math.floor(space / 20)
+            
+            if fullBatches > 0 then
+                -- We have space for some full batches
+                batches = math.min(batches, fullBatches)
+                dustToGain = batches * 20
+            else
+                -- We have space for less than one full batch
+                -- We'll just use 1 batch (3 silver) and fill to the limit
+                batches = 1
+                dustToGain = space
+            end
+        end
+
+        local silverUsed = batches * 3
+        player:removeItem(FORGE_ITEM_IDS.silver, silverUsed)
+        player:addForgeDust(dustToGain)
+        player:popupFYI(string.format("[Forge]\n\nConverted %d Silver into %d Dust.", silverUsed, dustToGain))
         return false
     end
 
@@ -342,21 +351,20 @@ function forgeTalk.onSay(player, words, param)
         local silver = player:getItemCount(FORGE_ITEM_IDS.silver)
         local cores = math.floor(silver / 50)
         if cores == 0 then
-            player:popupFYI("[Forge]\n\nVocê precisa de pelo menos 50 Silver para converter.")
+            player:popupFYI("[Forge]\n\nYou need at least 50 Silver to convert.")
             return false
         end
         player:removeItem(FORGE_ITEM_IDS.silver, cores * 50)
         player:addItem(FORGE_ITEM_IDS.exaltedCore, cores)
-        player:popupFYI(string.format("[Forge]\n\nConvertido %d Silver em %d Exalted Core(s).", cores * 50, cores))
+        player:popupFYI(string.format("[Forge]\n\nConverted %d Silver into %d Exalted Core(s).", cores * 50, cores))
         return false
     end
 
-    player:popupFYI("[Forge]\n\nComandos:\n/forge info\n/forge dust\n/forge silver")
+    player:popupFYI("[Forge]\n\nCommands:\n/forge info\n/forge dust\n/forge silver")
     return false
 end
 forgeTalk:separator(" ")
 forgeTalk:register()
-
 
 local forgeStation = GlobalEvent("ForgeStation")
 function forgeStation.onStartup()
